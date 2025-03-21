@@ -19,10 +19,10 @@ public enum ErrorCode {
     REFRESH_TOKEN_FAILED(HttpStatus.BAD_REQUEST, "0013", "토큰 갱신에 실패하셨습니다."),
 
     // 회원
-    USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "1000", "해당 회원의 정보가 없습니다."),
-    MANAGER_NOT_FOUND(HttpStatus.BAD_REQUEST, "1001", "해당 관리자의 정보가 없습니다."),
+    USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "1000", "가입된 정보가 없습니다."),
     LOGIN_FAILED(HttpStatus.BAD_REQUEST, "1002", "로그인에 실패하셨습니다."),
-    DUPLICATED_REGISTER_EMAIL(HttpStatus.BAD_REQUEST, "1003", "이미 가입된 이메일입니다.");
+    DUPLICATED_REGISTER_EMAIL(HttpStatus.BAD_REQUEST, "1003", "이미 가입된 이메일입니다."),
+    DUPLICATED_NICKNAME(HttpStatus.BAD_REQUEST, "1004", "이미 가입된 닉네임입니다.");
 
     private final HttpStatus status;
 

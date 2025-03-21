@@ -1,58 +1,64 @@
 package im.fooding.core.service.user;
 
-import im.fooding.core.global.UserInfo;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
-import im.fooding.core.global.jwt.dto.TokenResponse;
-import im.fooding.core.global.jwt.service.JwtService;
-import im.fooding.core.global.util.Util;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class UserService {
     private final UserRepository userRepository;
-    private final JwtService jwtService;
-    private final PasswordEncoder passwordEncoder;
 
-    @Transactional
-    public void saveManager(String email, String password) {
+    public void save(String email, String nickname, String password) {
         checkDuplicateEmail(email, Role.ADMIN);
+        if (checkDuplicatedNickname(nickname)) {
+            throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
+        }
         User user = User.builder()
                 .email(email)
-                .password(passwordEncoder.encode(password))
+                .nickname(nickname)
+                .password(password)
                 .role(Role.ADMIN)
                 .build();
         userRepository.save(user);
     }
 
-    @Transactional
-    public TokenResponse loginManager(String email, String password) {
-        User manager = findByEmailAndRole(email, Role.ADMIN);
-        if (!passwordEncoder.matches(password, manager.getPassword())) {
-            throw new ApiException(ErrorCode.LOGIN_FAILED);
-        }
-        TokenResponse tokenResponse = jwtService.issueJwtToken(manager.getId());
-        manager.updateRefreshToken(tokenResponse.getRefreshToken());
-        return tokenResponse;
+    public Page<User> list(String searchString, Pageable pageable) {
+        return userRepository.list(searchString, pageable);
     }
 
-    @Transactional(readOnly = true)
-    public User retrieve(long id) {
-        return userRepository.findById(id).orElseThrow(() -> new ApiException(ErrorCode.MANAGER_NOT_FOUND));
+    public User findById(long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
     }
 
-    private User findByEmailAndRole(String email, Role role) {
+    public User findByEmailAndRole(String email, Role role) {
         return userRepository.findByEmailAndRole(email, role)
-                .orElseThrow(() -> new ApiException(ErrorCode.MANAGER_NOT_FOUND));
+                .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    public void update(long id, String nickname) {
+        User user = findById(id);
+        if (!user.getNickname().equals(nickname) && checkDuplicatedNickname(nickname)) {
+            throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
+        }
+        user.update(nickname);
+    }
+
+    public void delete(long id, long deletedBy) {
+        User user = findById(id);
+        user.delete(deletedBy);
+    }
+
+    public boolean checkDuplicatedNickname(String nickname) {
+        return userRepository.findByNickname(nickname).isPresent();
     }
 
     private void checkDuplicateEmail(String email, Role role) {
@@ -60,4 +66,5 @@ public class UserService {
             throw new ApiException(ErrorCode.DUPLICATED_REGISTER_EMAIL);
         });
     }
+
 }
