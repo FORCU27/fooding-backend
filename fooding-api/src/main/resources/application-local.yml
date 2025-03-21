@@ -1,0 +1,53 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  web:
+    resources:
+      add-mappings: false
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/fooding?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
+    username: fooding
+    password: 1234
+
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+        show_sql: true
+
+  servlet:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+
+jwt:
+  secretKey: OxJyMRYZufUrGdBXpDyeLoTj2fbLu2XmHPPJMwdGsv5xcZvUXi
+  access:
+    expiration: 604800000
+    header: Authorization
+
+  refresh:
+    expiration: 1209600000
+    header: Authorization-refresh
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  packages-to-exclude: /im/fooding/app/controller
+
+logging:
+  level:
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: trace
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
