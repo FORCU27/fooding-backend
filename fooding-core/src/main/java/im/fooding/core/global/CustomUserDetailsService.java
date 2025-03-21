@@ -1,12 +1,12 @@
 package im.fooding.core.global;
 
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class CustomUserDetailsService {
     public UserDetails loadUserByUserId(long id) {
         UserInfo user = userRepository.findById(id)
                 .map(UserInfo::new)
-                .orElseThrow(() -> new BadCredentialsException(""));
+                .orElseThrow(() -> new ApiException(ErrorCode.ACCESS_DENIED_EXCEPTION));
         initAuthority(user);
         return user;
     }
