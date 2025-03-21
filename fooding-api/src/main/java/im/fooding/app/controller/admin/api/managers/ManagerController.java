@@ -39,7 +39,6 @@ public class ManagerController {
     @GetMapping("/me")
     @Operation(summary = "로그인한 정보")
     public ApiResult<User> me(@AuthenticationPrincipal UserInfo userInfo) {
-        log.info("userInfo : {}", userInfo);
-        return ApiResult.ok(userService.me());
+        return ApiResult.ok(userService.retrieve(userInfo.getId()));
     }
 }

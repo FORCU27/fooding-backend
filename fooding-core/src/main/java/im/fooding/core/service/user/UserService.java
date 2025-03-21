@@ -46,8 +46,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User me() {
-        return userRepository.findById(Util.getUserInfo().getId()).orElseThrow(() -> new ApiException(ErrorCode.MANAGER_NOT_FOUND));
+    public User retrieve(long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ApiException(ErrorCode.MANAGER_NOT_FOUND));
     }
 
     private User findByEmailAndRole(String email, Role role) {
