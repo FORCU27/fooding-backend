@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorCode {
-
     // System Error
     ACCESS_DENIED_EXCEPTION(HttpStatus.UNAUTHORIZED, "0001", "권한이 없습니다."),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "0002", "서버 에러 입니다."),
@@ -16,6 +15,8 @@ public enum ErrorCode {
     MISSING_REQUEST_PARAMETER(HttpStatus.BAD_REQUEST, "0008", "필수 파라미터가 누락되었습니다."),
     ENCRYPT_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "0010", "암호화에 실패했습니다."),
     DECRYPT_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "0011", "복호화에 실패했습니다."),
+    REFRESH_TOKEN_INVALID(HttpStatus.BAD_REQUEST, "0012", "잘못된 토큰 정보입니다."),
+    REFRESH_TOKEN_FAILED(HttpStatus.BAD_REQUEST, "0013", "토큰 갱신에 실패하셨습니다."),
 
     // 회원
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "1000", "해당 회원의 정보가 없습니다."),

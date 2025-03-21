@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import im.fooding.core.global.CustomUserDetailsService;
 import im.fooding.core.global.UserInfo;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.global.jwt.dto.TokenResponse;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.user.UserRepository;
@@ -60,7 +62,6 @@ public class JwtService {
     }
 
     public String createRefreshToken() {
-        Date now = new Date();
         return JWT.create()
                 .withSubject(REFRESH_TOKEN_SUBJECT)
                 .withExpiresAt(generateExpiresAt(refreshTokenExpirationPeriod))
@@ -119,19 +120,19 @@ public class JwtService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-//    public TokenResponse refreshToken(HttpServletRequest request) {
-//        String refreshToken = extractRefreshToken(request)
-//                .filter(this::isTokenValid)
-//                .orElse(null);
-//        if (refreshToken != null) {
-//            User user = userRepository.findByRefreshToken(refreshToken).orElseThrow(() -> new ApiException(ErrorCode.REFRESH_TOKEN_INVALID));
-//            String reIssuedRefreshToken = reIssueRefreshToken(member);
-//            return makeToken(createAccessToken(member.getId()), reIssuedRefreshToken);
-//        } else {
-//            throw new ApiException(ErrorCode.REFRESH_TOKEN_FAILED);
-//        }
-//    }
-
+    public TokenResponse refreshToken(HttpServletRequest request) {
+        String refreshToken = extractRefreshToken(request)
+                .filter(this::isTokenValid)
+                .orElse(null);
+        if (refreshToken != null) {
+            User user = userRepository.findByRefreshToken(refreshToken).orElseThrow(() -> new ApiException(ErrorCode.REFRESH_TOKEN_INVALID));
+            TokenResponse tokenResponse = issueJwtToken(user.getId());
+            user.updateRefreshToken(tokenResponse.getRefreshToken());
+            return tokenResponse;
+        } else {
+            throw new ApiException(ErrorCode.REFRESH_TOKEN_FAILED);
+        }
+    }
 
     private Date generateExpiresAt(long tokenExpirationPeriod) {
         Date now = new Date();
