@@ -1,3 +1,8 @@
 spring:
   application:
     name: fooding-core
+spring:
+  application:
+    name: fooding-api
+  main:
+    allow-bean-definition-overriding: true
