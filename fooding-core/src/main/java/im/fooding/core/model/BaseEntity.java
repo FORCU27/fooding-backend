@@ -1,8 +1,10 @@
 package im.fooding.core.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -19,14 +21,16 @@ public abstract class BaseEntity {
     private Long createdBy;
 
     @CreatedDate
-    private LocalDateTime createdDateTime;
+    private LocalDateTime createdAt;
 
     @LastModifiedBy
     private Long updatedBy;
 
     @LastModifiedDate
-    private LocalDateTime updatedDateTime;
+    private LocalDateTime updatedAt;
 
+    @Column(nullable = false)
+    @ColumnDefault("false")
     private boolean deleted;
 
     private Long deletedBy;

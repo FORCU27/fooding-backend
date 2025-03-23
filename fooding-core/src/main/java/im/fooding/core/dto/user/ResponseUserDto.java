@@ -24,19 +24,19 @@ public class ResponseUserDto {
     private String mobile;
 
     @Schema(description = "등록일자", example = "2025-03-15T05:17:04.069")
-    private LocalDateTime createdDateTime;
+    private LocalDateTime createdAt;
 
     @Schema(description = "수정일자", example = "2025-03-16T05:17:04.069")
-    private LocalDateTime updatedDateTime;
+    private LocalDateTime updatedAt;
 
     @Builder
-    private ResponseUserDto(long id, String email, String nickname, String mobile, LocalDateTime createdDateTime, LocalDateTime updatedDateTime) {
+    private ResponseUserDto(long id, String email, String nickname, String mobile, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
         this.mobile = mobile;
-        this.createdDateTime = createdDateTime;
-        this.updatedDateTime = updatedDateTime;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public static ResponseUserDto of(User user) {
@@ -45,8 +45,8 @@ public class ResponseUserDto {
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .mobile(user.getMobile())
-                .createdDateTime(user.getCreatedDateTime())
-                .updatedDateTime(user.getUpdatedDateTime())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
                 .build();
     }
 }
