@@ -1,0 +1,72 @@
+name: API
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'jenkins/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.BUILD_SLACK_WEBHOOK_URL }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to Docker
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew bootBuildImage
+      - name: DBuild
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: hyperrealitycorp/fooding-api-production
+          platforms: linux/amd64, linux/arm64/v8
+          build-args: |
+            WEBHOOK_SLACK_URL=${{ secrets.WEBHOOK_SLACK_URL }}
+            API_AUTHORIZATION_TOKEN=${{ secrets.API_AUTHORIZATION_TOKEN }}
+            JWT_SECRET_KEY=${{ secrets.JWT_JWT_SECRET_KEY }}
+            DB_URL=${{ secrets.DB_URL }}
+            DB_USER=${{ secrets.DB_USER }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            MAIL_SEND_USERNAME=${{ secrets.MAIL_SEND_USERNAME }}
+            MAIL_SEND_PASSWORD=${{ secrets.MAIL_SEND_PASSWORD }}
+            MAIL_SEND_FROM_ADDRESS=${{ secrets.MAIL_SEND_FROM_ADDRESS }}
+            SPRING_PROFILES_ACTIVE=${{ secrets.SPRING_PROFILES_ACTIVE }}
+            UPLOAD_PATH=${{ secrets.UPLOAD_PATH }}
+            STORAGE_API_URL=${{ secrets.STORAGE_API_URL  }}
+            STORAGE_API_AUTHORIZATION=${{ secrets.STORAGE_API_AUTHORIZATION  }}
+      - name: Deployment
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_SSH_IP }}
+          username: ${{ secrets.REMOTE_SSH_ID }}
+          password: ${{ secrets.REMOTE_SSH_PASSWORD }}
+          port: ${{ secrets.REMOTE_SSH_PORT }}
+          script: |
+            source ~/.bashrc
+            bash ./deployment/fooding/api-production.sh
+      - uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: "#build-status"
+        if: always()

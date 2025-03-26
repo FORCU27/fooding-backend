@@ -1,0 +1,55 @@
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
+  web:
+    resources:
+      add-mappings: false
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3308}/${DB_NAME:fooding}?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
+    username: ${DB_USER:fooding}
+    password: ${DB_PASSWORD:fooding}
+
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+        format_sql: ${FORMAT_SQL:true}
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:validate}
+
+  servlet:
+    multipart:
+      max-file-size: ${MAX_FILE_SIZE:1000MB}
+      max-request-size: ${MAX_REQUEST_SIZE:1000MB}
+
+jwt:
+  secretKey: ${JWT_SECRET_KEY:OxJyMRYZufUrGdBXpDyeLoTj2fbLu2XmHPPJMwdGsv5xcZvUXi}
+  access:
+    expiration: ${JWT_ACCESS_EXPIRATION:604800000}
+    header: ${JWT_ACCESS_HEADER:Authorization}
+
+  refresh:
+    expiration: ${JWT_REFRESH_EXPIRATION:1209600000}
+    header: ${JWT_REFRESH_HEADER:Authorization-refresh}
+
+springdoc:
+  api-docs:
+    path: ${SPRINGDOC_PATH:/api-docs}
+  packages-to-exclude: ${SPRINGDOC_EXCLUDE_PACKAGES:/im/fooding/app/controller}
+
+logging:
+  level:
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: ${LOG_LEVEL_JDBC_BIND:trace}
+        SQL: ${LOG_LEVEL_SQL:DEBUG}
+        type:
+          descriptor:
+            sql:
+              BasicBinder: ${LOG_LEVEL_SQL_BINDER:TRACE}

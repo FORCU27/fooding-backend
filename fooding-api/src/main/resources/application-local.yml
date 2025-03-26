@@ -8,8 +8,8 @@ spring:
       add-mappings: false
 
   datasource:
-    url: jdbc:mysql://localhost:3306/fooding?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
-    username: fooding
+    url: jdbc:mysql://localhost:3308/fooding?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
+    username: root
     password: 1234
 
   jpa:
