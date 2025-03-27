@@ -8,7 +8,7 @@ spring:
       add-mappings: false
 
   datasource:
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3308}/${DB_NAME:fooding}?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
+    url: ${DB_URL}
     username: ${DB_USER:fooding}
     password: ${DB_PASSWORD:fooding}
 
