@@ -54,6 +54,7 @@ jobs:
             UPLOAD_PATH=${{ secrets.UPLOAD_PATH }}
             STORAGE_API_URL=${{ secrets.STORAGE_API_URL  }}
             STORAGE_API_AUTHORIZATION=${{ secrets.STORAGE_API_AUTHORIZATION  }}
+            JPA_DDL_AUTO=${{ secrets.JPA_DDL_AUTO  }}
       - name: Deployment
         uses: appleboy/ssh-action@master
         with:
