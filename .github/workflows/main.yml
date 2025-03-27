@@ -32,7 +32,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew bootBuildImage
+        run: ./gradlew :fooding-api:bootBuildImage
       - name: DBuild
         uses: docker/build-push-action@v3
         with:
