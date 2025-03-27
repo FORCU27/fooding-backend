@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .headers((headers) -> headers.frameOptions((frameOptions) -> frameOptions.disable()))
                 .sessionManagement((sess) -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                        .requestMatchers((this.getPermitUrls())).permitAll()
                         .requestMatchers(HttpMethod.POST, "/admin/api/managers").permitAll()
                         .requestMatchers(HttpMethod.POST, "/admin/api/managers/login").permitAll()
                         .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
@@ -48,6 +49,10 @@ public class SecurityConfig {
                         .anyRequest().authenticated());
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    private String[] getPermitUrls() {
+        return new String[]{"/ping"};
     }
 
     @Bean
