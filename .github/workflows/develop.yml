@@ -2,7 +2,7 @@ name: API
 
 on:
   push:
-    branches: [Staging]
+    branches: [develop]
     paths-ignore:
       - 'jenkins/**'
   workflow_dispatch:
@@ -38,7 +38,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: hyperrealitycorp/vcraft-api-staging
+          tags: hyperrealitycorp/fooding-api-staging
           platforms: linux/amd64, linux/arm64/v8
           build-args: |
             WEBHOOK_SLACK_URL=${{ secrets.STAGE_WEBHOOK_SLACK_URL }}

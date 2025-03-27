@@ -43,7 +43,7 @@ jobs:
           build-args: |
             WEBHOOK_SLACK_URL=${{ secrets.WEBHOOK_SLACK_URL }}
             API_AUTHORIZATION_TOKEN=${{ secrets.API_AUTHORIZATION_TOKEN }}
-            JWT_SECRET_KEY=${{ secrets.JWT_JWT_SECRET_KEY }}
+            JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
             DB_URL=${{ secrets.DB_URL }}
             DB_USER=${{ secrets.DB_USER }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
