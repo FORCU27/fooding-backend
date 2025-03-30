@@ -1,0 +1,34 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    database: h2
+    generate-ddl: off
+    hibernate:
+      ddl-auto: create-drop
+    datasource:
+      format_sql: true
+      show_sql: true
+      driver-class-name: org.h2.Driver
+      url: jdbc:h2:mem:testdb;MODE=MySQL;
+      username: SA
+      password:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+jwt:
+  secretKey: fooding-jwt-secret-key-please-change-this-in-production-environment
+  access:
+    expiration: 3600000
+    header: Authorization
+
+  refresh:
+    expiration: 1209600000
+    header: Authorization-refresh
