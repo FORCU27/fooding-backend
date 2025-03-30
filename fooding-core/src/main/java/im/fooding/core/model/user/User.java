@@ -2,6 +2,7 @@ package im.fooding.core.model.user;
 
 import im.fooding.core.model.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
 public class User extends BaseEntity {
     @Id
@@ -36,7 +37,7 @@ public class User extends BaseEntity {
 
     private int loginCount;
 
-    private LocalDateTime lastLoginDate;
+    private LocalDateTime lastLoginAt;
 
     @Column(nullable = false)
     @ColumnDefault("true")
@@ -64,7 +65,7 @@ public class User extends BaseEntity {
 
     public void updateRefreshToken(String updateRefreshToken) {
         this.refreshToken = updateRefreshToken;
-        this.lastLoginDate = LocalDateTime.now();
+        this.lastLoginAt = LocalDateTime.now();
         this.loginCount++;
     }
 
