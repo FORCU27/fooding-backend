@@ -7,7 +7,7 @@ import im.fooding.app.service.manager.ManagerApplicationService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageResponse;
-import im.fooding.core.dto.user.ResponseUserDto;
+import im.fooding.app.dto.user.ResponseUserDto;
 import im.fooding.core.global.UserInfo;
 import im.fooding.core.global.jwt.dto.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,4 +1,4 @@
-package im.fooding.core.dto.user;
+package im.fooding.app.dto.user;
 
 import im.fooding.core.model.user.User;
 import io.swagger.v3.oas.annotations.media.Schema;

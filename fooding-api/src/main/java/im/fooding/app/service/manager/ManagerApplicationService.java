@@ -6,7 +6,7 @@ import im.fooding.app.controller.admin.api.managers.dto.UpdateMangerDto;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
-import im.fooding.core.dto.user.ResponseUserDto;
+import im.fooding.app.dto.user.ResponseUserDto;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.global.jwt.dto.TokenResponse;
