@@ -1,5 +1,7 @@
 spring:
   application:
     name: fooding-api
+  profiles:
+    default: local
   main:
     allow-bean-definition-overriding: true
