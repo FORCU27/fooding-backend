@@ -53,3 +53,7 @@ logging:
           descriptor:
             sql:
               BasicBinder: ${LOG_LEVEL_SQL_BINDER:TRACE}
+
+webhook:
+  slack:
+    url: https://hooks.slack.com/services/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

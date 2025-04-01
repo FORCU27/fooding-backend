@@ -43,7 +43,6 @@ public class SecurityConfig {
                         .requestMatchers((this.getPermitUrls())).permitAll()
                         .requestMatchers(HttpMethod.POST, "/admin/api/managers").permitAll()
                         .requestMatchers(HttpMethod.POST, "/admin/api/managers/login").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/api-docs/**").permitAll()
                         .requestMatchers("/api/**").hasAnyRole("USER")
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated());
@@ -52,7 +51,7 @@ public class SecurityConfig {
     }
 
     private String[] getPermitUrls() {
-        return new String[]{"/ping"};
+        return new String[]{"/ping", "/swagger-ui/**", "/api-docs/**", "/notifications/**"};
     }
 
     @Bean
