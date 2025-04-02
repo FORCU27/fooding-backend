@@ -36,3 +36,6 @@ jwt:
 webhook:
   slack:
     url: __SLACK_WEBHOOK_URL__
+
+message:
+  sender: __MESSAGE_SENDER__

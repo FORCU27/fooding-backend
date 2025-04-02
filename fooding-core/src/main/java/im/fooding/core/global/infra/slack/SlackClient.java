@@ -35,22 +35,24 @@ public class SlackClient {
      */
     @Async
     public void sendErrorMessage(ErrorResponse errorResponse, StackTraceElement[] getStackTrace) {
-        try {
-            String profile = activeProfile.equals("prod") ? "*[PROD] " : "*[STAGING] ";
-            slackClient.send(SLACK_WEBHOOK_URL, payload(p -> p
-                    .text(profile + SlackConstant.ERROR.TITLE)
-                    .attachments(List.of(Attachment.builder().color(SlackConstant.ERROR.COLOR)
-                            .fields(List.of(
-                                    generateSlackField(SlackConstant.ERROR.STATUS, String.valueOf(errorResponse.getStatus())),
-                                    generateSlackField(SlackConstant.ERROR.TIME, errorResponse.getTimestamp().toString()),
-                                    generateSlackField(SlackConstant.ERROR.CODE, errorResponse.getCode()),
-                                    generateSlackField(SlackConstant.ERROR.MESSAGE, errorResponse.getMessage()),
-                                    generateSlackField(SlackConstant.ERROR.STACK_TRACE, Arrays.toString(getStackTrace))
-                            ))
-                            .build())))
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!activeProfile.equals("local")) {
+            try {
+                String profile = activeProfile.equals("prod") ? "*[PROD] " : "*[STAGING] ";
+                slackClient.send(SLACK_WEBHOOK_URL, payload(p -> p
+                        .text(profile + SlackConstant.ERROR.TITLE)
+                        .attachments(List.of(Attachment.builder().color(SlackConstant.ERROR.COLOR)
+                                .fields(List.of(
+                                        generateSlackField(SlackConstant.ERROR.STATUS, String.valueOf(errorResponse.getStatus())),
+                                        generateSlackField(SlackConstant.ERROR.TIME, errorResponse.getTimestamp().toString()),
+                                        generateSlackField(SlackConstant.ERROR.CODE, errorResponse.getCode()),
+                                        generateSlackField(SlackConstant.ERROR.MESSAGE, errorResponse.getMessage()),
+                                        generateSlackField(SlackConstant.ERROR.STACK_TRACE, Arrays.toString(getStackTrace))
+                                ))
+                                .build())))
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
