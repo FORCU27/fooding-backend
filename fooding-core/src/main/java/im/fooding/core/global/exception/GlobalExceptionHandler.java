@@ -104,7 +104,6 @@ public class GlobalExceptionHandler {
             DataIntegrityViolationException.class
     })
     protected ResponseEntity<ErrorResponse> DatabaseException(final Exception e, HttpServletRequest request) {
-        log.error("DatabaseException: {}", e.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.DATABASE_EXCEPTION, request.getRequestURI(), request.getMethod());
         sendError(errorResponse, e.getStackTrace());
         return ResponseEntity
@@ -114,7 +113,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> Exception(final Exception e, HttpServletRequest request) throws IOException {
-        log.error("Exception: {}", e.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR, request.getRequestURI(), request.getMethod());
         sendError(errorResponse, e.getStackTrace());
         return ResponseEntity

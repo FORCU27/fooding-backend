@@ -1,10 +1,13 @@
 package im.fooding.core.global.util;
 
 public class WaitingMessageBuilder {
-    public static String buildWaitingMessage(String store, String notice, int personnel, int myOrder, int waitingNumber, int delayWaitingNumber) {
+    public static String buildWaitingMessage(String sender, String receiver, String store, String notice, int personnel, int myOrder, int waitingNumber, int delayWaitingNumber) {
         StringBuilder messageBuilder = new StringBuilder();
 
         messageBuilder.append("[Web발신]\n")
+                .append(String.format("발신: %s\n", sender))
+                .append(String.format("수신: %s\n", receiver))
+                .append("\n")
                 .append("[Fooding] 안녕하세요, 고객님!\n")
                 .append(String.format("[%s]에 웨이팅이 등록되었습니다. 입장 순서가 되면 안내 메시지를 보내드릴게요.\n", store))
                 .append("\n")
@@ -21,10 +24,13 @@ public class WaitingMessageBuilder {
         return messageBuilder.toString();
     }
 
-    public static String buildEnterStoreMessage(String store, String notice, int waitingNumber, int limitTime) {
+    public static String buildEnterStoreMessage(String sender, String receiver, String store, String notice, int waitingNumber, int limitTime) {
         StringBuilder messageBuilder = new StringBuilder();
 
         messageBuilder.append("[Web발신]\n")
+                .append(String.format("발신: %s\n", sender))
+                .append(String.format("수신: %s\n", receiver))
+                .append("\n")
                 .append(String.format("[Fooding] %s번 고객님, 기다리느라 고생하셨어요! 지금 [%s]에 입장해 주세요.\n", waitingNumber, store))
                 .append("\n")
                 .append("직원에게 해당 알림톡을 보여주시면 웨이팅 번호 순서대로 안내해 드릴게요.\n")
