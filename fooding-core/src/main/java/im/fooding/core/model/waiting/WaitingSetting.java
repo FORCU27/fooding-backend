@@ -37,11 +37,12 @@ public class WaitingSetting {
     private boolean isActive;
 
     @Builder
-    private WaitingSetting(Waiting waiting, String label, int minimumCapacity, int maximumCapacity, boolean isActive) {
+    private WaitingSetting(Waiting waiting, String label, int minimumCapacity, int maximumCapacity, Integer estimatedWaitingTimeMinutes, boolean isActive) {
         this.waiting = waiting;
         this.label = label;
         this.minimumCapacity = minimumCapacity;
         this.maximumCapacity = maximumCapacity;
+        this.estimatedWaitingTimeMinutes = estimatedWaitingTimeMinutes;
         this.isActive = isActive;
     }
 

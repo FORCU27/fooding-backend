@@ -33,4 +33,8 @@ public class Waiting extends BaseEntity {
 //        this.store = store;
 //        this.systemStatus = systemStatus;
 //    }
+
+    public void update(WaitingSystemStatus systemStatus) {
+        this.systemStatus = systemStatus;
+    }
 }
