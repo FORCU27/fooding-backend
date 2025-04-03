@@ -31,7 +31,8 @@ public class WaitingSetting {
     @Column(nullable = false)
     private int maximumCapacity;
 
-    private Integer estimatedWaitingTimeMinutes;
+    @Column(nullable = false)
+    private int estimatedWaitingTimeMinutes;
 
     @Column(nullable = false)
     private boolean isActive;
