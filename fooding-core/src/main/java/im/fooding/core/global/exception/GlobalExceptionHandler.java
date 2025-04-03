@@ -1,8 +1,12 @@
 package im.fooding.core.global.exception;
 
+import im.fooding.core.global.infra.slack.SlackClient;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -20,6 +24,8 @@ import java.nio.file.AccessDeniedException;
 @Slf4j
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
+    private final SlackClient slackClient;
+
     @ExceptionHandler(ApiException.class)
     protected ResponseEntity<ErrorResponse> handleCustomException(final ApiException e, HttpServletRequest request) {
         log.error("handleCustomException: {}", e.getErrorCode());
@@ -92,12 +98,29 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
     }
 
+    @ExceptionHandler({
+            DuplicateKeyException.class,
+            ConstraintViolationException.class,
+            DataIntegrityViolationException.class
+    })
+    protected ResponseEntity<ErrorResponse> DatabaseException(final Exception e, HttpServletRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.DATABASE_EXCEPTION, request.getRequestURI(), request.getMethod());
+        sendError(errorResponse, e.getStackTrace());
+        return ResponseEntity
+                .status(ErrorCode.DATABASE_EXCEPTION.getStatus().value())
+                .body(errorResponse);
+    }
+
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> Exception(final Exception e, HttpServletRequest request) throws IOException {
-        log.error("Exception: {}", e.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR, request.getRequestURI(), request.getMethod());
+        sendError(errorResponse, e.getStackTrace());
         return ResponseEntity
                 .status(ErrorCode.INTERNAL_SERVER_ERROR.getStatus().value())
                 .body(errorResponse);
+    }
+
+    private void sendError(ErrorResponse errorResponse, StackTraceElement[] getStackTrace) {
+        slackClient.sendErrorMessage(errorResponse, getStackTrace);
     }
 }

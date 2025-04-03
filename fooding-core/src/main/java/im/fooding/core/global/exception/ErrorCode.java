@@ -17,12 +17,13 @@ public enum ErrorCode {
     DECRYPT_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "0011", "복호화에 실패했습니다."),
     REFRESH_TOKEN_INVALID(HttpStatus.BAD_REQUEST, "0012", "잘못된 토큰 정보입니다."),
     REFRESH_TOKEN_FAILED(HttpStatus.BAD_REQUEST, "0013", "토큰 갱신에 실패하셨습니다."),
+    DATABASE_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "0014", "데이터베이스 에러 입니다."),
 
     // 회원
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "1000", "가입된 정보가 없습니다."),
-    LOGIN_FAILED(HttpStatus.BAD_REQUEST, "1002", "로그인에 실패하셨습니다."),
-    DUPLICATED_REGISTER_EMAIL(HttpStatus.BAD_REQUEST, "1003", "이미 가입된 이메일입니다."),
-    DUPLICATED_NICKNAME(HttpStatus.BAD_REQUEST, "1004", "이미 가입된 닉네임입니다.");
+    LOGIN_FAILED(HttpStatus.BAD_REQUEST, "1001", "로그인에 실패하셨습니다."),
+    DUPLICATED_REGISTER_EMAIL(HttpStatus.BAD_REQUEST, "1002", "이미 가입된 이메일입니다."),
+    DUPLICATED_NICKNAME(HttpStatus.BAD_REQUEST, "1003", "이미 가입된 닉네임입니다.");
 
     private final HttpStatus status;
 

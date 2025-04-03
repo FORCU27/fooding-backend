@@ -1,12 +1,3 @@
 spring:
   application:
     name: fooding-core
-
-jwt:
-  secretKey: "fooding-jwt-secret-key-please-change-this-in-production-environment"
-  access:
-    expiration: 3600000     # 1시간 (밀리초 단위)
-    header: "Authorization"
-  refresh:
-    expiration: 1209600000  # 14일 (밀리초 단위)
-    header: "Authorization-refresh"
