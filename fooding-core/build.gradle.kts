@@ -21,6 +21,9 @@ dependencies {
     //jwt
     implementation("com.auth0:java-jwt:4.2.1")
 
+    //slack
+    implementation("com.slack.api:slack-api-client:1.29.2")
+
     //querydsl
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
     annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")

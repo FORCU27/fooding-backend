@@ -24,7 +24,7 @@ spring:
         format_sql: true
 
 jwt:
-  secretKey: fooding-jwt-secret-key-please-change-this-in-production-environment
+  secretKey: __JWT_SECRET_KEY__
   access:
     expiration: 3600000
     header: Authorization
@@ -32,3 +32,10 @@ jwt:
   refresh:
     expiration: 1209600000
     header: Authorization-refresh
+
+webhook:
+  slack:
+    url: __SLACK_WEBHOOK_URL__
+
+message:
+  sender: __MESSAGE_SENDER__
