@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -31,8 +30,9 @@ public class User extends BaseEntity {
 
     private String password;
 
-    @Column
-    private String provider;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AuthProvider provider;
 
     @Column(nullable = false, length = 20)
     private String nickname;
@@ -40,7 +40,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String phoneNumber;
 
-    @Column(unique = true, length = 20)
+    @Column(length = 20)
     private String referralCode;
 
     private String profileImage;
@@ -80,12 +80,14 @@ public class User extends BaseEntity {
     private Gender gender;
 
     @Builder
-    public User(Role role, String email, String password, String provider, String nickname, String phoneNumber, boolean termsAgreed, boolean privacyPolicyAgreed, boolean marketingConsent, Gender gender) {
+    public User(Role role, String email, String password, AuthProvider provider, String nickname, String phoneNumber, String referralCode, String profileImage, boolean termsAgreed, boolean privacyPolicyAgreed, boolean marketingConsent, Gender gender) {
         this.role = role;
         this.email = email;
         this.password = password;
         this.provider = provider;
         this.nickname = nickname;
+        this.referralCode = referralCode;
+        this.profileImage = profileImage;
         this.phoneNumber = phoneNumber;
         this.termsAgreed = termsAgreed;
         this.privacyPolicyAgreed = privacyPolicyAgreed;
@@ -93,16 +95,27 @@ public class User extends BaseEntity {
         this.gender = gender;
     }
 
-    public void updateRefreshToken(String updateRefreshToken) {
-        this.refreshToken = updateRefreshToken;
+    public void updatedRefreshToken(String updatedRefreshToken) {
+        this.refreshToken = updatedRefreshToken;
         this.loginCount++;
         this.lastLoggedInAt = LocalDateTime.now();
     }
 
-    public void update(String password, String nickname, String phoneNumber, String profileImage) {
-        this.password = password;
+    public void update(String nickname, String phoneNumber, String profileImage) {
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
         this.profileImage = profileImage;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
+    public void updateLastLoggedInAt() {
+        this.lastLoggedInAt = LocalDateTime.now();
+    }
+
+    public void saveMarketingConsentAt() {
+        this.marketingConsentAt = LocalDateTime.now();
     }
 }

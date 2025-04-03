@@ -127,7 +127,7 @@ public class JwtService {
         if (refreshToken != null) {
             User user = userRepository.findByRefreshToken(refreshToken).orElseThrow(() -> new ApiException(ErrorCode.REFRESH_TOKEN_INVALID));
             TokenResponse tokenResponse = issueJwtToken(user.getId());
-            user.updateRefreshToken(tokenResponse.getRefreshToken());
+            user.updatedRefreshToken(tokenResponse.getRefreshToken());
             return tokenResponse;
         } else {
             throw new ApiException(ErrorCode.REFRESH_TOKEN_FAILED);
