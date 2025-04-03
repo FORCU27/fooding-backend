@@ -5,6 +5,6 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum WaitingSystemStatus {
+public enum WaitingStatus {
     WAITING_OPEN, IMMEDIATE_ENTRY, PAUSED;
 }

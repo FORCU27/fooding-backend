@@ -26,15 +26,15 @@ public class Waiting extends BaseEntity {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private WaitingSystemStatus systemStatus;
+    private WaitingStatus status;
 
 //    @Builder
-//    private Waiting(Store store, WaitingSystemStatus systemStatus) {
+//    private Waiting(Store store, WaitingStatus status) {
 //        this.store = store;
 //        this.systemStatus = systemStatus;
 //    }
 
-    public void update(WaitingSystemStatus systemStatus) {
-        this.systemStatus = systemStatus;
+    public void updateStatus(WaitingStatus status) {
+        this.status = status;
     }
 }
