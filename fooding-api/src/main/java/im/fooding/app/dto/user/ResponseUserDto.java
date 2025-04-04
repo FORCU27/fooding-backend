@@ -21,7 +21,7 @@ public class ResponseUserDto {
     private String nickname;
 
     @Schema(description = "전화번호", example = "010-1234-5678")
-    private String mobile;
+    private String phoneNumber;
 
     @Schema(description = "등록일자", example = "2025-03-15T05:17:04.069")
     private LocalDateTime createdAt;
@@ -30,11 +30,11 @@ public class ResponseUserDto {
     private LocalDateTime updatedAt;
 
     @Builder
-    private ResponseUserDto(long id, String email, String nickname, String mobile, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private ResponseUserDto(long id, String email, String nickname, String phoneNumber, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
-        this.mobile = mobile;
+        this.phoneNumber = phoneNumber;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -44,7 +44,7 @@ public class ResponseUserDto {
                 .id(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
-                .mobile(user.getMobile())
+                .phoneNumber(user.getPhoneNumber())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .build();
