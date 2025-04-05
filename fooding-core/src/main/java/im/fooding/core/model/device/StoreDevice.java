@@ -33,8 +33,8 @@ public class StoreDevice extends BaseEntity {
     @Column( name = "last_connected_at" )
     private LocalDateTime lastConnectedAt;
 
-    public void updateLastConnected( LocalDateTime lastConnectedAt ){
-        this.lastConnectedAt = lastConnectedAt;
+    public void connectDevice(){
+        this.lastConnectedAt = LocalDateTime.now();
     }
 
 }

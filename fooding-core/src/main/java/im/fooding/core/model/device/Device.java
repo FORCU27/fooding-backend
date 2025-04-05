@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -46,15 +47,21 @@ public class Device extends BaseEntity {
     @Column(name = "status")
     private boolean status;
 
-    public void update(String name, LocalDateTime lastConnectedAt, String osVersion, ServiceType serviceType) {
+    public void update(String name) {
         this.name = name;
-        this.lastConnectedAt = lastConnectedAt;
+    }
+
+    public void updateOsVersion( String osVersion ){
         this.osVersion = osVersion;
+    }
+
+    public void changeServiceType( ServiceType serviceType ){
         this.serviceType = serviceType;
     }
 
     public void connectDevice() {
         this.status = true;
+        this.lastConnectedAt = LocalDateTime.now();
     }
 
     public void disconnectDevice() {
