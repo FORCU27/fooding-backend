@@ -41,7 +41,7 @@ class UserServiceTest extends TestConfig {
         userService.save(email, nickname, password, role);
 
         //then
-        assertTrue(userRepository.findByEmailAndRole(email, role).isPresent());
+        assertTrue(userRepository.findByEmail(email).isPresent());
     }
 
     @Test
@@ -157,7 +157,7 @@ class UserServiceTest extends TestConfig {
         User savedUser2 = saveUser(email2, nickname2, role);
 
         //when
-        Page<User> users = userRepository.list(search.getSearchString(), search.getPageable());
+        Page<User> users = userRepository.list(search.getSearchString(), search.getPageable(), role);
 
         // then
         assertThat(users.getContent()).hasSize(2)

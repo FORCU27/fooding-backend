@@ -24,6 +24,10 @@ dependencies {
     //slack
     implementation("com.slack.api:slack-api-client:1.29.2")
 
+    //feign
+    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2023.0.3"))
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+
     //querydsl
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
     annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")

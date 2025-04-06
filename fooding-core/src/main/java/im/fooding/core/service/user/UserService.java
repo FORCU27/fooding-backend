@@ -2,6 +2,8 @@ package im.fooding.core.service.user;
 
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.model.user.AuthProvider;
+import im.fooding.core.model.user.Gender;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.user.UserRepository;
@@ -25,7 +27,7 @@ public class UserService {
      * @param password
      */
     public void save(String email, String nickname, String password, Role role) {
-        checkDuplicateEmail(email, role);
+        checkDuplicateEmail(email);
         if (checkDuplicatedNickname(nickname)) {
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
         }
@@ -34,6 +36,8 @@ public class UserService {
                 .nickname(nickname)
                 .password(password)
                 .role(role)
+                .provider(AuthProvider.FOODING)
+                .gender(Gender.NONE)
                 .build();
         userRepository.save(user);
     }
@@ -45,8 +49,8 @@ public class UserService {
      * @param pageable
      * @return Page<User>
      */
-    public Page<User> list(String searchString, Pageable pageable) {
-        return userRepository.list(searchString, pageable);
+    public Page<User> list(String searchString, Pageable pageable, Role role) {
+        return userRepository.list(searchString, pageable, role);
     }
 
     /**
@@ -61,14 +65,13 @@ public class UserService {
     }
 
     /**
-     * 이메일과 권한으로 조회
+     * 이메일로 조회
      *
      * @param email
-     * @param role
      * @return User
      */
-    public User findByEmailAndRole(String email, Role role) {
-        return userRepository.findByEmailAndRole(email, role)
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
     }
 
@@ -108,13 +111,30 @@ public class UserService {
     }
 
     /**
+     * 이메일로 유저 조회(없으면 생성 후 리턴)
+     *
+     * @param email
+     * @return User
+     */
+    public User findByEmailOrCreateUser(String email, AuthProvider provider, Role role) {
+        return userRepository.findByEmail(email).orElseGet(() -> {
+            User user = User.builder()
+                    .email(email)
+                    .provider(provider)
+                    .role(role)
+                    .gender(Gender.NONE)
+                    .build();
+            return userRepository.save(user);
+        });
+    }
+
+    /**
      * 이메일 중복체크
      *
      * @param email
-     * @param role
      */
-    private void checkDuplicateEmail(String email, Role role) {
-        userRepository.findByEmailAndRole(email, role).ifPresent(it -> {
+    private void checkDuplicateEmail(String email) {
+        userRepository.findByEmail(email).ifPresent(it -> {
             throw new ApiException(ErrorCode.DUPLICATED_REGISTER_EMAIL);
         });
     }

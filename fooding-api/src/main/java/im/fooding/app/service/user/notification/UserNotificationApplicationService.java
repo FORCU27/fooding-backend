@@ -1,4 +1,4 @@
-package im.fooding.app.service.notification;
+package im.fooding.app.service.user.notification;
 
 import im.fooding.core.global.infra.slack.SlackClient;
 import im.fooding.core.global.util.WaitingMessageBuilder;
@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class NotificationApplicationService {
+public class UserNotificationApplicationService {
     private final SlackClient slackClient;
 
     @Value("${message.sender}")
     private String SENDER;
 
     /**
-     * 웨이팅 메세지 발송(슬랙으로 대체) 테스트
+     * 웨이팅 메세지 발송(슬랙으로 대체) 예시 추후 삭제 요망
      *
      * @param receiver
      * @param store
@@ -31,7 +31,7 @@ public class NotificationApplicationService {
     }
 
     /**
-     * 입장 메세지 발송(슬랙으로 대체) 테스트
+     * 입장 메세지 발송(슬랙으로 대체) 예시 추후 삭제 요망
      *
      * @param receiver
      * @param store

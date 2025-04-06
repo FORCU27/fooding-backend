@@ -1,4 +1,4 @@
-package im.fooding.app.controller.admin.api.managers.dto;
+package im.fooding.app.dto.request.admin.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class LoginManagerDto {
+public class AdminLoginRequest {
     @NotBlank
     @Size(max = 50)
     @Schema(description = "아이디", example = "admin")
