@@ -1,7 +1,6 @@
 package im.fooding.core.model.waiting;
 
 import im.fooding.core.model.BaseEntity;
-import im.fooding.core.model.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -38,8 +37,8 @@ public class StoreWaiting extends BaseEntity {
 //    private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private User user;
+    @JoinColumn(name = "waiting_user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private WaitingUser user;
 
     @Column(name = "call_number", nullable = false)
     private int callNumber;
@@ -61,7 +60,7 @@ public class StoreWaiting extends BaseEntity {
     private String memo;
 
 //    @Builder
-//    public StoreWaiting(User user, Store store, int callNumber, WaitingChannel channel, int infantChairCount, int infantCount, int adultCount) {
+//    public StoreWaiting(WaitingUser user, Store store, int callNumber, WaitingChannel channel, int infantChairCount, int infantCount, int adultCount) {
 //        this.user = user;
 //        this.store = sotre;
 //        this.callNumber = callNumber;
