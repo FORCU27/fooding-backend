@@ -57,7 +57,7 @@ public class ManagerApplicationService {
             throw new ApiException(ErrorCode.LOGIN_FAILED);
         }
         TokenResponse tokenResponse = jwtService.issueJwtToken(manager.getId());
-        manager.updateRefreshToken(tokenResponse.getRefreshToken());
+        manager.updatedRefreshToken(tokenResponse.getRefreshToken());
         return tokenResponse;
     }
 
@@ -93,7 +93,7 @@ public class ManagerApplicationService {
      */
     @Transactional
     public void update(long id, UpdateMangerDto updateMangerDto) {
-        userService.update(id, updateMangerDto.getNickname());
+        userService.update(id, updateMangerDto.getNickname(), updateMangerDto.getPhoneNumber(), updateMangerDto.getProfileImage());
     }
 
     /**

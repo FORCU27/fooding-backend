@@ -13,4 +13,12 @@ public class UpdateMangerDto {
     @Size(max = 50)
     @Schema(description = "닉네임", example = "관리자")
     private String nickname;
+
+    @NotBlank
+    @Size(max = 15)
+    @Schema(description = "핸드폰번호", example = "010-1234-5678")
+    private String phoneNumber;
+
+    @Schema(description = "프로필 이미지 파일", example = "https://example.com/images/profile.jpg")
+    private String profileImage;
 }

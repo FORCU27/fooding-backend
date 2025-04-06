@@ -78,12 +78,12 @@ public class UserService {
      * @param id
      * @param nickname
      */
-    public void update(long id, String nickname) {
+    public void update(long id, String nickname, String phoneNumber, String profileImage) {
         User user = findById(id);
         if (!user.getNickname().equals(nickname) && checkDuplicatedNickname(nickname)) {
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
         }
-        user.update(nickname);
+        user.update(nickname, phoneNumber, profileImage);
     }
 
     /**
