@@ -2,7 +2,7 @@ package im.fooding.app.controller.admin.auth;
 
 import im.fooding.app.dto.request.admin.auth.AdminLoginRequest;
 import im.fooding.app.dto.request.admin.manager.AdminCreateManagerRequest;
-import im.fooding.app.service.admin.auth.AdminLoginApplicationService;
+import im.fooding.app.service.admin.auth.AdminAuthApplicationService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.global.jwt.dto.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin/auth")
 @Tag(name = "AdminAuthController", description = "관리자 회원가입, 로그인 컨트롤러")
 public class AdminAuthController {
-    private final AdminLoginApplicationService service;
+    private final AdminAuthApplicationService service;
 
     @PostMapping("/register")
     @Operation(summary = "관리자 회원가입")

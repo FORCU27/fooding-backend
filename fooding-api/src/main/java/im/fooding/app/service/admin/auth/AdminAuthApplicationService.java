@@ -2,13 +2,10 @@ package im.fooding.app.service.admin.auth;
 
 import im.fooding.app.dto.request.admin.auth.AdminLoginRequest;
 import im.fooding.app.dto.request.admin.manager.AdminCreateManagerRequest;
-import im.fooding.app.dto.response.admin.manager.AdminManagerResponse;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.global.jwt.dto.TokenResponse;
 import im.fooding.core.global.jwt.service.JwtService;
-import im.fooding.core.model.user.AuthProvider;
-import im.fooding.core.model.user.Gender;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.user.UserService;
@@ -19,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class AdminLoginApplicationService {
+public class AdminAuthApplicationService {
     private final UserService userService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;

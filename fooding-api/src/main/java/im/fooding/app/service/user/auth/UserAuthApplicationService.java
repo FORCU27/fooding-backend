@@ -25,7 +25,7 @@ import java.net.URI;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserLoginApplicationService {
+public class UserAuthApplicationService {
     private final JwtService jwtService;
     private final OauthInfo oauthInfo;
     private final SocialLoginClient client;

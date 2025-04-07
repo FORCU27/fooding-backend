@@ -1,7 +1,7 @@
 package im.fooding.app.controller.user.auth;
 
 import im.fooding.app.dto.request.user.auth.UserLoginRequest;
-import im.fooding.app.service.user.auth.UserLoginApplicationService;
+import im.fooding.app.service.user.auth.UserAuthApplicationService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.global.jwt.dto.TokenResponse;
 import im.fooding.core.model.user.AuthProvider;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user/auth")
 @Tag(name = "UserAuthController", description = "유저 소셜 로그인 컨트롤러")
 public class UserAuthController {
-    private final UserLoginApplicationService service;
+    private final UserAuthApplicationService service;
 
     @PostMapping("/login")
     @Operation(summary = "소셜 로그인", description = "소셜 로그인 처리 후 토큰 응답")
