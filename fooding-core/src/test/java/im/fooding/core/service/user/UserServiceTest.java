@@ -4,6 +4,8 @@ import im.fooding.core.TestConfig;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.model.user.AuthProvider;
+import im.fooding.core.model.user.Gender;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.user.UserRepository;
@@ -19,7 +21,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Disabled // 클래스 전체 비활성화
-@Sql(statements = "ALTER TABLE USERS ALTER COLUMN ID RESTART WITH 1", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(statements = "ALTER TABLE \"user\" ALTER COLUMN ID RESTART WITH 1", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 class UserServiceTest extends TestConfig {
 
     @Autowired
@@ -41,7 +43,7 @@ class UserServiceTest extends TestConfig {
         userService.save(email, nickname, password, role);
 
         //then
-        assertTrue(userRepository.findByEmailAndRole(email, role).isPresent());
+        assertTrue(userRepository.findByEmail(email).isPresent());
     }
 
     @Test
@@ -157,7 +159,7 @@ class UserServiceTest extends TestConfig {
         User savedUser2 = saveUser(email2, nickname2, role);
 
         //when
-        Page<User> users = userRepository.list(search.getSearchString(), search.getPageable());
+        Page<User> users = userRepository.list(search.getSearchString(), search.getPageable(), role);
 
         // then
         assertThat(users.getContent()).hasSize(2)
@@ -174,6 +176,8 @@ class UserServiceTest extends TestConfig {
                 .nickname(nickname)
                 .role(role)
                 .password("1234")
+                .gender(Gender.NONE)
+                .provider(AuthProvider.FOODING)
                 .build();
         return userRepository.save(user);
     }
