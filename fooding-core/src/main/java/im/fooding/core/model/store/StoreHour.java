@@ -44,14 +44,17 @@ public class StoreHour extends BaseEntity {
     @Column(nullable = false)
     private StoreDayType storeDayType;
 
-    @Column(name = "open_at", nullable = false)
+    @Column(name = "open_at")
     private LocalTime openAt;
 
-    @Column(name = "close_at", nullable = false)
+    @Column(name = "close_at")
     private LocalTime closeAt;
 
     @Column(name = "last_order_at")
     private LocalTime lastOrderAt;
+
+    @Column(name = "is_closed", nullable = false)
+    private boolean isClosed;
 
     @Builder
     public StoreHour(
@@ -59,13 +62,15 @@ public class StoreHour extends BaseEntity {
             StoreDayType storeDayType,
             LocalTime openAt,
             LocalTime closeAt,
-            LocalTime lastOrderAt
+            LocalTime lastOrderAt,
+            boolean isClosed
     ) {
         this.store = store;
         this.storeDayType = storeDayType;
         this.openAt = openAt;
         this.closeAt = closeAt;
         this.lastOrderAt = lastOrderAt;
+        this.isClosed = isClosed;
     }
 
     public void updateOpenAt(LocalTime openAt) {
@@ -78,5 +83,9 @@ public class StoreHour extends BaseEntity {
 
     public void updateLastOrderAt(LocalTime lastOrderAt) {
         this.lastOrderAt = lastOrderAt;
+    }
+
+    public void updateIsClosed(boolean isClosed) {
+        this.isClosed = isClosed;
     }
 }
