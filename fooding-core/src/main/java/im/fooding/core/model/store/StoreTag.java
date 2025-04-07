@@ -22,7 +22,6 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@Table(name = "store_tags")
 public class StoreTag extends BaseEntity {
 
     @Id
@@ -37,12 +36,16 @@ public class StoreTag extends BaseEntity {
     )
     private Store store;
 
-    @Column(name = "tag")
-    private String tag;
+    @Column(name = "tag_name")
+    private String tagName;
 
     @Builder
-    public StoreTag(Store store, String tag) {
+    public StoreTag(Store store, String tagName) {
         this.store = store;
-        this.tag = tag;
+        this.tagName = tagName;
+    }
+
+    public void updateTagName(String tagName) {
+        this.tagName = tagName;
     }
 }

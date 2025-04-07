@@ -22,7 +22,6 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@Table(name = "store_images")
 public class StoreImage extends BaseEntity {
 
     @Id

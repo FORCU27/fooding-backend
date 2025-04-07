@@ -22,7 +22,6 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@Table(name = "store_facilities")
 public class StoreFacility extends BaseEntity {
 
     @Id
@@ -60,6 +59,14 @@ public class StoreFacility extends BaseEntity {
         this.store = store;
         this.storeFacilityType = storeFacilityType;
         this.description = description;
+        this.isAvailable = isAvailable;
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
+    }
+
+    public void updateIsAvailable(boolean isAvailable) {
         this.isAvailable = isAvailable;
     }
 }

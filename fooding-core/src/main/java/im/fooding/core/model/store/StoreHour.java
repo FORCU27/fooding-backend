@@ -20,12 +20,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@Table(name = "store_hours")
 public class StoreHour extends BaseEntity {
 
     @Id
@@ -65,6 +65,18 @@ public class StoreHour extends BaseEntity {
         this.storeDayType = storeDayType;
         this.openAt = openAt;
         this.closeAt = closeAt;
+        this.lastOrderAt = lastOrderAt;
+    }
+
+    public void updateOpenAt(LocalTime openAt) {
+        this.openAt = openAt;
+    }
+
+    public void updateCloseAt(LocalTime closeAt) {
+        this.closeAt = closeAt;
+    }
+
+    public void updateLastOrderAt(LocalTime lastOrderAt) {
         this.lastOrderAt = lastOrderAt;
     }
 }

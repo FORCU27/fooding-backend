@@ -21,7 +21,6 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@Table(name = "store_facility_types")
 public class StoreFacilityType {
 
     @Id

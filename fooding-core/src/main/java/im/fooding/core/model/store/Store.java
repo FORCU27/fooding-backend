@@ -18,7 +18,6 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@Table(name = "stores")
 public class Store extends BaseEntity {
 
     @Id
@@ -63,6 +62,34 @@ public class Store extends BaseEntity {
         this.homePageUrl = homePageUrl;
         this.direction = direction;
         this.storeInfo = storeInfo;
+        this.isParkingAvailable = isParkingAvailable;
+    }
+
+    public void updateStoreName(String name) {
+        this.name = name;
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
+    }
+
+    public void updateStoreNumber(String storeNumber) {
+        this.storeNumber = storeNumber;
+    }
+
+    public void updateHomePageUrl(String homePageUrl) {
+        this.homePageUrl = homePageUrl;
+    }
+
+    public void updateDirection(String direction) {
+        this.direction = direction;
+    }
+
+    public void updateStoreInfo(String storeInfo) {
+        this.storeInfo = storeInfo;
+    }
+
+    public void updateParkingAvailability(boolean isParkingAvailable) {
         this.isParkingAvailable = isParkingAvailable;
     }
 }
