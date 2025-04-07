@@ -38,7 +38,7 @@ public class StoreFacility extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-            name = "store_facilitie_type_id",
+            name = "store_facility_type_id",
             nullable = false,
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
     )
