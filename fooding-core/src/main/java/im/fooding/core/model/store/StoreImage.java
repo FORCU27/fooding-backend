@@ -37,12 +37,12 @@ public class StoreImage extends BaseEntity {
     )
     private Store store;
 
-    @Column(name = "image", nullable = false)
-    private String image;
+    @Column(name = "image_url", nullable = false)
+    private String imageUrl;
 
     @Builder
-    public StoreImage(Store store, String image) {
+    public StoreImage(Store store, String imageUrl) {
         this.store = store;
-        this.image = image;
+        this.imageUrl = imageUrl;
     }
 }

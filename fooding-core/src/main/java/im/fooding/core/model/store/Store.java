@@ -34,8 +34,8 @@ public class Store extends BaseEntity {
     @Column(name = "store_number", nullable = false)
     private String storeNumber;
 
-    @Column(name = "home_page")
-    private String homePage;
+    @Column(name = "home_page_url")
+    private String homePageUrl;
 
     @Column(nullable = false)
     private String direction;
@@ -52,7 +52,7 @@ public class Store extends BaseEntity {
             String name,
             String description,
             String storeNumber,
-            String homePage,
+            String homePageUrl,
             String direction,
             String storeInfo,
             boolean isParkingAvailable
@@ -60,7 +60,7 @@ public class Store extends BaseEntity {
         this.name = name;
         this.description = description;
         this.storeNumber = storeNumber;
-        this.homePage = homePage;
+        this.homePageUrl = homePageUrl;
         this.direction = direction;
         this.storeInfo = storeInfo;
         this.isParkingAvailable = isParkingAvailable;
