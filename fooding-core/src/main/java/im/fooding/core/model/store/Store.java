@@ -41,8 +41,8 @@ public class Store extends BaseEntity {
     @Column(name = "event_description")
     private String eventDescription;
 
-    @Column(name = "store_number", nullable = false)
-    private String storeNumber;
+    @Column(name = "contact_number", nullable = false)
+    private String contactNumber;
 
     @Column(nullable = false)
     private String direction;
@@ -66,7 +66,7 @@ public class Store extends BaseEntity {
             String city,
             String category,
             String description,
-            String storeNumber,
+            String contactNumber,
             String priceCategory,
             String eventDescription,
             String direction,
@@ -79,7 +79,7 @@ public class Store extends BaseEntity {
         this.city = city;
         this.category = category;
         this.description = description;
-        this.storeNumber = storeNumber;
+        this.contactNumber = contactNumber;
         this.priceCategory = priceCategory;
         this.eventDescription = eventDescription;
         this.direction = direction;
@@ -97,8 +97,8 @@ public class Store extends BaseEntity {
         this.description = description;
     }
 
-    public void updateStoreNumber(String storeNumber) {
-        this.storeNumber = storeNumber;
+    public void updateContactNumber(String contactNumber) {
+        this.contactNumber = this.contactNumber;
     }
 
     public void updatePriceCategory(String priceCategory) {
