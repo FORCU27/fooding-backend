@@ -29,6 +29,10 @@ public class Store extends BaseEntity {
     @Column(name = "city", nullable = false)
     private String city;
 
+    // TODO : 추후 VO 설계
+    @Column(name = "address", nullable = false)
+    private String address;
+
     @Column(name = "category", nullable = false)
     private String category;
 
@@ -64,6 +68,7 @@ public class Store extends BaseEntity {
     public Store(
             String name,
             String city,
+            String address,
             String category,
             String description,
             String contactNumber,
@@ -77,6 +82,7 @@ public class Store extends BaseEntity {
     ) {
         this.name = name;
         this.city = city;
+        this.address = address;
         this.category = category;
         this.description = description;
         this.contactNumber = contactNumber;
@@ -135,5 +141,9 @@ public class Store extends BaseEntity {
 
     public void updateEventDescription(String eventDescription) {
         this.eventDescription = eventDescription;
+    }
+
+    public void updateAddress(String address) {
+        this.address = address;
     }
 }
