@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,42 +26,67 @@ public class Store extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "city", nullable = false)
+    private String city;
+
+    @Column(name = "category", nullable = false)
+    private String category;
+
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "price_category", nullable = false)
+    private String priceCategory;
+
+    @Column(name = "event_description")
+    private String eventDescription;
+
     @Column(name = "store_number", nullable = false)
     private String storeNumber;
-
-    @Column(name = "home_page_url")
-    private String homePageUrl;
 
     @Column(nullable = false)
     private String direction;
 
     @Column(nullable = false)
-    private String storeInfo;
+    private String information;
 
     @Column(nullable = false)
     @ColumnDefault("false")
     private boolean isParkingAvailable;
 
+    @Column(nullable = false)
+    private boolean isNewOpen;
+
+    @Column(nullable = false)
+    private boolean isTakeOut;
+
     @Builder
     public Store(
             String name,
+            String city,
+            String category,
             String description,
             String storeNumber,
-            String homePageUrl,
+            String priceCategory,
+            String eventDescription,
             String direction,
-            String storeInfo,
-            boolean isParkingAvailable
+            String information,
+            boolean isParkingAvailable,
+            boolean isNewOpen,
+            boolean isTakeOut
     ) {
         this.name = name;
+        this.city = city;
+        this.category = category;
         this.description = description;
         this.storeNumber = storeNumber;
-        this.homePageUrl = homePageUrl;
+        this.priceCategory = priceCategory;
+        this.eventDescription = eventDescription;
         this.direction = direction;
-        this.storeInfo = storeInfo;
+        this.information = information;
         this.isParkingAvailable = isParkingAvailable;
+        this.isNewOpen = isNewOpen;
+        this.isTakeOut = isTakeOut;
     }
 
     public void updateStoreName(String name) {
@@ -77,19 +101,39 @@ public class Store extends BaseEntity {
         this.storeNumber = storeNumber;
     }
 
-    public void updateHomePageUrl(String homePageUrl) {
-        this.homePageUrl = homePageUrl;
+    public void updatePriceCategory(String priceCategory) {
+        this.priceCategory = priceCategory;
     }
 
     public void updateDirection(String direction) {
         this.direction = direction;
     }
 
-    public void updateStoreInfo(String storeInfo) {
-        this.storeInfo = storeInfo;
+    public void updateInformation(String information) {
+        this.information = information;
     }
 
     public void updateParkingAvailability(boolean isParkingAvailable) {
         this.isParkingAvailable = isParkingAvailable;
+    }
+
+    public void updateIsNewOpen(boolean isNewOpen) {
+        this.isNewOpen = isNewOpen;
+    }
+
+    public void updateIsTakeOut(boolean isTakeOut) {
+        this.isTakeOut = isTakeOut;
+    }
+
+    public void updateCategory(String category) {
+        this.category = category;
+    }
+
+    public void updateCity(String city) {
+        this.city = city;
+    }
+
+    public void updateEventDescription(String eventDescription) {
+        this.eventDescription = eventDescription;
     }
 }
