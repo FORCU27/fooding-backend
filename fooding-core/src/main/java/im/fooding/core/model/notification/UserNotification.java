@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@Table(name = "user_notification")
 public class UserNotification extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
