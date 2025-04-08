@@ -1,7 +1,6 @@
 package im.fooding.core.model.notification;
 
 import im.fooding.core.model.BaseEntity;
-import im.fooding.core.model.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,17 +20,11 @@ public class Notification extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "source_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private User source;
+    @Column(nullable = false)
+    private String source;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "destination_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private User destination;
-
-    private String sourceEmail;
-
-    private String destinationEmail;
+    @Column(nullable = false)
+    private String destination;
 
     @Column(nullable = false)
     private String title;
@@ -55,28 +48,26 @@ public class Notification extends BaseEntity {
     private LocalDateTime scheduledAt;
 
     @Builder
-    public Notification(User source, User destination, String sourceEmail, String destinationEmail,
+    public Notification(String source, String destination,
                         String title, String content, NotificationChannel channel, NotificationStatus status) {
       this.source = source;
       this.destination = destination;
-      this.sourceEmail = sourceEmail;
-      this.destinationEmail = destinationEmail;
       this.title = title;
       this.content = content;
       this.channel = channel;
       this.status = status;
     }
 
-    public void markAsSent() {
+    public void send() {
       this.sentAt = LocalDateTime.now();
       this.status = NotificationStatus.COMPLETED;
     }
 
-    public void markAsRead() {
+    public void read() {
       this.readAt = LocalDateTime.now();
       }
 
-    public void scheduleAt(LocalDateTime scheduledAt) {
+    public void schedule(LocalDateTime scheduledAt) {
     this.scheduledAt = scheduledAt;
     this.status = NotificationStatus.PENDING;
   }

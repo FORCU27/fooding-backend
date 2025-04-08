@@ -45,7 +45,7 @@ public class UserNotification extends BaseEntity {
       this.sentAt = sentAt;
     }
 
-    public void markAsRead() {
+    public void read() {
       this.readAt = LocalDateTime.now();
   }
 }
