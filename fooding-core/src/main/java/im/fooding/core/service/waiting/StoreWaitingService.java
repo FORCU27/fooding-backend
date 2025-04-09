@@ -20,6 +20,7 @@ public class StoreWaitingService {
 
     @Transactional
     public StoreWaiting register(StoreWaitingRegisterRequest request) {
+        // TODO: 추후에 redis 로 개선
         int callNumber = (int) storeWaitingRepository.countCreatedOn(LocalDate.now()) + 1;
 
         StoreWaiting storeWaiting = StoreWaiting.builder()
