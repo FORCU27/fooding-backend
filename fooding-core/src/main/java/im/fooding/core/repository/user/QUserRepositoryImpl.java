@@ -3,6 +3,7 @@ package im.fooding.core.repository.user;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,12 +20,13 @@ public class QUserRepositoryImpl implements QUserRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<User> list(String searchString, Pageable pageable) {
+    public Page<User> list(String searchString, Pageable pageable, Role role) {
         List<User> results = query
                 .select(user)
                 .from(user)
                 .where(
                         user.deleted.isFalse(),
+                        user.role.eq(role),
                         search(searchString)
                 )
                 .orderBy(user.id.desc())

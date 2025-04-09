@@ -41,17 +41,16 @@ public class SecurityConfig {
                 .sessionManagement((sess) -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers((this.getPermitUrls())).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/admin/api/managers").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/admin/api/managers/login").permitAll()
-                        .requestMatchers("/api/**").hasAnyRole("USER")
+                        .requestMatchers("/user/**").hasAnyRole("USER")
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/ceo/**").hasAnyRole("CEO")
                         .anyRequest().authenticated());
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
     private String[] getPermitUrls() {
-        return new String[]{"/ping", "/swagger-ui/**", "/api-docs/**", "/notifications/**"};
+        return new String[]{"/ping", "/swagger-ui/**", "/api-docs/**", "/user/auth/**", "/admin/auth/**"};
     }
 
     @Bean
