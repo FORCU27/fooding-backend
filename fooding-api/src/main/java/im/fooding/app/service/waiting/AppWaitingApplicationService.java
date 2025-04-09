@@ -1,7 +1,7 @@
 package im.fooding.app.service.waiting;
 
-import im.fooding.app.dto.request.waiting.WaitingRegisterServiceRequest;
-import im.fooding.app.dto.response.waiting.WaitingRegisterServiceResponse;
+import im.fooding.app.dto.request.waiting.AppWaitingRegisterServiceRequest;
+import im.fooding.app.dto.response.waiting.AppWaitingRegisterServiceResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
 import im.fooding.core.model.store.Store;
@@ -20,14 +20,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-public class WaitingApplicationService {
+public class AppWaitingApplicationService {
 
     private final StoreService storeService;
     private final WaitingUserService waitingUserService;
     private final StoreWaitingService storeWaitingService;
     private final WaitingLogService waitingLogService;
 
-    public WaitingRegisterServiceResponse register(WaitingRegisterServiceRequest request) {
+    public AppWaitingRegisterServiceResponse register(AppWaitingRegisterServiceRequest request) {
         long storeId = request.storeId();
         String phoneNumber = request.phoneNumber();
 
@@ -56,6 +56,6 @@ public class WaitingApplicationService {
 
         waitingLogService.logRegister(storeWaiting);
 
-        return new WaitingRegisterServiceResponse(storeWaiting.getCallNumber());
+        return new AppWaitingRegisterServiceResponse(storeWaiting.getCallNumber());
     }
 }

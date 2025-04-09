@@ -3,7 +3,7 @@ package im.fooding.app.dto.request.waiting;
 import lombok.Builder;
 
 @Builder
-public record WaitingRegisterServiceRequest(
+public record AppWaitingRegisterServiceRequest(
         long storeId,
         String name,
         String phoneNumber,

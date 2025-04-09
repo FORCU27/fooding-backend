@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record WaitingRegisterRequest(
+public record AppWaitingRegisterRequest(
         @NotNull
         @Schema(description = "가게 아이디", example = "1")
         long storeId,
@@ -49,8 +49,8 @@ public record WaitingRegisterRequest(
         int adultCount
 ) {
 
-    public WaitingRegisterServiceRequest toWaitingRegisterServiceRequest() {
-        return WaitingRegisterServiceRequest.builder()
+    public AppWaitingRegisterServiceRequest toWaitingRegisterServiceRequest() {
+        return AppWaitingRegisterServiceRequest.builder()
                 .storeId(storeId)
                 .name(name)
                 .phoneNumber(phoneNumber)
