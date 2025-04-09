@@ -11,7 +11,6 @@ public record AppWaitingRegisterServiceRequest(
         boolean privacyPolicyAgreed,
         boolean thirdPartyAgreed,
         boolean marketingConsent,
-        String channel,
         int infantChairCount,
         int infantCount,
         int adultCount

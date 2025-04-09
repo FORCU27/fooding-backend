@@ -32,10 +32,6 @@ public record AppWaitingRegisterRequest(
         @Schema(description = "마케팅 정보 수신 동의", example = "true")
         boolean marketingConsent,
 
-        @NotBlank
-        @Schema(description = "현장 등록(IN_PERSON) or 온라인 등록(ONLINE)", example = "IN_PERSON")
-        String channel,
-
         @NotNull
         @Schema(description = "필요한 유아용 의자 개수", example = "1")
         int infantChairCount,
@@ -58,7 +54,6 @@ public record AppWaitingRegisterRequest(
                 .privacyPolicyAgreed(privacyPolicyAgreed)
                 .thirdPartyAgreed(thirdPartyAgreed)
                 .marketingConsent(marketingConsent)
-                .channel(channel)
                 .infantChairCount(infantChairCount)
                 .infantCount(infantCount)
                 .adultCount(adultCount)

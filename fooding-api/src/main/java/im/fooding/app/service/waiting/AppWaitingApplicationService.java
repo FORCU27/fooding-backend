@@ -6,6 +6,7 @@ import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.StoreWaiting;
+import im.fooding.core.model.waiting.StoreWaitingChannel;
 import im.fooding.core.model.waiting.WaitingUser;
 import im.fooding.core.service.waiting.StoreService;
 import im.fooding.core.service.waiting.StoreWaitingService;
@@ -47,7 +48,7 @@ public class AppWaitingApplicationService {
         StoreWaitingRegisterRequest storeWaitingRegisterRequest = StoreWaitingRegisterRequest.builder()
                 .user(waitingUser)
                 .store(store)
-                .channel(request.channel())
+                .channel(StoreWaitingChannel.IN_PERSON.getValue())
                 .infantChairCount(request.infantChairCount())
                 .infantCount(request.infantCount())
                 .adultCount(request.adultCount())
