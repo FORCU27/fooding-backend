@@ -26,7 +26,11 @@ public enum ErrorCode {
     DUPLICATED_NICKNAME(HttpStatus.BAD_REQUEST, "1003", "이미 가입된 닉네임입니다."),
 
     // 가게
-    STORE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2000", "등록된 가게 정보가 없습니다.")
+    STORE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2000", "등록된 가게 정보가 없습니다."),
+
+    // 웨이팅
+    WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3000", "등록된 웨이팅 정보가 없습니다."),
+    WAITING_NOT_OPENED(HttpStatus.BAD_REQUEST, "3001", "웨이팅이 오픈상태가 아닙니다.")
     ;
 
     private final HttpStatus status;
