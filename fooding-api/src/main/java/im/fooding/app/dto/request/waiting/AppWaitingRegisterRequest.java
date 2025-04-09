@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 public record AppWaitingRegisterRequest(
         @NotNull
         @Schema(description = "가게 아이디", example = "1")
-        long storeId,
+        Long storeId,
 
         @Schema(description = "웨이팅 유저 이름", example = "홍길동")
         String name,
@@ -18,31 +18,31 @@ public record AppWaitingRegisterRequest(
 
         @NotNull
         @Schema(description = "서비스 이용약관 동의", example = "true")
-        boolean termsAgreed,
+        Boolean termsAgreed,
 
         @NotNull
         @Schema(description = "개인정보 수집 및 이용 동의", example = "true")
-        boolean privacyPolicyAgreed,
+        Boolean privacyPolicyAgreed,
 
         @NotNull
         @Schema(description = "개인정보 제3자 제공 동의", example = "true")
-        boolean thirdPartyAgreed,
+        Boolean thirdPartyAgreed,
 
         @NotNull
         @Schema(description = "마케팅 정보 수신 동의", example = "true")
-        boolean marketingConsent,
+        Boolean marketingConsent,
 
         @NotNull
         @Schema(description = "필요한 유아용 의자 개수", example = "1")
-        int infantChairCount,
+        Integer infantChairCount,
 
         @NotNull
         @Schema(description = "유아 입장 인원수", example = "1")
-        int infantCount,
+        Integer infantCount,
 
         @NotNull
         @Schema(description = "성인 입장 인원수", example = "1")
-        int adultCount
+        Integer adultCount
 ) {
 
     public AppWaitingRegisterServiceRequest toWaitingRegisterServiceRequest() {
