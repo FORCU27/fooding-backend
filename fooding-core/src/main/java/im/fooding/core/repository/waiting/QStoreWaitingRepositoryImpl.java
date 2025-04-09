@@ -16,9 +16,9 @@ public class QStoreWaitingRepositoryImpl implements QStoreWaitingRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public long countTodayCreated() {
-        LocalDateTime start = LocalDate.now().atStartOfDay();
-        LocalDateTime end = LocalDate.now().atTime(LocalTime.MAX);
+    public long countCreatedOn(LocalDate date) {
+        LocalDateTime start = date.atStartOfDay();
+        LocalDateTime end = date.atTime(LocalTime.MAX);
 
         return query
                 .selectFrom(storeWaiting)

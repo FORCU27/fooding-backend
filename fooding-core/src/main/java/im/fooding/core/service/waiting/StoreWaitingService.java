@@ -4,6 +4,7 @@ import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
 import im.fooding.core.repository.waiting.StoreWaitingRepository;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class StoreWaitingService {
 
     @Transactional
     public StoreWaiting register(StoreWaitingRegisterRequest request) {
-        int callNumber = (int) storeWaitingRepository.countTodayCreated() + 1;
+        int callNumber = (int) storeWaitingRepository.countCreatedOn(LocalDate.now()) + 1;
 
         StoreWaiting storeWaiting = StoreWaiting.builder()
                 .user(request.user())
