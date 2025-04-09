@@ -10,13 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
 public class StoreWaitingService {
 
     private final StoreWaitingRepository storeWaitingRepository;
 
+    @Transactional
     public StoreWaiting register(StoreWaitingRegisterRequest request) {
         int callNumber = (int) storeWaitingRepository.countTodayCreated() + 1;
 

@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
 public class AppWaitingApplicationService {
@@ -28,6 +28,7 @@ public class AppWaitingApplicationService {
     private final StoreWaitingService storeWaitingService;
     private final WaitingLogService waitingLogService;
 
+    @Transactional
     public AppWaitingRegisterServiceResponse register(AppWaitingRegisterServiceRequest request) {
         long storeId = request.storeId();
         String phoneNumber = request.phoneNumber();

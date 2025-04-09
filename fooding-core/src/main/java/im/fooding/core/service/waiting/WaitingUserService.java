@@ -9,19 +9,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
 public class WaitingUserService {
 
     private final WaitingUserRepository waitingUserRepository;
 
+    @Transactional
     public WaitingUser getOrElseRegister(WaitingUserRegisterRequest request) {
         return waitingUserRepository.findByStoreAndPhoneNumber(request.store(), request.phoneNumber())
                 .orElseGet(() -> register(request));
     }
 
-    private WaitingUser register(WaitingUserRegisterRequest request) {
+    @Transactional
+    public WaitingUser register(WaitingUserRegisterRequest request) {
         return waitingUserRepository.saveAndFlush(request.toWaitingUser());
     }
 }
