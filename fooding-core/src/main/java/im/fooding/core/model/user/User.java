@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@Table(name = "users")
+@Table(name = "\"user\"")
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +34,9 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private AuthProvider provider;
 
-    @Column(nullable = false, length = 20)
+    @Column(length = 20)
     private String nickname;
 
-    @Column(nullable = false)
     private String phoneNumber;
 
     @Column(length = 20)

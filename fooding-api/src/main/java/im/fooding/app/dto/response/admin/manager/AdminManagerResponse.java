@@ -1,4 +1,4 @@
-package im.fooding.app.dto.user;
+package im.fooding.app.dto.response.admin.manager;
 
 import im.fooding.core.model.user.User;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class ResponseUserDto {
+public class AdminManagerResponse {
     @Schema(description = "id", example = "1")
     private long id;
 
@@ -30,7 +30,7 @@ public class ResponseUserDto {
     private LocalDateTime updatedAt;
 
     @Builder
-    private ResponseUserDto(long id, String email, String nickname, String phoneNumber, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private AdminManagerResponse(long id, String email, String nickname, String phoneNumber, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
@@ -39,8 +39,8 @@ public class ResponseUserDto {
         this.updatedAt = updatedAt;
     }
 
-    public static ResponseUserDto of(User user) {
-        return ResponseUserDto.builder()
+    public static AdminManagerResponse of(User user) {
+        return AdminManagerResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
