@@ -6,9 +6,4 @@ public record AppWaitingRegisterResponse(
         @Schema(description = "호출 번호", example = "1")
         long callNumber
 ) {
-
-
-    public static AppWaitingRegisterResponse from(AppWaitingRegisterServiceResponse serviceResponse) {
-        return new AppWaitingRegisterResponse(serviceResponse.callNumber());
-    }
 }

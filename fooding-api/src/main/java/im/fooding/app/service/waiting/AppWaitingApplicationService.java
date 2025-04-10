@@ -1,7 +1,7 @@
 package im.fooding.app.service.waiting;
 
-import im.fooding.app.dto.request.waiting.AppWaitingRegisterServiceRequest;
-import im.fooding.app.dto.response.waiting.AppWaitingRegisterServiceResponse;
+import im.fooding.app.dto.request.waiting.AppWaitingRegisterRequest;
+import im.fooding.app.dto.response.waiting.AppWaitingRegisterResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
 import im.fooding.core.model.store.Store;
@@ -31,7 +31,7 @@ public class AppWaitingApplicationService {
     private final WaitingLogService waitingLogService;
 
     @Transactional
-    public AppWaitingRegisterServiceResponse register(AppWaitingRegisterServiceRequest request) {
+    public AppWaitingRegisterResponse register(AppWaitingRegisterRequest request) {
         long storeId = request.storeId();
         String phoneNumber = request.phoneNumber();
 
@@ -61,6 +61,6 @@ public class AppWaitingApplicationService {
 
         waitingLogService.logRegister(storeWaiting);
 
-        return new AppWaitingRegisterServiceResponse(storeWaiting.getCallNumber());
+        return new AppWaitingRegisterResponse(storeWaiting.getCallNumber());
     }
 }

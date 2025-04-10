@@ -1,9 +1,7 @@
 package im.fooding.app.controller.waiting;
 
 import im.fooding.app.dto.request.waiting.AppWaitingRegisterRequest;
-import im.fooding.app.dto.request.waiting.AppWaitingRegisterServiceRequest;
 import im.fooding.app.dto.response.waiting.AppWaitingRegisterResponse;
-import im.fooding.app.dto.response.waiting.AppWaitingRegisterServiceResponse;
 import im.fooding.app.service.waiting.AppWaitingApplicationService;
 import im.fooding.core.common.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,9 +23,6 @@ public class AppWaitingController {
     @PostMapping
     @Operation(summary = "웨이팅 등록")
     ApiResult<AppWaitingRegisterResponse> register(@RequestBody @Valid AppWaitingRegisterRequest request) {
-        AppWaitingRegisterServiceRequest serviceRequest = request.toWaitingRegisterServiceRequest();
-        AppWaitingRegisterServiceResponse response = appWaitingApplicationService.register(serviceRequest);
-
-        return ApiResult.ok(AppWaitingRegisterResponse.from(response));
+        return ApiResult.ok(appWaitingApplicationService.register(request));
     }
 }

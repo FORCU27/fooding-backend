@@ -48,19 +48,4 @@ public record AppWaitingRegisterRequest(
         @Schema(description = "성인 입장 인원수", example = "1")
         Integer adultCount
 ) {
-
-    public AppWaitingRegisterServiceRequest toWaitingRegisterServiceRequest() {
-        return AppWaitingRegisterServiceRequest.builder()
-                .storeId(storeId)
-                .name(name)
-                .phoneNumber(phoneNumber)
-                .termsAgreed(termsAgreed)
-                .privacyPolicyAgreed(privacyPolicyAgreed)
-                .thirdPartyAgreed(thirdPartyAgreed)
-                .marketingConsent(marketingConsent)
-                .infantChairCount(infantChairCount)
-                .infantCount(infantCount)
-                .adultCount(adultCount)
-                .build();
-    }
 }
