@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/app/waiting")
+@RequestMapping("/app/waitings")
 @Tag(name = "AppWaitingController", description = "웨이팅 관리 컨트롤러")
 @Slf4j
 public class AppWaitingController {
