@@ -36,8 +36,12 @@ public class WaitingLog extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private WaitingLogType type;
 
-    public WaitingLog(StoreWaiting storeWaiting, WaitingLogType type) {
+    public WaitingLog(StoreWaiting storeWaiting) {
         this.storeWaiting = storeWaiting;
-        this.type = type;
+        this.type = WaitingLogType.WAITING_REGISTRATION;
+    }
+
+    public void entry() {
+        this.type = WaitingLogType.ENTRY;
     }
 }
