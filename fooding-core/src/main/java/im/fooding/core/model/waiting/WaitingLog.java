@@ -40,4 +40,8 @@ public class WaitingLog extends BaseEntity {
         this.storeWaiting = storeWaiting;
         this.type = type;
     }
+
+    public String getTypeValue() {
+        return type.getValue();
+    }
 }
