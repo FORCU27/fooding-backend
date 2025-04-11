@@ -27,7 +27,7 @@ public class AppWaitingController {
             @Parameter(description = "가게 id", example = "1")
             @PathVariable long storeId,
 
-            @RequestBody WaitingListByStoreIdRequest request
+            @ModelAttribute WaitingListByStoreIdRequest request
     ) {
         return ApiResult.ok(appWaitingApplicationService.listByStoreIdAndStatus(storeId, request));
     }
