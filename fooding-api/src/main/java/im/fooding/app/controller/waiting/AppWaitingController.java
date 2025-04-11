@@ -1,6 +1,6 @@
 package im.fooding.app.controller.waiting;
 
-import im.fooding.app.dto.request.waiting.WaitingListByStoreIdRequest;
+import im.fooding.app.dto.request.waiting.WaitingListRequest;
 import im.fooding.app.dto.response.waiting.WaitingResponse;
 import im.fooding.app.service.waiting.AppWaitingApplicationService;
 import im.fooding.core.common.ApiResult;
@@ -23,12 +23,12 @@ public class AppWaitingController {
 
     @GetMapping("/store/{storeId}")
     @Operation(summary = "웨이팅 목록 조회")
-    ApiResult<PageResponse<WaitingResponse>> listByStoreId(
+    ApiResult<PageResponse<WaitingResponse>> list(
             @Parameter(description = "가게 id", example = "1")
             @PathVariable long storeId,
 
-            @ModelAttribute WaitingListByStoreIdRequest request
+            @ModelAttribute WaitingListRequest request
     ) {
-        return ApiResult.ok(appWaitingApplicationService.listByStoreIdAndStatus(storeId, request));
+        return ApiResult.ok(appWaitingApplicationService.list(storeId, request));
     }
 }

@@ -2,6 +2,7 @@ package im.fooding.core.service.waiting;
 
 import im.fooding.core.TestConfig;
 import im.fooding.core.common.BasicSearch;
+import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
@@ -70,15 +71,23 @@ class StoreWaitingServiceTest extends TestConfig {
 
         BasicSearch search = new BasicSearch();
 
+        StoreWaitingFilter waitingFilter = StoreWaitingFilter.builder()
+                .storeId(store.getId())
+                .status(StoreWaitingStatus.WAITING)
+                .build();
+
         // when
-        Page<StoreWaiting> waitingStoreWaitings = storeWaitingService.getAllByStoreIdAndStatus(
-                store.getId(),
-                StoreWaitingStatus.WAITING.getValue(),
+        Page<StoreWaiting> waitingStoreWaitings = storeWaitingService.list(
+                waitingFilter,
                 search.getPageable()
         );
-        Page<StoreWaiting> cancledStoreWaitings = storeWaitingService.getAllByStoreIdAndStatus(
-                store.getId(),
-                StoreWaitingStatus.CANCELLED.getValue(),
+
+        StoreWaitingFilter cancledFilter = StoreWaitingFilter.builder()
+                .storeId(store.getId())
+                .status(StoreWaitingStatus.CANCELLED)
+                .build();
+        Page<StoreWaiting> cancledStoreWaitings = storeWaitingService.list(
+                cancledFilter,
                 search.getPageable()
         );
 

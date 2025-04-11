@@ -2,8 +2,10 @@ package im.fooding.core.repository.waiting;
 
 import static im.fooding.core.model.waiting.QStoreWaiting.storeWaiting;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingStatus;
 import java.util.List;
@@ -18,13 +20,13 @@ public class QStoreWaitingRepositoryImpl implements QStoreWaitingRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<StoreWaiting> findAllByStoreIdAndStatus(long storeId, StoreWaitingStatus status, Pageable pageable) {
+    public Page<StoreWaiting> findAllWithFilter(StoreWaitingFilter filter, Pageable pageable) {
         List<StoreWaiting> results = query
                 .select(storeWaiting)
                 .from(storeWaiting)
                 .where(
-                        storeWaiting.store.id.eq(storeId),
-                        storeWaiting.status.eq(status)
+                        storeIdEq(filter.storeId()),
+                        statusEq(filter.status())
                 )
                 .orderBy(storeWaiting.id.asc())
                 .offset(pageable.getOffset())
@@ -35,10 +37,18 @@ public class QStoreWaitingRepositoryImpl implements QStoreWaitingRepository {
                 .select(storeWaiting)
                 .from(storeWaiting)
                 .where(
-                        storeWaiting.store.id.eq(storeId),
-                        storeWaiting.status.eq(status)
+                        storeIdEq(filter.storeId()),
+                        statusEq(filter.status())
                 );
 
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchCount);
+    }
+
+    private BooleanExpression storeIdEq(Long storeId) {
+        return storeId != null ? storeWaiting.store.id.eq(storeId) : null;
+    }
+
+    private BooleanExpression statusEq(StoreWaitingStatus status) {
+        return status != null ? storeWaiting.status.eq(status) : null;
     }
 }

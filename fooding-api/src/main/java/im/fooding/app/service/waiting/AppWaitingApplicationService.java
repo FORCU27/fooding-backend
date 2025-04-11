@@ -1,10 +1,12 @@
 package im.fooding.app.service.waiting;
 
-import im.fooding.app.dto.request.waiting.WaitingListByStoreIdRequest;
+import im.fooding.app.dto.request.waiting.WaitingListRequest;
 import im.fooding.app.dto.response.waiting.WaitingResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.model.waiting.StoreWaiting;
+import im.fooding.core.model.waiting.StoreWaitingStatus;
 import im.fooding.core.service.waiting.StoreWaitingService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +23,13 @@ public class AppWaitingApplicationService {
 
     private final StoreWaitingService storeWaitingService;
 
-    public PageResponse<WaitingResponse> listByStoreIdAndStatus(long storeId, WaitingListByStoreIdRequest request) {
-        Page<StoreWaiting> storeWaitings = storeWaitingService.getAllByStoreIdAndStatus(storeId, request.status(), request.pageable());
+    public PageResponse<WaitingResponse> list(long storeId, WaitingListRequest request) {
+
+        StoreWaitingFilter storeWaitingFilter = StoreWaitingFilter.builder()
+                .storeId(storeId)
+                .status(StoreWaitingStatus.of(request.status()))
+                .build();
+        Page<StoreWaiting> storeWaitings = storeWaitingService.list(storeWaitingFilter, request.pageable());
 
         List<WaitingResponse> list = storeWaitings.getContent()
                 .stream()
