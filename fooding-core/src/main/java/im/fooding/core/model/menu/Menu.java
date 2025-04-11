@@ -1,11 +1,17 @@
 package im.fooding.core.model.menu;
 
 import im.fooding.core.model.BaseEntity;
+import im.fooding.core.model.user.User;
 import jakarta.persistence.Column;
+import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -22,6 +28,14 @@ public class Menu extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "menu_category_id",
+            nullable = false,
+            foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+    )
+    private MenuCategory menuCategory;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -46,6 +60,7 @@ public class Menu extends BaseEntity {
 
     @Builder
     private Menu(
+            MenuCategory menuCategory,
             String name,
             BigDecimal price,
             String description,
@@ -54,6 +69,7 @@ public class Menu extends BaseEntity {
             boolean isSignature,
             boolean isRecommend
     ) {
+        this.menuCategory = menuCategory;
         this.name = name;
         this.price = price;
         this.description = description;

@@ -26,14 +26,6 @@ public class MenuCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "menu_id",
-            nullable = false,
-            foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
-    )
-    private Menu menu;
-
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -44,18 +36,15 @@ public class MenuCategory {
     private int sortOrder;
 
     @Builder
-    private MenuCategory(Menu menu, String name, String description, int sortOrder) {
-        this.menu = menu;
+    private MenuCategory(String name, String description, int sortOrder) {
         this.name = name;
         this.description = description;
         this.sortOrder = sortOrder;
     }
 
-    public void update(Menu menu, String name, String description, int sortOrder) {
-        this.menu = menu;
+    public void update(String name, String description, int sortOrder) {
         this.name = name;
         this.description = description;
         this.sortOrder = sortOrder;
     }
-
 }
