@@ -7,15 +7,16 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum StoreWaitingChannel {
+public enum StoreWaitingStatus {
 
-    IN_PERSON("IN_PERSON"),
-    ONLINE("ONLINE")
+    WAITING("WAITING"),
+    SEATED("SEATED"),
+    CANCELLED("CANCELLED")
     ;
 
     private final String value;
 
-    public static StoreWaitingChannel of(String value) {
+    public static StoreWaitingStatus of(String value) {
         try {
             return valueOf(value);
         } catch (IllegalArgumentException e) {
