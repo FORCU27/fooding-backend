@@ -41,6 +41,9 @@ public class Menu extends BaseEntity {
     @Column(name = "is_signature")
     private boolean isSignature;
 
+    @Column(name = "is_recommend")
+    private boolean isRecommend;
+
     @Builder
     private Menu(
             String name,
@@ -48,7 +51,8 @@ public class Menu extends BaseEntity {
             String description,
             String imageUrl,
             int sortOrder,
-            boolean isSignature
+            boolean isSignature,
+            boolean isRecommend
     ) {
         this.name = name;
         this.price = price;
@@ -56,6 +60,7 @@ public class Menu extends BaseEntity {
         this.imageUrl = imageUrl;
         this.sortOrder = sortOrder;
         this.isSignature = isSignature;
+        this.isRecommend = isRecommend;
     }
 
     private void updateName(String name) {
@@ -80,5 +85,9 @@ public class Menu extends BaseEntity {
 
     private void updateIsSignature(boolean isSignature) {
         this.isSignature = isSignature;
+    }
+
+    private void updateIsRecommend(boolean isRecommend) {
+        this.isRecommend = isRecommend;
     }
 }
