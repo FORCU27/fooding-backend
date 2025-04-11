@@ -34,7 +34,14 @@ public class StoreDeviceResponse {
     private ServiceType serviceType;
 
     @Builder
-    private StoreDeviceResponse(long id, DeviceType deviceType, String name, String osVersion, LocalDateTime installedAt, LocalDateTime lastConnectedAt, ServiceType serviceType ){
+    private StoreDeviceResponse(
+            long id, DeviceType deviceType,
+            String name,
+            String osVersion,
+            LocalDateTime installedAt,
+            LocalDateTime lastConnectedAt,
+            ServiceType serviceType
+    ){
         this.id = id;
         this.deviceType = deviceType;
         this.name = name;

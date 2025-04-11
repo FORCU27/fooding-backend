@@ -14,19 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/device")
+@RequestMapping("/admin/devices")
 @Tag(name="Admin Device Controller", description = "관리자 디바이스 컨트롤러")
 public class AdminDeviceController {
     private final DeviceApplicationService service;
 
-    @GetMapping("/retrieveALlDevice")
+    @GetMapping()
     @Operation(summary="모든 디바이스 조회")
-    public ApiResult<PageResponse<StoreDeviceResponse>> retrieveAllDevice(
+    public ApiResult<PageResponse<StoreDeviceResponse>> list(
             @RequestParam RetrieveAllDeviceRequest request
             ){
         return ApiResult.ok(service.retrieveAllDevice( request ) );

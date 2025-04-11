@@ -1,5 +1,6 @@
 package im.fooding.core.repository.device;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,25 +19,23 @@ import static im.fooding.core.model.device.QDevice.device;
 public class QDeviceRepositoryImpl implements QDeviceRepository{
     private final JPAQueryFactory query;
     @Override
-    public Page<Device> list(String searchString, Pageable pageable, long storeId) {
+    public Page<Device> list(String searchString, Pageable pageable, Long storeId) {
+        BooleanBuilder condition = new BooleanBuilder();
+        condition.and( device.deleted.isFalse() );
+        if( search( searchString ) != null ) condition.and( search( searchString ) );
+        if( storeId != null ) condition.and( device.store.id.eq( storeId ) );
+
         List<Device> results = query
                 .select(device)
                 .from(device)
-                .where(
-                        device.deleted.isFalse(),
-                        device.store.id.eq( storeId ),
-                        search(searchString)
-                )
+                .where(condition)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
         JPAQuery<Device> countQuery = query
                 .select(device)
                 .from(device)
-                .where(
-                        device.deleted.isFalse(),
-                        search(searchString)
-                );
+                .where(condition);
         return PageableExecutionUtils.getPage( results, pageable, countQuery::fetchCount );
     }
 

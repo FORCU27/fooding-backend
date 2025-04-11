@@ -15,23 +15,14 @@ public class DeviceService {
     private final DeviceRepository deviceRepository;
 
     /**
-     * Store ID로 리스트 조회
+     * 디바이스 목록 조회
      *
+     * @param searchString
      * @param storeId
      * @param pageable
      * @return Page<Device>
      */
-    public Page<Device> findByStoreId(String searchString, long storeId, Pageable pageable){
+    public Page<Device> list(String searchString, long storeId, Pageable pageable){
         return deviceRepository.list(searchString, pageable, storeId);
-    }
-
-    /**
-     * 모든 Device 리스트 조회
-     *
-     * @param pageable
-     * @return Page<Device>
-     */
-    public Page<Device> findAllDevice(Pageable pageable){
-        return deviceRepository.findAllByNotDeleted(pageable);
     }
 }
