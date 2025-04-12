@@ -53,7 +53,15 @@ public class WaitingUser extends BaseEntity {
     private int count;
 
     @Builder
-    public WaitingUser(Store store, String name, String phoneNumber, boolean termsAgreed, boolean privacyPolicyAgreed, boolean thirdPartyAgreed, boolean marketingConsent) {
+    public WaitingUser(
+            Store store,
+            String name,
+            String phoneNumber,
+            boolean termsAgreed,
+            boolean privacyPolicyAgreed,
+            boolean thirdPartyAgreed,
+            boolean marketingConsent
+    ) {
         this.store = store;
         this.name = name;
         this.phoneNumber = phoneNumber;

@@ -62,7 +62,15 @@ public class StoreWaiting extends BaseEntity {
     private String memo;
 
     @Builder
-    public StoreWaiting(WaitingUser user, Store store, int callNumber, StoreWaitingChannel channel, int infantChairCount, int infantCount, int adultCount) {
+    public StoreWaiting(
+            WaitingUser user,
+            Store store,
+            int callNumber,
+            StoreWaitingChannel channel,
+            int infantChairCount,
+            int infantCount,
+            int adultCount
+    ) {
         this.user = user;
         this.store = store;
         this.callNumber = callNumber;
