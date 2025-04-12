@@ -31,11 +31,11 @@ public class Menu extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-            name = "menu_category_id",
+            name = "category_id",
             nullable = false,
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
     )
-    private MenuCategory menuCategory;
+    private MenuCategory category;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -60,7 +60,7 @@ public class Menu extends BaseEntity {
 
     @Builder
     private Menu(
-            MenuCategory menuCategory,
+            MenuCategory category,
             String name,
             BigDecimal price,
             String description,
@@ -69,7 +69,7 @@ public class Menu extends BaseEntity {
             boolean isSignature,
             boolean isRecommend
     ) {
-        this.menuCategory = menuCategory;
+        this.category = category;
         this.name = name;
         this.price = price;
         this.description = description;

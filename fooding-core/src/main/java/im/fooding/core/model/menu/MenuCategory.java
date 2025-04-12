@@ -1,5 +1,6 @@
 package im.fooding.core.model.menu;
 
+import im.fooding.core.model.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -20,7 +21,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-public class MenuCategory {
+public class MenuCategory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
