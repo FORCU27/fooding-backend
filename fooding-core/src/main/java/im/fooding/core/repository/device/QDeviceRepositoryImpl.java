@@ -23,7 +23,7 @@ public class QDeviceRepositoryImpl implements QDeviceRepository{
         BooleanBuilder condition = new BooleanBuilder();
         condition.and( device.deleted.isFalse() );
         if( search( searchString ) != null ) condition.and( search( searchString ) );
-        if( storeId != null ) condition.and( device.store.id.eq( storeId ) );
+        if( storeId != Long.MIN_VALUE ) condition.and( device.store.id.eq( storeId ) );
 
         List<Device> results = query
                 .select(device)

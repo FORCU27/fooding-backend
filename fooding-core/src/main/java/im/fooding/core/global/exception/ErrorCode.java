@@ -29,7 +29,7 @@ public enum ErrorCode {
     EMAIL_CONSENT_REQUIRED(HttpStatus.BAD_REQUEST, "1005", "이메일 제공 동의가 필요합니다."),
 
     // 디바이스
-    DEVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2000", "등록된 디바이스가 없습니다."),
+    DEVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "7000", "등록된 디바이스가 없습니다."),
     ;
     private final HttpStatus status;
 

@@ -31,7 +31,7 @@ public class DeviceApplicationService {
     @Transactional(readOnly = true)
     public PageResponse<StoreDeviceResponse> retrieveStoreDevice(RetrieveStoreDeviceRequest request ){
         Pageable pageable = PageRequest.of(request.getPageNum(), request.getPageSize() );
-        Page<Device> result = deviceService.findByStoreId(request.getSearchString(), request.getStoreId(), pageable );
+        Page<Device> result = deviceService.list(request.getSearchString(), request.getStoreId(), pageable );
         PageInfo pageInfo = PageInfo.of( result );
         return PageResponse.of( result.getContent().stream().map(StoreDeviceResponse::of).collect(Collectors.toList()), pageInfo );
     }
@@ -45,7 +45,7 @@ public class DeviceApplicationService {
     @Transactional(readOnly = true)
     public PageResponse<StoreDeviceResponse> retrieveAllDevice(RetrieveAllDeviceRequest request ){
         Pageable pageable = PageRequest.of(request.getPageNum(), request.getPageSize() );
-        Page<Device> result = deviceService.findAllDevice(pageable);
+        Page<Device> result = deviceService.list(null, Long.MIN_VALUE, pageable);
         return PageResponse.of( result.getContent().stream().map(StoreDeviceResponse::of).collect(Collectors.toList()), PageInfo.of( result ) );
     }
 }
