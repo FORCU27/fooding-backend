@@ -16,4 +16,16 @@ public class WaitingUserDummy {
                 .marketingConsent(true)
                 .build();
     }
+
+    public static WaitingUser createWithPhoneNumber(Store store, String phoneNumber) {
+        return WaitingUser.builder()
+                .store(store)
+                .name("name")
+                .phoneNumber(phoneNumber)
+                .termsAgreed(true)
+                .privacyPolicyAgreed(true)
+                .thirdPartyAgreed(true)
+                .marketingConsent(true)
+                .build();
+    }
 }
