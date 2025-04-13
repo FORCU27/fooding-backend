@@ -28,8 +28,17 @@ public enum ErrorCode {
     UNSUPPORTED_SOCIAL(HttpStatus.BAD_REQUEST, "1004", "지원하지 않는 소셜로그인 입니다."),
     EMAIL_CONSENT_REQUIRED(HttpStatus.BAD_REQUEST, "1005", "이메일 제공 동의가 필요합니다."),
 
+    // 가게
+    STORE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2000", "등록된 가게 정보가 없습니다."),
+
     // 웨이팅
-    STORE_WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "2000", "등록된 가게 웨이팅이 없습니다."),
+    WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3000", "등록된 웨이팅 정보가 없습니다."),
+    WAITING_NOT_OPENED(HttpStatus.BAD_REQUEST, "3001", "웨이팅이 오픈상태가 아닙니다."),
+    STORE_WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3002", "등록된 가게 웨이팅이 없습니다."),
+
+
+    // 디바이스
+    DEVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "7000", "등록된 디바이스가 없습니다."),
     ;
 
     private final HttpStatus status;

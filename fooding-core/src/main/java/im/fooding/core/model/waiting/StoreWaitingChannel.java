@@ -22,4 +22,4 @@ public enum StoreWaitingChannel {
             throw new ApiException(ErrorCode.METHOD_ARGUMENT_NOT_VALID);
         }
     }
-    }
+}
