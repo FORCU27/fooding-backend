@@ -21,14 +21,14 @@ public class AppWaitingController {
 
     private final AppWaitingApplicationService appWaitingApplicationService;
 
-    @GetMapping("/store/{storeId}")
+    @GetMapping("/{id}")
     @Operation(summary = "웨이팅 목록 조회")
     ApiResult<PageResponse<WaitingResponse>> list(
             @Parameter(description = "가게 id", example = "1")
-            @PathVariable long storeId,
+            @PathVariable long id,
 
             @ModelAttribute WaitingListRequest request
     ) {
-        return ApiResult.ok(appWaitingApplicationService.list(storeId, request));
+        return ApiResult.ok(appWaitingApplicationService.list(id, request));
     }
 }

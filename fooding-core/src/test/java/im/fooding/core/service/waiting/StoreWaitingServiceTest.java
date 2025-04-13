@@ -8,7 +8,7 @@ import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
 import im.fooding.core.model.waiting.StoreWaitingStatus;
 import im.fooding.core.model.waiting.WaitingUser;
-import im.fooding.core.repository.waiting.StoreRepository;
+import im.fooding.core.repository.store.StoreRepository;
 import im.fooding.core.repository.waiting.StoreWaitingRepository;
 import im.fooding.core.repository.waiting.WaitingUserRepository;
 import im.fooding.core.support.dummy.StoreDummy;
