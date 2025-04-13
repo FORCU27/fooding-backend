@@ -24,7 +24,7 @@ public class AppWaitingController {
 
     private final AppWaitingApplicationService appWaitingApplicationService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/requests")
     @Operation(summary = "웨이팅 목록 조회")
     ApiResult<PageResponse<WaitingResponse>> list(
             @Parameter(description = "웨이팅 id", example = "1")
