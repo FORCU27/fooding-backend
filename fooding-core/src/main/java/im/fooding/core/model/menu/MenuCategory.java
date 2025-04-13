@@ -1,6 +1,7 @@
 package im.fooding.core.model.menu;
 
 import im.fooding.core.model.BaseEntity;
+import im.fooding.core.model.store.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -27,6 +28,14 @@ public class MenuCategory extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "store_id",
+            nullable = false,
+            foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+    )
+    private Store store;
+
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -37,7 +46,8 @@ public class MenuCategory extends BaseEntity {
     private int sortOrder;
 
     @Builder
-    private MenuCategory(String name, String description, int sortOrder) {
+    private MenuCategory(Store store, String name, String description, int sortOrder) {
+        this.store = store;
         this.name = name;
         this.description = description;
         this.sortOrder = sortOrder;

@@ -1,6 +1,7 @@
 package im.fooding.core.model.menu;
 
 import im.fooding.core.model.BaseEntity;
+import im.fooding.core.model.store.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -29,11 +30,11 @@ public class MenuBoard extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-            name = "menu_id",
+            name = "store_id",
             nullable = false,
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
     )
-    private Menu menu;
+    private Store store;
 
     @Column(name = "title")
     private String title;
@@ -42,14 +43,13 @@ public class MenuBoard extends BaseEntity {
     private String imageUrl;
 
     @Builder
-    private MenuBoard(Menu menu, String title, String imageUrl) {
-        this.menu = menu;
+    private MenuBoard(Store store, String title, String imageUrl) {
+        this.store = store;
         this.title = title;
         this.imageUrl = imageUrl;
     }
 
-    public void update(Menu menu, String title, String imageUrl) {
-        this.menu = menu;
+    public void update(String title, String imageUrl) {
         this.title = title;
         this.imageUrl = imageUrl;
     }
