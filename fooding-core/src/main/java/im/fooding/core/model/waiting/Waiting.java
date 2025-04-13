@@ -1,9 +1,9 @@
 package im.fooding.core.model.waiting;
 
 import im.fooding.core.model.BaseEntity;
+import im.fooding.core.model.store.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
@@ -20,19 +20,18 @@ public class Waiting extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "store_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-//    private Store store;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Store store;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private WaitingStatus status;
 
-//    @Builder
-//    private Waiting(Store store, WaitingStatus status) {
-//        this.store = store;
-//        this.systemStatus = systemStatus;
-//    }
+    public Waiting(Store store, WaitingStatus status) {
+        this.store = store;
+        this.status = status;
+    }
 
     public void updateStatus(WaitingStatus status) {
         this.status = status;
