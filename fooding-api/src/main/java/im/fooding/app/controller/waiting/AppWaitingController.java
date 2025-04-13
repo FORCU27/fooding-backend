@@ -5,6 +5,7 @@ import im.fooding.app.dto.response.waiting.AppWaitingRegisterResponse;
 import im.fooding.app.service.waiting.AppWaitingApplicationService;
 import im.fooding.core.common.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +21,14 @@ public class AppWaitingController {
 
     private final AppWaitingApplicationService appWaitingApplicationService;
 
-    @PostMapping
+    @PostMapping("/{id}/requests")
     @Operation(summary = "웨이팅 등록")
-    ApiResult<AppWaitingRegisterResponse> register(@RequestBody @Valid AppWaitingRegisterRequest request) {
-        return ApiResult.ok(appWaitingApplicationService.register(request));
+    ApiResult<AppWaitingRegisterResponse> register(
+            @Parameter(description = "가게 id", example = "1")
+            @PathVariable long id,
+
+            @RequestBody @Valid AppWaitingRegisterRequest request
+    ) {
+        return ApiResult.ok(appWaitingApplicationService.register(id, request));
     }
 }

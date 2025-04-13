@@ -19,10 +19,12 @@ public class WaitingService {
 
     private final WaitingRepository waitingRepository;
 
-    public void validate(Store store) {
-        Waiting waiting = waitingRepository.findByStore(store)
+    public Waiting getById(long id) {
+        return waitingRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ErrorCode.WAITING_NOT_FOUND));
+    }
 
+    public void validate(Waiting waiting) {
         if (waiting.getStatus() != WaitingStatus.WAITING_OPEN) {
             throw new ApiException(ErrorCode.WAITING_NOT_OPENED);
         }

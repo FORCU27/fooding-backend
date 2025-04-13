@@ -4,11 +4,10 @@ import im.fooding.app.dto.request.waiting.AppWaitingRegisterRequest;
 import im.fooding.app.dto.response.waiting.AppWaitingRegisterResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
-import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
+import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingUser;
-import im.fooding.core.service.waiting.StoreService;
 import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.service.waiting.WaitingService;
@@ -24,22 +23,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class AppWaitingApplicationService {
 
-    private final StoreService storeService;
     private final WaitingService waitingService;
     private final WaitingUserService waitingUserService;
     private final StoreWaitingService storeWaitingService;
     private final WaitingLogService waitingLogService;
 
     @Transactional
-    public AppWaitingRegisterResponse register(AppWaitingRegisterRequest request) {
-        long storeId = request.storeId();
+    public AppWaitingRegisterResponse register(long id, AppWaitingRegisterRequest request) {
         String phoneNumber = request.phoneNumber();
 
-        Store store = storeService.getById(storeId);
-        waitingService.validate(store);
+        Waiting waiting = waitingService.getById(id);
+        waitingService.validate(waiting);
 
         WaitingUserRegisterRequest waitingUserRegisterRequest = WaitingUserRegisterRequest.builder()
-                .store(store)
+                .store(waiting.getStore())
                 .name(request.name())
                 .phoneNumber(phoneNumber)
                 .termsAgreed(request.termsAgreed())
@@ -51,7 +48,7 @@ public class AppWaitingApplicationService {
 
         StoreWaitingRegisterRequest storeWaitingRegisterRequest = StoreWaitingRegisterRequest.builder()
                 .user(waitingUser)
-                .store(store)
+                .store(waiting.getStore())
                 .channel(StoreWaitingChannel.IN_PERSON.getValue())
                 .infantChairCount(request.infantChairCount())
                 .infantCount(request.infantCount())

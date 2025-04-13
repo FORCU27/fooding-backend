@@ -6,10 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public record AppWaitingRegisterRequest(
-        @NotNull
-        @Schema(description = "가게 아이디", example = "1")
-        Long storeId,
-
         @Schema(description = "웨이팅 유저 이름", example = "홍길동")
         String name,
 

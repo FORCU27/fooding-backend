@@ -34,44 +34,28 @@ class WaitingServiceTest extends TestConfig {
     }
 
     @Test
-    @DisplayName("웨이팅이 없으면 오픈 상태 검증을 할 수 없다.")
-    public void throw_exception_when_validate_opened() {
-        // given
-        Store store = storeRepository.save(StoreDummy.create());
-
-        // when & then
-        ApiException exception = assertThrows(
-                ApiException.class,
-                () -> waitingService.validate(store)
-        );
-
-        assertThat(exception.getErrorCode())
-                .isEqualTo(ErrorCode.WAITING_NOT_FOUND);
-    }
-
-    @Test
-    @DisplayName("웨이팅이 오픈 상태인 경우를 검증을 할 수 있다.")
+    @DisplayName("웨이팅이 오픈 상태인 경우를 검증에 성공한다.")
     public void validate_when_opened() {
         // given
         Store store = storeRepository.save(StoreDummy.create());
-        waitingRepository.save(new Waiting(store, WaitingStatus.WAITING_OPEN));
+        Waiting waiting = waitingRepository.save(new Waiting(store, WaitingStatus.WAITING_OPEN));
 
         // when & then
-        assertThatCode(() -> waitingService.validate(store))
+        assertThatCode(() -> waitingService.validate(waiting))
                 .doesNotThrowAnyException();
     }
 
     @Test
-    @DisplayName("웨이팅이 오픈 상태가 아닌 경우를 검증을 할 수 있다.")
+    @DisplayName("웨이팅이 오픈 상태가 아닌 경우를 검증에 실패한다.")
     public void validate_when_not_opened() {
         // given
         Store store = storeRepository.save(StoreDummy.create());
-        waitingRepository.save(new Waiting(store, WaitingStatus.PAUSED));
+        Waiting waiting = waitingRepository.save(new Waiting(store, WaitingStatus.PAUSED));
 
         // when & then
         ApiException exception = assertThrows(
                 ApiException.class,
-                () -> waitingService.validate(store)
+                () -> waitingService.validate(waiting)
         );
 
         assertThat(exception.getErrorCode())
