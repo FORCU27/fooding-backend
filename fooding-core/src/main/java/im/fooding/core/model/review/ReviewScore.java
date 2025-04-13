@@ -11,12 +11,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReviewScore {
 
+    @Column(name = "total", nullable = false)
     private float total;
 
+    @Column(name = "taste", nullable = false)
     private float taste;
 
+    @Column(name = "mood", nullable = false)
     private float mood;
 
+    @Column(name = "service", nullable = false)
     private float service;
 
     @Builder

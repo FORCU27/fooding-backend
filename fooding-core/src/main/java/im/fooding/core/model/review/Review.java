@@ -51,12 +51,6 @@ public class Review extends BaseEntity {
     private User writer;
 
     @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "taste", column = @Column(name = "taste", nullable = false)),
-            @AttributeOverride(name = "mood", column = @Column(name = "mood", nullable = false)),
-            @AttributeOverride(name = "service", column = @Column(name = "service", nullable = false)),
-            @AttributeOverride(name = "total", column = @Column(name = "total", nullable = false))
-    })
     private ReviewScore score;
 
     @Column(name = "content", nullable = false, columnDefinition = "LONGTEXT")
