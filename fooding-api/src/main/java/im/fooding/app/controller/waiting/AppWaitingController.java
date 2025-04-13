@@ -24,7 +24,7 @@ public class AppWaitingController {
     @PostMapping("/{id}/requests")
     @Operation(summary = "웨이팅 등록")
     ApiResult<AppWaitingRegisterResponse> register(
-            @Parameter(description = "가게 웨이팅 id", example = "1")
+            @Parameter(description = "웨이팅 id", example = "1")
             @PathVariable long id,
 
             @RequestBody @Valid AppWaitingRegisterRequest request
