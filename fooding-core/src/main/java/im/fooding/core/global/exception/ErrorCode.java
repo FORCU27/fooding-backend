@@ -30,6 +30,9 @@ public enum ErrorCode {
 
     // 웨이팅
     WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3000", "등록된 웨이팅 정보가 없습니다."),
+
+    // 디바이스
+    DEVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "7000", "등록된 디바이스가 없습니다."),
     ;
 
     private final HttpStatus status;
