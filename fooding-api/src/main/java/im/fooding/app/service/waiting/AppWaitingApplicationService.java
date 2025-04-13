@@ -36,7 +36,7 @@ public class AppWaitingApplicationService {
         String phoneNumber = request.phoneNumber();
 
         Store store = storeService.getById(storeId);
-        waitingService.validateOpened(store);
+        waitingService.validate(store);
 
         WaitingUserRegisterRequest waitingUserRegisterRequest = WaitingUserRegisterRequest.builder()
                 .store(store)

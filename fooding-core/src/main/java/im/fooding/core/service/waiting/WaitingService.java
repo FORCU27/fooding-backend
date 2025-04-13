@@ -19,7 +19,7 @@ public class WaitingService {
 
     private final WaitingRepository waitingRepository;
 
-    public void validateOpened(Store store) {
+    public void validate(Store store) {
         Waiting waiting = waitingRepository.findByStore(store)
                 .orElseThrow(() -> new ApiException(ErrorCode.WAITING_NOT_FOUND));
 

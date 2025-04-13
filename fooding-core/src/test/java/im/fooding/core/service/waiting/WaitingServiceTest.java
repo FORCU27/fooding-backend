@@ -42,7 +42,7 @@ class WaitingServiceTest extends TestConfig {
         // when & then
         ApiException exception = assertThrows(
                 ApiException.class,
-                () -> waitingService.validateOpened(store)
+                () -> waitingService.validate(store)
         );
 
         assertThat(exception.getErrorCode())
@@ -57,7 +57,7 @@ class WaitingServiceTest extends TestConfig {
         waitingRepository.save(new Waiting(store, WaitingStatus.WAITING_OPEN));
 
         // when & then
-        assertThatCode(() -> waitingService.validateOpened(store))
+        assertThatCode(() -> waitingService.validate(store))
                 .doesNotThrowAnyException();
     }
 
@@ -71,7 +71,7 @@ class WaitingServiceTest extends TestConfig {
         // when & then
         ApiException exception = assertThrows(
                 ApiException.class,
-                () -> waitingService.validateOpened(store)
+                () -> waitingService.validate(store)
         );
 
         assertThat(exception.getErrorCode())
