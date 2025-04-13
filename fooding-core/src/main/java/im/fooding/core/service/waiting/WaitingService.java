@@ -23,10 +23,4 @@ public class WaitingService {
         return waitingRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ErrorCode.WAITING_NOT_FOUND));
     }
-
-    public void validate(Waiting waiting) {
-        if (waiting.getStatus() != WaitingStatus.WAITING_OPEN) {
-            throw new ApiException(ErrorCode.WAITING_NOT_OPENED);
-        }
-    }
 }

@@ -1,13 +1,22 @@
 package im.fooding.core.service.waiting;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import im.fooding.core.TestConfig;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
+import im.fooding.core.model.waiting.Waiting;
+import im.fooding.core.model.waiting.WaitingStatus;
 import im.fooding.core.model.waiting.WaitingUser;
 import im.fooding.core.repository.store.StoreRepository;
 import im.fooding.core.repository.waiting.StoreWaitingRepository;
+import im.fooding.core.repository.waiting.WaitingRepository;
 import im.fooding.core.repository.waiting.WaitingUserRepository;
 import im.fooding.core.support.dummy.StoreDummy;
 import im.fooding.core.support.dummy.WaitingUserDummy;
@@ -26,6 +35,7 @@ class StoreWaitingServiceTest extends TestConfig {
     private final StoreWaitingRepository storeWaitingRepository;
     private final StoreRepository storeRepository;
     private final WaitingUserRepository waitingUserRepository;
+    private final WaitingRepository waitingRepository;
 
     @AfterEach
     void tearDown() {
@@ -69,5 +79,34 @@ class StoreWaitingServiceTest extends TestConfig {
                 .isEqualTo(1);
         Assertions.assertThat(user2StoreWaiting.getCallNumber())
                 .isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("웨이팅이 오픈 상태인 경우를 검증에 성공한다.")
+    public void validate_when_opened() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        Waiting waiting = waitingRepository.save(new Waiting(store, WaitingStatus.WAITING_OPEN));
+
+        // when & then
+        assertThatCode(() -> storeWaitingService.validate(waiting))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("웨이팅이 오픈 상태가 아닌 경우를 검증에 실패한다.")
+    public void validate_when_not_opened() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        Waiting waiting = waitingRepository.save(new Waiting(store, WaitingStatus.PAUSED));
+
+        // when & then
+        ApiException exception = assertThrows(
+                ApiException.class,
+                () -> storeWaitingService.validate(waiting)
+        );
+
+        assertThat(exception.getErrorCode())
+                .isEqualTo(ErrorCode.WAITING_NOT_OPENED);
     }
 }

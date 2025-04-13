@@ -33,7 +33,7 @@ public class AppWaitingApplicationService {
         String phoneNumber = request.phoneNumber();
 
         Waiting waiting = waitingService.getById(id);
-        waitingService.validate(waiting);
+        storeWaitingService.validate(waiting);
 
         WaitingUserRegisterRequest waitingUserRegisterRequest = WaitingUserRegisterRequest.builder()
                 .store(waiting.getStore())

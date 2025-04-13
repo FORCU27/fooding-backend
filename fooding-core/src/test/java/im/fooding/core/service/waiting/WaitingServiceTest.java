@@ -34,31 +34,24 @@ class WaitingServiceTest extends TestConfig {
     }
 
     @Test
-    @DisplayName("웨이팅이 오픈 상태인 경우를 검증에 성공한다.")
-    public void validate_when_opened() {
+    @DisplayName("id를 통해 웨이팅을 조회할 수 있다.")
+    public void get_waiting_by_id() {
         // given
         Store store = storeRepository.save(StoreDummy.create());
         Waiting waiting = waitingRepository.save(new Waiting(store, WaitingStatus.WAITING_OPEN));
 
         // when & then
-        assertThatCode(() -> waitingService.validate(waiting))
+        assertThatCode(() -> waitingService.getById(waiting.getId()))
                 .doesNotThrowAnyException();
     }
 
+
     @Test
-    @DisplayName("웨이팅이 오픈 상태가 아닌 경우를 검증에 실패한다.")
-    public void validate_when_not_opened() {
-        // given
-        Store store = storeRepository.save(StoreDummy.create());
-        Waiting waiting = waitingRepository.save(new Waiting(store, WaitingStatus.PAUSED));
-
+    @DisplayName("웨이팅이 존재하지 않으면 웨이팅을 조회할 수 있다.")
+    public void throw_exception_when_not_exist_waiting() {
         // when & then
-        ApiException exception = assertThrows(
-                ApiException.class,
-                () -> waitingService.validate(waiting)
-        );
-
-        assertThat(exception.getErrorCode())
-                .isEqualTo(ErrorCode.WAITING_NOT_OPENED);
+        ApiException e = assertThrows(ApiException.class, () -> waitingService.getById(1));
+        assertThat(e.getErrorCode())
+                .isEqualTo(ErrorCode.WAITING_NOT_FOUND);
     }
 }
