@@ -3,7 +3,7 @@ package im.fooding.app.dto.response.waiting;
 import im.fooding.core.model.waiting.StoreWaiting;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public record WaitingResponse(
+public record StoreWaitingResponse(
         @Schema(description = "id", example = "1")
         long id,
 
@@ -32,8 +32,8 @@ public record WaitingResponse(
         String memo
 ) {
 
-    public static WaitingResponse from(StoreWaiting storeWaiting) {
-        return new WaitingResponse(
+    public static StoreWaitingResponse from(StoreWaiting storeWaiting) {
+        return new StoreWaitingResponse(
                 storeWaiting.getId(),
                 storeWaiting.getStoreId(),
                 WaitingUserResponse.from(storeWaiting.getUser()),

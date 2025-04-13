@@ -17,7 +17,7 @@ public class StoreWaitingService {
 
     private final StoreWaitingRepository storeWaitingRepository;
 
-    public StoreWaiting getStoreById(long id) {
+    public StoreWaiting getStoreWaiting(long id) {
         return storeWaitingRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_WAITING_NOT_FOUND));
     }

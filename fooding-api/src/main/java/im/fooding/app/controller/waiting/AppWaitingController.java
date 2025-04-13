@@ -1,6 +1,6 @@
 package im.fooding.app.controller.waiting;
 
-import im.fooding.app.dto.response.waiting.AppWaitingDetailsResponse;
+import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
 import im.fooding.app.service.waiting.AppWaitingApplicationService;
 import im.fooding.core.common.ApiResult;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,11 +21,11 @@ public class AppWaitingController {
 
     private final AppWaitingApplicationService appWaitingApplicationService;
 
-    @GetMapping("/{id}")
-    public ApiResult<AppWaitingDetailsResponse> details(
+    @GetMapping("/requests/{requestId}")
+    public ApiResult<StoreWaitingResponse> details(
             @Parameter(description = "웨이팅 id", example = "1")
-            @PathVariable long id
+            @PathVariable long requestId
     ) {
-        return ApiResult.ok(appWaitingApplicationService.details(id));
+        return ApiResult.ok(appWaitingApplicationService.details(requestId));
     }
 }
