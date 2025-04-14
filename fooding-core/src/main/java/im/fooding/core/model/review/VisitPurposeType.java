@@ -3,7 +3,7 @@ package im.fooding.core.model.review;
 import lombok.Getter;
 
 @Getter
-public enum PurposeType {
+public enum VisitPurposeType {
 
     MEETING("미팅"),
     DATE("데이트"),
@@ -14,7 +14,7 @@ public enum PurposeType {
 
     private final String label;
 
-    PurposeType(String label) {
+    VisitPurposeType(String label) {
         this.label = label;
     }
 }

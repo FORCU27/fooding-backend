@@ -3,8 +3,6 @@ package im.fooding.core.model.review;
 import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Embedded;
@@ -58,7 +56,7 @@ public class Review extends BaseEntity {
 
     @Column(name = "purpose_type", nullable = false)
     @Enumerated(EnumType.STRING)
-    private PurposeType purposeType;
+    private VisitPurposeType visitPurposeType;
 
     @Builder
     private Review(
@@ -66,18 +64,18 @@ public class Review extends BaseEntity {
             User writer,
             ReviewScore score,
             String content,
-            PurposeType purposeType
+            VisitPurposeType visitPurposeType
     ) {
         this.store = store;
         this.writer = writer;
         this.score = score;
         this.content = content;
-        this.purposeType = purposeType;
+        this.visitPurposeType = visitPurposeType;
     }
 
-    public void update(ReviewScore score, String content, PurposeType purposeType) {
+    public void update(ReviewScore score, String content, VisitPurposeType visitPurposeType) {
         this.score = score;
         this.content = content;
-        this.purposeType = purposeType;
+        this.visitPurposeType = visitPurposeType;
     }
 }
