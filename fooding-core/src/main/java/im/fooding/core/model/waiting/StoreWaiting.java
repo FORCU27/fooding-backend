@@ -42,6 +42,9 @@ public class StoreWaiting extends BaseEntity {
     @Column(name = "call_number", nullable = false)
     private int callNumber;
 
+    @Column(name = "store_waiting_status", nullable = false)
+    private StoreWaitingStatus status;
+
     @Column(name = "channel", nullable = false)
     @Enumerated(EnumType.STRING)
     private StoreWaitingChannel channel;
@@ -59,10 +62,19 @@ public class StoreWaiting extends BaseEntity {
     private String memo;
 
     @Builder
-    public StoreWaiting(WaitingUser user, Store store, int callNumber, StoreWaitingChannel channel, int infantChairCount, int infantCount, int adultCount) {
+    public StoreWaiting(
+            WaitingUser user,
+            Store store,
+            int callNumber,
+            StoreWaitingChannel channel,
+            int infantChairCount,
+            int infantCount,
+            int adultCount
+    ) {
         this.user = user;
         this.store = store;
         this.callNumber = callNumber;
+        this.status = StoreWaitingStatus.WAITING;
         this.channel = channel;
         this.infantChairCount = infantChairCount;
         this.infantCount = infantCount;
@@ -72,5 +84,21 @@ public class StoreWaiting extends BaseEntity {
 
     public void updateMemo(String memo) {
         this.memo = memo;
+    }
+
+    public void seat() {
+        this.status = StoreWaitingStatus.SEATED;
+    }
+
+    public void cancel() {
+        this.status = StoreWaitingStatus.CANCELLED;
+    }
+
+    public Long getStoreId() {
+        return store.getId();
+    }
+
+    public String getChannelValue() {
+        return channel.getValue();
     }
 }
