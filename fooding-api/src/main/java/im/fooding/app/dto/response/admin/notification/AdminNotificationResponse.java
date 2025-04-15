@@ -1,5 +1,6 @@
 package im.fooding.app.dto.response.admin.notification;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import im.fooding.core.model.notification.Notification;
 import im.fooding.core.model.notification.NotificationChannel;
 import im.fooding.core.model.notification.NotificationStatus;
@@ -42,22 +43,34 @@ public class AdminNotificationResponse {
     @Schema(description = "읽은 시간", example = "2025-04-11 14:00:00")
     private LocalDateTime readAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Schema(description = "예약 발송 시간", example = "2025-04-11 13:00:00")
     private LocalDateTime scheduledAt;
 
-    @Builder
-    private AdminNotificationResponse(long id, String source, List<String> destinations, String title, String content, NotificationChannel channel, NotificationStatus status, LocalDateTime sentAt, LocalDateTime readAt, LocalDateTime scheduledAt ) {
-      this.id = id;
-      this.source = source;
-      this.destinations = destinations;
-      this.title = title;
-      this.content = content;
-      this.channel = channel;
-      this.status = status;
-      this.sentAt = sentAt;
-      this.readAt = readAt;
-      this.scheduledAt = scheduledAt;
-    }
+  @Builder
+  private AdminNotificationResponse(
+          long id,
+          String source,
+          List<String> destinations,
+          String title,
+          String content,
+          NotificationChannel channel,
+          NotificationStatus status,
+          LocalDateTime sentAt,
+          LocalDateTime readAt,
+          LocalDateTime scheduledAt
+  ) {
+    this.id = id;
+    this.source = source;
+    this.destinations = destinations;
+    this.title = title;
+    this.content = content;
+    this.channel = channel;
+    this.status = status;
+    this.sentAt = sentAt;
+    this.readAt = readAt;
+    this.scheduledAt = scheduledAt;
+  }
 
     public static AdminNotificationResponse of(Notification notification) {
       return AdminNotificationResponse.builder()

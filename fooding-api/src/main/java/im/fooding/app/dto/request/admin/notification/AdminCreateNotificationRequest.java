@@ -1,11 +1,9 @@
 package im.fooding.app.dto.request.admin.notification;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import im.fooding.core.model.notification.NotificationChannel;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,6 +33,8 @@ public class AdminCreateNotificationRequest {
     @Schema(description = "알림 채널", example = "MAIL")
     private NotificationChannel channel;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Future(message = "예약 발송 시간은 미래여야 합니다.")
     @Schema(description = "예약 발송 시간(옵션)", example = "2025-04-11 13:00:00")
     private LocalDateTime scheduledAt;
 }
