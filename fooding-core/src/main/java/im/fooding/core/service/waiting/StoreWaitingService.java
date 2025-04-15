@@ -11,6 +11,9 @@ import im.fooding.core.repository.waiting.StoreWaitingRepository;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class StoreWaitingService {
 
     private final StoreWaitingRepository storeWaitingRepository;
+
+    public Page<StoreWaiting> list(StoreWaitingFilter filter, Pageable pageable) {
+        return storeWaitingRepository.findAllWithFilter(filter, pageable);
+    }
 
     @Transactional
     public StoreWaiting register(StoreWaitingRegisterRequest request) {
