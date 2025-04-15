@@ -52,4 +52,14 @@ public class StoreWaitingService {
             throw new ApiException(ErrorCode.WAITING_NOT_OPENED);
         }
     }
+
+    public int getOrder(long id) {
+        StoreWaiting storeWaiting = storeWaitingRepository.findById(id)
+                .orElseThrow(() -> new ApiException(ErrorCode.STORE_WAITING_NOT_FOUND));
+
+        return (int) storeWaitingRepository.countByStatusAndCreatedAtBefore(
+                storeWaiting.getStatus(),
+                storeWaiting.getCreatedAt()
+        ) + 1;
+    }
 }

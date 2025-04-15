@@ -4,6 +4,9 @@ import im.fooding.app.dto.request.waiting.AppWaitingRegisterRequest;
 import im.fooding.app.dto.response.waiting.AppWaitingRegisterResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
+import im.fooding.core.global.infra.slack.SlackClient;
+import im.fooding.core.global.util.WaitingMessageBuilder;
+import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
 import im.fooding.core.model.waiting.Waiting;
@@ -35,6 +38,7 @@ public class AppWaitingApplicationService {
     private final StoreWaitingService storeWaitingService;
     private final WaitingUserService waitingUserService;
     private final WaitingLogService waitingLogService;
+    private final SlackClient slackClient;
 
     public PageResponse<WaitingResponse> list(long id, WaitingListRequest request) {
 
@@ -61,6 +65,17 @@ public class AppWaitingApplicationService {
         Waiting waiting = waitingService.getById(id);
         storeWaitingService.validate(waiting);
 
+        WaitingUser waitingUser = getOrRegisterUser(request, phoneNumber, waiting);
+        StoreWaiting storeWaiting = registerStoreWaiting(request, waiting, waitingUser);
+
+        waitingLogService.logRegister(storeWaiting);
+
+        sendNotification(waiting, waitingUser, storeWaiting);
+
+        return new AppWaitingRegisterResponse(storeWaiting.getCallNumber());
+    }
+
+    private WaitingUser getOrRegisterUser(AppWaitingRegisterRequest request, String phoneNumber, Waiting waiting) {
         WaitingUserRegisterRequest waitingUserRegisterRequest = WaitingUserRegisterRequest.builder()
                 .store(waiting.getStore())
                 .name(request.name())
@@ -70,8 +85,11 @@ public class AppWaitingApplicationService {
                 .thirdPartyAgreed(request.thirdPartyAgreed())
                 .marketingConsent(request.marketingConsent())
                 .build();
-        WaitingUser waitingUser = waitingUserService.getOrElseRegister(waitingUserRegisterRequest);
 
+        return waitingUserService.getOrElseRegister(waitingUserRegisterRequest);
+    }
+
+    private StoreWaiting registerStoreWaiting(AppWaitingRegisterRequest request, Waiting waiting, WaitingUser waitingUser) {
         StoreWaitingRegisterRequest storeWaitingRegisterRequest = StoreWaitingRegisterRequest.builder()
                 .user(waitingUser)
                 .store(waiting.getStore())
@@ -80,10 +98,25 @@ public class AppWaitingApplicationService {
                 .infantCount(request.infantCount())
                 .adultCount(request.adultCount())
                 .build();
-        StoreWaiting storeWaiting = storeWaitingService.register(storeWaitingRegisterRequest);
 
-        waitingLogService.logRegister(storeWaiting);
+        return storeWaitingService.register(storeWaitingRegisterRequest);
+    }
 
-        return new AppWaitingRegisterResponse(storeWaiting.getCallNumber());
+    private void sendNotification(Waiting waiting, WaitingUser waitingUser, StoreWaiting storeWaiting) {
+        int order = storeWaitingService.getOrder(storeWaiting.getId());
+        int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
+
+        Store store = waiting.getStore();
+        String message = WaitingMessageBuilder.buildWaitingMessage(
+                store.getName(),
+                waitingUser.getName(),
+                store.getName(),
+                null, // todo: 매장 공지사항 정보 필요
+                personnel,
+                order,
+                storeWaiting.getCallNumber(),
+                -1 // todo: 미루기 기능을 위한 정보 필요
+        );
+        slackClient.sendNotificationMessage(message);
     }
 }
