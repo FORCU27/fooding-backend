@@ -39,7 +39,14 @@ public class WaitingSetting extends BaseEntity {
     private boolean isActive;
 
     @Builder
-    private WaitingSetting(Waiting waiting, String label, int minimumCapacity, int maximumCapacity, Integer estimatedWaitingTimeMinutes, boolean isActive) {
+    private WaitingSetting(
+            Waiting waiting,
+            String label,
+            int minimumCapacity,
+            int maximumCapacity,
+            Integer estimatedWaitingTimeMinutes,
+            boolean isActive
+    ) {
         this.waiting = waiting;
         this.label = label;
         this.minimumCapacity = minimumCapacity;

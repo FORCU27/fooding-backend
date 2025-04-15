@@ -15,6 +15,14 @@ import im.fooding.core.service.waiting.WaitingUserService;
 import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import im.fooding.app.dto.request.waiting.WaitingListRequest;
+import im.fooding.app.dto.response.waiting.WaitingResponse;
+import im.fooding.core.common.PageInfo;
+import im.fooding.core.common.PageResponse;
+import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
+import im.fooding.core.model.waiting.StoreWaitingStatus;
+import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +39,24 @@ public class AppWaitingApplicationService {
 
     public StoreWaitingResponse details(long id) {
         return StoreWaitingResponse.from(storeWaitingService.getStoreWaiting(id));
+    }
+
+    public PageResponse<WaitingResponse> list(long id, WaitingListRequest request) {
+
+        Waiting waiting = waitingService.getById(id);
+
+        StoreWaitingFilter storeWaitingFilter = StoreWaitingFilter.builder()
+                .storeId(waiting.getStore().getId())
+                .status(StoreWaitingStatus.of(request.status()))
+                .build();
+        Page<StoreWaiting> storeWaitings = storeWaitingService.list(storeWaitingFilter, request.pageable());
+
+        List<WaitingResponse> list = storeWaitings.getContent()
+                .stream()
+                .map(WaitingResponse::from)
+                .toList();
+
+        return PageResponse.of(list, PageInfo.of(storeWaitings));
     }
 
     @Transactional

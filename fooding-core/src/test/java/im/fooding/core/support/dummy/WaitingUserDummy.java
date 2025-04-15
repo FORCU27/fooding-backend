@@ -5,11 +5,11 @@ import im.fooding.core.model.waiting.WaitingUser;
 
 public class WaitingUserDummy {
 
-    public static WaitingUser createWithPhoneNumber(Store store, String phoneNumber) {
+    public static WaitingUser create(Store store) {
         return WaitingUser.builder()
                 .store(store)
                 .name("name")
-                .phoneNumber(phoneNumber)
+                .phoneNumber("01012345678")
                 .termsAgreed(true)
                 .privacyPolicyAgreed(true)
                 .thirdPartyAgreed(true)
@@ -17,11 +17,11 @@ public class WaitingUserDummy {
                 .build();
     }
 
-    public static WaitingUser create(Store store) {
+    public static WaitingUser createWithPhoneNumber(Store store, String phoneNumber) {
         return WaitingUser.builder()
                 .store(store)
                 .name("name")
-                .phoneNumber("01012345678")
+                .phoneNumber(phoneNumber)
                 .termsAgreed(true)
                 .privacyPolicyAgreed(true)
                 .thirdPartyAgreed(true)
