@@ -22,6 +22,7 @@ import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.model.waiting.StoreWaitingStatus;
 import im.fooding.core.repository.waiting.WaitingUserRepository;
 import im.fooding.core.support.dummy.StoreDummy;
+import im.fooding.core.support.dummy.StoreWaitingDummy;
 import im.fooding.core.support.dummy.WaitingUserDummy;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
@@ -30,6 +31,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.TestConstructor;
+import org.springframework.test.context.TestConstructor.AutowireMode;
 
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @RequiredArgsConstructor
@@ -37,15 +39,15 @@ class StoreWaitingServiceTest extends TestConfig {
 
     private final StoreWaitingService storeWaitingService;
     private final StoreWaitingRepository storeWaitingRepository;
-    private final WaitingUserRepository waitingUserRepository;
     private final StoreRepository storeRepository;
+    private final WaitingUserRepository waitingUserRepository;
     private final WaitingRepository waitingRepository;
 
     @AfterEach
     void tearDown() {
         storeWaitingRepository.deleteAll();
-        waitingUserRepository.deleteAll();
         storeRepository.deleteAll();
+        waitingUserRepository.deleteAll();
         waitingRepository.deleteAll();
     }
 
@@ -118,6 +120,31 @@ class StoreWaitingServiceTest extends TestConfig {
                 .hasSize(1);
         Assertions.assertThat(cancledStoreWaitingStatus)
                 .isEqualTo(StoreWaitingStatus.CANCELLED);
+    }
+
+    @Test
+    @DisplayName("웨이팅을 조회할 수 있다.")
+    public void testGetStoreWaiting() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
+        StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
+
+        // when & then
+        Assertions.assertThatCode(() -> storeWaitingService.getStoreWaiting(storeWaiting.getId()))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("없는 웨이팅을 조회할 수 있다.")
+    public void testGetStoreWaiting_fail() {
+        // when & then
+        ApiException e = assertThrows(
+                ApiException.class,
+                () -> storeWaitingService.getStoreWaiting(1L)
+        );
+        Assertions.assertThat(e.getErrorCode())
+                .isEqualTo(ErrorCode.STORE_WAITING_NOT_FOUND);
     }
 
     @Test
