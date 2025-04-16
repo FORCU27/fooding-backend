@@ -48,13 +48,22 @@ public class Notification extends BaseEntity {
 
     @Builder
     public Notification(String source, String destination,
-                        String title, String content, NotificationChannel channel, NotificationStatus status) {
+                        String title, String content, NotificationChannel channel, NotificationStatus status, LocalDateTime scheduledAt) {
       this.source = source;
       this.destination = destination;
       this.title = title;
       this.content = content;
       this.channel = channel;
       this.status = status;
+      this.scheduledAt = scheduledAt;
+    }
+
+    public void update(String title, String content, NotificationChannel channel, LocalDateTime scheduledAt) {
+      this.title = title;
+      this.content = content;
+      this.channel = channel;
+      this.scheduledAt = scheduledAt;
+      this.status = NotificationStatus.PENDING;
     }
 
     public void send() {
