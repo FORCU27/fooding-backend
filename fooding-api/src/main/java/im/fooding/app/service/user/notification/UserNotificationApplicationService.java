@@ -15,22 +15,6 @@ public class UserNotificationApplicationService {
     private String SENDER;
 
     /**
-     * 웨이팅 메세지 발송(슬랙으로 대체) 예시 추후 삭제 요망
-     *
-     * @param receiver
-     * @param store
-     * @param notice
-     * @param personnel
-     * @param myOrder
-     * @param waitingNumber
-     * @param delayWaitingNumber
-     */
-    public void sendWaitingMessage(String receiver, String store, String notice, int personnel, int myOrder, int waitingNumber, int delayWaitingNumber) {
-        String message = WaitingMessageBuilder.buildWaitingMessage(SENDER, receiver, store, notice, personnel, myOrder, waitingNumber, delayWaitingNumber);
-        slackClient.sendNotificationMessage(message);
-    }
-
-    /**
      * 입장 메세지 발송(슬랙으로 대체) 예시 추후 삭제 요망
      *
      * @param receiver

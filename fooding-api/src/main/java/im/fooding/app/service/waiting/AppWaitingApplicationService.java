@@ -70,7 +70,7 @@ public class AppWaitingApplicationService {
 
         waitingLogService.logRegister(storeWaiting);
 
-        sendNotification(waiting, waitingUser, storeWaiting);
+        sendNotification(waiting, storeWaiting);
 
         return new AppWaitingRegisterResponse(storeWaiting.getCallNumber());
     }
@@ -102,20 +102,16 @@ public class AppWaitingApplicationService {
         return storeWaitingService.register(storeWaitingRegisterRequest);
     }
 
-    private void sendNotification(Waiting waiting, WaitingUser waitingUser, StoreWaiting storeWaiting) {
+    private void sendNotification(Waiting waiting, StoreWaiting storeWaiting) {
         int order = storeWaitingService.getOrder(storeWaiting.getId());
         int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
 
         Store store = waiting.getStore();
         String message = WaitingMessageBuilder.buildWaitingMessage(
                 store.getName(),
-                waitingUser.getName(),
-                store.getName(),
-                null, // todo: 매장 공지사항 정보 필요
                 personnel,
                 order,
-                storeWaiting.getCallNumber(),
-                -1 // todo: 미루기 기능을 위한 정보 필요
+                storeWaiting.getCallNumber()
         );
         slackClient.sendNotificationMessage(message);
     }
