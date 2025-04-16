@@ -57,7 +57,7 @@ logging:
 
 webhook:
   slack:
-    url: https://hooks.slack.com/services/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
+    url: https://hooks.slack.com/services/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
 
 message:
   sender: 02-1234-5678
