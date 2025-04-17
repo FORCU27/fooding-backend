@@ -96,7 +96,7 @@ public class AppWaitingApplicationService {
     }
 
     public PageResponse<WaitingLogResponse> listLogs(long requestId, BasicSearch search) {
-        Page<WaitingLog> logs = waitingLogService.list(requestId, search);
+        Page<WaitingLog> logs = waitingLogService.list(requestId, search.getPageable());
 
         List<WaitingLogResponse> list = logs.getContent()
                 .stream()
