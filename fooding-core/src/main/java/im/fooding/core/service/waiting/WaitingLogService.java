@@ -1,9 +1,7 @@
 package im.fooding.core.service.waiting;
 
 import im.fooding.core.model.waiting.StoreWaiting;
-import im.fooding.core.model.waiting.StoreWaitingChannel;
 import im.fooding.core.model.waiting.WaitingLog;
-import im.fooding.core.model.waiting.WaitingLogType;
 import im.fooding.core.repository.waiting.WaitingLogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

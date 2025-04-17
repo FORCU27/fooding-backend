@@ -44,4 +44,8 @@ public class WaitingLog extends BaseEntity {
     public void entry() {
         this.type = WaitingLogType.ENTRY;
     }
+
+    public String getTypeValue() {
+        return type.getValue();
+    }
 }

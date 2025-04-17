@@ -94,11 +94,11 @@ public class StoreWaiting extends BaseEntity {
         this.status = StoreWaitingStatus.CANCELLED;
     }
 
-    public Long getStoreId() {
-        return store.getId();
-    }
-
     public String getChannelValue() {
         return channel.getValue();
+    }
+
+    public Long getStoreId() {
+        return store.getId();
     }
 }
