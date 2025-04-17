@@ -30,6 +30,11 @@ public class UserNotificationApplicationService {
         slackClient.sendNotificationMessage(message);
     }
 
+    public void sendWaitingCallMessage(String store, int callNumber, int entryTimeLimit) {
+        String message = WaitingMessageBuilder.buildWaitingCallMessage(store, callNumber, entryTimeLimit);
+        slackClient.sendNotificationMessage(message);
+    }
+
     /**
      * 입장 메세지 발송(슬랙으로 대체) 예시 추후 삭제 요망
      *
