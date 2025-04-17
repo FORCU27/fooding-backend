@@ -14,6 +14,11 @@ import im.fooding.core.common.PageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +38,14 @@ public class AppWaitingController {
             @ModelAttribute WaitingListRequest request
     ) {
         return ApiResult.ok(appWaitingApplicationService.list(id, request));
+    }
+
+    @GetMapping("/requests/{requestId}")
+    public ApiResult<StoreWaitingResponse> details(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long requestId
+    ) {
+        return ApiResult.ok(appWaitingApplicationService.details(requestId));
     }
 
     @PostMapping("/{id}/requests")

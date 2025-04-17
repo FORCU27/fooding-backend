@@ -29,6 +29,11 @@ public class StoreWaitingService {
         return storeWaitingRepository.findAllWithFilter(filter, pageable);
     }
 
+    public StoreWaiting getStoreWaiting(long id) {
+        return storeWaitingRepository.findById(id)
+                .orElseThrow(() -> new ApiException(ErrorCode.STORE_WAITING_NOT_FOUND));
+    }
+
     @Transactional
     public StoreWaiting register(StoreWaitingRegisterRequest request) {
         // TODO: 추후에 redis 로 개선

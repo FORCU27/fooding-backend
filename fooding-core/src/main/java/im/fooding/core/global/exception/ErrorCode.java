@@ -34,10 +34,14 @@ public enum ErrorCode {
     // 웨이팅
     WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3000", "등록된 웨이팅 정보가 없습니다."),
     WAITING_NOT_OPENED(HttpStatus.BAD_REQUEST, "3001", "웨이팅이 오픈상태가 아닙니다."),
-    STORE_WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3000", "등록된 가게 웨이팅 정보가 없습니다."),
+    STORE_WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3002", "등록된 가게 웨이팅이 없습니다."),
+
 
     // 디바이스
     DEVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "7000", "등록된 디바이스가 없습니다."),
+
+    // 알림
+    NOTIFICATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "5000", "등록된 알림이 없습니다.");
     ;
 
     private final HttpStatus status;

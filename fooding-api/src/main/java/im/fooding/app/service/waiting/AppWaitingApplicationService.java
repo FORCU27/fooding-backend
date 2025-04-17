@@ -15,6 +15,7 @@ import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingUserService;
+import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import im.fooding.app.dto.request.waiting.WaitingListRequest;
@@ -35,10 +36,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class AppWaitingApplicationService {
 
     private final WaitingService waitingService;
-    private final StoreWaitingService storeWaitingService;
     private final WaitingUserService waitingUserService;
+    private final StoreWaitingService storeWaitingService;
     private final WaitingLogService waitingLogService;
     private final SlackClient slackClient;
+
+    public StoreWaitingResponse details(long id) {
+        return StoreWaitingResponse.from(storeWaitingService.getStoreWaiting(id));
+    }
 
     public PageResponse<WaitingResponse> list(long id, WaitingListRequest request) {
 
