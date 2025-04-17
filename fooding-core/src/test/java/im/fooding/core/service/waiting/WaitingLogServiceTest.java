@@ -21,6 +21,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.TestConstructor;
 
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
@@ -59,5 +61,26 @@ class WaitingLogServiceTest extends TestConfig {
 
         Assertions.assertThat(waitingLog.getType())
                 .isEqualTo(WaitingLogType.WAITING_REGISTRATION);
+    }
+
+    @Test
+    @DisplayName("특정 가게 웨이팅과 관련된 로그를 모두 조회할 수 있다.")
+    public void testList() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        WaitingUser user = waitingUserRepository.save(WaitingUserDummy.createWithPhoneNumber(store, "01012345678"));
+        StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
+        List<WaitingLog> waitingLogs = List.of(
+                new WaitingLog(storeWaiting),
+                new WaitingLog(storeWaiting)
+        );
+        waitingLogRepository.saveAll(waitingLogs);
+
+        // when
+        Page<WaitingLog> page = waitingLogService.list(storeWaiting.getStoreId(), Pageable.unpaged());
+
+        // then
+        Assertions.assertThat(page.getContent().size())
+                .isEqualTo(2);
     }
 }

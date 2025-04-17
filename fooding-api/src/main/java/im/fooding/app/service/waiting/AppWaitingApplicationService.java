@@ -2,11 +2,14 @@ package im.fooding.app.service.waiting;
 
 import im.fooding.app.dto.request.waiting.AppWaitingRegisterRequest;
 import im.fooding.app.dto.response.waiting.AppWaitingRegisterResponse;
+import im.fooding.app.dto.response.waiting.WaitingLogResponse;
+import im.fooding.core.common.BasicSearch;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
 import im.fooding.core.model.waiting.Waiting;
+import im.fooding.core.model.waiting.WaitingLog;
 import im.fooding.core.model.waiting.WaitingUser;
 import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingLogService;
@@ -90,5 +93,16 @@ public class AppWaitingApplicationService {
         waitingLogService.logRegister(storeWaiting);
 
         return new AppWaitingRegisterResponse(storeWaiting.getCallNumber());
+    }
+
+    public PageResponse<WaitingLogResponse> listLogs(long requestId, BasicSearch search) {
+        Page<WaitingLog> logs = waitingLogService.list(requestId, search);
+
+        List<WaitingLogResponse> list = logs.getContent()
+                .stream()
+                .map(WaitingLogResponse::from)
+                .toList();
+
+        return PageResponse.of(list, PageInfo.of(logs));
     }
 }
