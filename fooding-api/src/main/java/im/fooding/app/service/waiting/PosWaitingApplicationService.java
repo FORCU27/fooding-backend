@@ -48,4 +48,9 @@ public class PosWaitingApplicationService {
 
         return PageResponse.of(list, PageInfo.of(storeWaitings));
     }
+
+    @Transactional
+    public void seat(long requestId) {
+        storeWaitingService.seat(requestId);
+    }
 }

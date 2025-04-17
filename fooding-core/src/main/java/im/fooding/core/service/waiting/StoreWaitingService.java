@@ -5,6 +5,7 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
+import im.fooding.core.model.waiting.StoreWaitingStatus;
 import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingStatus;
 import im.fooding.core.repository.waiting.StoreWaitingRepository;
@@ -56,5 +57,17 @@ public class StoreWaitingService {
         if (waiting.getStatus() != WaitingStatus.WAITING_OPEN) {
             throw new ApiException(ErrorCode.WAITING_NOT_OPENED);
         }
+    }
+
+    @Transactional
+    public void seat(long id) {
+        StoreWaiting storeWaiting = getStoreWaiting(id);
+
+        if (storeWaiting.getStatus() != StoreWaitingStatus.WAITING) {
+            throw new ApiException(ErrorCode.STORE_WAITING_ILLEGAL_STATE_SEAT);
+        }
+
+        storeWaiting.seat();
+        storeWaitingRepository.save(storeWaiting);
     }
 }
