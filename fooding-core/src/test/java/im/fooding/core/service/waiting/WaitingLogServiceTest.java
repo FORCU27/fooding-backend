@@ -77,7 +77,7 @@ class WaitingLogServiceTest extends TestConfig {
         waitingLogRepository.saveAll(waitingLogs);
 
         // when
-        Page<WaitingLog> page = waitingLogService.list(storeWaiting.getStoreId(), Pageable.unpaged());
+        Page<WaitingLog> page = waitingLogService.list(storeWaiting.getId(), Pageable.unpaged());
 
         // then
         Assertions.assertThat(page.getContent().size())
