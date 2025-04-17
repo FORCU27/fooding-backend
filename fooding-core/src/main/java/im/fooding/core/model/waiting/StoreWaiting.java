@@ -43,6 +43,7 @@ public class StoreWaiting extends BaseEntity {
     private int callNumber;
 
     @Column(name = "store_waiting_status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private StoreWaitingStatus status;
 
     @Column(name = "channel", nullable = false)
