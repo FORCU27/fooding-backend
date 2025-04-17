@@ -14,6 +14,16 @@ public class UserNotificationApplicationService {
     @Value("${message.sender}")
     private String SENDER;
 
+    public void sendWaitingRegisterMessage(String storeName, int personnel, int order, int callNumber) {
+        String message = WaitingMessageBuilder.buildRegisterMessage(
+                storeName,
+                personnel,
+                order,
+                callNumber
+        );
+        slackClient.sendNotificationMessage(message);
+    }
+
     /**
      * 입장 메세지 발송(슬랙으로 대체) 예시 추후 삭제 요망
      *

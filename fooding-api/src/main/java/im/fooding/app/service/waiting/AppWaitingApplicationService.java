@@ -2,6 +2,7 @@ package im.fooding.app.service.waiting;
 
 import im.fooding.app.dto.request.waiting.AppWaitingRegisterRequest;
 import im.fooding.app.dto.response.waiting.AppWaitingRegisterResponse;
+import im.fooding.app.service.user.notification.UserNotificationApplicationService;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
 import im.fooding.core.global.infra.slack.SlackClient;
@@ -39,7 +40,7 @@ public class AppWaitingApplicationService {
     private final WaitingUserService waitingUserService;
     private final StoreWaitingService storeWaitingService;
     private final WaitingLogService waitingLogService;
-    private final SlackClient slackClient;
+    private final UserNotificationApplicationService userNotificationApplicationService;
 
     public StoreWaitingResponse details(long id) {
         return StoreWaitingResponse.from(storeWaitingService.getStoreWaiting(id));
@@ -112,12 +113,11 @@ public class AppWaitingApplicationService {
         int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
 
         Store store = waiting.getStore();
-        String message = WaitingMessageBuilder.buildRegisterMessage(
+        userNotificationApplicationService.sendWaitingRegisterMessage(
                 store.getName(),
                 personnel,
                 order,
                 storeWaiting.getCallNumber()
         );
-        slackClient.sendNotificationMessage(message);
     }
 }
