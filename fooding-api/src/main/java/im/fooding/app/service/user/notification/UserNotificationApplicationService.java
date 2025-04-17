@@ -43,4 +43,9 @@ public class UserNotificationApplicationService {
         String message = WaitingMessageBuilder.buildEnterStoreMessage(SENDER, receiver, store, notice, waitingNumber, limitTime);
         slackClient.sendNotificationMessage(message);
     }
+
+    public void sendWaitingCancelMessage(String store, String reason) {
+        String message = WaitingMessageBuilder.buildCancelMessage(store, reason);
+        slackClient.sendNotificationMessage(message);
+    }
 }

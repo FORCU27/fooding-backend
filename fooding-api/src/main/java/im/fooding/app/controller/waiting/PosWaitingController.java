@@ -1,5 +1,6 @@
 package im.fooding.app.controller.waiting;
 
+import im.fooding.app.dto.request.waiting.PosWaitingCancelRequest;
 import im.fooding.app.service.waiting.PosWaitingApplicationService;
 import im.fooding.core.common.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,5 +31,17 @@ public class PosWaitingController {
             @ModelAttribute WaitingListRequest request
     ) {
         return ApiResult.ok(posWaitingApplicationService.list(id, request));
+    }
+
+    @PostMapping("/requests/{requestId}/cancel")
+    @Operation(summary = "웨이팅 취소")
+    ApiResult<Void> cancel(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long requestId,
+
+            @RequestBody PosWaitingCancelRequest request
+    ) {
+        posWaitingApplicationService.cancel(requestId, request.reason());
+        return ApiResult.ok();
     }
 }

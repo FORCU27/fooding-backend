@@ -42,4 +42,18 @@ public class WaitingMessageBuilder {
 
         return messageBuilder.toString();
     }
+
+    public static String buildCancelMessage(String store, String reason) {
+        return """
+               Title
+               웨이팅이 취소되었습니다.
+
+               [%s]의 웨이팅이 취소되었어요.
+
+               사유: %s
+
+               다음에 방문해 주세요!
+               """
+                .formatted(store, reason);
+    }
 }

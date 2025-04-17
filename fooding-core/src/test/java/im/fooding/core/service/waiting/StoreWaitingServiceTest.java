@@ -33,7 +33,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestConstructor.AutowireMode;
 
-@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@TestConstructor(autowireMode = AutowireMode.ALL)
 @RequiredArgsConstructor
 class StoreWaitingServiceTest extends TestConfig {
 
@@ -211,5 +211,40 @@ class StoreWaitingServiceTest extends TestConfig {
 
         assertThat(exception.getErrorCode())
                 .isEqualTo(ErrorCode.WAITING_NOT_OPENED);
+    }
+
+    @Test
+    @DisplayName("웨이팅을 취소할 수 있다.")
+    public void testCancel() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
+        StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
+
+        // when
+        storeWaitingService.cancel(storeWaiting.getId());
+
+        // then
+        Assertions.assertThat(storeWaiting.getStatus())
+                .isEqualTo(StoreWaitingStatus.CANCELLED);
+    }
+
+    @Test
+    @DisplayName("웨이팅 상태가 아닌 경우 웨이팅을 취소할 수 없다.")
+    public void testCancel_fail_whenStatusIsNotWaiting() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
+
+        StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
+        storeWaiting.cancel();
+
+        // when & then
+        ApiException e = assertThrows(
+                ApiException.class,
+                () -> storeWaitingService.cancel(storeWaiting.getId())
+        );
+        Assertions.assertThat(e.getErrorCode())
+                .isEqualTo(ErrorCode.STORE_WAITING_ILLEGAL_STATE_CANCEL);
     }
 }
