@@ -112,7 +112,7 @@ public class AppWaitingApplicationService {
         int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
 
         Store store = waiting.getStore();
-        String message = WaitingMessageBuilder.buildWaitingMessage(
+        String message = WaitingMessageBuilder.buildRegisterMessage(
                 store.getName(),
                 personnel,
                 order,

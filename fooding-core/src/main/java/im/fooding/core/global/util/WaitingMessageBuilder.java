@@ -1,7 +1,7 @@
 package im.fooding.core.global.util;
 
 public class WaitingMessageBuilder {
-    public static String buildWaitingMessage(String store, int totalPersonCount, int order, int waitingNumber) {
+    public static String buildRegisterMessage(String store, int totalPersonCount, int order, int waitingNumber) {
         return """
             title
             푸딩 웨이팅 등록 완료
