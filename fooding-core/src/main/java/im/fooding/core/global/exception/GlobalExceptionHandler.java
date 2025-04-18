@@ -19,6 +19,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
+import java.util.Arrays;
 
 @RestControllerAdvice
 @Slf4j
@@ -31,7 +32,7 @@ public class GlobalExceptionHandler {
         log.error("handleCustomException: {}", e.getErrorCode());
         ErrorResponse errorResponse = new ErrorResponse(e.getErrorCode(), request.getRequestURI(), request.getMethod());
         if (e.isNotifyTarget()) {
-            sendError(errorResponse, e.getStackTrace());
+            sendError(errorResponse, e.getDetailMessage());
         }
         return ResponseEntity
                 .status(e.getErrorCode().getStatus().value())
@@ -108,7 +109,7 @@ public class GlobalExceptionHandler {
     })
     protected ResponseEntity<ErrorResponse> DatabaseException(final Exception e, HttpServletRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.DATABASE_EXCEPTION, request.getRequestURI(), request.getMethod());
-        sendError(errorResponse, e.getStackTrace());
+        sendError(errorResponse, Arrays.toString(e.getStackTrace()));
         return ResponseEntity
                 .status(ErrorCode.DATABASE_EXCEPTION.getStatus().value())
                 .body(errorResponse);
@@ -117,13 +118,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> Exception(final Exception e, HttpServletRequest request) throws IOException {
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR, request.getRequestURI(), request.getMethod());
-        sendError(errorResponse, e.getStackTrace());
+        sendError(errorResponse, Arrays.toString(e.getStackTrace()));
         return ResponseEntity
                 .status(ErrorCode.INTERNAL_SERVER_ERROR.getStatus().value())
                 .body(errorResponse);
     }
 
-    private void sendError(ErrorResponse errorResponse, StackTraceElement[] getStackTrace) {
-        slackClient.sendErrorMessage(errorResponse, getStackTrace);
+    private void sendError(ErrorResponse errorResponse, String stackTrace) {
+        slackClient.sendErrorMessage(errorResponse, stackTrace);
     }
 }

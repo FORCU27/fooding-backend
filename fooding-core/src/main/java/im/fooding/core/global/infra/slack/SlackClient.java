@@ -3,7 +3,6 @@ package im.fooding.core.global.infra.slack;
 import com.slack.api.Slack;
 import com.slack.api.model.Attachment;
 import com.slack.api.model.Field;
-import com.slack.api.webhook.WebhookResponse;
 import im.fooding.core.global.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.slack.api.webhook.WebhookPayloads.payload;
@@ -35,7 +33,7 @@ public class SlackClient {
      * @param errorResponse
      */
     @Async
-    public void sendErrorMessage(ErrorResponse errorResponse, StackTraceElement[] getStackTrace) {
+    public void sendErrorMessage(ErrorResponse errorResponse, String stackTrace) {
         if (!activeProfile.equals("local")) {
             try {
                 String profile = activeProfile.equals("prod") ? "*[PROD] " : "*[STAGING] ";
@@ -47,7 +45,7 @@ public class SlackClient {
                                         generateSlackField(SlackConstant.ERROR.TIME, errorResponse.getTimestamp().toString()),
                                         generateSlackField(SlackConstant.ERROR.CODE, errorResponse.getCode()),
                                         generateSlackField(SlackConstant.ERROR.MESSAGE, errorResponse.getMessage()),
-                                        generateSlackField(SlackConstant.ERROR.STACK_TRACE, Arrays.toString(getStackTrace))
+                                        generateSlackField(SlackConstant.ERROR.STACK_TRACE, stackTrace)
                                 ))
                                 .build())))
                 );

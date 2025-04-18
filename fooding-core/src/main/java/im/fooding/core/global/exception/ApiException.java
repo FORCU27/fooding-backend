@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public class ApiException extends RuntimeException {
     private ErrorCode errorCode;
+    private String detailMessage;
 
     public boolean isNotifyTarget() {
         return switch (errorCode) {
@@ -18,8 +19,9 @@ public class ApiException extends RuntimeException {
         this.errorCode = e;
     }
 
-    public ApiException(ErrorCode errorCode, Throwable cause) {
-        super(errorCode.getMessage(), cause);
+    public ApiException(ErrorCode errorCode, String detailMessage) {
+        super(errorCode.getMessage());
         this.errorCode = errorCode;
+        this.detailMessage = detailMessage;
     }
 }

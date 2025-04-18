@@ -1,5 +1,6 @@
 package im.fooding.app.service.user.auth;
 
+import feign.FeignException;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.global.feign.client.SocialLoginClient;
@@ -114,8 +115,13 @@ public class UserAuthApplicationService {
                 }
                 default -> throw new ApiException(ErrorCode.UNSUPPORTED_SOCIAL);
             }
+        } catch (FeignException e) {
+            String detailMessage = e.responseBody()
+                    .map(bytes -> new String(bytes.array()))
+                    .orElse(null);
+            throw new ApiException(ErrorCode.OAUTH_FAILED, detailMessage);
         } catch (Exception e) {
-            throw new ApiException(ErrorCode.OAUTH_FAILED, e);
+            throw new ApiException(ErrorCode.OAUTH_FAILED, e.getMessage());
         }
     }
 
@@ -133,8 +139,13 @@ public class UserAuthApplicationService {
                 throw new ApiException(ErrorCode.EMAIL_CONSENT_REQUIRED);
             }
             return kakaoUserProfile;
-        } catch (Exception e) {
-            throw new ApiException(ErrorCode.OAUTH_FAILED, e);
+        } catch (FeignException e) {
+            String detailMessage = e.responseBody()
+                    .map(bytes -> new String(bytes.array()))
+                    .orElse(null);
+            throw new ApiException(ErrorCode.OAUTH_FAILED, detailMessage);
+        }  catch (Exception e) {
+            throw new ApiException(ErrorCode.OAUTH_FAILED);
         }
     }
 
@@ -151,8 +162,13 @@ public class UserAuthApplicationService {
                 throw new ApiException(ErrorCode.EMAIL_CONSENT_REQUIRED);
             }
             return googleUserResponse;
+        } catch (FeignException e) {
+            String detailMessage = e.responseBody()
+                    .map(bytes -> new String(bytes.array()))
+                    .orElse(null);
+            throw new ApiException(ErrorCode.OAUTH_FAILED, detailMessage);
         } catch (Exception e) {
-            throw new ApiException(ErrorCode.OAUTH_FAILED, e);
+            throw new ApiException(ErrorCode.OAUTH_FAILED);
         }
     }
 
@@ -170,8 +186,13 @@ public class UserAuthApplicationService {
                 throw new ApiException(ErrorCode.EMAIL_CONSENT_REQUIRED);
             }
             return naverUserProfile;
+        } catch (FeignException e) {
+            String detailMessage = e.responseBody()
+                    .map(bytes -> new String(bytes.array()))
+                    .orElse(null);
+            throw new ApiException(ErrorCode.OAUTH_FAILED, detailMessage);
         } catch (Exception e) {
-            throw new ApiException(ErrorCode.OAUTH_FAILED, e);
+            throw new ApiException(ErrorCode.OAUTH_FAILED);
         }
     }
 
@@ -185,7 +206,7 @@ public class UserAuthApplicationService {
         try {
             return AppleLoginUtil.parseIdToken(token);
         } catch (Exception e) {
-            throw new ApiException(ErrorCode.OAUTH_FAILED, e);
+            throw new ApiException(ErrorCode.OAUTH_FAILED);
         }
     }
 
