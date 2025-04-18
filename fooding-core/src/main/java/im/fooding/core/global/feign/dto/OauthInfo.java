@@ -1,5 +1,8 @@
 package im.fooding.core.global.feign.dto;
 
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.global.util.AppleLoginUtil;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -28,9 +31,10 @@ public class OauthInfo {
     private final String naverRedirectUri;
 
     private final String appleClientId;
-    private final String appleClientSecret;
+    private final String appleTeamId;
+    private final String appleKeyId;
+    private final String applePrivateKey;
     private final String appleTokenUri;
-    private final String appleUserInfoUri;
     private final String appleRedirectUri;
 
     public OauthInfo(@Value("${auth.google.client-id:null}") String googleClientId,
@@ -48,9 +52,10 @@ public class OauthInfo {
                      @Value("${auth.naver.user-info-uri:null}") String naverUserInfoUri,
                      @Value("${auth.naver.redirect-uri:null}") String naverRedirectUri,
                      @Value("${auth.apple.client-id:null}") String appleClientId,
-                     @Value("${auth.apple.client-secret:null}") String appleClientSecret,
+                     @Value("${auth.apple.team-id:null}") String appleTeamId,
+                     @Value("${auth.apple.key-id:null}") String appleKeyId,
+                     @Value("${auth.apple.private-key:null}") String applePrivateKey,
                      @Value("${auth.apple.token-uri:null}") String appleTokenUri,
-                     @Value("${auth.apple.user-info-uri:null}") String appleUserInfoUri,
                      @Value("${auth.apple.redirect-uri:null}") String appleRedirectUri
     ) {
         this.googleClientId = googleClientId;
@@ -68,9 +73,19 @@ public class OauthInfo {
         this.naverUserInfoUri = naverUserInfoUri;
         this.naverRedirectUri = naverRedirectUri;
         this.appleClientId = appleClientId;
-        this.appleClientSecret = appleClientSecret;
+        this.appleTeamId = appleTeamId;
+        this.appleKeyId = appleKeyId;
+        this.applePrivateKey = applePrivateKey;
         this.appleTokenUri = appleTokenUri;
-        this.appleUserInfoUri = appleUserInfoUri;
         this.appleRedirectUri = appleRedirectUri;
+    }
+
+    public String getAppleClientSecret() {
+        try {
+            return AppleLoginUtil.generateClientSecret(appleTeamId, appleClientId, appleKeyId, applePrivateKey);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 }

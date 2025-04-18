@@ -2,11 +2,6 @@ package im.fooding.app.service.user.auth;
 
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
-import im.fooding.core.global.jwt.dto.TokenResponse;
-import im.fooding.core.global.jwt.service.JwtService;
-import im.fooding.core.model.user.AuthProvider;
-import im.fooding.core.model.user.Role;
-import im.fooding.core.model.user.User;
 import im.fooding.core.global.feign.client.SocialLoginClient;
 import im.fooding.core.global.feign.dto.OauthInfo;
 import im.fooding.core.global.feign.dto.google.GoogleUserResponse;
@@ -14,6 +9,12 @@ import im.fooding.core.global.feign.dto.kakao.KakaoUserProfile;
 import im.fooding.core.global.feign.dto.kakao.KakaoUserResponse;
 import im.fooding.core.global.feign.dto.naver.NaverUserProfile;
 import im.fooding.core.global.feign.dto.naver.NaverUserResponse;
+import im.fooding.core.global.jwt.dto.TokenResponse;
+import im.fooding.core.global.jwt.service.JwtService;
+import im.fooding.core.global.util.AppleLoginUtil;
+import im.fooding.core.model.user.AuthProvider;
+import im.fooding.core.model.user.Role;
+import im.fooding.core.model.user.User;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,26 +41,26 @@ public class UserAuthApplicationService {
      */
     @Transactional
     public TokenResponse login(AuthProvider provider, String code, Role role) {
-        String accessToken = getToken(provider, code);
+        String token = getToken(provider, code);
         switch (provider) {
             case KAKAO -> {
-                KakaoUserProfile kakaoUserProfile = this.kakao(accessToken);
+                KakaoUserProfile kakaoUserProfile = this.kakao(token);
                 return this.verifyOrRegisterAndIssueToken(kakaoUserProfile.getEmail(), provider, role);
             }
             case GOOGLE -> {
-                GoogleUserResponse googleUserResponse = this.google(accessToken);
+                GoogleUserResponse googleUserResponse = this.google(token);
                 return this.verifyOrRegisterAndIssueToken(googleUserResponse.getEmail(), provider, role);
             }
             case NAVER -> {
-                NaverUserProfile naverUserProfile = this.naver(accessToken);
+                NaverUserProfile naverUserProfile = this.naver(token);
                 return this.verifyOrRegisterAndIssueToken(naverUserProfile.getEmail(), provider, role);
             }
             case APPLE -> {
-                //TODO
+                String email = this.apple(token);
+                return this.verifyOrRegisterAndIssueToken(email, provider, role);
             }
             default -> throw new ApiException(ErrorCode.UNSUPPORTED_SOCIAL);
         }
-        return null;
     }
 
     /**
@@ -101,14 +102,20 @@ public class UserAuthApplicationService {
                     ).getAccessToken();
                 }
                 case APPLE -> {
-                    //TODO
+                    return client.getAppleToken(
+                            new URI(oauthInfo.getAppleTokenUri()),
+                            oauthInfo.getAppleClientId(),
+                            oauthInfo.getAppleClientSecret(),
+                            oauthInfo.getAppleRedirectUri(),
+                            code,
+                            "authorization_code"
+                    ).getIdToken();
                 }
                 default -> throw new ApiException(ErrorCode.UNSUPPORTED_SOCIAL);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ApiException(ErrorCode.LOGIN_FAILED);
         }
-        return null;
     }
 
     /**
@@ -164,6 +171,21 @@ public class UserAuthApplicationService {
                 throw new ApiException(ErrorCode.EMAIL_CONSENT_REQUIRED);
             }
             return naverUserProfile;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 애플 이메일 조회
+     *
+     * @param token
+     * @return String
+     */
+    private String apple(final String token) {
+        try {
+            return AppleLoginUtil.parseIdToken(token);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR);
