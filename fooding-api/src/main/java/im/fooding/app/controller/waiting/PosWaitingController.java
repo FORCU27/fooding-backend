@@ -11,6 +11,7 @@ import im.fooding.app.dto.response.waiting.WaitingResponse;
 import im.fooding.core.common.PageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -39,7 +40,7 @@ public class PosWaitingController {
             @Parameter(description = "웨이팅 id", example = "1")
             @PathVariable long requestId,
 
-            @RequestBody PosWaitingCancelRequest request
+            @RequestBody @Validated PosWaitingCancelRequest request
     ) {
         posWaitingApplicationService.cancel(requestId, request.reason());
         return ApiResult.ok();
