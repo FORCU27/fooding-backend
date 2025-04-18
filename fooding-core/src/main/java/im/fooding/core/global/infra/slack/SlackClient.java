@@ -3,6 +3,7 @@ package im.fooding.core.global.infra.slack;
 import com.slack.api.Slack;
 import com.slack.api.model.Attachment;
 import com.slack.api.model.Field;
+import com.slack.api.webhook.WebhookResponse;
 import im.fooding.core.global.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

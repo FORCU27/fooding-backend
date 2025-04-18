@@ -30,6 +30,9 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleCustomException(final ApiException e, HttpServletRequest request) {
         log.error("handleCustomException: {}", e.getErrorCode());
         ErrorResponse errorResponse = new ErrorResponse(e.getErrorCode(), request.getRequestURI(), request.getMethod());
+        if (e.isNotifyTarget()) {
+            sendError(errorResponse, e.getStackTrace());
+        }
         return ResponseEntity
                 .status(e.getErrorCode().getStatus().value())
                 .body(errorResponse);

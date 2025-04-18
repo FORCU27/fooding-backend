@@ -115,8 +115,7 @@ public class UserAuthApplicationService {
                 default -> throw new ApiException(ErrorCode.UNSUPPORTED_SOCIAL);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new ApiException(ErrorCode.LOGIN_FAILED);
+            throw new ApiException(ErrorCode.OAUTH_FAILED, e);
         }
     }
 
@@ -135,8 +134,7 @@ public class UserAuthApplicationService {
             }
             return kakaoUserProfile;
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new ApiException(ErrorCode.OAUTH_FAILED, e);
         }
     }
 
@@ -154,8 +152,7 @@ public class UserAuthApplicationService {
             }
             return googleUserResponse;
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new ApiException(ErrorCode.OAUTH_FAILED, e);
         }
     }
 
@@ -174,8 +171,7 @@ public class UserAuthApplicationService {
             }
             return naverUserProfile;
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new ApiException(ErrorCode.OAUTH_FAILED, e);
         }
     }
 
@@ -189,8 +185,7 @@ public class UserAuthApplicationService {
         try {
             return AppleLoginUtil.parseIdToken(token);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new ApiException(ErrorCode.OAUTH_FAILED, e);
         }
     }
 
