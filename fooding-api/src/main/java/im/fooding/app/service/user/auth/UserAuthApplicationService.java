@@ -43,20 +43,21 @@ public class UserAuthApplicationService {
     public TokenResponse login(AuthProvider provider, String code, Role role) {
         String token = getToken(provider, code);
         switch (provider) {
+            // TODO: 디자인 패턴 적용
             case KAKAO -> {
-                KakaoUserProfile kakaoUserProfile = this.kakao(token);
+                KakaoUserProfile kakaoUserProfile = this.getKakaoUser(token);
                 return this.verifyOrRegisterAndIssueToken(kakaoUserProfile.getEmail(), provider, role);
             }
             case GOOGLE -> {
-                GoogleUserResponse googleUserResponse = this.google(token);
+                GoogleUserResponse googleUserResponse = this.getGoogleUser(token);
                 return this.verifyOrRegisterAndIssueToken(googleUserResponse.getEmail(), provider, role);
             }
             case NAVER -> {
-                NaverUserProfile naverUserProfile = this.naver(token);
+                NaverUserProfile naverUserProfile = this.getNaverUser(token);
                 return this.verifyOrRegisterAndIssueToken(naverUserProfile.getEmail(), provider, role);
             }
             case APPLE -> {
-                String email = this.apple(token);
+                String email = this.getAppleUser(token);
                 return this.verifyOrRegisterAndIssueToken(email, provider, role);
             }
             default -> throw new ApiException(ErrorCode.UNSUPPORTED_SOCIAL);
@@ -124,7 +125,7 @@ public class UserAuthApplicationService {
      * @param token
      * @return KakaoAccount
      */
-    private KakaoUserProfile kakao(final String token) {
+    private KakaoUserProfile getKakaoUser(final String token) {
         try {
             KakaoUserResponse kakaoUserResponse = client.getKakaoUserInfo(new URI(oauthInfo.getKakaoUserInfoUri()), oauthInfo.getTokenType() + token);
             KakaoUserProfile kakaoUserProfile = kakaoUserResponse.getUser();
@@ -144,7 +145,7 @@ public class UserAuthApplicationService {
      * @param token
      * @return GoogleAccount
      */
-    private GoogleUserResponse google(final String token) {
+    private GoogleUserResponse getGoogleUser(final String token) {
         try {
             GoogleUserResponse googleUserResponse = client.getGoogleUserInfo(new URI(oauthInfo.getGoogleUserInfoUri()), token);
             if (googleUserResponse.getEmail() == null) {
@@ -163,7 +164,7 @@ public class UserAuthApplicationService {
      * @param token
      * @return NaverAccount
      */
-    private NaverUserProfile naver(final String token) {
+    private NaverUserProfile getNaverUser(final String token) {
         try {
             NaverUserResponse naverUserResponse = client.getNaverUserInfo(new URI(oauthInfo.getNaverUserInfoUri()), oauthInfo.getTokenType() + token);
             NaverUserProfile naverUserProfile = naverUserResponse.getUser();
@@ -183,7 +184,7 @@ public class UserAuthApplicationService {
      * @param token
      * @return String
      */
-    private String apple(final String token) {
+    private String getAppleUser(final String token) {
         try {
             return AppleLoginUtil.parseIdToken(token);
         } catch (Exception e) {
