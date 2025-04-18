@@ -56,7 +56,7 @@ public class UserAuthApplicationService {
                 return this.verifyOrRegisterAndIssueToken(naverUserProfile.getEmail(), provider, role);
             }
             case APPLE -> {
-                String email = AppleLoginUtil.parseIdToken(token);
+                String email = this.apple(token);
                 return this.verifyOrRegisterAndIssueToken(email, provider, role);
             }
             default -> throw new ApiException(ErrorCode.UNSUPPORTED_SOCIAL);
@@ -105,7 +105,7 @@ public class UserAuthApplicationService {
                     return client.getAppleToken(
                             new URI(oauthInfo.getAppleTokenUri()),
                             oauthInfo.getAppleClientId(),
-                            AppleLoginUtil.generateClientSecret(oauthInfo.getAppleTeamId(), oauthInfo.getAppleClientId(), oauthInfo.getAppleKeyId(), oauthInfo.getApplePrivateKey()),
+                            oauthInfo.getAppleClientSecret(),
                             oauthInfo.getAppleRedirectUri(),
                             code,
                             "authorization_code"
@@ -171,6 +171,21 @@ public class UserAuthApplicationService {
                 throw new ApiException(ErrorCode.EMAIL_CONSENT_REQUIRED);
             }
             return naverUserProfile;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * 애플 이메일 조회
+     *
+     * @param token
+     * @return String
+     */
+    private String apple(final String token) {
+        try {
+            return AppleLoginUtil.parseIdToken(token);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR);

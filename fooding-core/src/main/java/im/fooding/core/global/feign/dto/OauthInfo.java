@@ -1,5 +1,8 @@
 package im.fooding.core.global.feign.dto;
 
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.global.util.AppleLoginUtil;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -75,5 +78,14 @@ public class OauthInfo {
         this.applePrivateKey = applePrivateKey;
         this.appleTokenUri = appleTokenUri;
         this.appleRedirectUri = appleRedirectUri;
+    }
+
+    public String getAppleClientSecret() {
+        try {
+            return AppleLoginUtil.generateClientSecret(appleTeamId, appleClientId, appleKeyId, applePrivateKey);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR);
+        }
     }
 }
