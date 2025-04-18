@@ -68,6 +68,5 @@ public class StoreWaitingService {
         }
 
         storeWaiting.seat();
-        storeWaitingRepository.save(storeWaiting);
     }
 }
