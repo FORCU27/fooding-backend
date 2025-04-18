@@ -19,6 +19,7 @@ public enum ErrorCode {
     REFRESH_TOKEN_FAILED(HttpStatus.BAD_REQUEST, "0011", "토큰 갱신에 실패하셨습니다."),
     DATABASE_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "0012", "데이터베이스 에러 입니다."),
     FEIGN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "0013", "토큰이 만료되었습니다."),
+    OAUTH_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "0014", "소셜로그인에 실패하셨습니다."),
 
     // 회원
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "1000", "가입된 정보가 없습니다."),
