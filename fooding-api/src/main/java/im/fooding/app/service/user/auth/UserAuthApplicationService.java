@@ -115,6 +115,7 @@ public class UserAuthApplicationService {
                 default -> throw new ApiException(ErrorCode.UNSUPPORTED_SOCIAL);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ApiException(ErrorCode.LOGIN_FAILED);
         }
     }
