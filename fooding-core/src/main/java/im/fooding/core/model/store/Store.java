@@ -1,11 +1,17 @@
 package im.fooding.core.model.store;
 
 import im.fooding.core.model.BaseEntity;
+import im.fooding.core.model.review.Review;
+import im.fooding.core.model.waiting.Waiting;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -64,8 +70,14 @@ public class Store extends BaseEntity {
     @Column(nullable = false)
     private boolean isTakeOut;
 
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Waiting> waitings = new ArrayList<>();
+
     @Builder
-    public Store(
+    private Store(
             String name,
             String city,
             String address,
@@ -93,6 +105,20 @@ public class Store extends BaseEntity {
         this.isParkingAvailable = isParkingAvailable;
         this.isNewOpen = isNewOpen;
         this.isTakeOut = isTakeOut;
+    }
+
+    public void addReview(Review review) {
+        this.reviews.add(review);
+        if (review.getStore() != this) {
+            review.addReceipt(this);
+        }
+    }
+
+    public void addWaiting(Waiting waiting) {
+        this.waitings.add(waiting);
+        if (waiting.getStore() != this) {
+            waiting.addStore(this);
+        }
     }
 
     public void updateStoreName(String name) {
