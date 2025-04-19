@@ -63,10 +63,6 @@ public class StoreWaitingService {
     public StoreWaiting cancel(long id) {
         StoreWaiting storeWaiting = get(id);
 
-        if (storeWaiting.getStatus() != StoreWaitingStatus.WAITING) {
-            throw new ApiException(ErrorCode.STORE_WAITING_ILLEGAL_STATE_CANCEL);
-        }
-
         storeWaiting.cancel();
         return storeWaitingRepository.save(storeWaiting);
     }
