@@ -57,7 +57,7 @@ logging:
 
 webhook:
   slack:
-    url: https://hooks.slack.com/services/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
+    url: ${WEBHOOK_SLACK_URL}
 
 message:
   sender: 02-1234-5678
@@ -84,8 +84,16 @@ auth:
     redirect-uri: http://localhost:8080/user/auth/naver/token
 
   apple:
-    client-id: ""
-    client-secret: ""
-    token-uri: ""
-    user-info-uri: ""
-    redirect-uri: http://localhost:8080/user/auth/apple/token
+    client-id: im.fooding.loginservice
+    team-id: 4TS88K9HKJ
+    key-id: 4PPY69KNW8
+    private-key: MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgrHlqh7uGlOTNbxyBSeyyZ4JyLKNMDboPO+K4he/6URKgCgYIKoZIzj0DAQehRANCAASN1R+nHzVoAbh7kRGG4GBdlOAqZTWsvC4AaWjQl2osHTB7Vu2ctjTvKJTD6Col9dCt4eFTPSQyMX+7ezJyucy2
+    token-uri: https://appleid.apple.com/auth/token
+    redirect-uri: https://localhost.com:8080/user/auth/apple/token
+
+server:
+  port: 8080
+  ssl:
+    key-store: classpath:/keystore/keystore.p12
+    key-store-password: password
+    key-store-type: PKCS12

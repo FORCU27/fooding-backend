@@ -69,4 +69,14 @@ public class StoreWaitingService {
 
         storeWaiting.seat();
     }
+
+    public int getOrder(long id) {
+        StoreWaiting storeWaiting = storeWaitingRepository.findById(id)
+                .orElseThrow(() -> new ApiException(ErrorCode.STORE_WAITING_NOT_FOUND));
+
+        return (int) storeWaitingRepository.countByStatusAndCreatedAtBefore(
+                storeWaiting.getStatus(),
+                storeWaiting.getCreatedAt()
+        ) + 1;
+    }
 }

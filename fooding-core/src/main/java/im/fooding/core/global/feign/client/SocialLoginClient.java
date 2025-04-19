@@ -1,11 +1,12 @@
 package im.fooding.core.global.feign.client;
 
-import im.fooding.core.global.feign.dto.google.GoogleUserResponse;
+import im.fooding.core.global.feign.dto.apple.AppleTokenResponse;
 import im.fooding.core.global.feign.dto.google.GoogleTokenResponse;
-import im.fooding.core.global.feign.dto.kakao.KakaoUserResponse;
+import im.fooding.core.global.feign.dto.google.GoogleUserResponse;
 import im.fooding.core.global.feign.dto.kakao.KakaoTokenResponse;
-import im.fooding.core.global.feign.dto.naver.NaverUserResponse;
+import im.fooding.core.global.feign.dto.kakao.KakaoUserResponse;
 import im.fooding.core.global.feign.dto.naver.NaverTokenResponse;
+import im.fooding.core.global.feign.dto.naver.NaverUserResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,5 +50,15 @@ public interface SocialLoginClient {
                                      @RequestParam("client_secret") String clientSecret,
                                      @RequestParam("code") String code,
                                      @RequestParam("grant_type") String grantType
+    );
+
+    @PostMapping
+    AppleTokenResponse getAppleToken(
+            URI baseUrl,
+            @RequestParam("client_id") String clientId,
+            @RequestParam("client_secret") String clientSecret,
+            @RequestParam("redirect_uri") String redirectUri,
+            @RequestParam("code") String code,
+            @RequestParam("grant_type") String grantType
     );
 }
