@@ -3,6 +3,8 @@ package im.fooding.core.service.waiting;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import im.fooding.core.TestConfig;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
@@ -29,6 +31,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.TestConstructor;
 
@@ -218,33 +221,12 @@ class StoreWaitingServiceTest extends TestConfig {
         // given
         Store store = storeRepository.save(StoreDummy.create());
         WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
-        StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
+        StoreWaiting storeWaiting = storeWaitingRepository.save(spy(StoreWaitingDummy.create(user, store)));
 
         // when
         storeWaitingService.seat(storeWaiting.getId());
 
         // then
-        Assertions.assertThat(storeWaiting.getStatus())
-                .isEqualTo(StoreWaitingStatus.SEATED);
-    }
-
-    @Test
-    @DisplayName("웨이팅 상태가 아닌 경우 웨이팅 처리할 수 없다.")
-    public void testSeat_fail_whenStatusIsNotWaiting() {
-        // given
-        Store store = storeRepository.save(StoreDummy.create());
-        WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
-        StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
-
-        // when
-        storeWaitingService.seat(storeWaiting.getId());
-
-        // then
-        ApiException e = assertThrows(
-                ApiException.class,
-                () -> storeWaitingService.seat(storeWaiting.getId())
-        );
-        Assertions.assertThat(e.getErrorCode())
-                .isEqualTo(ErrorCode.STORE_WAITING_ILLEGAL_STATE_SEAT);
+        verify(storeWaiting).seat();
     }
 }

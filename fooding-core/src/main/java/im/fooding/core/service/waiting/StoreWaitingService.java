@@ -63,10 +63,6 @@ public class StoreWaitingService {
     public void seat(long id) {
         StoreWaiting storeWaiting = getStoreWaiting(id);
 
-        if (storeWaiting.getStatus() != StoreWaitingStatus.WAITING) {
-            throw new ApiException(ErrorCode.STORE_WAITING_ILLEGAL_STATE_SEAT);
-        }
-
         storeWaiting.seat();
     }
 
