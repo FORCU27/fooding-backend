@@ -43,7 +43,7 @@ public class WaitingMessageBuilder {
         return messageBuilder.toString();
     }
 
-    public static String buildCancelMessage(String store, String reason) {
+    public static String buildCancel(String store, String reason) {
         return """
                Title
                웨이팅이 취소되었습니다.

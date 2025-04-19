@@ -131,7 +131,7 @@ class StoreWaitingServiceTest extends TestConfig {
         StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
 
         // when & then
-        Assertions.assertThatCode(() -> storeWaitingService.getStoreWaiting(storeWaiting.getId()))
+        Assertions.assertThatCode(() -> storeWaitingService.get(storeWaiting.getId()))
                 .doesNotThrowAnyException();
     }
 
@@ -141,7 +141,7 @@ class StoreWaitingServiceTest extends TestConfig {
         // when & then
         ApiException e = assertThrows(
                 ApiException.class,
-                () -> storeWaitingService.getStoreWaiting(1L)
+                () -> storeWaitingService.get(1L)
         );
         Assertions.assertThat(e.getErrorCode())
                 .isEqualTo(ErrorCode.STORE_WAITING_NOT_FOUND);
