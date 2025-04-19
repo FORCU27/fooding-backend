@@ -49,9 +49,9 @@ public class PosWaitingApplicationService {
 
     @Transactional
     public void call(long requestId) {
-        WaitingSetting waitingSetting = waitingSettingService.getActiveSetting();
-
         StoreWaiting storeWaiting = storeWaitingService.call(requestId);
+
+        WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(storeWaiting.getStore());
 
         userNotificationApplicationService.sendWaitingCallMessage(
                 storeWaiting.getStoreName(),

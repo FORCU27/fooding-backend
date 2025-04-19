@@ -46,7 +46,7 @@ class WaitingSettingServiceTest extends TestConfig {
         waitingSettingRepository.save(WaitingSettingDummy.create(waiting, true));
 
         // when
-        WaitingSetting waitingSetting = waitingSettingService.getActiveSetting();
+        WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(store);
 
         // then
         Assertions.assertThat(waitingSetting.isActive())
@@ -62,7 +62,7 @@ class WaitingSettingServiceTest extends TestConfig {
         waitingSettingRepository.save(WaitingSettingDummy.create(waiting, false));
 
         // when & then
-        ApiException e = assertThrows(ApiException.class, waitingSettingService::getActiveSetting);
+        ApiException e = assertThrows(ApiException.class, () -> waitingSettingService.getActiveSetting(store));
         Assertions.assertThat(e.getErrorCode())
                 .isEqualTo(ErrorCode.ACTIVE_WAITING_SETTING_NOT_FOUND);
     }
