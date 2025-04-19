@@ -2,8 +2,10 @@ package im.fooding.app.controller.waiting;
 
 import im.fooding.app.dto.request.waiting.AppWaitingRegisterRequest;
 import im.fooding.app.dto.response.waiting.AppWaitingRegisterResponse;
+import im.fooding.app.dto.response.waiting.WaitingLogResponse;
 import im.fooding.app.service.waiting.AppWaitingApplicationService;
 import im.fooding.core.common.ApiResult;
+import im.fooding.core.common.BasicSearch;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,6 +48,17 @@ public class AppWaitingController {
             @PathVariable long requestId
     ) {
         return ApiResult.ok(appWaitingApplicationService.details(requestId));
+    }
+
+    @GetMapping("/requests/{requestId}/logs")
+    public ApiResult<PageResponse<WaitingLogResponse>> listLogs(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long requestId,
+
+            @Parameter(description = "검색 및 페이징 조건")
+            @ModelAttribute BasicSearch search
+    ) {
+        return ApiResult.ok(appWaitingApplicationService.listLogs(requestId, search));
     }
 
     @PostMapping("/{id}/requests")
