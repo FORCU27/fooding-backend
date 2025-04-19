@@ -27,7 +27,7 @@ spring:
       max-request-size: 1000MB
 
 jwt:
-  secretKey: OxJyMRYZufUrGdBXpDyeLoTj2fbLu2XmHPPJMwdGsv5xcZvUXi
+  secret-key: OxJyMRYZufUrGdBXpDyeLoTj2fbLu2XmHPPJMwdGsv5xcZvUXi
   access:
     expiration: 604800000
     header: Authorization
