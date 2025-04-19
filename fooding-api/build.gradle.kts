@@ -11,6 +11,10 @@ dependencies {
     // swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 
+    //feign
+    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2023.0.3"))
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
