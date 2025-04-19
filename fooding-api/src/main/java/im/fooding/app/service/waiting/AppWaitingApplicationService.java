@@ -2,10 +2,12 @@ package im.fooding.app.service.waiting;
 
 import im.fooding.app.dto.request.waiting.AppWaitingRegisterRequest;
 import im.fooding.app.dto.response.waiting.AppWaitingRegisterResponse;
+import im.fooding.app.service.user.notification.UserNotificationApplicationService;
 import im.fooding.app.dto.response.waiting.WaitingLogResponse;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
+import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
 import im.fooding.core.model.waiting.Waiting;
@@ -39,6 +41,7 @@ public class AppWaitingApplicationService {
     private final WaitingUserService waitingUserService;
     private final StoreWaitingService storeWaitingService;
     private final WaitingLogService waitingLogService;
+    private final UserNotificationApplicationService userNotificationApplicationService;
 
     public StoreWaitingResponse details(long id) {
         return StoreWaitingResponse.from(storeWaitingService.getStoreWaiting(id));
@@ -69,6 +72,17 @@ public class AppWaitingApplicationService {
         Waiting waiting = waitingService.getById(id);
         storeWaitingService.validate(waiting);
 
+        WaitingUser waitingUser = getOrRegisterUser(request, phoneNumber, waiting);
+        StoreWaiting storeWaiting = registerStoreWaiting(request, waiting, waitingUser);
+
+        waitingLogService.logRegister(storeWaiting);
+
+        sendNotification(waiting, storeWaiting);
+
+        return new AppWaitingRegisterResponse(storeWaiting.getCallNumber());
+    }
+
+    private WaitingUser getOrRegisterUser(AppWaitingRegisterRequest request, String phoneNumber, Waiting waiting) {
         WaitingUserRegisterRequest waitingUserRegisterRequest = WaitingUserRegisterRequest.builder()
                 .store(waiting.getStore())
                 .name(request.name())
@@ -78,8 +92,11 @@ public class AppWaitingApplicationService {
                 .thirdPartyAgreed(request.thirdPartyAgreed())
                 .marketingConsent(request.marketingConsent())
                 .build();
-        WaitingUser waitingUser = waitingUserService.getOrElseRegister(waitingUserRegisterRequest);
 
+        return waitingUserService.getOrElseRegister(waitingUserRegisterRequest);
+    }
+
+    private StoreWaiting registerStoreWaiting(AppWaitingRegisterRequest request, Waiting waiting, WaitingUser waitingUser) {
         StoreWaitingRegisterRequest storeWaitingRegisterRequest = StoreWaitingRegisterRequest.builder()
                 .user(waitingUser)
                 .store(waiting.getStore())
@@ -88,11 +105,21 @@ public class AppWaitingApplicationService {
                 .infantCount(request.infantCount())
                 .adultCount(request.adultCount())
                 .build();
-        StoreWaiting storeWaiting = storeWaitingService.register(storeWaitingRegisterRequest);
 
-        waitingLogService.logRegister(storeWaiting);
+        return storeWaitingService.register(storeWaitingRegisterRequest);
+    }
 
-        return new AppWaitingRegisterResponse(storeWaiting.getCallNumber());
+    private void sendNotification(Waiting waiting, StoreWaiting storeWaiting) {
+        int order = storeWaitingService.getOrder(storeWaiting.getId());
+        int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
+
+        Store store = waiting.getStore();
+        userNotificationApplicationService.sendWaitingRegisterMessage(
+                store.getName(),
+                personnel,
+                order,
+                storeWaiting.getCallNumber()
+        );
     }
 
     public PageResponse<WaitingLogResponse> listLogs(long requestId, BasicSearch search) {
