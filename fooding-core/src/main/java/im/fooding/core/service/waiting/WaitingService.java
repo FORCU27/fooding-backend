@@ -3,6 +3,7 @@ package im.fooding.core.service.waiting;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.waiting.Waiting;
+import im.fooding.core.model.waiting.WaitingStatus;
 import im.fooding.core.repository.waiting.WaitingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,5 +21,11 @@ public class WaitingService {
     public Waiting getById(long id) {
         return waitingRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ErrorCode.WAITING_NOT_FOUND));
+    }
+
+    @Transactional
+    public void updateStatus(long id, WaitingStatus status) {
+        Waiting waiting = getById(id);
+        waiting.updateStatus(status);
     }
 }
