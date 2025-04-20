@@ -3,6 +3,8 @@ package im.fooding.core.service.waiting;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import im.fooding.core.TestConfig;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
@@ -227,6 +229,21 @@ class StoreWaitingServiceTest extends TestConfig {
         // then
         Assertions.assertThat(storeWaiting.getStatus())
                 .isEqualTo(StoreWaitingStatus.CANCELLED);
+    }
+
+    @Test
+    @DisplayName("가게 웨이팅을 착석 처리할 수 있다.")
+    public void testSeat() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
+        StoreWaiting storeWaiting = storeWaitingRepository.save(spy(StoreWaitingDummy.create(user, store)));
+
+        // when
+        storeWaitingService.seat(storeWaiting.getId());
+
+        // then
+        verify(storeWaiting).seat();
     }
 
     @Test

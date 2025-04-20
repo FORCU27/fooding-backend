@@ -94,6 +94,10 @@ public class StoreWaiting extends BaseEntity {
     }
 
     public void seat() {
+        if (status != StoreWaitingStatus.WAITING) {
+            throw new ApiException(ErrorCode.STORE_WAITING_ILLEGAL_STATE_SEAT);
+        }
+
         this.status = StoreWaitingStatus.SEATED;
     }
 
