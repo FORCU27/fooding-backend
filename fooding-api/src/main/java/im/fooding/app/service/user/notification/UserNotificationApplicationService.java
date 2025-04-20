@@ -1,15 +1,22 @@
 package im.fooding.app.service.user.notification;
 
+import im.fooding.app.dto.response.user.notification.UserNotificationResponse;
 import im.fooding.core.global.infra.slack.SlackClient;
 import im.fooding.core.global.util.WaitingMessageBuilder;
+import im.fooding.core.service.notification.UserNotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserNotificationApplicationService {
     private final SlackClient slackClient;
+    private final UserNotificationService userNotificationService;
 
     @Value("${message.sender}")
     private String SENDER;
@@ -41,5 +48,15 @@ public class UserNotificationApplicationService {
     public void sendEnterStoreMessage(String receiver, String store, String notice, int waitingNumber, int limitTime) {
         String message = WaitingMessageBuilder.buildEnterStoreMessage(SENDER, receiver, store, notice, waitingNumber, limitTime);
         slackClient.sendNotificationMessage(message);
+    }
+
+    public List<UserNotificationResponse> list(Long userId) {
+        return userNotificationService.getUserNotifications(userId).stream()
+                .map(UserNotificationResponse::from)
+                .toList();
+    }
+
+    public UserNotificationResponse retrieve(Long userId, Long notificationId) {
+        return UserNotificationResponse.from(userNotificationService.getNotification(userId, notificationId));
     }
 }
