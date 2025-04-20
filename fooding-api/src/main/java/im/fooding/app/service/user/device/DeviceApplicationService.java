@@ -55,27 +55,19 @@ public class DeviceApplicationService {
     }
 
     /**
-     * 비로그인 유저의 디바이스 접속
+     * 유저의 디바이스 접속
      *
      * @param request
      */
+    @Transactional
     public void connect(CreateDeviceRequest request){
-        if( request.id() == null ) {
+        if( request.deviceId() == null ) {
             Device device = deviceService.create( request.name(), request.type(), request.osVersion() );
             deviceAppService.create( device, request.appVersion(), request.packageName() );
         }
-    }
-
-    /**
-     * 로그인 유저의 디바이스 접속
-     *
-     * @param userId
-     * @param deviceId
-     * @return StoreDeviceResponse
-     */
-    @Transactional
-    public void connectUser( Long userId, Long deviceId ){
-        User user = userService.findById( userId );
-        deviceService.updateUser( user, deviceId );
+        else if( request.deviceId() != null && request.userId() != null ){
+            User user = userService.findById(request.userId() );
+            deviceService.updateUser( user, request.deviceId() );
+        }
     }
 }
