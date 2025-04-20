@@ -38,6 +38,9 @@ public class WaitingSetting extends BaseEntity {
     @Column(nullable = false)
     private boolean isActive;
 
+    @Column(nullable = false)
+    private int entryTimeLimitMinutes;
+
     @Builder
     private WaitingSetting(
             Waiting waiting,
@@ -45,7 +48,8 @@ public class WaitingSetting extends BaseEntity {
             int minimumCapacity,
             int maximumCapacity,
             Integer estimatedWaitingTimeMinutes,
-            boolean isActive
+            boolean isActive,
+            int entryTimeLimitMinutes
     ) {
         this.waiting = waiting;
         this.label = label;
@@ -53,6 +57,7 @@ public class WaitingSetting extends BaseEntity {
         this.maximumCapacity = maximumCapacity;
         this.estimatedWaitingTimeMinutes = estimatedWaitingTimeMinutes;
         this.isActive = isActive;
+        this.entryTimeLimitMinutes = entryTimeLimitMinutes;
     }
 
     public void update(String label, int minimumCapacity, int maximumCapacity, Integer estimatedWaitingTimeMinutes) {
