@@ -67,4 +67,10 @@ public class StoreWaitingService {
                 storeWaiting.getCreatedAt()
         ) + 1;
     }
+
+    public void revert(long id) {
+        StoreWaiting storeWaiting = getStoreWaiting(id);
+
+        storeWaiting.revert();
+    }
 }

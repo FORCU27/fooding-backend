@@ -48,4 +48,8 @@ public class PosWaitingApplicationService {
 
         return PageResponse.of(list, PageInfo.of(storeWaitings));
     }
+
+    public void revert(long requestId) {
+        storeWaitingService.revert(requestId);
+    }
 }

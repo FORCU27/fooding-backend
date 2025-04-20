@@ -1,0 +1,39 @@
+package im.fooding.core.model.waiting;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+class StoreWaitingTest {
+
+    @Test
+    @DisplayName("웨이팅 상태로 되돌릴 수 있다.")
+    void testRevert() {
+        // given
+        StoreWaiting storeWaiting = StoreWaiting.builder().build();
+        storeWaiting.cancel();
+
+        // when
+        storeWaiting.revert();
+
+        // then
+        Assertions.assertThat(storeWaiting.getStatus())
+                .isEqualTo(StoreWaitingStatus.WAITING);
+    }
+
+    @Test
+    @DisplayName("이미 웨이팅 상태인 경우 되돌릴 수 없다.")
+    void testRevert_fail_whenAlreadyWaiting() {
+        // given
+        StoreWaiting storeWaiting = StoreWaiting.builder().build();
+
+        // when & then
+        ApiException e = assertThrows(ApiException.class, storeWaiting::revert);
+        Assertions.assertThat(e.getErrorCode())
+                .isEqualTo(ErrorCode.STORE_WAITING_ALREADY_WAITING);
+    }
+}

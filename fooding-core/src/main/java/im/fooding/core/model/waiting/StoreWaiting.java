@@ -1,5 +1,7 @@
 package im.fooding.core.model.waiting;
 
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
 import jakarta.persistence.Column;
@@ -92,6 +94,14 @@ public class StoreWaiting extends BaseEntity {
 
     public void cancel() {
         this.status = StoreWaitingStatus.CANCELLED;
+    }
+
+    public void revert() {
+        if (status == StoreWaitingStatus.WAITING) {
+            throw new ApiException(ErrorCode.STORE_WAITING_ALREADY_WAITING);
+        }
+
+        status = StoreWaitingStatus.WAITING;
     }
 
     public String getChannelValue() {
