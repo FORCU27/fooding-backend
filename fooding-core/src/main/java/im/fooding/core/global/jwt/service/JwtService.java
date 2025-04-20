@@ -29,7 +29,7 @@ import java.util.Optional;
 @Getter
 @Slf4j
 public class JwtService {
-    @Value("${jwt.secretKey}")
+    @Value("${jwt.secret-key}")
     private String secretKey;
 
     @Value("${jwt.access.expiration}")
