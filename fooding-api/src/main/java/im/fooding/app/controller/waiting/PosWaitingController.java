@@ -32,6 +32,16 @@ public class PosWaitingController {
         return ApiResult.ok(posWaitingApplicationService.list(id, request));
     }
 
+    @PostMapping("/requests/{requestId}/call")
+    @Operation(summary = "웨이팅 호출")
+    ApiResult<Void> call(
+            @Parameter(description = "가게 웨이팅 id", example = "1")
+            @PathVariable long requestId
+    ) {
+        posWaitingApplicationService.call(requestId);
+        return ApiResult.ok();
+    }
+
     @PostMapping("/requests/{requestId}")
     @Operation(summary = "웨이팅 되돌리기")
     ApiResult<Void> revert(
