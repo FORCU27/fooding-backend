@@ -2,6 +2,7 @@ package im.fooding.core.model.reward;
 
 import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreService;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,10 +23,9 @@ public class RewardLog extends BaseEntity {
     @JoinColumn( name = "store_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT) )
     private Store store;
 
-//    추후 StoreServiceId 관련 백로그가 merge되면 추가 예정
-//    @ManyToOne
-//    @JoinColumn( name = "service_id" )
-//    private StoreService serviceId;
+    @ManyToOne
+    @JoinColumn( name = "service_id" )
+    private StoreService serviceId;
 
     @Column( name = "phone_number" )
     private String phoneNumber;
