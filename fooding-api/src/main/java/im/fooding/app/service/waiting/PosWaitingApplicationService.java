@@ -50,6 +50,11 @@ public class PosWaitingApplicationService {
     }
 
     @Transactional
+    public void seat(long requestId) {
+        storeWaitingService.seat(requestId);
+    }
+
+    @Transactional
     public void call(long requestId) {
         StoreWaiting storeWaiting = storeWaitingService.call(requestId);
 
