@@ -24,7 +24,7 @@ spring:
         format_sql: true
 
 jwt:
-  secretKey: __JWT_SECRET_KEY__
+  secret-key: __JWT_SECRET_KEY__
   access:
     expiration: 3600000
     header: Authorization

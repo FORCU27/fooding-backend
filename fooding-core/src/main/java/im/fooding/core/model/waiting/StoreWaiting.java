@@ -48,6 +48,7 @@ public class StoreWaiting extends BaseEntity {
     private int callCount;
 
     @Column(name = "store_waiting_status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private StoreWaitingStatus status;
 
     @Column(name = "channel", nullable = false)
@@ -93,6 +94,10 @@ public class StoreWaiting extends BaseEntity {
     }
 
     public void seat() {
+        if (status != StoreWaitingStatus.WAITING) {
+            throw new ApiException(ErrorCode.STORE_WAITING_ILLEGAL_STATE_SEAT);
+        }
+
         this.status = StoreWaitingStatus.SEATED;
     }
 

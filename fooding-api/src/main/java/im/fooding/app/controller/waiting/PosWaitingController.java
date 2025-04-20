@@ -51,4 +51,14 @@ public class PosWaitingController {
         posWaitingApplicationService.revert(requestId);
         return ApiResult.ok();
     }
+
+    @PostMapping("/requests/{requestId}/seat")
+    @Operation(summary = "웨이팅 착석")
+    ApiResult<Void> seat(
+            @Parameter(description = "가게 웨이팅 id", example = "1")
+            @PathVariable long requestId
+    ) {
+        posWaitingApplicationService.seat(requestId);
+        return ApiResult.ok();
+    }
 }
