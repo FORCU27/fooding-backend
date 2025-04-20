@@ -36,6 +36,17 @@ public class StoreWaitingService {
     }
 
     @Transactional
+    public StoreWaiting call(long id) {
+        StoreWaiting storeWaiting = getStoreWaiting(id);
+        if (storeWaiting.getStatus() != StoreWaitingStatus.WAITING) {
+            throw new ApiException(ErrorCode.STORE_WAITING_ILLEGAL_STATE_CALL);
+        }
+        storeWaiting.call();
+
+        return storeWaiting;
+    }
+
+    @Transactional
     public StoreWaiting register(StoreWaitingRegisterRequest request) {
         // TODO: 추후에 redis 로 개선
         int callNumber = (int) storeWaitingRepository.countCreatedOn(LocalDate.now()) + 1;

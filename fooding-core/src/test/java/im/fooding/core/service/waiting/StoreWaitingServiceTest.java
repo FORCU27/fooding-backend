@@ -31,7 +31,6 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.TestConstructor;
 
@@ -228,5 +227,21 @@ class StoreWaitingServiceTest extends TestConfig {
 
         // then
         verify(storeWaiting).seat();
+    }
+
+    @Test
+    @DisplayName("호출시 호출 횟수를 증가한다.")
+    public void testCall() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
+        StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
+
+        // when
+        storeWaitingService.call(storeWaiting.getId());
+
+        // then
+        Assertions.assertThat(storeWaiting.getCallCount())
+                .isEqualTo(1);
     }
 }
