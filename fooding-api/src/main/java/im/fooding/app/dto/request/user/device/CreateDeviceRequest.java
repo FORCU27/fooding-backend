@@ -18,7 +18,10 @@ public record CreateDeviceRequest(
         String appVersion,
         @NotNull
         @Schema( description = "패키지 이름" )
-        String packageName
+        String packageName,
+
+        @Schema( description = "디바이스 ID" )
+        Long id
 ) {
 
 }

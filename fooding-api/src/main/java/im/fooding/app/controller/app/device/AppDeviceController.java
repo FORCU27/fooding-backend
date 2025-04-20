@@ -24,7 +24,7 @@ public class AppDeviceController {
     public ApiResult<Void> connect(
             @Valid @RequestBody CreateDeviceRequest request
     ){
-        service.createDevice( request );
+        service.connect( request );
         return ApiResult.ok();
     }
 

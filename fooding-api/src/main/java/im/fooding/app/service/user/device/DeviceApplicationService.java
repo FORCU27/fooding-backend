@@ -59,10 +59,11 @@ public class DeviceApplicationService {
      *
      * @param request
      */
-    @Transactional
-    public void createDevice(CreateDeviceRequest request ){
-        Device device = deviceService.create( request.name(), request.type(), request.osVersion() );
-        deviceAppService.create( device, request.appVersion(), request.packageName() );
+    public void connect(CreateDeviceRequest request){
+        if( request.id() == null ) {
+            Device device = deviceService.create( request.name(), request.type(), request.osVersion() );
+            deviceAppService.create( device, request.appVersion(), request.packageName() );
+        }
     }
 
     /**
