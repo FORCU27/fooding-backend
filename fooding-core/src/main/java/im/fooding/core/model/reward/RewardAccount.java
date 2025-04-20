@@ -1,5 +1,6 @@
 package im.fooding.core.model.reward;
 
+import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import jakarta.persistence.*;
@@ -13,7 +14,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
 @Table( name = "reward_account" )
-public class RewardAccount {
+public class RewardAccount extends BaseEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
