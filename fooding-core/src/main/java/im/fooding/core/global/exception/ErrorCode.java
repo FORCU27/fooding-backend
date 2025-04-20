@@ -19,6 +19,7 @@ public enum ErrorCode {
     REFRESH_TOKEN_FAILED(HttpStatus.BAD_REQUEST, "0011", "토큰 갱신에 실패하셨습니다."),
     DATABASE_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "0012", "데이터베이스 에러 입니다."),
     FEIGN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "0013", "토큰이 만료되었습니다."),
+    OAUTH_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "0014", "소셜로그인에 실패하셨습니다."),
 
     // 회원
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "1000", "가입된 정보가 없습니다."),
@@ -35,14 +36,18 @@ public enum ErrorCode {
     WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3000", "등록된 웨이팅 정보가 없습니다."),
     WAITING_NOT_OPENED(HttpStatus.BAD_REQUEST, "3001", "웨이팅이 오픈상태가 아닙니다."),
     STORE_WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3002", "등록된 가게 웨이팅이 없습니다."),
+    STORE_WAITING_ILLEGAL_STATE_CALL(HttpStatus.BAD_REQUEST, "3003", "호출할 가능한 웨이팅 상태가 아닙니다."),
+    ACTIVE_WAITING_SETTING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3004", "활성화된 웨이팅 세팅이 없습니다."),
+    STORE_WAITING_ILLEGAL_STATE_SEAT(HttpStatus.BAD_REQUEST, "3005", "착성 가능한 웨이팅 상태가 아닙니다."),
 
 
     // 디바이스
     DEVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "7000", "등록된 디바이스가 없습니다."),
-  
+
     // 알림
-    NOTIFICATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "5000", "등록된 알림이 없습니다.");
-    ;
+    NOTIFICATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "5000", "등록된 알림이 없습니다."),
+    USER_NOTIFICATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "5001", "사용자 알림을 찾을 수 없습니다."),
+    USER_NOTIFICATION_FORBIDDEN(HttpStatus.FORBIDDEN, "5002", "해당 알림에 접근할 권한이 없습니다.");
 
     private final HttpStatus status;
 

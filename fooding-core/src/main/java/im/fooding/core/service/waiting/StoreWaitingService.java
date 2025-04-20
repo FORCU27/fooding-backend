@@ -5,6 +5,7 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
+import im.fooding.core.model.waiting.StoreWaitingStatus;
 import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingStatus;
 import im.fooding.core.repository.waiting.StoreWaitingRepository;
@@ -35,6 +36,17 @@ public class StoreWaitingService {
     }
 
     @Transactional
+    public StoreWaiting call(long id) {
+        StoreWaiting storeWaiting = getStoreWaiting(id);
+        if (storeWaiting.getStatus() != StoreWaitingStatus.WAITING) {
+            throw new ApiException(ErrorCode.STORE_WAITING_ILLEGAL_STATE_CALL);
+        }
+        storeWaiting.call();
+
+        return storeWaiting;
+    }
+
+    @Transactional
     public StoreWaiting register(StoreWaitingRegisterRequest request) {
         // TODO: 추후에 redis 로 개선
         int callNumber = (int) storeWaitingRepository.countCreatedOn(LocalDate.now()) + 1;
@@ -56,5 +68,22 @@ public class StoreWaitingService {
         if (waiting.getStatus() != WaitingStatus.WAITING_OPEN) {
             throw new ApiException(ErrorCode.WAITING_NOT_OPENED);
         }
+    }
+
+    @Transactional
+    public void seat(long id) {
+        StoreWaiting storeWaiting = getStoreWaiting(id);
+
+        storeWaiting.seat();
+    }
+
+    public int getOrder(long id) {
+        StoreWaiting storeWaiting = storeWaitingRepository.findById(id)
+                .orElseThrow(() -> new ApiException(ErrorCode.STORE_WAITING_NOT_FOUND));
+
+        return (int) storeWaitingRepository.countByStatusAndCreatedAtBefore(
+                storeWaiting.getStatus(),
+                storeWaiting.getCreatedAt()
+        ) + 1;
     }
 }
