@@ -70,6 +70,13 @@ public class StoreWaitingService {
         }
     }
 
+    @Transactional
+    public void seat(long id) {
+        StoreWaiting storeWaiting = getStoreWaiting(id);
+
+        storeWaiting.seat();
+    }
+
     public int getOrder(long id) {
         StoreWaiting storeWaiting = storeWaitingRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_WAITING_NOT_FOUND));
