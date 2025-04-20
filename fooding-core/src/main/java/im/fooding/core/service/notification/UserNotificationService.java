@@ -22,8 +22,14 @@ public class UserNotificationService {
       return userNotificationRepository.findAllByUserIdOrderBySentAtDesc(userId);
     }
 
-    public UserNotification getNotification(Long userId, Long notificationId) {
-      return userNotificationRepository.findByIdAndUserId(userId, notificationId)
-              .orElseThrow(() -> new ApiException(ErrorCode.USER_NOTIFICATION_NOT_FOUND));
+  public UserNotification getNotification(Long userId, Long notificationId) {
+    UserNotification notification = userNotificationRepository.findById(notificationId)
+            .orElseThrow(() -> new ApiException(ErrorCode.USER_NOTIFICATION_NOT_FOUND));
+
+    if (!notification.getUser().getId().equals(userId)) {
+      throw new ApiException(ErrorCode.USER_NOTIFICATION_FORBIDDEN);
     }
+
+    return notification;
+  }
 }
