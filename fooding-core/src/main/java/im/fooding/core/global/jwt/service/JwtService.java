@@ -55,6 +55,11 @@ public class JwtService {
 
     public String createAccessToken(Long id) {
         log.info("secretKey : {}", secretKey);
+        log.info("accessTokenExpirationPeriod : {}", accessTokenExpirationPeriod);
+        log.info("refreshTokenExpirationPeriod : {}", refreshTokenExpirationPeriod);
+        log.info("accessHeader : {}", accessHeader);
+        log.info("refreshHeader : {}", refreshHeader);
+
         return JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)
                 .withExpiresAt(generateExpiresAt(accessTokenExpirationPeriod))
