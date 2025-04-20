@@ -29,7 +29,7 @@ import java.util.Optional;
 @Getter
 @Slf4j
 public class JwtService {
-    @Value("${jwt.secretKey}")
+    @Value("${jwt.secret-key}")
     private String secretKey;
 
     @Value("${jwt.access.expiration}")
@@ -54,6 +54,7 @@ public class JwtService {
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
     public String createAccessToken(Long id) {
+        log.info("secretKey : {}", secretKey);
         return JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)
                 .withExpiresAt(generateExpiresAt(accessTokenExpirationPeriod))
