@@ -9,6 +9,7 @@ import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.model.waiting.*;
 import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingService;
+import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,9 +24,10 @@ import java.util.List;
 @Slf4j
 public class PosWaitingApplicationService {
 
+    private final UserNotificationApplicationService userNotificationApplicationService;
     private final WaitingService waitingService;
     private final StoreWaitingService storeWaitingService;
-    private final UserNotificationApplicationService userNotificationApplicationService;
+    private final WaitingSettingService waitingSettingService;
 
     public PageResponse<WaitingResponse> list(long id, WaitingListRequest request) {
 
@@ -49,5 +51,18 @@ public class PosWaitingApplicationService {
     public void cancel(long requestId, String reason) {
         StoreWaiting canceledWaiting = storeWaitingService.cancel(requestId);
         userNotificationApplicationService.sendWaitingCancelMessage(canceledWaiting.getStoreName(), reason);
+    }
+
+    @Transactional
+    public void call(long requestId) {
+        StoreWaiting storeWaiting = storeWaitingService.call(requestId);
+
+        WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(storeWaiting.getStore());
+
+        userNotificationApplicationService.sendWaitingCallMessage(
+                storeWaiting.getStoreName(),
+                storeWaiting.getCallNumber(),
+                waitingSetting.getEntryTimeLimitMinutes()
+        );
     }
 }

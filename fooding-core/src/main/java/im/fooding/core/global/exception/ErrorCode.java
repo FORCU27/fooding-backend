@@ -36,7 +36,9 @@ public enum ErrorCode {
     WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3000", "등록된 웨이팅 정보가 없습니다."),
     WAITING_NOT_OPENED(HttpStatus.BAD_REQUEST, "3001", "웨이팅이 오픈상태가 아닙니다."),
     STORE_WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3002", "등록된 가게 웨이팅이 없습니다."),
-    STORE_WAITING_ILLEGAL_STATE_CANCEL(HttpStatus.BAD_REQUEST, "3003", "취소 가능한 웨이팅 상태가 아닙니다."),
+    STORE_WAITING_ILLEGAL_STATE_CALL(HttpStatus.BAD_REQUEST, "3003", "호출할 가능한 웨이팅 상태가 아닙니다."),
+    ACTIVE_WAITING_SETTING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3004", "활성화된 웨이팅 세팅이 없습니다."),
+    STORE_WAITING_ILLEGAL_STATE_CANCEL(HttpStatus.BAD_REQUEST, "3005", "취소 가능한 웨이팅 상태가 아닙니다."),
 
     // 디바이스
     DEVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "7000", "등록된 디바이스가 없습니다."),

@@ -44,6 +44,9 @@ public class StoreWaiting extends BaseEntity {
     @Column(name = "call_number", nullable = false)
     private int callNumber;
 
+    @Column(name = "call_count", nullable = false)
+    private int callCount;
+
     @Column(name = "store_waiting_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private StoreWaitingStatus status;
@@ -77,6 +80,7 @@ public class StoreWaiting extends BaseEntity {
         this.user = user;
         this.store = store;
         this.callNumber = callNumber;
+        this.callCount = 0;
         this.status = StoreWaitingStatus.WAITING;
         this.channel = channel;
         this.infantChairCount = infantChairCount;
@@ -111,5 +115,9 @@ public class StoreWaiting extends BaseEntity {
 
     public String getStoreName() {
         return store.getName();
+    }
+
+    public void call() {
+        callCount++;
     }
 }

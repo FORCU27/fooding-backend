@@ -5,6 +5,7 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
+import im.fooding.core.model.waiting.StoreWaitingStatus;
 import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingStatus;
 import im.fooding.core.repository.waiting.StoreWaitingRepository;
@@ -32,6 +33,17 @@ public class StoreWaitingService {
     public StoreWaiting get(long id) {
         return storeWaitingRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_WAITING_NOT_FOUND));
+    }
+
+    @Transactional
+    public StoreWaiting call(long id) {
+        StoreWaiting storeWaiting = get(id);
+        if (storeWaiting.getStatus() != StoreWaitingStatus.WAITING) {
+            throw new ApiException(ErrorCode.STORE_WAITING_ILLEGAL_STATE_CALL);
+        }
+        storeWaiting.call();
+
+        return storeWaiting;
     }
 
     @Transactional

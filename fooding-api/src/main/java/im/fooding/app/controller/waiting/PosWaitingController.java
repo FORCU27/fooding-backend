@@ -45,4 +45,14 @@ public class PosWaitingController {
         posWaitingApplicationService.cancel(requestId, request.reason());
         return ApiResult.ok();
     }
+
+    @PostMapping("/requests/{requestId}/call")
+    @Operation(summary = "웨이팅 호출")
+    ApiResult<Void> call(
+            @Parameter(description = "가게 웨이팅 id", example = "1")
+            @PathVariable long requestId
+    ) {
+        posWaitingApplicationService.call(requestId);
+        return ApiResult.ok();
+    }
 }

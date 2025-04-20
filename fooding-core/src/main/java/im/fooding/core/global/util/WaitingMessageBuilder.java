@@ -20,6 +20,21 @@ public class WaitingMessageBuilder {
                 .formatted(store, totalPersonCount, order, waitingNumber);
     }
 
+    public static String buildWaitingCallMessage(String store, int callNumber, int entryTimeLimit) {
+        return """
+                Title
+                입장할 순서예요! 지금 매장에 입장해 주세요!
+                                
+                %d번 고객님, 기다려주셔서 감사해요!
+                %s에 입장해 주세요:)
+                                
+                직원에게 톡 사진을 보여주시면 순서대로 안내드릴게요!
+                                
+                %d분으로 입장 시간이 제한되어있어요. 방문이 취소될 수 있으니 시간 확인 부탁드려요!
+                """
+                .formatted(callNumber, store, entryTimeLimit);
+    }
+
     public static String buildEnterStoreMessage(String sender, String receiver, String store, String notice, int waitingNumber, int limitTime) {
         StringBuilder messageBuilder = new StringBuilder();
 

@@ -228,4 +228,20 @@ class StoreWaitingServiceTest extends TestConfig {
         Assertions.assertThat(storeWaiting.getStatus())
                 .isEqualTo(StoreWaitingStatus.CANCELLED);
     }
+
+    @Test
+    @DisplayName("호출시 호출 횟수를 증가한다.")
+    public void testCall() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
+        StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
+
+        // when
+        storeWaitingService.call(storeWaiting.getId());
+
+        // then
+        Assertions.assertThat(storeWaiting.getCallCount())
+                .isEqualTo(1);
+    }
 }
