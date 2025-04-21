@@ -70,12 +70,6 @@ public class Store extends BaseEntity {
     @Column(nullable = false)
     private boolean isTakeOut;
 
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Review> reviews = new ArrayList<>();
-
-    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Waiting> waitings = new ArrayList<>();
-
     @Builder
     private Store(
             String name,
@@ -105,20 +99,6 @@ public class Store extends BaseEntity {
         this.isParkingAvailable = isParkingAvailable;
         this.isNewOpen = isNewOpen;
         this.isTakeOut = isTakeOut;
-    }
-
-    public void addReview(Review review) {
-        this.reviews.add(review);
-        if (review.getStore() != this) {
-            review.addReceipt(this);
-        }
-    }
-
-    public void addWaiting(Waiting waiting) {
-        this.waitings.add(waiting);
-        if (waiting.getStore() != this) {
-            waiting.addStore(this);
-        }
     }
 
     public void updateStoreName(String name) {

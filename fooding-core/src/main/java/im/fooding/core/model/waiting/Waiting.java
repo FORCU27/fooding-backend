@@ -34,22 +34,9 @@ public class Waiting extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private WaitingStatus status;
 
-    @OneToMany(mappedBy = "waiting", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WaitingSetting> waitingSettings = new ArrayList<>();
-
     public Waiting(Store store, WaitingStatus status) {
         this.store = store;
         this.status = status;
-    }
-
-    public void addWaitingSetting(WaitingSetting waitingSetting) {
-        this.waitingSettings.add(waitingSetting);
-        if (waitingSetting.getWaiting() != this) {
-            waitingSetting.addWaiting(this);
-        }
-    }
-    public void addStore(Store store) {
-        this.store = store;
     }
 
     public void updateStatus(WaitingStatus status) {

@@ -37,13 +37,16 @@ public class QStoreRepositoryImpl implements QStoreRepository {
         List<Store> content = query
                 .select(store)
                 .from(store)
-                .leftJoin(store.reviews, review)
+                .leftJoin(review).on(review.store.eq(store))
                 .groupBy(store.id)
                 .orderBy(orderSpecifier)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-        JPQLQuery<Long> countQuery = query.select(store.count()).from(store);
+
+        JPQLQuery<Long> countQuery = query
+                .select(store.count())
+                .from(store);
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }

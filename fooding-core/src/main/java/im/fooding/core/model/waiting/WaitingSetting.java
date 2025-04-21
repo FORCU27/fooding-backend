@@ -74,8 +74,4 @@ public class WaitingSetting extends BaseEntity {
     public void deactivate() {
         this.isActive = false;
     }
-
-    public void addWaiting(Waiting waiting) {
-        this.waiting = waiting;
-    }
 }

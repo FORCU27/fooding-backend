@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class StoreResponse {
+public class UserStoreResponse {
 
     @Schema(description = "id", example = "1" )
     private Long id;
@@ -25,17 +25,17 @@ public class StoreResponse {
     @Schema(description = "해당 가게의 총 리뷰 개수", example = "246" )
     private int reviewCount;
 
-    @Schema(description = "해당 가게의 평균 대기 시간", example = "20" )
-    private int estimatedWaitingTimeMinutes;
+    @Schema(description = "해당 가게의 평균 대기 시간 (웨이팅이 비활성화된 가게일 경우, null 반환)", example = "20" )
+    private Integer estimatedWaitingTimeMinutes;
 
     @Builder
-    private StoreResponse(
+    private UserStoreResponse(
             Long id,
             String name,
             String city,
             float reviewScore,
             int reviewCount,
-            int estimatedWaitingTimeMinutes
+            Integer estimatedWaitingTimeMinutes
     ) {
         this.id = id;
         this.name = name;
@@ -45,13 +45,18 @@ public class StoreResponse {
         this.estimatedWaitingTimeMinutes = estimatedWaitingTimeMinutes;
     }
 
-    public static StoreResponse of(Store store, float reviewScore, int estimatedWaitingTime) {
-        return StoreResponse.builder()
+    public static UserStoreResponse of(
+            Store store,
+            float reviewScore,
+            int reviewCount,
+            Integer estimatedWaitingTime
+    ) {
+        return UserStoreResponse.builder()
                 .id(store.getId())
                 .name(store.getName())
                 .city(store.getCity())
                 .reviewScore(reviewScore)
-                .reviewCount(store.getReviews().size())
+                .reviewCount(reviewCount)
                 .estimatedWaitingTimeMinutes(estimatedWaitingTime)
                 .build();
     }

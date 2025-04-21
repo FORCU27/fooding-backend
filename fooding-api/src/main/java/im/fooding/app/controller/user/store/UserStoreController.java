@@ -1,9 +1,8 @@
 package im.fooding.app.controller.user.store;
 
 import im.fooding.app.dto.request.user.store.UserRetrieveStoreRequest;
-import im.fooding.app.dto.response.user.device.StoreDeviceResponse;
-import im.fooding.app.dto.response.user.store.StoreResponse;
-import im.fooding.app.service.user.store.StoreApplicationService;
+import im.fooding.app.dto.response.user.store.UserStoreResponse;
+import im.fooding.app.service.user.store.UserStoreService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,11 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "User Store Controller", description = "유저 스토어 컨트롤러")
 public class UserStoreController {
 
-    private final StoreApplicationService service;
+    private final UserStoreService service;
 
     @GetMapping
     @Operation(summary = "가게 목록 조회 - [정렬기준 : 리뷰순 / 등록순]")
-    public ApiResult<PageResponse<StoreResponse>> list(
+    public ApiResult<PageResponse<UserStoreResponse>> list(
             @Valid @RequestBody UserRetrieveStoreRequest request
     ) {
         return ApiResult.ok(service.list(request));
