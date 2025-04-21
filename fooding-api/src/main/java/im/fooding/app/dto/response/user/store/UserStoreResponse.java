@@ -1,6 +1,7 @@
 package im.fooding.app.dto.response.user.store;
 
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +16,9 @@ public class UserStoreResponse {
 
     @Schema(description = "가게명", example = "홍길동 식당" )
     private String name;
+
+    @Schema(description = "가게 이미지 URL", example = "https://example.com/store.jpg" )
+    private String image;
 
     @Schema(description = "가게가 위치한 도시", example = "합정" )
     private String city;
@@ -32,6 +36,7 @@ public class UserStoreResponse {
     private UserStoreResponse(
             Long id,
             String name,
+            String image,
             String city,
             float reviewScore,
             int reviewCount,
@@ -39,6 +44,7 @@ public class UserStoreResponse {
     ) {
         this.id = id;
         this.name = name;
+        this.image = image;
         this.city = city;
         this.reviewScore = reviewScore;
         this.reviewCount = reviewCount;
@@ -47,6 +53,7 @@ public class UserStoreResponse {
 
     public static UserStoreResponse of(
             Store store,
+            StoreImage image,
             float reviewScore,
             int reviewCount,
             Integer estimatedWaitingTime
@@ -54,6 +61,7 @@ public class UserStoreResponse {
         return UserStoreResponse.builder()
                 .id(store.getId())
                 .name(store.getName())
+                .image(image.getImageUrl())
                 .city(store.getCity())
                 .reviewScore(reviewScore)
                 .reviewCount(reviewCount)

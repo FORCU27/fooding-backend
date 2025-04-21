@@ -6,8 +6,11 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.review.Review;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreImage;
 import im.fooding.core.model.waiting.WaitingSetting;
+import im.fooding.core.repository.store.StoreImageRepository;
 import im.fooding.core.service.review.ReviewService;
+import im.fooding.core.service.store.StoreImageService;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import java.util.List;
@@ -25,6 +28,7 @@ public class UserStoreService {
     private final StoreService storeService;
     private final ReviewService reviewService;
     private final WaitingSettingService waitingSettingService;
+    private final StoreImageService storeImageService;
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreResponse> list(UserRetrieveStoreRequest request) {
@@ -44,16 +48,21 @@ public class UserStoreService {
     }
 
     private UserStoreResponse mapStoreToResponse(Store store) {
+        StoreImage storeImage = storeImageService.get(store.getId());
         List<Review> reviews = reviewService.list(store);
-        float reviewScore = calculateAverageScore(reviews);
-        int reviewCount = reviews.size();
 
         // 대기 시간 비활성화한 경우에는 -1로 반환하도록 구현
         Integer estimatedWaitingTime = waitingSettingService.findActiveSetting(store)
                 .map(WaitingSetting::getEstimatedWaitingTimeMinutes)
                 .orElse(null);
 
-        return UserStoreResponse.of(store, reviewScore, reviewCount, estimatedWaitingTime);
+        return UserStoreResponse.of(
+                store,
+                storeImage,
+                calculateAverageScore(reviews),
+                reviews.size(),
+                estimatedWaitingTime
+        );
     }
 
     private float calculateAverageScore(List<Review> reviews) {
