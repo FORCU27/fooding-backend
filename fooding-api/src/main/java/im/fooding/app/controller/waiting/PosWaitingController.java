@@ -1,7 +1,10 @@
 package im.fooding.app.controller.waiting;
 
+import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
+import im.fooding.app.dto.response.waiting.WaitingLogResponse;
 import im.fooding.app.service.waiting.PosWaitingService;
 import im.fooding.core.common.ApiResult;
+import im.fooding.core.common.BasicSearch;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,6 +33,27 @@ public class PosWaitingController {
             @ModelAttribute WaitingListRequest request
     ) {
         return ApiResult.ok(posWaitingService.list(id, request));
+    }
+
+    @GetMapping("/requests/{requestId}")
+    @Operation(summary = "웨이팅 상세 조회")
+    public ApiResult<StoreWaitingResponse> details(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long requestId
+    ) {
+        return ApiResult.ok(posWaitingService.details(requestId));
+    }
+
+    @GetMapping("/requests/{requestId}/logs")
+    @Operation(summary = "웨이팅 로그 리스트 조회")
+    public ApiResult<PageResponse<WaitingLogResponse>> listLogs(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long requestId,
+
+            @Parameter(description = "검색 및 페이징 조건")
+            @ModelAttribute BasicSearch search
+    ) {
+        return ApiResult.ok(posWaitingService.listLogs(requestId, search));
     }
 
     @PostMapping("/requests/{requestId}/call")
