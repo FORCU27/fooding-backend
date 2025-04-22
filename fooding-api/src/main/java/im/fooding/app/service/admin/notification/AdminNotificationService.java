@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
-public class AdminNotificationApplicationService {
+public class AdminNotificationService {
 
     private final NotificationService notificationService;
     private final SlackClient slackClient;
