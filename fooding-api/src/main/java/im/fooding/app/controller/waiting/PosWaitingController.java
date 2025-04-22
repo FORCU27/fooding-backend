@@ -42,7 +42,7 @@ public class PosWaitingController {
         return ApiResult.ok();
     }
 
-    @PostMapping("/requests/{requestId}")
+    @PostMapping("/requests/{requestId}/revert")
     @Operation(summary = "웨이팅 되돌리기")
     ApiResult<Void> revert(
             @Parameter(description = "가게 웨이팅 id", example = "1")
