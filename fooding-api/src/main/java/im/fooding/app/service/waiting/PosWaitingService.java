@@ -95,9 +95,7 @@ public class PosWaitingService {
                 .thirdPartyAgreed(true)
                 .marketingConsent(false)
                 .build();
-        user = waitingUserService.getOrElseRegister(waitingUserRegisterRequest);
-        user.updateName(request.name());
-        user.updatePhoneNumber(request.phoneNumber());
+        user = waitingUserService.register(waitingUserRegisterRequest);
         storeWaiting.injectUser(user);
     }
 }
