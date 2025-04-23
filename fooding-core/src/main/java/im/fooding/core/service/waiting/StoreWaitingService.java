@@ -31,14 +31,14 @@ public class StoreWaitingService {
         return storeWaitingRepository.findAllWithFilter(filter, pageable);
     }
 
-    public StoreWaiting getStoreWaiting(long id) {
+    public StoreWaiting get(long id) {
         return storeWaitingRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_WAITING_NOT_FOUND));
     }
 
     @Transactional
     public StoreWaiting call(long id) {
-        StoreWaiting storeWaiting = getStoreWaiting(id);
+        StoreWaiting storeWaiting = get(id);
         if (storeWaiting.getStatus() != StoreWaitingStatus.WAITING) {
             throw new ApiException(ErrorCode.STORE_WAITING_ILLEGAL_STATE_CALL);
         }
@@ -73,7 +73,7 @@ public class StoreWaitingService {
 
     @Transactional
     public void seat(long id) {
-        StoreWaiting storeWaiting = getStoreWaiting(id);
+        StoreWaiting storeWaiting = get(id);
 
         storeWaiting.seat();
     }
@@ -86,6 +86,14 @@ public class StoreWaitingService {
                 storeWaiting.getStatus(),
                 storeWaiting.getCreatedAt()
         ) + 1;
+    }
+
+    @Transactional
+    public StoreWaiting cancel(long id) {
+        StoreWaiting storeWaiting = get(id);
+
+        storeWaiting.cancel();
+        return storeWaitingRepository.save(storeWaiting);
     }
 
     public boolean exists(Store store, StoreWaitingStatus status) {

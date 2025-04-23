@@ -55,6 +55,12 @@ public class PosWaitingApplicationService {
     }
 
     @Transactional
+    public void cancel(long requestId, String reason) {
+        StoreWaiting canceledWaiting = storeWaitingService.cancel(requestId);
+        userNotificationApplicationService.sendWaitingCancelMessage(canceledWaiting.getStoreName(), reason);
+    }
+
+    @Transactional
     public void call(long requestId) {
         StoreWaiting storeWaiting = storeWaitingService.call(requestId);
 
