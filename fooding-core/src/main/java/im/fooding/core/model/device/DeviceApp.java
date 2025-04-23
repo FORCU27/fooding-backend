@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@Table( name = "devices" )
+@Table( name = "devices_app" )
 public class DeviceApp extends BaseEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )

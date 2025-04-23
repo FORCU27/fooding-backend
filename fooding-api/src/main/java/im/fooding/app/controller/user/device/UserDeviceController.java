@@ -34,10 +34,9 @@ public class UserDeviceController {
     @GetMapping( "/connect" )
     @Operation(summary="로그인 유저 디바이스 연결")
     public ApiResult<Void> connect(
-            @RequestParam Long userId,
-            @RequestParam Long deviceId
+            @Valid @RequestBody CreateDeviceRequest request
     ){
-        service.connectUser( userId, deviceId );
+        service.connect( request );
         return ApiResult.ok();
     }
 }
