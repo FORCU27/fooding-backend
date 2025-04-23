@@ -1,6 +1,7 @@
 package im.fooding.app.controller.waiting;
 
 import im.fooding.app.dto.request.waiting.PosWaitingCancelRequest;
+import im.fooding.app.dto.request.waiting.PosWaitingOccupancyUpdateRequest;
 import im.fooding.app.service.waiting.PosWaitingApplicationService;
 import im.fooding.core.common.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
@@ -63,6 +64,18 @@ public class PosWaitingController {
             @PathVariable long requestId
     ) {
         posWaitingApplicationService.seat(requestId);
+        return ApiResult.ok();
+    }
+
+    @PatchMapping("/requests/{requestId}/occupancy")
+    @Operation(summary = "웨이팅 인원 변경")
+    ApiResult<Void> updateOccupancy(
+            @Parameter(description = "가게 웨이팅 id", example = "1")
+            @PathVariable long requestId,
+
+            @RequestBody @Validated PosWaitingOccupancyUpdateRequest request
+    ) {
+        posWaitingApplicationService.updateOccupancy(requestId, request);
         return ApiResult.ok();
     }
 }

@@ -1,5 +1,6 @@
 package im.fooding.app.service.waiting;
 
+import im.fooding.app.dto.request.waiting.PosWaitingOccupancyUpdateRequest;
 import im.fooding.app.dto.request.waiting.WaitingListRequest;
 import im.fooding.app.dto.response.waiting.WaitingResponse;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
@@ -68,6 +69,16 @@ public class PosWaitingApplicationService {
                 storeWaiting.getStoreName(),
                 storeWaiting.getCallNumber(),
                 waitingSetting.getEntryTimeLimitMinutes()
+        );
+    }
+
+    @Transactional
+    public void updateOccupancy(long requestId, PosWaitingOccupancyUpdateRequest request) {
+        StoreWaiting storeWaiting = storeWaitingService.get(requestId);
+        storeWaiting.updateOccupancy(
+                request.adultCount(),
+                request.infantCount(),
+                request.infantChairCount()
         );
     }
 }

@@ -93,6 +93,12 @@ public class StoreWaiting extends BaseEntity {
         this.memo = memo;
     }
 
+    public void updateOccupancy(int adultCount, int infantCount, int infantChairCount) {
+        this.adultCount = adultCount;
+        this.infantCount = infantCount;
+        this.infantChairCount = infantChairCount;
+    }
+
     public void seat() {
         if (status != StoreWaitingStatus.WAITING) {
             throw new ApiException(ErrorCode.STORE_WAITING_ILLEGAL_STATE_SEAT);
