@@ -2,8 +2,10 @@ package im.fooding.core.model.device;
 
 import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
@@ -25,6 +27,10 @@ public class Device extends BaseEntity {
     @JoinColumn(name = "store_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Store store;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id", nullable = true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private User user;
+
     @Column(name = "name")
     private String name;
 
@@ -32,21 +38,23 @@ public class Device extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private DeviceType type;
 
-    @Column(name = "installed_at")
-    private LocalDateTime installedAt;
-
-    @Column(name = "last_connected_at")
-    private LocalDateTime lastConnectedAt;
-
     @Column(name = "os_version")
     private String osVersion;
 
-    @Column(name = "service_type")
-    @Enumerated(EnumType.STRING)
-    private ServiceType serviceType;
-
     @Column(name = "status")
     private boolean status;
+
+    @Builder
+    public Device(
+            String name,
+            DeviceType type,
+            String osVersion
+    ){
+        this.name = name;
+        this.type = type;
+        this.osVersion = osVersion;
+        this.status = true;
+    }
 
     public void update(String name) {
         this.name = name;
@@ -56,13 +64,10 @@ public class Device extends BaseEntity {
         this.osVersion = osVersion;
     }
 
-    public void changeServiceType( ServiceType serviceType ){
-        this.serviceType = serviceType;
-    }
+    public void updateUser( User user ) { this.user = user; }
 
     public void connectDevice() {
         this.status = true;
-        this.lastConnectedAt = LocalDateTime.now();
     }
 
     public void disconnectDevice() {
