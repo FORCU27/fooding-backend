@@ -70,4 +70,9 @@ public class PosWaitingService {
                 waitingSetting.getEntryTimeLimitMinutes()
         );
     }
+
+    @Transactional
+    public void updateMemo(long requestId, String memo) {
+        storeWaitingService.get(requestId).updateMemo(memo);
+    }
 }
