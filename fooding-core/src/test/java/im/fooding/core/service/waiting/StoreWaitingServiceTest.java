@@ -33,8 +33,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.test.context.TestConstructor;
+import org.springframework.test.context.TestConstructor.AutowireMode;
 
-@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@TestConstructor(autowireMode = AutowireMode.ALL)
 @RequiredArgsConstructor
 class StoreWaitingServiceTest extends TestConfig {
 
@@ -132,7 +133,7 @@ class StoreWaitingServiceTest extends TestConfig {
         StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
 
         // when & then
-        Assertions.assertThatCode(() -> storeWaitingService.getStoreWaiting(storeWaiting.getId()))
+        Assertions.assertThatCode(() -> storeWaitingService.get(storeWaiting.getId()))
                 .doesNotThrowAnyException();
     }
 
@@ -142,7 +143,7 @@ class StoreWaitingServiceTest extends TestConfig {
         // when & then
         ApiException e = assertThrows(
                 ApiException.class,
-                () -> storeWaitingService.getStoreWaiting(1L)
+                () -> storeWaitingService.get(1L)
         );
         Assertions.assertThat(e.getErrorCode())
                 .isEqualTo(ErrorCode.STORE_WAITING_NOT_FOUND);
@@ -212,6 +213,22 @@ class StoreWaitingServiceTest extends TestConfig {
 
         assertThat(exception.getErrorCode())
                 .isEqualTo(ErrorCode.WAITING_NOT_OPENED);
+    }
+
+    @Test
+    @DisplayName("웨이팅을 취소할 수 있다.")
+    public void testCancel() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
+        StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
+
+        // when
+        storeWaitingService.cancel(storeWaiting.getId());
+
+        // then
+        Assertions.assertThat(storeWaiting.getStatus())
+                .isEqualTo(StoreWaitingStatus.CANCELLED);
     }
 
     @Test
