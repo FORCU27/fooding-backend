@@ -2,6 +2,7 @@ package im.fooding.app.controller.waiting;
 
 import im.fooding.app.dto.request.waiting.PosUpdateWaitingContactInfoRequest;
 import im.fooding.app.service.waiting.PosWaitingService;
+import im.fooding.app.dto.request.waiting.PosWaitingCancelRequest;
 import im.fooding.core.common.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,6 +12,7 @@ import im.fooding.app.dto.response.waiting.WaitingResponse;
 import im.fooding.core.common.PageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,6 +33,18 @@ public class PosWaitingController {
             @ModelAttribute WaitingListRequest request
     ) {
         return ApiResult.ok(posWaitingService.list(id, request));
+    }
+
+    @PostMapping("/requests/{requestId}/cancel")
+    @Operation(summary = "웨이팅 취소")
+    ApiResult<Void> cancel(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long requestId,
+
+            @RequestBody @Validated PosWaitingCancelRequest request
+    ) {
+        posWaitingService.cancel(requestId, request.reason());
+        return ApiResult.ok();
     }
 
     @PostMapping("/requests/{requestId}/call")

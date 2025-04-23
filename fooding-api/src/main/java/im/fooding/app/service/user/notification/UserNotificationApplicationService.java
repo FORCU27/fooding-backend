@@ -50,6 +50,11 @@ public class UserNotificationApplicationService {
         slackClient.sendNotificationMessage(message);
     }
 
+    public void sendWaitingCancelMessage(String store, String reason) {
+        String message = WaitingMessageBuilder.buildCancel(store, reason);
+        slackClient.sendNotificationMessage(message);
+    }
+
     public List<UserNotificationResponse> list(Long userId) {
         return userNotificationService.getUserNotifications(userId).stream()
                 .map(UserNotificationResponse::from)

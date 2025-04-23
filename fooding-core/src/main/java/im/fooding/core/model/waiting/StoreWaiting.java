@@ -102,6 +102,10 @@ public class StoreWaiting extends BaseEntity {
     }
 
     public void cancel() {
+        if (status != StoreWaitingStatus.WAITING) {
+            throw new ApiException(ErrorCode.STORE_WAITING_ILLEGAL_STATE_CANCEL);
+        }
+
         this.status = StoreWaitingStatus.CANCELLED;
     }
 
