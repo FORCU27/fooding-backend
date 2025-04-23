@@ -1,5 +1,6 @@
 package im.fooding.app.controller.user.device;
 
+import im.fooding.app.dto.request.user.device.CreateDeviceRequest;
 import im.fooding.app.dto.request.user.device.RetrieveStoreDeviceRequest;
 import im.fooding.app.dto.response.user.device.StoreDeviceResponse;
 import im.fooding.app.service.user.device.DeviceApplicationService;
@@ -25,8 +26,17 @@ public class UserDeviceController {
     @GetMapping("")
     @Operation(summary="가게 소속 디바이스 조회")
     public ApiResult<PageResponse<StoreDeviceResponse>> retrieve(
-            @Valid RetrieveStoreDeviceRequest request
+            @Valid @RequestBody RetrieveStoreDeviceRequest request
     ) {
         return ApiResult.ok(service.retrieveStoreDevice( request ));
+    }
+
+    @GetMapping( "/connect" )
+    @Operation(summary="로그인 유저 디바이스 연결")
+    public ApiResult<Void> connect(
+            @Valid @RequestBody CreateDeviceRequest request
+    ){
+        service.connect( request );
+        return ApiResult.ok();
     }
 }
