@@ -35,7 +35,7 @@ public class PosWaitingService {
     private final WaitingLogService waitingLogService;
 
     public StoreWaitingResponse details(long id) {
-        return StoreWaitingResponse.from(storeWaitingService.getStoreWaiting(id));
+        return StoreWaitingResponse.from(storeWaitingService.get(id));
     }
 
     public PageResponse<WaitingResponse> list(long id, WaitingListRequest request) {
