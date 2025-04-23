@@ -13,7 +13,7 @@ public class QStoreImageRepositoryImpl implements QStoreImageRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Optional<StoreImage> get(Long storeId) {
+    public Optional<StoreImage> findByStore(Long storeId) {
 
         StoreImage result = queryFactory
                 .selectFrom(storeImage)

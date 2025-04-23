@@ -21,10 +21,10 @@ public class StoreImageService {
      * 가게 대표 이미지 조회
      *
      * @param storeId
-     * @return List<StoreImage>
+     * @return StoreImage
      */
-    public StoreImage get(long storeId) {
-        return storeImageRepository.get(storeId)
+    public StoreImage findByStore(long storeId) {
+        return storeImageRepository.findByStore(storeId)
                 .orElseThrow(()-> new ApiException(ErrorCode.STORE_IMAGE_NOT_FOUND));
     }
 }

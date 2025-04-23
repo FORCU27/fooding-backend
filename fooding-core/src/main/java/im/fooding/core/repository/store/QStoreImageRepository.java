@@ -5,5 +5,5 @@ import java.util.Optional;
 
 public interface QStoreImageRepository {
 
-    Optional<StoreImage> get(Long storeId);
+    Optional<StoreImage> findByStore(Long storeId);
 }
