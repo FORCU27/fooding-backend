@@ -1,7 +1,6 @@
 package im.fooding.core.service.menu;
 
 import im.fooding.core.model.menu.Menu;
-import im.fooding.core.model.menu.MenuCategory;
 import im.fooding.core.repository.menu.MenuRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +19,10 @@ public class MenuService {
     /**
      * 메뉴 목록 조회
      *
-     * @param menuCategory
+     * @param categoryIds
      * @return List<Menu>
      */
-    public List<Menu> list(MenuCategory menuCategory) {
-        return menuRepository.list(menuCategory);
+    public List<Menu> list(List<Long> categoryIds) {
+        return menuRepository.list(categoryIds);
     }
 }
