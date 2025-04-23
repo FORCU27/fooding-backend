@@ -57,9 +57,6 @@ public class StoreDeviceResponse {
                 .deviceType(device.getType())
                 .name(device.getName())
                 .osVersion(device.getOsVersion())
-                .installedAt(device.getInstalledAt())
-                .lastConnectedAt(device.getLastConnectedAt())
-                .serviceType(device.getServiceType())
                 .build();
     }
 }
