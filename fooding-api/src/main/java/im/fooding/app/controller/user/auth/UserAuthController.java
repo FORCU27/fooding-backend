@@ -45,7 +45,7 @@ public class UserAuthController {
         return ApiResult.ok(service.login(AuthProvider.NAVER, code, Role.USER));
     }
 
-    @GetMapping("/apple/token")
+    @PostMapping("/apple/token")
     @Operation(summary = "테스트시 토큰 받기 위한 웹훅 url", hidden = true)
     public ApiResult<TokenResponse> appleTest(@RequestParam("code") String code) {
         return ApiResult.ok(service.login(AuthProvider.APPLE, code, Role.USER));

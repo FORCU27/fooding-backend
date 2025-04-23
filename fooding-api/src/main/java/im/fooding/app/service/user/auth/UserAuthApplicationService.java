@@ -1,12 +1,8 @@
 package im.fooding.app.service.user.auth;
 
+import feign.FeignException;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
-import im.fooding.core.global.jwt.dto.TokenResponse;
-import im.fooding.core.global.jwt.service.JwtService;
-import im.fooding.core.model.user.AuthProvider;
-import im.fooding.core.model.user.Role;
-import im.fooding.core.model.user.User;
 import im.fooding.core.global.feign.client.SocialLoginClient;
 import im.fooding.core.global.feign.dto.OauthInfo;
 import im.fooding.core.global.feign.dto.google.GoogleUserResponse;
@@ -14,6 +10,12 @@ import im.fooding.core.global.feign.dto.kakao.KakaoUserProfile;
 import im.fooding.core.global.feign.dto.kakao.KakaoUserResponse;
 import im.fooding.core.global.feign.dto.naver.NaverUserProfile;
 import im.fooding.core.global.feign.dto.naver.NaverUserResponse;
+import im.fooding.core.global.jwt.dto.TokenResponse;
+import im.fooding.core.global.jwt.service.JwtService;
+import im.fooding.core.global.util.AppleLoginUtil;
+import im.fooding.core.model.user.AuthProvider;
+import im.fooding.core.model.user.Role;
+import im.fooding.core.model.user.User;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,26 +42,27 @@ public class UserAuthApplicationService {
      */
     @Transactional
     public TokenResponse login(AuthProvider provider, String code, Role role) {
-        String accessToken = getToken(provider, code);
+        String token = getToken(provider, code);
         switch (provider) {
+            // TODO: 디자인 패턴 적용
             case KAKAO -> {
-                KakaoUserProfile kakaoUserProfile = this.kakao(accessToken);
+                KakaoUserProfile kakaoUserProfile = this.getKakaoUser(token);
                 return this.verifyOrRegisterAndIssueToken(kakaoUserProfile.getEmail(), provider, role);
             }
             case GOOGLE -> {
-                GoogleUserResponse googleUserResponse = this.google(accessToken);
+                GoogleUserResponse googleUserResponse = this.getGoogleUser(token);
                 return this.verifyOrRegisterAndIssueToken(googleUserResponse.getEmail(), provider, role);
             }
             case NAVER -> {
-                NaverUserProfile naverUserProfile = this.naver(accessToken);
+                NaverUserProfile naverUserProfile = this.getNaverUser(token);
                 return this.verifyOrRegisterAndIssueToken(naverUserProfile.getEmail(), provider, role);
             }
             case APPLE -> {
-                //TODO
+                String email = this.getAppleUser(token);
+                return this.verifyOrRegisterAndIssueToken(email, provider, role);
             }
             default -> throw new ApiException(ErrorCode.UNSUPPORTED_SOCIAL);
         }
-        return null;
     }
 
     /**
@@ -101,14 +104,25 @@ public class UserAuthApplicationService {
                     ).getAccessToken();
                 }
                 case APPLE -> {
-                    //TODO
+                    return client.getAppleToken(
+                            new URI(oauthInfo.getAppleTokenUri()),
+                            oauthInfo.getAppleClientId(),
+                            oauthInfo.getAppleClientSecret(),
+                            oauthInfo.getAppleRedirectUri(),
+                            code,
+                            "authorization_code"
+                    ).getIdToken();
                 }
                 default -> throw new ApiException(ErrorCode.UNSUPPORTED_SOCIAL);
             }
+        } catch (FeignException e) {
+            String detailMessage = e.responseBody()
+                    .map(bytes -> new String(bytes.array()))
+                    .orElse(null);
+            throw new ApiException(ErrorCode.OAUTH_FAILED, detailMessage);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ApiException(ErrorCode.OAUTH_FAILED, e.getMessage());
         }
-        return null;
     }
 
     /**
@@ -117,7 +131,7 @@ public class UserAuthApplicationService {
      * @param token
      * @return KakaoAccount
      */
-    private KakaoUserProfile kakao(final String token) {
+    private KakaoUserProfile getKakaoUser(final String token) {
         try {
             KakaoUserResponse kakaoUserResponse = client.getKakaoUserInfo(new URI(oauthInfo.getKakaoUserInfoUri()), oauthInfo.getTokenType() + token);
             KakaoUserProfile kakaoUserProfile = kakaoUserResponse.getUser();
@@ -125,9 +139,13 @@ public class UserAuthApplicationService {
                 throw new ApiException(ErrorCode.EMAIL_CONSENT_REQUIRED);
             }
             return kakaoUserProfile;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR);
+        } catch (FeignException e) {
+            String detailMessage = e.responseBody()
+                    .map(bytes -> new String(bytes.array()))
+                    .orElse(null);
+            throw new ApiException(ErrorCode.OAUTH_FAILED, detailMessage);
+        }  catch (Exception e) {
+            throw new ApiException(ErrorCode.OAUTH_FAILED);
         }
     }
 
@@ -137,16 +155,20 @@ public class UserAuthApplicationService {
      * @param token
      * @return GoogleAccount
      */
-    private GoogleUserResponse google(final String token) {
+    private GoogleUserResponse getGoogleUser(final String token) {
         try {
             GoogleUserResponse googleUserResponse = client.getGoogleUserInfo(new URI(oauthInfo.getGoogleUserInfoUri()), token);
             if (googleUserResponse.getEmail() == null) {
                 throw new ApiException(ErrorCode.EMAIL_CONSENT_REQUIRED);
             }
             return googleUserResponse;
+        } catch (FeignException e) {
+            String detailMessage = e.responseBody()
+                    .map(bytes -> new String(bytes.array()))
+                    .orElse(null);
+            throw new ApiException(ErrorCode.OAUTH_FAILED, detailMessage);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new ApiException(ErrorCode.OAUTH_FAILED);
         }
     }
 
@@ -156,7 +178,7 @@ public class UserAuthApplicationService {
      * @param token
      * @return NaverAccount
      */
-    private NaverUserProfile naver(final String token) {
+    private NaverUserProfile getNaverUser(final String token) {
         try {
             NaverUserResponse naverUserResponse = client.getNaverUserInfo(new URI(oauthInfo.getNaverUserInfoUri()), oauthInfo.getTokenType() + token);
             NaverUserProfile naverUserProfile = naverUserResponse.getUser();
@@ -164,9 +186,27 @@ public class UserAuthApplicationService {
                 throw new ApiException(ErrorCode.EMAIL_CONSENT_REQUIRED);
             }
             return naverUserProfile;
+        } catch (FeignException e) {
+            String detailMessage = e.responseBody()
+                    .map(bytes -> new String(bytes.array()))
+                    .orElse(null);
+            throw new ApiException(ErrorCode.OAUTH_FAILED, detailMessage);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new ApiException(ErrorCode.INTERNAL_SERVER_ERROR);
+            throw new ApiException(ErrorCode.OAUTH_FAILED);
+        }
+    }
+
+    /**
+     * 애플 이메일 조회
+     *
+     * @param token
+     * @return String
+     */
+    private String getAppleUser(final String token) {
+        try {
+            return AppleLoginUtil.parseIdToken(token);
+        } catch (Exception e) {
+            throw new ApiException(ErrorCode.OAUTH_FAILED);
         }
     }
 

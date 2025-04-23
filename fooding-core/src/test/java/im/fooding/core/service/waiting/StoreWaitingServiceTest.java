@@ -3,6 +3,8 @@ package im.fooding.core.service.waiting;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import im.fooding.core.TestConfig;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
@@ -22,6 +24,7 @@ import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.model.waiting.StoreWaitingStatus;
 import im.fooding.core.repository.waiting.WaitingUserRepository;
 import im.fooding.core.support.dummy.StoreDummy;
+import im.fooding.core.support.dummy.StoreWaitingDummy;
 import im.fooding.core.support.dummy.WaitingUserDummy;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
@@ -37,15 +40,15 @@ class StoreWaitingServiceTest extends TestConfig {
 
     private final StoreWaitingService storeWaitingService;
     private final StoreWaitingRepository storeWaitingRepository;
-    private final WaitingUserRepository waitingUserRepository;
     private final StoreRepository storeRepository;
+    private final WaitingUserRepository waitingUserRepository;
     private final WaitingRepository waitingRepository;
 
     @AfterEach
     void tearDown() {
         storeWaitingRepository.deleteAll();
-        waitingUserRepository.deleteAll();
         storeRepository.deleteAll();
+        waitingUserRepository.deleteAll();
         waitingRepository.deleteAll();
     }
 
@@ -121,6 +124,31 @@ class StoreWaitingServiceTest extends TestConfig {
     }
 
     @Test
+    @DisplayName("웨이팅을 조회할 수 있다.")
+    public void testGetStoreWaiting() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
+        StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
+
+        // when & then
+        Assertions.assertThatCode(() -> storeWaitingService.getStoreWaiting(storeWaiting.getId()))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("없는 웨이팅을 조회할 수 있다.")
+    public void testGetStoreWaiting_fail() {
+        // when & then
+        ApiException e = assertThrows(
+                ApiException.class,
+                () -> storeWaitingService.getStoreWaiting(1L)
+        );
+        Assertions.assertThat(e.getErrorCode())
+                .isEqualTo(ErrorCode.STORE_WAITING_NOT_FOUND);
+    }
+
+    @Test
     @DisplayName("웨이팅 등록시 가게의 현재 웨이팅 개수 + 1의 호출 번호로 등록된다.")
     public void callNumber_is_current_waiting_count_plus_1_when_register() {
         // given
@@ -184,5 +212,36 @@ class StoreWaitingServiceTest extends TestConfig {
 
         assertThat(exception.getErrorCode())
                 .isEqualTo(ErrorCode.WAITING_NOT_OPENED);
+    }
+
+    @Test
+    @DisplayName("가게 웨이팅을 착석 처리할 수 있다.")
+    public void testSeat() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
+        StoreWaiting storeWaiting = storeWaitingRepository.save(spy(StoreWaitingDummy.create(user, store)));
+
+        // when
+        storeWaitingService.seat(storeWaiting.getId());
+
+        // then
+        verify(storeWaiting).seat();
+    }
+
+    @Test
+    @DisplayName("호출시 호출 횟수를 증가한다.")
+    public void testCall() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
+        StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
+
+        // when
+        storeWaitingService.call(storeWaiting.getId());
+
+        // then
+        Assertions.assertThat(storeWaiting.getCallCount())
+                .isEqualTo(1);
     }
 }

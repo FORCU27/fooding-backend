@@ -27,7 +27,7 @@ spring:
       max-request-size: ${MAX_REQUEST_SIZE:1000MB}
 
 jwt:
-  secretKey: ${JWT_SECRET_KEY:OxJyMRYZufUrGdBXpDyeLoTj2fbLu2XmHPPJMwdGsv5xcZvUXi}
+  secret-key: ${JWT_SECRET_KEY:KECHLtOh6ohqn1ucwQF0g9Ih1wbOjfJQ7EKMmfwZ1BmGtahQeeUOUA1JyZykdonF}
   access:
     expiration: ${JWT_ACCESS_EXPIRATION:604800000}
     header: ${JWT_ACCESS_HEADER:Authorization}
@@ -56,7 +56,7 @@ logging:
 
 webhook:
   slack:
-    url: https://hooks.slack.com/services/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
+    url: ${WEBHOOK_SLACK_URL}
 
 message:
   sender: 02-1234-5678
@@ -83,8 +83,9 @@ auth:
     redirect-uri: https://api-stage.fooding.im/user/auth/naver/token
 
   apple:
-    client-id: ""
-    client-secret: ""
-    token-uri: ""
-    user-info-uri: ""
-    redirect-uri: https://api-stage.fooding.im/auth/social-login/apple/token
+    client-id: im.fooding.loginservice
+    team-id: 4TS88K9HKJ
+    key-id: 4PPY69KNW8
+    private-key: MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgrHlqh7uGlOTNbxyBSeyyZ4JyLKNMDboPO+K4he/6URKgCgYIKoZIzj0DAQehRANCAASN1R+nHzVoAbh7kRGG4GBdlOAqZTWsvC4AaWjQl2osHTB7Vu2ctjTvKJTD6Col9dCt4eFTPSQyMX+7ezJyucy2
+    token-uri: https://appleid.apple.com/auth/token
+    redirect-uri: https://api-stage.fooding.im/user/auth/apple/token
