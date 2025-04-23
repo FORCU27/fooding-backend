@@ -1,15 +1,18 @@
 package im.fooding.app.service.waiting;
 
+import im.fooding.app.dto.request.waiting.PosUpdateWaitingContactInfoRequest;
 import im.fooding.app.dto.request.waiting.WaitingListRequest;
 import im.fooding.app.dto.response.waiting.WaitingResponse;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
+import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
 import im.fooding.core.model.waiting.*;
 import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
+import im.fooding.core.service.waiting.WaitingUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,12 +25,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
-public class PosWaitingApplicationService {
+public class PosWaitingService {
 
     private final UserNotificationApplicationService userNotificationApplicationService;
     private final WaitingService waitingService;
     private final StoreWaitingService storeWaitingService;
     private final WaitingSettingService waitingSettingService;
+    private final WaitingUserService waitingUserService;
 
     public PageResponse<WaitingResponse> list(long id, WaitingListRequest request) {
 
@@ -63,5 +67,31 @@ public class PosWaitingApplicationService {
                 storeWaiting.getCallNumber(),
                 waitingSetting.getEntryTimeLimitMinutes()
         );
+    }
+
+    @Transactional
+    public void updateContactInfo(long requestId, PosUpdateWaitingContactInfoRequest request) {
+        StoreWaiting storeWaiting = storeWaitingService.getStoreWaiting(requestId);
+
+        WaitingUser user = storeWaiting.getUser();
+        if (user != null) {
+            user.updateName(request.name());
+            user.updatePhoneNumber(request.phoneNumber());
+            return;
+        }
+
+        WaitingUserRegisterRequest waitingUserRegisterRequest = WaitingUserRegisterRequest.builder()
+                .store(storeWaiting.getStore())
+                .name(request.name())
+                .phoneNumber(request.phoneNumber())
+                .termsAgreed(true)
+                .privacyPolicyAgreed(true)
+                .thirdPartyAgreed(true)
+                .marketingConsent(false)
+                .build();
+        user = waitingUserService.getOrElseRegister(waitingUserRegisterRequest);
+        user.updateName(request.name());
+        user.updatePhoneNumber(request.phoneNumber());
+        storeWaiting.injectUser(user);
     }
 }

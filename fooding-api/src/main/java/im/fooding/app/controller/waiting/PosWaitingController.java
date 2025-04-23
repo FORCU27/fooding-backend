@@ -1,6 +1,7 @@
 package im.fooding.app.controller.waiting;
 
-import im.fooding.app.service.waiting.PosWaitingApplicationService;
+import im.fooding.app.dto.request.waiting.PosUpdateWaitingContactInfoRequest;
+import im.fooding.app.service.waiting.PosWaitingService;
 import im.fooding.core.common.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class PosWaitingController {
 
-    private final PosWaitingApplicationService posWaitingApplicationService;
+    private final PosWaitingService posWaitingService;
 
     @GetMapping("/{id}/requests")
     @Operation(summary = "웨이팅 목록 조회")
@@ -29,7 +30,7 @@ public class PosWaitingController {
 
             @ModelAttribute WaitingListRequest request
     ) {
-        return ApiResult.ok(posWaitingApplicationService.list(id, request));
+        return ApiResult.ok(posWaitingService.list(id, request));
     }
 
     @PostMapping("/requests/{requestId}/call")
@@ -38,7 +39,7 @@ public class PosWaitingController {
             @Parameter(description = "가게 웨이팅 id", example = "1")
             @PathVariable long requestId
     ) {
-        posWaitingApplicationService.call(requestId);
+        posWaitingService.call(requestId);
         return ApiResult.ok();
     }
 
@@ -48,7 +49,19 @@ public class PosWaitingController {
             @Parameter(description = "가게 웨이팅 id", example = "1")
             @PathVariable long requestId
     ) {
-        posWaitingApplicationService.seat(requestId);
+        posWaitingService.seat(requestId);
+        return ApiResult.ok();
+    }
+
+    @PatchMapping("/requests/{requestId}/contact-info")
+    @Operation(summary = "웨이팅 사용자 정보 수정")
+    ApiResult<Void> updateContactInfo(
+            @Parameter(description = "가게 웨이팅 id", example = "1")
+            @PathVariable long requestId,
+
+            @RequestBody PosUpdateWaitingContactInfoRequest request
+    ) {
+        posWaitingService.updateContactInfo(requestId, request);
         return ApiResult.ok();
     }
 }
