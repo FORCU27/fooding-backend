@@ -23,7 +23,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
-public class PosWaitingApplicationService {
+public class PosWaitingService {
 
     private final UserNotificationApplicationService userNotificationApplicationService;
     private final WaitingService waitingService;
