@@ -70,4 +70,8 @@ public class PosWaitingApplicationService {
                 waitingSetting.getEntryTimeLimitMinutes()
         );
     }
+
+    public void revert(long requestId) {
+        storeWaitingService.revert(requestId);
+    }
 }
