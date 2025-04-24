@@ -72,6 +72,10 @@ public class PosWaitingService {
         );
     }
 
+    public void revert(long requestId) {
+        storeWaitingService.revert(requestId);
+    }
+
     @Transactional
     public void updateOccupancy(long requestId, PosWaitingOccupancyUpdateRequest request) {
         StoreWaiting storeWaiting = storeWaitingService.get(requestId);
