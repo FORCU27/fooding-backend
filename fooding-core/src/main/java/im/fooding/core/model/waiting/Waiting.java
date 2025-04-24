@@ -3,6 +3,8 @@ package im.fooding.core.model.waiting;
 import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

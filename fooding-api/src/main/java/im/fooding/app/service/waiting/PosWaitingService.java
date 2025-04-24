@@ -61,6 +61,12 @@ public class PosWaitingService {
     }
 
     @Transactional
+    public void cancel(long requestId, String reason) {
+        StoreWaiting canceledWaiting = storeWaitingService.cancel(requestId);
+        userNotificationApplicationService.sendWaitingCancelMessage(canceledWaiting.getStoreName(), reason);
+    }
+
+    @Transactional
     public void call(long requestId) {
         StoreWaiting storeWaiting = storeWaitingService.call(requestId);
 
@@ -71,6 +77,10 @@ public class PosWaitingService {
                 storeWaiting.getCallNumber(),
                 waitingSetting.getEntryTimeLimitMinutes()
         );
+    }
+
+    public void revert(long requestId) {
+        storeWaitingService.revert(requestId);
     }
 
     @Transactional
@@ -133,11 +143,5 @@ public class PosWaitingService {
                 order,
                 storeWaiting.getCallNumber()
         );
-    }
-
-    @Transactional
-    public void cancel(long requestId, String reason) {
-        StoreWaiting canceledWaiting = storeWaitingService.cancel(requestId);
-        userNotificationApplicationService.sendWaitingCancelMessage(canceledWaiting.getStoreName(), reason);
     }
 }
