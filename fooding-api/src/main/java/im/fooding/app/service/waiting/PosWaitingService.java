@@ -90,4 +90,8 @@ public class PosWaitingService {
 
         return PageResponse.of(list, PageInfo.of(logs));
     }
+
+    public void revert(long requestId) {
+        storeWaitingService.revert(requestId);
+    }
 }
