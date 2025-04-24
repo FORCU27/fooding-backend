@@ -109,6 +109,14 @@ public class StoreWaiting extends BaseEntity {
         this.status = StoreWaitingStatus.CANCELLED;
     }
 
+    public void revert() {
+        if (status == StoreWaitingStatus.WAITING) {
+            throw new ApiException(ErrorCode.STORE_WAITING_ALREADY_WAITING);
+        }
+
+        status = StoreWaitingStatus.WAITING;
+    }
+
     public String getChannelValue() {
         return channel.getValue();
     }
