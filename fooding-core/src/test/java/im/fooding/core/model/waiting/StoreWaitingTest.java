@@ -26,7 +26,7 @@ class StoreWaitingTest {
     }
 
     @Test
-    @DisplayName("이미 웨이팅 상태인 경우 되돌릴 수 없다.")
+    @DisplayName("되돌릴 수 있는 상태가 아닌 경우 되돌릴 수 없다.")
     void testRevert_fail_whenAlreadyWaiting() {
         // given
         StoreWaiting storeWaiting = StoreWaiting.builder().build();
@@ -34,7 +34,7 @@ class StoreWaitingTest {
         // when & then
         ApiException e = assertThrows(ApiException.class, storeWaiting::revert);
         Assertions.assertThat(e.getErrorCode())
-                .isEqualTo(ErrorCode.STORE_WAITING_ALREADY_WAITING);
+                .isEqualTo(ErrorCode.STORE_WAITING_ILLEGAL_STATE_REVERT);
     }
 
     @DisplayName("착석할 수 있다.")
