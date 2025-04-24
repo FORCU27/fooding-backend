@@ -71,6 +71,10 @@ public class PosWaitingService {
         );
     }
 
+    public void revert(long requestId) {
+        storeWaitingService.revert(requestId);
+    }
+
     @Transactional
     public void updateMemo(long requestId, String memo) {
         storeWaitingService.get(requestId).updateMemo(memo);
