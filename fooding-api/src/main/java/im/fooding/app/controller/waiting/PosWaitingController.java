@@ -73,7 +73,7 @@ public class PosWaitingController {
             @Parameter(description = "가게 웨이팅 id", example = "1")
             @PathVariable long requestId,
 
-            @RequestBody PosWaitingMemoUpdateRequest request
+            @RequestBody @Validated PosWaitingMemoUpdateRequest request
     ) {
         posWaitingService.updateMemo(requestId, request.memo());
         return ApiResult.ok();
