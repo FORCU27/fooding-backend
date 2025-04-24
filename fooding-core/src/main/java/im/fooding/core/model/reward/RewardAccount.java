@@ -36,4 +36,6 @@ public class RewardAccount extends BaseEntity {
     public void addPoint( int earnPoint ){
         this.point += earnPoint;
     }
+
+    public void usePoint( int usePoint ) { this.point -= usePoint; };
 }
