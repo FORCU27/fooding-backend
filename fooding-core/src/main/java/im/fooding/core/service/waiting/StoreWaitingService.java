@@ -96,6 +96,12 @@ public class StoreWaitingService {
         return storeWaitingRepository.save(storeWaiting);
     }
 
+    public void revert(long id) {
+        StoreWaiting storeWaiting = get(id);
+
+        storeWaiting.revert();
+    }
+
     public boolean exists(Store store, StoreWaitingStatus status) {
         return storeWaitingRepository.existsByStoreAndStatus(store, status);
     }

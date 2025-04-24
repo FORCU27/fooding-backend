@@ -91,4 +91,8 @@ public class PosWaitingApplicationService {
             throw new ApiException(ErrorCode.WAITING_STATUS_STORE_WAITING_EXIST);
         }
     }
+
+    public void revert(long requestId) {
+        storeWaitingService.revert(requestId);
+    }
 }
