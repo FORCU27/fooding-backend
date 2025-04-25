@@ -1,5 +1,6 @@
 package im.fooding.app.controller.waiting;
 
+import im.fooding.app.dto.request.waiting.PosUpdateWaitingTimeRequest;
 import im.fooding.app.dto.request.waiting.PosWaitingCancelRequest;
 import im.fooding.app.service.waiting.PosWaitingApplicationService;
 import im.fooding.core.common.ApiResult;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import im.fooding.app.dto.request.waiting.WaitingListRequest;
 import im.fooding.app.dto.response.waiting.WaitingResponse;
 import im.fooding.core.common.PageResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -73,6 +75,18 @@ public class PosWaitingController {
             @PathVariable long requestId
     ) {
         posWaitingApplicationService.seat(requestId);
+        return ApiResult.ok();
+    }
+
+    @PatchMapping("/{id}/waiting-time")
+    @Operation(summary = "웨이팅 대기 시간 조정")
+    ApiResult<Void> updateWaitingTime(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long id,
+
+            @RequestBody @Valid PosUpdateWaitingTimeRequest request
+    ) {
+        posWaitingApplicationService.updateWaitingTime(id, request.estimatedWaitingTimeMinutes());
         return ApiResult.ok();
     }
 }

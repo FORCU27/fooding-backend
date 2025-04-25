@@ -74,4 +74,12 @@ public class PosWaitingApplicationService {
     public void revert(long requestId) {
         storeWaitingService.revert(requestId);
     }
+
+    @Transactional
+    public void updateWaitingTime(long id, int estimatedWaitingTimeMinutes) {
+        Waiting waiting = waitingService.getById(id);
+        WaitingSetting activeSetting = waitingSettingService.getActiveSetting(waiting.getStore());
+
+        activeSetting.updateWaitingTimeMinutes(estimatedWaitingTimeMinutes);
+    }
 }
