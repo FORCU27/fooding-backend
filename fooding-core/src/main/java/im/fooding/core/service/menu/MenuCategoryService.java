@@ -4,7 +4,6 @@ import im.fooding.core.model.menu.MenuCategory;
 import im.fooding.core.repository.menu.MenuCategoryRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +22,6 @@ public class MenuCategoryService {
      * @return List<MenuCategory>
      */
     public List<MenuCategory> list(long storeId) {
-        return menuCategoryRepository.findAllByStoreId(storeId);
+        return menuCategoryRepository.findAllByStoreIdAndDeletedFalse(storeId);
     }
 }

@@ -17,6 +17,7 @@ public class QMenuRepositoryImpl implements QMenuRepository {
         return queryFactory
                 .selectFrom(menu)
                 .where(menu.category.id.in(categoryIds))
+                .where(menu.deleted.isFalse())
                 .fetch();
     }
 }
