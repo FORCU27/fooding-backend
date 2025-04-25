@@ -3,6 +3,7 @@ package im.fooding.app.controller.waiting;
 import im.fooding.app.dto.request.waiting.PosWaitingCancelRequest;
 import im.fooding.app.dto.request.waiting.PosWaitingStatusUpdateRequest;
 import im.fooding.app.service.waiting.PosWaitingService;
+import im.fooding.app.dto.request.waiting.PosWaitingRegisterRequest;
 import im.fooding.core.common.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -87,6 +88,18 @@ public class PosWaitingController {
             @PathVariable long requestId
     ) {
         posWaitingService.seat(requestId);
+        return ApiResult.ok();
+    }
+
+    @PostMapping("/{id}/requests")
+    @Operation(summary = "웨이팅 등록")
+    ApiResult<Void> register(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long id,
+
+            @RequestBody @Valid PosWaitingRegisterRequest request
+    ) {
+        posWaitingService.register(id, request);
         return ApiResult.ok();
     }
 }
