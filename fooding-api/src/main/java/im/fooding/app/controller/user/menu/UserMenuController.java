@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/store")
+@RequestMapping("/user/stores")
 @Tag(name = "UserMenuController", description = "유저 메뉴 컨트롤러")
 public class UserMenuController {
 
