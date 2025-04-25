@@ -42,4 +42,8 @@ public class Waiting extends BaseEntity {
     public void updateStatus(WaitingStatus status) {
         this.status = status;
     }
+
+    public boolean isOpen() {
+        return status == WaitingStatus.WAITING_OPEN;
+    }
 }

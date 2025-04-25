@@ -3,7 +3,12 @@ package im.fooding.app.controller.waiting;
 import im.fooding.app.dto.request.waiting.PosWaitingCancelRequest;
 import im.fooding.app.dto.request.waiting.PosWaitingOccupancyUpdateRequest;
 import im.fooding.app.service.waiting.PosWaitingService;
+import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
+import im.fooding.app.dto.response.waiting.WaitingLogResponse;
+import im.fooding.app.dto.request.waiting.PosWaitingStatusUpdateRequest;
+import im.fooding.app.dto.request.waiting.PosWaitingRegisterRequest;
 import im.fooding.core.common.ApiResult;
+import im.fooding.core.common.BasicSearch;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,6 +41,27 @@ public class PosWaitingController {
         return ApiResult.ok(posWaitingService.list(id, request));
     }
 
+    @GetMapping("/requests/{requestId}")
+    @Operation(summary = "웨이팅 상세 조회")
+    public ApiResult<StoreWaitingResponse> details(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long requestId
+    ) {
+        return ApiResult.ok(posWaitingService.details(requestId));
+    }
+
+    @GetMapping("/requests/{requestId}/logs")
+    @Operation(summary = "웨이팅 로그 리스트 조회")
+    public ApiResult<PageResponse<WaitingLogResponse>> listLogs(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long requestId,
+
+            @Parameter(description = "검색 및 페이징 조건")
+            @ModelAttribute BasicSearch search
+    ) {
+        return ApiResult.ok(posWaitingService.listLogs(requestId, search));
+    }
+
     @PostMapping("/requests/{requestId}/cancel")
     @Operation(summary = "웨이팅 취소")
     ApiResult<Void> cancel(
@@ -58,6 +84,18 @@ public class PosWaitingController {
         return ApiResult.ok();
     }
 
+    @PatchMapping("/{id}/status")
+    @Operation(summary = "웨이팅 상태 변경")
+    ApiResult<Void> updateWaitingStatus(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long id,
+
+            @RequestBody @Valid PosWaitingStatusUpdateRequest request
+    ) {
+        posWaitingService.updateWaitingStatus(id, request.status());
+        return ApiResult.ok();
+    }
+
     @PostMapping("/requests/{requestId}/revert")
     @Operation(summary = "웨이팅 되돌리기")
     ApiResult<Void> revert(
@@ -75,6 +113,18 @@ public class PosWaitingController {
             @PathVariable long requestId
     ) {
         posWaitingService.seat(requestId);
+        return ApiResult.ok();
+    }
+
+    @PostMapping("/{id}/requests")
+    @Operation(summary = "웨이팅 등록")
+    ApiResult<Void> register(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long id,
+
+            @RequestBody @Valid PosWaitingRegisterRequest request
+    ) {
+        posWaitingService.register(id, request);
         return ApiResult.ok();
     }
 
