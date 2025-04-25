@@ -1,8 +1,9 @@
 package im.fooding.app.controller.waiting;
 
 import im.fooding.app.dto.request.waiting.PosWaitingCancelRequest;
-import im.fooding.app.dto.request.waiting.PosWaitingRegisterRequest;
+import im.fooding.app.dto.request.waiting.PosWaitingStatusUpdateRequest;
 import im.fooding.app.service.waiting.PosWaitingService;
+import im.fooding.app.dto.request.waiting.PosWaitingRegisterRequest;
 import im.fooding.core.common.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -55,6 +56,18 @@ public class PosWaitingController {
             @PathVariable long requestId
     ) {
         posWaitingService.call(requestId);
+        return ApiResult.ok();
+    }
+
+    @PatchMapping("/{id}/status")
+    @Operation(summary = "웨이팅 상태 변경")
+    ApiResult<Void> updateWaitingStatus(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long id,
+
+            @RequestBody @Valid PosWaitingStatusUpdateRequest request
+    ) {
+        posWaitingService.updateWaitingStatus(id, request.status());
         return ApiResult.ok();
     }
 

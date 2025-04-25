@@ -16,6 +16,8 @@ import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import im.fooding.core.service.waiting.WaitingUserService;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -143,5 +145,23 @@ public class PosWaitingService {
                 order,
                 storeWaiting.getCallNumber()
         );
+    }
+    @Transactional
+    public void updateWaitingStatus(long id, String statusValue) {
+        Waiting waiting = waitingService.getById(id);
+        WaitingStatus updatedStatus = WaitingStatus.of(statusValue);
+
+        validateUpdateWaitingStatus(waiting, updatedStatus);
+
+        waitingService.updateStatus(id, updatedStatus);
+    }
+
+    private void validateUpdateWaitingStatus(Waiting waiting, WaitingStatus updatedStatus) {
+        if (!waiting.isOpen()
+                && updatedStatus == WaitingStatus.WAITING_OPEN
+                && storeWaitingService.exists(waiting.getStore(), StoreWaitingStatus.WAITING)
+        ) {
+            throw new ApiException(ErrorCode.WAITING_STATUS_STORE_WAITING_EXIST);
+        }
     }
 }
