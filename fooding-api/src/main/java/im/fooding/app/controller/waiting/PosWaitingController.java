@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import im.fooding.app.dto.request.waiting.WaitingListRequest;
 import im.fooding.app.dto.response.waiting.WaitingResponse;
 import im.fooding.core.common.PageResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
