@@ -5,7 +5,7 @@ import im.fooding.core.model.store.Store;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ReviewRepository extends JpaRepository<Review, Long> {
+public interface ReviewRepository extends JpaRepository<Review, Long>, QReviewRepository {
 
     List<Review> findAllByStore(Store store);
 }
