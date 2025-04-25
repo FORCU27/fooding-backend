@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +34,7 @@ public class UserReviewController {
     @Operation(summary = "리뷰 전체 조회", description = "별점순 / 최신순으로 리뷰를 조회합니다.")
     public ApiResult<PageResponse<UserReviewResponse>> list(
             @PathVariable Long storeId,
-            @Valid @RequestBody UserRetrieveReviewRequest request
+            @Valid @ModelAttribute UserRetrieveReviewRequest request
     ) {
         return ApiResult.ok(userReviewService.list(storeId, request));
     }
