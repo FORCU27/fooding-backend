@@ -43,7 +43,7 @@ public class QReviewRepositoryImpl implements QReviewRepository {
         JPQLQuery<Long> countQuery = query
                 .select(review.count())
                 .where(review.store.id.eq(storeId))
-                .from(store);
+                .from(review);
 
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchOne);
     }
