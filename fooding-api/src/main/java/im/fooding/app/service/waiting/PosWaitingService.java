@@ -1,12 +1,15 @@
 package im.fooding.app.service.waiting;
 
-import im.fooding.app.dto.request.waiting.PosWaitingRegisterRequest;
 import im.fooding.app.dto.request.waiting.WaitingListRequest;
+import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
+import im.fooding.app.dto.response.waiting.WaitingLogResponse;
 import im.fooding.app.dto.response.waiting.WaitingResponse;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
+import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
+import im.fooding.app.dto.request.waiting.PosWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
 import im.fooding.core.model.store.Store;
@@ -38,6 +41,10 @@ public class PosWaitingService {
     private final WaitingSettingService waitingSettingService;
     private final WaitingLogService waitingLogService;
     private final WaitingUserService waitingUserService;
+
+    public StoreWaitingResponse details(long id) {
+        return StoreWaitingResponse.from(storeWaitingService.get(id));
+    }
 
     public PageResponse<WaitingResponse> list(long id, WaitingListRequest request) {
 
@@ -163,5 +170,16 @@ public class PosWaitingService {
         ) {
             throw new ApiException(ErrorCode.WAITING_STATUS_STORE_WAITING_EXIST);
         }
+    }
+
+    public PageResponse<WaitingLogResponse> listLogs(long requestId, BasicSearch search) {
+        Page<WaitingLog> logs = waitingLogService.list(requestId, search.getPageable());
+
+        List<WaitingLogResponse> list = logs.getContent()
+                .stream()
+                .map(WaitingLogResponse::from)
+                .toList();
+
+        return PageResponse.of(list, PageInfo.of(logs));
     }
 }
