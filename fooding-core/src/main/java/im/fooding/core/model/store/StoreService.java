@@ -3,6 +3,7 @@ package im.fooding.core.model.store;
 import im.fooding.core.model.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
@@ -31,6 +32,16 @@ public class StoreService extends BaseEntity {
     private boolean activation;
 
     private LocalDateTime endedAt;
+
+    @Builder
+    public StoreService(
+            Store store,
+            StoreServiceType type
+    ){
+        this.store = store;
+        this.type = type;
+        this.activation = true;
+    }
 
     public void activate(){
         this.activation = true;
