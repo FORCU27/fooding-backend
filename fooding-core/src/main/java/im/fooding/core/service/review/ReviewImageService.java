@@ -22,6 +22,6 @@ public class ReviewImageService {
      * @return
      */
     public List<ReviewImage> list(List<Long> reviewIds) {
-        return reviewImageRepository.findAllByReviewIdIn(reviewIds);
+        return reviewImageRepository.findAllByReviewIdInAndDeletedFalse(reviewIds);
     }
 }

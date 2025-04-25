@@ -35,6 +35,7 @@ public class QReviewRepositoryImpl implements QReviewRepository {
                 .select(review)
                 .from(review)
                 .where(review.store.id.eq(storeId))
+                .where(review.deleted.isFalse())
                 .orderBy(orderSpecifier)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
