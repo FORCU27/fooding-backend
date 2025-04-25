@@ -27,7 +27,7 @@ spring:
       max-request-size: 1000MB
 
 jwt:
-  secretKey: OxJyMRYZufUrGdBXpDyeLoTj2fbLu2XmHPPJMwdGsv5xcZvUXi
+  secret-key: KECHLtOh6ohqn1ucwQF0g9Ih1wbOjfJQ7EKMmfwZ1BmGtahQeeUOUA1JyZykdonF
   access:
     expiration: 604800000
     header: Authorization
@@ -91,9 +91,9 @@ auth:
     token-uri: https://appleid.apple.com/auth/token
     redirect-uri: https://localhost.com:8080/user/auth/apple/token
 
-server:
-  port: 8080
-  ssl:
-    key-store: classpath:/keystore/keystore.p12
-    key-store-password: password
-    key-store-type: PKCS12
+#server:
+#  port: 8080
+#  ssl:
+#    key-store: classpath:/keystore/keystore.p12
+#    key-store-password: password
+#    key-store-type: PKCS12

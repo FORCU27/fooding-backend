@@ -27,7 +27,7 @@ spring:
       max-request-size: ${MAX_REQUEST_SIZE:1000MB}
 
 jwt:
-  secretKey: ${JWT_SECRET_KEY:OxJyMRYZufUrGdBXpDyeLoTj2fbLu2XmHPPJMwdGsv5xcZvUXi}
+  secret-key: ${JWT_SECRET_KEY:KECHLtOh6ohqn1ucwQF0g9Ih1wbOjfJQ7EKMmfwZ1BmGtahQeeUOUA1JyZykdonF}
   access:
     expiration: ${JWT_ACCESS_EXPIRATION:604800000}
     header: ${JWT_ACCESS_HEADER:Authorization}

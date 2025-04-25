@@ -3,6 +3,8 @@ package im.fooding.core.service.waiting;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import im.fooding.core.TestConfig;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
@@ -33,7 +35,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.context.TestConstructor.AutowireMode;
 
-@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@TestConstructor(autowireMode = AutowireMode.ALL)
 @RequiredArgsConstructor
 class StoreWaitingServiceTest extends TestConfig {
 
@@ -131,7 +133,7 @@ class StoreWaitingServiceTest extends TestConfig {
         StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
 
         // when & then
-        Assertions.assertThatCode(() -> storeWaitingService.getStoreWaiting(storeWaiting.getId()))
+        Assertions.assertThatCode(() -> storeWaitingService.get(storeWaiting.getId()))
                 .doesNotThrowAnyException();
     }
 
@@ -141,7 +143,7 @@ class StoreWaitingServiceTest extends TestConfig {
         // when & then
         ApiException e = assertThrows(
                 ApiException.class,
-                () -> storeWaitingService.getStoreWaiting(1L)
+                () -> storeWaitingService.get(1L)
         );
         Assertions.assertThat(e.getErrorCode())
                 .isEqualTo(ErrorCode.STORE_WAITING_NOT_FOUND);
@@ -211,6 +213,37 @@ class StoreWaitingServiceTest extends TestConfig {
 
         assertThat(exception.getErrorCode())
                 .isEqualTo(ErrorCode.WAITING_NOT_OPENED);
+    }
+
+    @Test
+    @DisplayName("웨이팅을 취소할 수 있다.")
+    public void testCancel() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
+        StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
+
+        // when
+        storeWaitingService.cancel(storeWaiting.getId());
+
+        // then
+        Assertions.assertThat(storeWaiting.getStatus())
+                .isEqualTo(StoreWaitingStatus.CANCELLED);
+    }
+
+    @Test
+    @DisplayName("가게 웨이팅을 착석 처리할 수 있다.")
+    public void testSeat() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
+        StoreWaiting storeWaiting = storeWaitingRepository.save(spy(StoreWaitingDummy.create(user, store)));
+
+        // when
+        storeWaitingService.seat(storeWaiting.getId());
+
+        // then
+        verify(storeWaiting).seat();
     }
 
     @Test
