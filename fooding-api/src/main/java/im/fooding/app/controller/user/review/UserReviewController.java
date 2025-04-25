@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/store")
+@RequestMapping("/user/stores")
 @Tag(name = "UserReviewController", description = "유저 리뷰 컨트롤러")
 @Slf4j
 public class UserReviewController {
