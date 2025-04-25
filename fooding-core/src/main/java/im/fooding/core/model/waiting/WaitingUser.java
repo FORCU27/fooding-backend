@@ -34,7 +34,6 @@ public class WaitingUser extends BaseEntity {
 
     private String name;
 
-    @Column(nullable = false)
     private String phoneNumber;
 
     @Column(nullable = false)
