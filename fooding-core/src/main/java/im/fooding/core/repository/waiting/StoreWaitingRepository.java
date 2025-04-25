@@ -10,5 +10,5 @@ public interface StoreWaitingRepository extends JpaRepository<StoreWaiting, Long
 
     long countByStatusAndCreatedAtBefore(StoreWaitingStatus status, LocalDateTime createdAt);
 
-    boolean existsByStoreAndStatus(Store store, StoreWaitingStatus status);
+    boolean existsByStoreAndStatusAndDeletedFalse(Store store, StoreWaitingStatus status);
 }

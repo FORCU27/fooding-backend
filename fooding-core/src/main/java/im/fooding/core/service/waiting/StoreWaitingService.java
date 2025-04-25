@@ -103,6 +103,6 @@ public class StoreWaitingService {
     }
 
     public boolean exists(Store store, StoreWaitingStatus status) {
-        return storeWaitingRepository.existsByStoreAndStatus(store, status);
+        return storeWaitingRepository.existsByStoreAndStatusAndDeletedFalse(store, status);
     }
 }
