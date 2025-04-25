@@ -6,6 +6,8 @@ import im.fooding.app.service.user.notification.UserNotificationApplicationServi
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.waiting.*;
 import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingService;
@@ -22,7 +24,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
-public class PosWaitingApplicationService {
+public class PosWaitingService {
 
     private final UserNotificationApplicationService userNotificationApplicationService;
     private final WaitingService waitingService;
@@ -69,6 +71,25 @@ public class PosWaitingApplicationService {
                 storeWaiting.getCallNumber(),
                 waitingSetting.getEntryTimeLimitMinutes()
         );
+    }
+
+    @Transactional
+    public void updateWaitingStatus(long id, String statusValue) {
+        Waiting waiting = waitingService.getById(id);
+        WaitingStatus updatedStatus = WaitingStatus.of(statusValue);
+
+        validateUpdateWaitingStatus(waiting, updatedStatus);
+
+        waitingService.updateStatus(id, updatedStatus);
+    }
+
+    private void validateUpdateWaitingStatus(Waiting waiting, WaitingStatus updatedStatus) {
+        if (!waiting.isOpen()
+                && updatedStatus == WaitingStatus.WAITING_OPEN
+                && storeWaitingService.exists(waiting.getStore(), StoreWaitingStatus.WAITING)
+        ) {
+            throw new ApiException(ErrorCode.WAITING_STATUS_STORE_WAITING_EXIST);
+        }
     }
 
     public void revert(long requestId) {
