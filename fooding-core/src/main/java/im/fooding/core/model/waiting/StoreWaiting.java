@@ -38,7 +38,7 @@ public class StoreWaiting extends BaseEntity {
     private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "waiting_user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "waiting_user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private WaitingUser user;
 
     @Column(name = "call_number", nullable = false)
@@ -107,6 +107,14 @@ public class StoreWaiting extends BaseEntity {
         }
 
         this.status = StoreWaitingStatus.CANCELLED;
+    }
+
+    public void revert() {
+        if (status == StoreWaitingStatus.WAITING) {
+            throw new ApiException(ErrorCode.STORE_WAITING_ALREADY_WAITING);
+        }
+
+        status = StoreWaitingStatus.WAITING;
     }
 
     public String getChannelValue() {

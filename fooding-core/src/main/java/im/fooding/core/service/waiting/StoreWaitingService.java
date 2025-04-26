@@ -3,6 +3,7 @@ package im.fooding.core.service.waiting;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
 import im.fooding.core.model.waiting.StoreWaitingStatus;
@@ -93,5 +94,15 @@ public class StoreWaitingService {
 
         storeWaiting.cancel();
         return storeWaitingRepository.save(storeWaiting);
+    }
+
+    public void revert(long id) {
+        StoreWaiting storeWaiting = get(id);
+
+        storeWaiting.revert();
+    }
+
+    public boolean exists(Store store, StoreWaitingStatus status) {
+        return storeWaitingRepository.existsByStoreAndStatusAndDeletedFalse(store, status);
     }
 }

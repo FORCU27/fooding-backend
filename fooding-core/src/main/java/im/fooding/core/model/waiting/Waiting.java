@@ -3,6 +3,8 @@ package im.fooding.core.model.waiting;
 import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,5 +41,9 @@ public class Waiting extends BaseEntity {
 
     public void updateStatus(WaitingStatus status) {
         this.status = status;
+    }
+
+    public boolean isOpen() {
+        return status == WaitingStatus.WAITING_OPEN;
     }
 }
