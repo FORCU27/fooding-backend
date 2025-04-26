@@ -2,8 +2,13 @@ package im.fooding.app.controller.waiting;
 
 import im.fooding.app.dto.request.waiting.PosUpdateWaitingTimeRequest;
 import im.fooding.app.dto.request.waiting.PosWaitingCancelRequest;
-import im.fooding.app.service.waiting.PosWaitingApplicationService;
+import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
+import im.fooding.app.dto.response.waiting.WaitingLogResponse;
+import im.fooding.app.service.waiting.PosWaitingService;
+import im.fooding.app.dto.request.waiting.PosWaitingStatusUpdateRequest;
+import im.fooding.app.dto.request.waiting.PosWaitingRegisterRequest;
 import im.fooding.core.common.ApiResult;
+import im.fooding.core.common.BasicSearch;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class PosWaitingController {
 
-    private final PosWaitingApplicationService posWaitingApplicationService;
+    private final PosWaitingService posWaitingService;
 
     @GetMapping("/{id}/requests")
     @Operation(summary = "웨이팅 목록 조회")
@@ -33,7 +38,28 @@ public class PosWaitingController {
 
             @ModelAttribute WaitingListRequest request
     ) {
-        return ApiResult.ok(posWaitingApplicationService.list(id, request));
+        return ApiResult.ok(posWaitingService.list(id, request));
+    }
+
+    @GetMapping("/requests/{requestId}")
+    @Operation(summary = "웨이팅 상세 조회")
+    public ApiResult<StoreWaitingResponse> details(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long requestId
+    ) {
+        return ApiResult.ok(posWaitingService.details(requestId));
+    }
+
+    @GetMapping("/requests/{requestId}/logs")
+    @Operation(summary = "웨이팅 로그 리스트 조회")
+    public ApiResult<PageResponse<WaitingLogResponse>> listLogs(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long requestId,
+
+            @Parameter(description = "검색 및 페이징 조건")
+            @ModelAttribute BasicSearch search
+    ) {
+        return ApiResult.ok(posWaitingService.listLogs(requestId, search));
     }
 
     @PostMapping("/requests/{requestId}/cancel")
@@ -44,7 +70,7 @@ public class PosWaitingController {
 
             @RequestBody @Validated PosWaitingCancelRequest request
     ) {
-        posWaitingApplicationService.cancel(requestId, request.reason());
+        posWaitingService.cancel(requestId, request.reason());
         return ApiResult.ok();
     }
 
@@ -54,7 +80,19 @@ public class PosWaitingController {
             @Parameter(description = "가게 웨이팅 id", example = "1")
             @PathVariable long requestId
     ) {
-        posWaitingApplicationService.call(requestId);
+        posWaitingService.call(requestId);
+        return ApiResult.ok();
+    }
+
+    @PatchMapping("/{id}/status")
+    @Operation(summary = "웨이팅 상태 변경")
+    ApiResult<Void> updateWaitingStatus(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long id,
+
+            @RequestBody @Valid PosWaitingStatusUpdateRequest request
+    ) {
+        posWaitingService.updateWaitingStatus(id, request.status());
         return ApiResult.ok();
     }
 
@@ -64,7 +102,7 @@ public class PosWaitingController {
             @Parameter(description = "가게 웨이팅 id", example = "1")
             @PathVariable long requestId
     ) {
-        posWaitingApplicationService.revert(requestId);
+        posWaitingService.revert(requestId);
         return ApiResult.ok();
     }
 
@@ -74,7 +112,19 @@ public class PosWaitingController {
             @Parameter(description = "가게 웨이팅 id", example = "1")
             @PathVariable long requestId
     ) {
-        posWaitingApplicationService.seat(requestId);
+        posWaitingService.seat(requestId);
+        return ApiResult.ok();
+    }
+
+    @PostMapping("/{id}/requests")
+    @Operation(summary = "웨이팅 등록")
+    ApiResult<Void> register(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long id,
+
+            @RequestBody @Valid PosWaitingRegisterRequest request
+    ) {
+        posWaitingService.register(id, request);
         return ApiResult.ok();
     }
 
@@ -86,7 +136,7 @@ public class PosWaitingController {
 
             @RequestBody @Valid PosUpdateWaitingTimeRequest request
     ) {
-        posWaitingApplicationService.updateWaitingTime(id, request.estimatedWaitingTimeMinutes());
+        posWaitingService.updateWaitingTime(id, request.estimatedWaitingTimeMinutes());
         return ApiResult.ok();
     }
 }
