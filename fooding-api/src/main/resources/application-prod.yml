@@ -65,7 +65,7 @@ auth:
   google:
     client-id: ${GOOGLE_CLIENT_ID:88628206428-0m206hm81hfff14e5v6d5tgsmbnrbo9g.apps.googleusercontent.com}
     client-secret: ${GOOGLE_CLIENT_SECRET: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}
-    token-uri: ${GOOGLE_TOKEN_URI:Thttps://oauth2.googleapis.com/token}
+    token-uri: ${GOOGLE_TOKEN_URI:https://oauth2.googleapis.com/token}
     userinfo-uri: ${GOOGLE_USERINFO_URI:https://www.googleapis.com/oauth2/v2/userinfo}
     redirect-uri: ${GOOGLE_REDIRECT_URI:https://api.fooding.im/api/auth/social/callback}
 
