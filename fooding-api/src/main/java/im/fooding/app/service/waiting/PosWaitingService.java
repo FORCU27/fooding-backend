@@ -1,24 +1,25 @@
 package im.fooding.app.service.waiting;
 
+import im.fooding.app.dto.request.waiting.PosUpdateWaitingContactInfoRequest;
 import im.fooding.app.dto.request.waiting.WaitingListRequest;
-import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
-import im.fooding.app.dto.response.waiting.WaitingLogResponse;
 import im.fooding.app.dto.response.waiting.WaitingResponse;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
-import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
-import im.fooding.app.dto.request.waiting.PosWaitingRegisterRequest;
-import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
-import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.*;
 import im.fooding.core.service.waiting.StoreWaitingService;
-import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import im.fooding.core.service.waiting.WaitingUserService;
+import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
+import im.fooding.app.dto.response.waiting.WaitingLogResponse;
+import im.fooding.core.common.BasicSearch;
+import im.fooding.app.dto.request.waiting.PosWaitingRegisterRequest;
+import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
+import im.fooding.core.model.store.Store;
+import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +40,8 @@ public class PosWaitingService {
     private final WaitingService waitingService;
     private final StoreWaitingService storeWaitingService;
     private final WaitingSettingService waitingSettingService;
-    private final WaitingLogService waitingLogService;
     private final WaitingUserService waitingUserService;
+    private final WaitingLogService waitingLogService;
 
     public StoreWaitingResponse details(long id) {
         return StoreWaitingResponse.from(storeWaitingService.get(id));
@@ -93,6 +94,29 @@ public class PosWaitingService {
     }
 
     @Transactional
+    public void updateContactInfo(long requestId, PosUpdateWaitingContactInfoRequest request) {
+        StoreWaiting storeWaiting = storeWaitingService.get(requestId);
+
+        WaitingUser user = storeWaiting.getUser();
+        if (user != null) {
+            user.updateName(request.name());
+            user.updatePhoneNumber(request.phoneNumber());
+            return;
+        }
+
+        WaitingUserRegisterRequest waitingUserRegisterRequest = WaitingUserRegisterRequest.builder()
+                .store(storeWaiting.getStore())
+                .name(request.name())
+                .phoneNumber(request.phoneNumber())
+                .termsAgreed(true)
+                .privacyPolicyAgreed(true)
+                .thirdPartyAgreed(true)
+                .marketingConsent(false)
+                .build();
+        user = waitingUserService.register(waitingUserRegisterRequest);
+        storeWaiting.injectUser(user);
+    }
+
     public void register(long id, PosWaitingRegisterRequest request) {
         Waiting waiting = waitingService.getById(id);
         storeWaitingService.validate(waiting);
