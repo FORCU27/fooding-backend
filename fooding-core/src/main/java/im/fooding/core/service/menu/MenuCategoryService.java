@@ -42,9 +42,7 @@ public class MenuCategoryService {
      */
     @Transactional
     public Long update(Long categoryId, String categoryName) {
-        MenuCategory menuCategory = menuCategoryRepository.findById(categoryId).filter(it -> !it.isDeleted())
-                .orElseThrow(() -> new ApiException(ErrorCode.MENUCATEGORY_NOT_FOUND));
-
+        MenuCategory menuCategory = findByid(categoryId);
         menuCategory.updateCategoryName(categoryName);
         return menuCategory.getId();
     }
@@ -57,8 +55,7 @@ public class MenuCategoryService {
      */
     @Transactional
     public void delete(Long userId, Long categoryId) {
-        MenuCategory menuCategory = menuCategoryRepository.findById(categoryId).filter(it -> !it.isDeleted())
-                .orElseThrow(() -> new ApiException(ErrorCode.MENUCATEGORY_NOT_FOUND));
+        MenuCategory menuCategory = findByid(categoryId);
         menuCategory.delete(userId);
     }
 
@@ -73,11 +70,31 @@ public class MenuCategoryService {
     }
 
     /**
+     * 메뉴 카테고리 정렬
+     *
+     * @param menuCategoryIds
+     */
+    @Transactional
+    public void sort(List<Long> menuCategoryIds) {
+        int sortOrder = 1;
+        for (Long id : menuCategoryIds) {
+            MenuCategory menuCategory = findByid(id);
+            menuCategory.updateSortOrder(sortOrder++);
+        }
+    }
+
+    /**
      * 메뉴 카테고리 최대 정렬 순서 조회
      *
      * @param storeId
      */
     public int getSortOrder(Long storeId) {
         return menuCategoryRepository.getMaxSortOrder(storeId);
+    }
+
+    private MenuCategory findByid(Long id) {
+        return menuCategoryRepository.findById(id)
+                .filter(it -> !it.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.MENUCATEGORY_NOT_FOUND));
     }
 }

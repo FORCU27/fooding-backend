@@ -1,5 +1,6 @@
 package im.fooding.app.service.ceo.menu;
 
+import im.fooding.app.dto.request.ceo.menu.CeoSortMenuCategoryRequest;
 import im.fooding.app.dto.response.ceo.menu.CeoMenuCategoryResponse;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.service.menu.MenuCategoryService;
@@ -35,5 +36,9 @@ public class CeoMenuCategoryService {
                 .stream()
                 .map(CeoMenuCategoryResponse::of)
                 .toList();
+    }
+
+    public void sort(CeoSortMenuCategoryRequest request) {
+        menuCategoryService.sort(request.getMenuCategoryIds());
     }
 }
