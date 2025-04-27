@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface StorePostRepository extends JpaRepository<StorePost, Long> {
-    List<StorePost> findByStoreIdOrderByIsFixedDescCreatedAtDesc(Long storeId);
+    List<StorePost> findByStoreIdOrderByIsFixedDescUpdatedAtDesc(Long storeId);
 }

@@ -17,6 +17,6 @@ public class StorePostService {
     private final StorePostRepository storePostRepository;
 
     public List<StorePost> getStorePosts(Long storeId) {
-      return storePostRepository.findByStoreIdOrderByIsFixedDescCreatedAtDesc(storeId);
+      return storePostRepository.findByStoreIdOrderByIsFixedDescUpdatedAtDesc(storeId);
     }
 }
