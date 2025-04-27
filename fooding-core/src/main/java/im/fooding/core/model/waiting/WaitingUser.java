@@ -78,4 +78,12 @@ public class WaitingUser extends BaseEntity {
     public Long getStoreId() {
         return store.getId();
     }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updatePhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }
