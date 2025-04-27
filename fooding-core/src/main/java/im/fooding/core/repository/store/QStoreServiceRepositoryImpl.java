@@ -31,8 +31,8 @@ public class QStoreServiceRepositoryImpl implements QStoreServiceRepository{
                 .offset( pageable.getOffset() )
                 .limit( pageable.getPageSize() )
                 .fetch();
-        JPAQuery<StoreService> countQuery = query
-                .select( storeService )
+        JPAQuery countQuery = query
+                .select( storeService.count() )
                 .from( storeService )
                 .where(
                         storeService.deleted.isFalse(),
