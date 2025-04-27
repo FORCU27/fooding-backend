@@ -94,4 +94,10 @@ public class StoreWaitingService {
         storeWaiting.cancel();
         return storeWaitingRepository.save(storeWaiting);
     }
+
+    public void revert(long id) {
+        StoreWaiting storeWaiting = get(id);
+
+        storeWaiting.revert();
+    }
 }
