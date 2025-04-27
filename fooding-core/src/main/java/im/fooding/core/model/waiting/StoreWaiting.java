@@ -132,4 +132,8 @@ public class StoreWaiting extends BaseEntity {
     public void call() {
         callCount++;
     }
+
+    public void injectUser(WaitingUser user) {
+        this.user = user;
+    }
 }
