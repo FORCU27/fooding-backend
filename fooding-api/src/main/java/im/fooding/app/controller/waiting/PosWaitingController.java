@@ -1,8 +1,9 @@
 package im.fooding.app.controller.waiting;
 
+import im.fooding.app.dto.request.waiting.PosUpdateWaitingContactInfoRequest;
+import im.fooding.app.service.waiting.PosWaitingService;
 import im.fooding.app.dto.request.waiting.PosWaitingCancelRequest;
 import im.fooding.app.dto.request.waiting.PosWaitingOccupancyUpdateRequest;
-import im.fooding.app.service.waiting.PosWaitingService;
 import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
 import im.fooding.app.dto.response.waiting.WaitingLogResponse;
 import im.fooding.app.dto.request.waiting.PosWaitingStatusUpdateRequest;
@@ -125,6 +126,18 @@ public class PosWaitingController {
             @RequestBody @Valid PosWaitingRegisterRequest request
     ) {
         posWaitingService.register(id, request);
+        return ApiResult.ok();
+    }
+
+    @PatchMapping("/requests/{requestId}/contact-info")
+    @Operation(summary = "웨이팅 사용자 정보 수정")
+    ApiResult<Void> updateContactInfo(
+            @Parameter(description = "가게 웨이팅 id", example = "1")
+            @PathVariable long requestId,
+
+            @RequestBody PosUpdateWaitingContactInfoRequest request
+    ) {
+        posWaitingService.updateContactInfo(requestId, request);
         return ApiResult.ok();
     }
 
