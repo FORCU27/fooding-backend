@@ -20,7 +20,8 @@ public class QWaitingSettingRepositoryImpl implements QWaitingSettingRepository 
                         .selectFrom(waitingSetting)
                         .where(
                                 waitingSetting.waiting.store.eq(store),
-                                waitingSetting.isActive.isTrue()
+                                waitingSetting.isActive.isTrue(),
+                                waitingSetting.deleted.isFalse()
                         )
                         .fetchOne()
         );

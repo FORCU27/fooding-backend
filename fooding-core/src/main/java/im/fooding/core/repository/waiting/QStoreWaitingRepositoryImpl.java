@@ -32,7 +32,10 @@ public class QStoreWaitingRepositoryImpl implements QStoreWaitingRepository {
 
         return query
                 .selectFrom(storeWaiting)
-                .where(storeWaiting.createdAt.between(start, end))
+                .where(
+                        storeWaiting.createdAt.between(start, end),
+                        storeWaiting.deleted.isFalse()
+                )
                 .fetch().size();
     }
 
@@ -43,7 +46,8 @@ public class QStoreWaitingRepositoryImpl implements QStoreWaitingRepository {
                 .from(storeWaiting)
                 .where(
                         storeIdEq(filter.storeId()),
-                        statusEq(filter.status())
+                        statusEq(filter.status()),
+                        storeWaiting.deleted.isFalse()
                 )
                 .orderBy(storeWaiting.id.asc())
                 .offset(pageable.getOffset())
@@ -55,7 +59,8 @@ public class QStoreWaitingRepositoryImpl implements QStoreWaitingRepository {
                 .from(storeWaiting)
                 .where(
                         storeIdEq(filter.storeId()),
-                        statusEq(filter.status())
+                        statusEq(filter.status()),
+                        storeWaiting.deleted.isFalse()
                 );
 
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchCount);

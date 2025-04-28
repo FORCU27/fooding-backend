@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface WaitingUserRepository extends JpaRepository<WaitingUser, Long> {
 
-    Optional<WaitingUser> findByStoreAndPhoneNumber(Store store, String phoneNumber);
+    Optional<WaitingUser> findByStoreAndPhoneNumberAndDeletedFalse(Store store, String phoneNumber);
 }
