@@ -7,6 +7,7 @@ import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
 import im.fooding.app.dto.response.waiting.WaitingLogResponse;
 import im.fooding.app.dto.request.waiting.PosWaitingStatusUpdateRequest;
 import im.fooding.app.dto.request.waiting.PosWaitingRegisterRequest;
+import im.fooding.app.dto.request.waiting.PosWaitingMemoUpdateRequest;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.BasicSearch;
 import io.swagger.v3.oas.annotations.Operation;
@@ -137,6 +138,18 @@ public class PosWaitingController {
             @RequestBody PosUpdateWaitingContactInfoRequest request
     ) {
         posWaitingService.updateContactInfo(requestId, request);
+        return ApiResult.ok();
+    }
+
+    @PatchMapping("/requests/{requestId}/memo")
+    @Operation(summary = "웨이팅 메모 업데이트")
+    ApiResult<Void> updateMemo(
+            @Parameter(description = "가게 웨이팅 id", example = "1")
+            @PathVariable long requestId,
+
+            @RequestBody @Valid PosWaitingMemoUpdateRequest request
+    ) {
+        posWaitingService.updateMemo(requestId, request.memo());
         return ApiResult.ok();
     }
 }

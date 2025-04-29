@@ -206,4 +206,9 @@ public class PosWaitingService {
 
         return PageResponse.of(list, PageInfo.of(logs));
     }
+
+    @Transactional
+    public void updateMemo(long requestId, String memo) {
+        storeWaitingService.get(requestId).updateMemo(memo);
+    }
 }
