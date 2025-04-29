@@ -1,7 +1,7 @@
 package im.fooding.app.service.user.device;
 
 import im.fooding.app.dto.request.admin.device.RetrieveAllDeviceRequest;
-import im.fooding.app.dto.request.user.device.CreateDeviceRequest;
+import im.fooding.app.dto.request.user.device.ConnectDeviceRequest;
 import im.fooding.app.dto.request.user.device.RetrieveStoreDeviceRequest;
 import im.fooding.app.dto.response.user.device.StoreDeviceResponse;
 import im.fooding.core.common.PageInfo;
@@ -60,7 +60,7 @@ public class DeviceApplicationService {
      * @param request
      */
     @Transactional
-    public void connect(CreateDeviceRequest request){
+    public void connect(ConnectDeviceRequest request){
         if( request.deviceId() == null ) {
             Device device = deviceService.create( request.name(), request.type(), request.osVersion() );
             deviceAppService.create( device, request.appVersion(), request.packageName() );

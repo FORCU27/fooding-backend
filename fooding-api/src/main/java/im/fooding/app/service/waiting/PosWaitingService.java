@@ -208,6 +208,11 @@ public class PosWaitingService {
     }
 
     @Transactional
+    public void updateMemo(long requestId, String memo) {
+        storeWaitingService.get(requestId).updateMemo(memo);
+    }
+
+    @Transactional
     public void updateWaitingTime(long id, int estimatedWaitingTimeMinutes) {
         Waiting waiting = waitingService.getById(id);
         WaitingSetting activeSetting = waitingSettingService.getActiveSetting(waiting.getStore());
