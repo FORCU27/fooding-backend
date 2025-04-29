@@ -1,7 +1,6 @@
 package im.fooding.core.event;
 
 import im.fooding.core.global.infra.slack.SlackClient;
-import im.fooding.core.model.notification.Notification;
 import im.fooding.core.model.notification.NotificationChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -17,18 +16,18 @@ public class NotificationCreatedEventListener {
     }
 
     @EventListener
-    public void sendSlackMessage(NotificationCreatedEvent event) {
-      Notification notification = event.getNotification();
+    public void handleNotificationCreatedEvent(NotificationCreatedEvent event) {
 
-      if (notification.getChannel() == NotificationChannel.MESSAGE) {
+      if (event.getChannel() == NotificationChannel.MESSAGE) {
         String slackMessage = String.format(
                 "📢 알림 메시지 \n- 제목: %s\n- 내용: %s\n- 수신자: %s",
-                notification.getTitle(),
-                notification.getContent(),
-                notification.getDestination()
+                event.getTitle(),
+                event.getContent(),
+                String.join(", ", event.getDestinations())
         );
         slackClient.sendNotificationMessage(slackMessage);
-        log.info("알림 슬랙 메시지 전송: {}", event.getNotification());
+        log.info("알림 슬랙 메시지 전송: 제목={}, 내용={}, 수신자={}",
+                event.getTitle(), event.getContent(), String.join(", ", event.getDestinations()));
       }
     }
 }

@@ -23,41 +23,47 @@ public class AdminNotificationService {
     private final NotificationService notificationService;
     private final ApplicationEventPublisher publisher;
 
-  public List<AdminNotificationResponse> list() {
-      return notificationService.findAll().stream()
-              .map(AdminNotificationResponse::of)
-              .toList();
-    }
+    public List<AdminNotificationResponse> list() {
+        return notificationService.findAll().stream()
+                .map(AdminNotificationResponse::of)
+                .toList();
+      }
 
     public AdminNotificationResponse retrieve(Long id) {
     Notification notification = notificationService.findById(id);
     return AdminNotificationResponse.of(notification);
     }
 
-  @Transactional
-  public Long create(AdminCreateNotificationRequest request) {
-    String destinationString = String.join(",", request.getDestinations());
+    @Transactional
+    public Long create(AdminCreateNotificationRequest request) {
+      String destinationString = String.join(",", request.getDestinations());
 
-    Notification notification = Notification.builder()
-            .source((request.getSource()))
-            .destination(destinationString)
-            .title(request.getTitle())
-            .content(request.getContent())
-            .channel(request.getChannel())
-            .build();
+      Notification notification = Notification.builder()
+              .source(request.getSource())
+              .destination(destinationString)
+              .title(request.getTitle())
+              .content(request.getContent())
+              .channel(request.getChannel())
+              .build();
 
-    if (request.getScheduledAt() != null) {
-      notification.schedule(request.getScheduledAt());
-    } else {
-      notification.send();
+      if (request.getScheduledAt() != null) {
+        notification.schedule(request.getScheduledAt());
+      } else {
+        notification.send();
+      }
+
+      Notification savedNotification = notificationService.create(notification);
+
+      publisher.publishEvent(
+              new NotificationCreatedEvent(
+                      savedNotification.getTitle(),
+                      savedNotification.getContent(),
+                      request.getDestinations(),
+                      savedNotification.getChannel()
+              )
+      );
+      return savedNotification.getId();
     }
-
-    Notification savedNotification = notificationService.create(notification);
-
-    publisher.publishEvent(new NotificationCreatedEvent(savedNotification));
-
-    return savedNotification.getId();
-  }
 
     @Transactional
     public void update(Long id, AdminUpdateNotificationRequest request) {
