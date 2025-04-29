@@ -209,6 +209,11 @@ public class PosWaitingService {
     }
 
     @Transactional
+    public void updateMemo(long requestId, String memo) {
+        storeWaitingService.get(requestId).updateMemo(memo);
+    }
+
+    @Transactional
     public void updateOccupancy(long requestId, PosWaitingOccupancyUpdateRequest request) {
         StoreWaiting storeWaiting = storeWaitingService.get(requestId);
         storeWaiting.updateOccupancy(

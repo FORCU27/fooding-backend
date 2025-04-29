@@ -31,7 +31,9 @@ public enum ErrorCode {
 
     // 가게
     STORE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2000", "등록된 가게 정보가 없습니다."),
+    STORE_SERVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2100", "등록된 가게 서비스가 없습니다."),
     STORE_IMAGE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2001", "등록된 가게 이미지가 없습니다."),
+
 
     // 웨이팅
     WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3000", "등록된 웨이팅 정보가 없습니다."),
@@ -46,11 +48,13 @@ public enum ErrorCode {
 
     // 디바이스
     DEVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "7000", "등록된 디바이스가 없습니다."),
-
+    
     // 알림
     NOTIFICATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "5000", "등록된 알림이 없습니다."),
     USER_NOTIFICATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "5001", "사용자 알림을 찾을 수 없습니다."),
     USER_NOTIFICATION_FORBIDDEN(HttpStatus.FORBIDDEN, "5002", "해당 알림에 접근할 권한이 없습니다.");
+
+    
 
     private final HttpStatus status;
 
