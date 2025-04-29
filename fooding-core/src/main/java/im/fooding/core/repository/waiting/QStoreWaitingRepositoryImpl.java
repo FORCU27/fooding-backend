@@ -26,7 +26,7 @@ public class QStoreWaitingRepositoryImpl implements QStoreWaitingRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public long countCreatedOn(LocalDate date) {
+    public long countCreatedOnAndDeletedFalse(LocalDate date) {
         LocalDateTime start = date.atStartOfDay();
         LocalDateTime end = date.atTime(LocalTime.MAX);
 
@@ -40,7 +40,7 @@ public class QStoreWaitingRepositoryImpl implements QStoreWaitingRepository {
     }
 
     @Override
-    public Page<StoreWaiting> findAllWithFilter(StoreWaitingFilter filter, Pageable pageable) {
+    public Page<StoreWaiting> findAllWithFilterAndDeletedFalse(StoreWaitingFilter filter, Pageable pageable) {
         List<StoreWaiting> results = query
                 .select(storeWaiting)
                 .from(storeWaiting)

@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface QStoreWaitingRepository {
 
-    Page<StoreWaiting> findAllWithFilter(StoreWaitingFilter filter, Pageable pageable);
+    Page<StoreWaiting> findAllWithFilterAndDeletedFalse(StoreWaitingFilter filter, Pageable pageable);
 
-    long countCreatedOn(LocalDate date);
+    long countCreatedOnAndDeletedFalse(LocalDate date);
 }
