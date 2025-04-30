@@ -1,6 +1,6 @@
 package im.fooding.app.controller.app.device;
 
-import im.fooding.app.dto.request.user.device.CreateDeviceRequest;
+import im.fooding.app.dto.request.user.device.ConnectDeviceRequest;
 import im.fooding.app.service.user.device.DeviceApplicationService;
 import im.fooding.core.common.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,7 +22,7 @@ public class AppDeviceController {
     @GetMapping( "/connect" )
     @Operation(summary="비로그인 유저 디바이스 연결")
     public ApiResult<Void> connect(
-            @Valid @RequestBody CreateDeviceRequest request
+            @Valid @RequestBody ConnectDeviceRequest request
     ){
         service.connect( request );
         return ApiResult.ok();

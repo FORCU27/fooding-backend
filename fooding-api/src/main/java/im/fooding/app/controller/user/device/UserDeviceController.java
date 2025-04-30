@@ -1,6 +1,6 @@
 package im.fooding.app.controller.user.device;
 
-import im.fooding.app.dto.request.user.device.CreateDeviceRequest;
+import im.fooding.app.dto.request.user.device.ConnectDeviceRequest;
 import im.fooding.app.dto.request.user.device.RetrieveStoreDeviceRequest;
 import im.fooding.app.dto.response.user.device.StoreDeviceResponse;
 import im.fooding.app.service.user.device.DeviceApplicationService;
@@ -12,8 +12,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -34,7 +32,7 @@ public class UserDeviceController {
     @GetMapping( "/connect" )
     @Operation(summary="로그인 유저 디바이스 연결")
     public ApiResult<Void> connect(
-            @Valid @RequestBody CreateDeviceRequest request
+            @Valid @RequestBody ConnectDeviceRequest request
     ){
         service.connect( request );
         return ApiResult.ok();

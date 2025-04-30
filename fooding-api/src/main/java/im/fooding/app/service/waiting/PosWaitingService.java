@@ -22,6 +22,7 @@ import im.fooding.core.model.store.Store;
 import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.app.dto.request.waiting.PosWaitingOccupancyUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -210,5 +211,15 @@ public class PosWaitingService {
     @Transactional
     public void updateMemo(long requestId, String memo) {
         storeWaitingService.get(requestId).updateMemo(memo);
+    }
+
+    @Transactional
+    public void updateOccupancy(long requestId, PosWaitingOccupancyUpdateRequest request) {
+        StoreWaiting storeWaiting = storeWaitingService.get(requestId);
+        storeWaiting.updateOccupancy(
+                request.adultCount(),
+                request.infantCount(),
+                request.infantChairCount()
+        );
     }
 }
