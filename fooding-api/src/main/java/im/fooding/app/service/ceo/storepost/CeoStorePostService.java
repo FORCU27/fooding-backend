@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 public class CeoStorePostService {
     private final StorePostService storePostService;
 
-    public List<StorePostResponse> getStorePosts(Long storeId) {
-      List<StorePost> storePosts = storePostService.getStorePosts(storeId);
+    public List<StorePostResponse> list(Long storeId) {
+      List<StorePost> storePosts = storePostService.list(storeId);
       return storePosts.stream()
               .map(StorePostResponse::from)
               .collect(Collectors.toList());

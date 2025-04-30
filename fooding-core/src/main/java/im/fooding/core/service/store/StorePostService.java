@@ -16,7 +16,7 @@ import java.util.List;
 public class StorePostService {
     private final StorePostRepository storePostRepository;
 
-    public List<StorePost> getStorePosts(Long storeId) {
+    public List<StorePost> list(Long storeId) {
       return storePostRepository.findByStoreIdOrderByIsFixedDescUpdatedAtDesc(storeId);
     }
 }

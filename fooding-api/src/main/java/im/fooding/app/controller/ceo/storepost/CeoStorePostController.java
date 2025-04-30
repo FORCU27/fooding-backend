@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/ceo/storeposts")
+@RequestMapping("/ceo/store-posts")
 @Tag(name = "CeoStorePostController", description = "점주 소식 컨트롤러")
 @Slf4j
 public class CeoStorePostController {
@@ -25,7 +25,7 @@ public class CeoStorePostController {
     @GetMapping
     @Operation(summary = "특정 가게 소식 전체 조회")
     public ApiResult<List<StorePostResponse>> list(@RequestParam Long storeId) {
-      List<StorePostResponse> storePosts = ceoStorePostService.getStorePosts(storeId);
+      List<StorePostResponse> storePosts = ceoStorePostService.list(storeId);
       return ApiResult.ok(storePosts);
     }
 }
