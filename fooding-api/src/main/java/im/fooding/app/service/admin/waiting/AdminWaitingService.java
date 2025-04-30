@@ -27,7 +27,7 @@ public class AdminWaitingService {
 
     @Transactional
     public WaitingResponse createWaiting(AdminWaitingCreateRequest request) {
-        Store store = storeService.get(request.storeId());
+        Store store = storeService.findById(request.storeId());
         WaitingStatus status = WaitingStatus.of(request.status());
 
         Waiting waiting = waitingService.create(store, status);
@@ -46,7 +46,7 @@ public class AdminWaitingService {
 
     @Transactional
     public WaitingResponse updateWaiting(long id, AdminWaitingUpdateRequest request) {
-        Store store = storeService.get(request.storeId());
+        Store store = storeService.findById(request.storeId());
         WaitingStatus status = WaitingStatus.of(request.status());
 
         return WaitingResponse.from(waitingService.update(id, store, status));

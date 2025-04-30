@@ -37,9 +37,13 @@ public class StoreService {
         return storeRepository.list(pageable, sortType, sortDirection);
     }
 
-    public Store get(long id) {
-        return storeRepository.findById(id)
-                .filter(it -> !it.isDeleted())
+    /**
+     * 가게 아이디로 조회
+     * @param storeId
+     * @return
+     */
+    public Store findById(long storeId) {
+        return storeRepository.findById(storeId).filter(it -> !it.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_NOT_FOUND));
     }
 }
