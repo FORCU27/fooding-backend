@@ -45,6 +45,7 @@ public enum ErrorCode {
     STORE_WAITING_ALREADY_WAITING(HttpStatus.BAD_REQUEST, "3006", "이미 가게 웨이팅 상태입니다."),
     STORE_WAITING_ILLEGAL_STATE_SEAT(HttpStatus.BAD_REQUEST, "3007", "착성 가능한 웨이팅 상태가 아닙니다."),
     WAITING_STATUS_STORE_WAITING_EXIST(HttpStatus.BAD_REQUEST, "3008", "남아있는 대기중인 웨이팅이 존재합니다."),
+    DUPLICATED_STORE_BY_WAITING(HttpStatus.BAD_REQUEST, "3009", "가게와 관련된 웨이팅 정보가 존재합니다."),
 
     // 디바이스
     DEVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "7000", "등록된 디바이스가 없습니다."),
