@@ -1,5 +1,6 @@
 package im.fooding.app.controller.waiting;
 
+import im.fooding.app.dto.request.waiting.PosUpdateWaitingTimeRequest;
 import im.fooding.app.dto.request.waiting.PosUpdateWaitingContactInfoRequest;
 import im.fooding.app.service.waiting.PosWaitingService;
 import im.fooding.app.dto.request.waiting.PosWaitingCancelRequest;
@@ -163,6 +164,18 @@ public class PosWaitingController {
             @RequestBody @Valid PosWaitingOccupancyUpdateRequest request
     ) {
         posWaitingService.updateOccupancy(requestId, request);
+        return ApiResult.ok();
+    }
+
+    @PatchMapping("/{id}/waiting-time")
+    @Operation(summary = "웨이팅 대기 시간 조정")
+    ApiResult<Void> updateWaitingTime(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long id,
+
+            @RequestBody @Valid PosUpdateWaitingTimeRequest request
+    ) {
+        posWaitingService.updateWaitingTime(id, request.estimatedWaitingTimeMinutes());
         return ApiResult.ok();
     }
 }
