@@ -4,7 +4,7 @@ import im.fooding.core.model.menu.MenuCategory;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MenuCategoryRepository extends JpaRepository<MenuCategory, Long> {
+public interface MenuCategoryRepository extends JpaRepository<MenuCategory, Long>, QMenuCategoryRepository {
 
     List<MenuCategory> findAllByStoreIdAndDeletedFalse(long storeId);
 }
