@@ -45,8 +45,7 @@ public class AdminWaitingService {
     }
 
     @Transactional
-    public WaitingResponse updateWaiting(AdminWaitingUpdateRequest request) {
-        long id = request.id();
+    public WaitingResponse updateWaiting(long id, AdminWaitingUpdateRequest request) {
         Store store = storeService.get(request.storeId());
         WaitingStatus status = WaitingStatus.of(request.status());
 

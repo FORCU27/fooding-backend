@@ -60,12 +60,14 @@ public class AdminWaitingController {
         return ApiResult.ok(adminWaitingService.getWaitingList(search));
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @Operation(summary = "웨이팅 수정")
     public ApiResult<WaitingResponse> UpdateWaiting(
+            @PathVariable long id,
+
             @RequestBody AdminWaitingUpdateRequest request
     ) {
-        return ApiResult.ok(adminWaitingService.updateWaiting(request));
+        return ApiResult.ok(adminWaitingService.updateWaiting(id, request));
     }
 
     @DeleteMapping("/{id}")

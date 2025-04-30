@@ -8,10 +8,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record AdminWaitingUpdateRequest(
 
-        @Schema(description = "ID", example = "1")
-        @NotBlank
-        long id,
-
         @Schema(description = "가게 아이디", example = "1")
         @NotNull
         long storeId,
