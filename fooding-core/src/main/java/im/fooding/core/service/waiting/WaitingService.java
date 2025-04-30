@@ -20,6 +20,7 @@ public class WaitingService {
 
     public Waiting getById(long id) {
         return waitingRepository.findById(id)
+                .filter(it -> !it.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.WAITING_NOT_FOUND));
     }
 
