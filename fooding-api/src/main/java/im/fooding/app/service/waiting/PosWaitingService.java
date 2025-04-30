@@ -222,4 +222,12 @@ public class PosWaitingService {
                 request.infantChairCount()
         );
     }
+
+    @Transactional
+    public void updateWaitingTime(long id, int estimatedWaitingTimeMinutes) {
+        Waiting waiting = waitingService.getById(id);
+        WaitingSetting activeSetting = waitingSettingService.getActiveSetting(waiting.getStore());
+
+        activeSetting.updateWaitingTimeMinutes(estimatedWaitingTimeMinutes);
+    }
 }
