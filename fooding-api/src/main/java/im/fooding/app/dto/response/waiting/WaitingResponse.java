@@ -1,48 +1,29 @@
 package im.fooding.app.dto.response.waiting;
 
-import im.fooding.core.model.waiting.StoreWaiting;
+import im.fooding.core.model.waiting.Waiting;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record WaitingResponse(
-        @Schema(description = "id", example = "1")
+
+        @Schema(description = "ID", example = "1")
         long id,
 
-        @Schema(description = "가게 id", example = "1")
+        @Schema(description = "가게 아이디", example = "1")
+        @NotNull
         long storeId,
 
-        @Schema(description = "유저 정보")
-        WaitingUserResponse user,
-
-        @Schema(description = "호출 번호", example = "1")
-        int callNumber,
-
-        @Schema(description = "등록 수단", example = "IN_PERSON")
-        String channel,
-
-        @Schema(description = "필요한 유아용 의자 개수", example = "1")
-        int infantChairCount,
-
-        @Schema(description = "유아 입장 인원수", example = "1")
-        int infantCount,
-
-        @Schema(description = "성인 입장 인원수", example = "1")
-        int adultCount,
-
-        @Schema(description = "메모", example = "this is memo.")
-        String memo
+        @Schema(description = "웨이팅 상태 (WAITING_OPEN, IMMEDIATE_ENTRY, PAUSED, WAITING_CLOSE)", example = "WAITING_OPEN")
+        @NotBlank
+        String status
 ) {
 
-    public static WaitingResponse from(StoreWaiting storeWaiting) {
+    public static WaitingResponse from(Waiting waiting) {
         return new WaitingResponse(
-                storeWaiting.getId(),
-                storeWaiting.getStoreId(),
-                WaitingUserResponse.from(storeWaiting.getUser()),
-                storeWaiting.getCallNumber(),
-                storeWaiting.getChannelValue(),
-                storeWaiting.getInfantChairCount(),
-                storeWaiting.getInfantCount(),
-                storeWaiting.getAdultCount(),
-                storeWaiting.getMemo()
+                waiting.getId(),
+                waiting.getStoreId(),
+                waiting.getStatusValue()
         );
     }
 }

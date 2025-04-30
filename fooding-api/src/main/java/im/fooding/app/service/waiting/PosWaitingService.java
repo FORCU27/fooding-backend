@@ -2,7 +2,6 @@ package im.fooding.app.service.waiting;
 
 import im.fooding.app.dto.request.waiting.PosUpdateWaitingContactInfoRequest;
 import im.fooding.app.dto.request.waiting.WaitingListRequest;
-import im.fooding.app.dto.response.waiting.WaitingResponse;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
@@ -47,7 +46,7 @@ public class PosWaitingService {
         return StoreWaitingResponse.from(storeWaitingService.get(id));
     }
 
-    public PageResponse<WaitingResponse> list(long id, WaitingListRequest request) {
+    public PageResponse<StoreWaitingResponse> list(long id, WaitingListRequest request) {
 
         Waiting waiting = waitingService.getById(id);
 
@@ -57,9 +56,9 @@ public class PosWaitingService {
                 .build();
         Page<StoreWaiting> storeWaitings = storeWaitingService.list(storeWaitingFilter, request.pageable());
 
-        List<WaitingResponse> list = storeWaitings.getContent()
+        List<StoreWaitingResponse> list = storeWaitings.getContent()
                 .stream()
-                .map(WaitingResponse::from)
+                .map(StoreWaitingResponse::from)
                 .toList();
 
         return PageResponse.of(list, PageInfo.of(storeWaitings));

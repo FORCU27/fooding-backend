@@ -21,7 +21,6 @@ import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import im.fooding.app.dto.request.waiting.WaitingListRequest;
-import im.fooding.app.dto.response.waiting.WaitingResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
@@ -47,7 +46,7 @@ public class AppWaitingApplicationService {
         return StoreWaitingResponse.from(storeWaitingService.get(id));
     }
 
-    public PageResponse<WaitingResponse> list(long id, WaitingListRequest request) {
+    public PageResponse<StoreWaitingResponse> list(long id, WaitingListRequest request) {
 
         Waiting waiting = waitingService.getById(id);
 
@@ -57,9 +56,9 @@ public class AppWaitingApplicationService {
                 .build();
         Page<StoreWaiting> storeWaitings = storeWaitingService.list(storeWaitingFilter, request.pageable());
 
-        List<WaitingResponse> list = storeWaitings.getContent()
+        List<StoreWaitingResponse> list = storeWaitings.getContent()
                 .stream()
-                .map(WaitingResponse::from)
+                .map(StoreWaitingResponse::from)
                 .toList();
 
         return PageResponse.of(list, PageInfo.of(storeWaitings));
