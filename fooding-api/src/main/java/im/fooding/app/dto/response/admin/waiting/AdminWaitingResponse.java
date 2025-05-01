@@ -1,11 +1,11 @@
-package im.fooding.app.dto.response.waiting;
+package im.fooding.app.dto.response.admin.waiting;
 
 import im.fooding.core.model.waiting.Waiting;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record WaitingResponse(
+public record AdminWaitingResponse(
 
         @Schema(description = "ID", example = "1")
         long id,
@@ -19,8 +19,8 @@ public record WaitingResponse(
         String status
 ) {
 
-    public static WaitingResponse from(Waiting waiting) {
-        return new WaitingResponse(
+    public static AdminWaitingResponse from(Waiting waiting) {
+        return new AdminWaitingResponse(
                 waiting.getId(),
                 waiting.getStoreId(),
                 waiting.getStatusValue()

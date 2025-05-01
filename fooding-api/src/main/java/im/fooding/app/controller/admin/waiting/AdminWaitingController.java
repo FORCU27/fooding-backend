@@ -2,7 +2,7 @@ package im.fooding.app.controller.admin.waiting;
 
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingCreateRequest;
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingUpdateRequest;
-import im.fooding.app.dto.response.waiting.WaitingResponse;
+import im.fooding.app.dto.response.admin.waiting.AdminWaitingResponse;
 import im.fooding.app.service.admin.waiting.AdminWaitingService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.BasicSearch;
@@ -36,16 +36,16 @@ public class AdminWaitingController {
 
     @PostMapping
     @Operation(summary = "웨이팅 생성")
-    public ApiResult<WaitingResponse> createWaiting(
+    public ApiResult<AdminWaitingResponse> createWaiting(
             @RequestBody @Valid AdminWaitingCreateRequest request
     ) {
-        WaitingResponse response = adminWaitingService.createWaiting(request);
+        AdminWaitingResponse response = adminWaitingService.createWaiting(request);
         return ApiResult.ok(response);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "웨이팅 조회")
-    public ApiResult<WaitingResponse> getWaiting(
+    public ApiResult<AdminWaitingResponse> getWaiting(
             @PathVariable long id
     ) {
         return ApiResult.ok(adminWaitingService.getWaiting(id));
@@ -53,7 +53,7 @@ public class AdminWaitingController {
 
     @GetMapping
     @Operation(summary = "웨이팅 조회(page)")
-    public ApiResult<PageResponse<WaitingResponse>> getWaitingList(
+    public ApiResult<PageResponse<AdminWaitingResponse>> getWaitingList(
             @Parameter(description = "검색 및 페이징 조건")
             @ModelAttribute BasicSearch search
     ) {
@@ -62,7 +62,7 @@ public class AdminWaitingController {
 
     @PutMapping("/{id}")
     @Operation(summary = "웨이팅 수정")
-    public ApiResult<WaitingResponse> UpdateWaiting(
+    public ApiResult<AdminWaitingResponse> UpdateWaiting(
             @PathVariable long id,
 
             @RequestBody AdminWaitingUpdateRequest request
