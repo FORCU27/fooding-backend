@@ -28,11 +28,12 @@ public class StoreWaitingService {
     private final StoreWaitingRepository storeWaitingRepository;
 
     public Page<StoreWaiting> list(StoreWaitingFilter filter, Pageable pageable) {
-        return storeWaitingRepository.findAllWithFilter(filter, pageable);
+        return storeWaitingRepository.findAllWithFilterAndDeletedFalse(filter, pageable);
     }
 
     public StoreWaiting get(long id) {
         return storeWaitingRepository.findById(id)
+                .filter(it -> !it.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_WAITING_NOT_FOUND));
     }
 
@@ -50,7 +51,7 @@ public class StoreWaitingService {
     @Transactional
     public StoreWaiting register(StoreWaitingRegisterRequest request) {
         // TODO: 추후에 redis 로 개선
-        int callNumber = (int) storeWaitingRepository.countCreatedOn(LocalDate.now()) + 1;
+        int callNumber = (int) storeWaitingRepository.countCreatedOnAndDeletedFalse(LocalDate.now()) + 1;
 
         StoreWaiting storeWaiting = StoreWaiting.builder()
                 .user(request.user())
@@ -80,9 +81,10 @@ public class StoreWaitingService {
 
     public int getOrder(long id) {
         StoreWaiting storeWaiting = storeWaitingRepository.findById(id)
+                .filter(it -> !it.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_WAITING_NOT_FOUND));
 
-        return (int) storeWaitingRepository.countByStatusAndCreatedAtBefore(
+        return (int) storeWaitingRepository.countByStatusAndCreatedAtBeforeAndDeletedFalse(
                 storeWaiting.getStatus(),
                 storeWaiting.getCreatedAt()
         ) + 1;

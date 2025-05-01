@@ -1,6 +1,5 @@
 package im.fooding.core.service.waiting;
 
-import im.fooding.core.common.BasicSearch;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.WaitingLog;
 import im.fooding.core.repository.waiting.WaitingLogRepository;
@@ -25,6 +24,6 @@ public class WaitingLogService {
     }
 
     public Page<WaitingLog> list(long storeWaitingId, Pageable pageable) {
-        return waitingLogRepository.findAllByStoreWaitingId(storeWaitingId, pageable);
+        return waitingLogRepository.findAllByStoreWaitingIdAndDeletedFalse(storeWaitingId, pageable);
     }
 }

@@ -3,13 +3,8 @@ package im.fooding.core.repository.store;
 import static com.querydsl.core.types.Order.*;
 import static im.fooding.core.model.review.QReview.review;
 import static im.fooding.core.model.store.QStore.store;
-import static im.fooding.core.model.store.QStoreImage.storeImage;
-import static im.fooding.core.model.waiting.QWaiting.waiting;
-import static im.fooding.core.model.waiting.QWaitingSetting.waitingSetting;
 
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.model.store.Store;
