@@ -26,24 +26,28 @@ public class QStoreWaitingRepositoryImpl implements QStoreWaitingRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public long countCreatedOn(LocalDate date) {
+    public long countCreatedOnAndDeletedFalse(LocalDate date) {
         LocalDateTime start = date.atStartOfDay();
         LocalDateTime end = date.atTime(LocalTime.MAX);
 
         return query
                 .selectFrom(storeWaiting)
-                .where(storeWaiting.createdAt.between(start, end))
+                .where(
+                        storeWaiting.createdAt.between(start, end),
+                        storeWaiting.deleted.isFalse()
+                )
                 .fetch().size();
     }
 
     @Override
-    public Page<StoreWaiting> findAllWithFilter(StoreWaitingFilter filter, Pageable pageable) {
+    public Page<StoreWaiting> findAllWithFilterAndDeletedFalse(StoreWaitingFilter filter, Pageable pageable) {
         List<StoreWaiting> results = query
                 .select(storeWaiting)
                 .from(storeWaiting)
                 .where(
                         storeIdEq(filter.storeId()),
-                        statusEq(filter.status())
+                        statusEq(filter.status()),
+                        storeWaiting.deleted.isFalse()
                 )
                 .orderBy(storeWaiting.id.asc())
                 .offset(pageable.getOffset())
@@ -55,7 +59,8 @@ public class QStoreWaitingRepositoryImpl implements QStoreWaitingRepository {
                 .from(storeWaiting)
                 .where(
                         storeIdEq(filter.storeId()),
-                        statusEq(filter.status())
+                        statusEq(filter.status()),
+                        storeWaiting.deleted.isFalse()
                 );
 
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchCount);

@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +28,11 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
 public class StoreWaiting extends BaseEntity {
+
+    private static final Set<StoreWaitingStatus> REVERSIBLE_STATUSES = Set.of(
+            StoreWaitingStatus.CANCELLED,
+            StoreWaitingStatus.SEATED
+    );
 
     @Id
     @Column(name = "id")
@@ -93,6 +99,12 @@ public class StoreWaiting extends BaseEntity {
         this.memo = memo;
     }
 
+    public void updateOccupancy(int adultCount, int infantCount, int infantChairCount) {
+        this.adultCount = adultCount;
+        this.infantCount = infantCount;
+        this.infantChairCount = infantChairCount;
+    }
+
     public void seat() {
         if (status != StoreWaitingStatus.WAITING) {
             throw new ApiException(ErrorCode.STORE_WAITING_ILLEGAL_STATE_SEAT);
@@ -110,8 +122,8 @@ public class StoreWaiting extends BaseEntity {
     }
 
     public void revert() {
-        if (status == StoreWaitingStatus.WAITING) {
-            throw new ApiException(ErrorCode.STORE_WAITING_ALREADY_WAITING);
+        if (!REVERSIBLE_STATUSES.contains(status)) {
+            throw new ApiException(ErrorCode.STORE_WAITING_ILLEGAL_STATE_REVERT);
         }
 
         status = StoreWaitingStatus.WAITING;
@@ -131,5 +143,9 @@ public class StoreWaiting extends BaseEntity {
 
     public void call() {
         callCount++;
+    }
+
+    public void injectUser(WaitingUser user) {
+        this.user = user;
     }
 }

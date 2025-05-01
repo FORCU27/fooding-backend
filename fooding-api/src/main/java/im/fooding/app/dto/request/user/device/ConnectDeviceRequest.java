@@ -4,7 +4,7 @@ import im.fooding.core.model.device.DeviceType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 
-public record CreateDeviceRequest(
+public record ConnectDeviceRequest(
         @Schema( description = "디바이스 이름" )
         String name,
         @NotNull

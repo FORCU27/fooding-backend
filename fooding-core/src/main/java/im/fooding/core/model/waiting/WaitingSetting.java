@@ -74,4 +74,8 @@ public class WaitingSetting extends BaseEntity {
     public void deactivate() {
         this.isActive = false;
     }
+
+    public void updateWaitingTimeMinutes(int estimatedWaitingTimeMinutes) {
+        this.estimatedWaitingTimeMinutes = estimatedWaitingTimeMinutes;
+    }
 }
