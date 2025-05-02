@@ -38,7 +38,7 @@ public class DeviceService {
      * @param osVersion
      * @return deviceId
      */
-    public Device create(String name, DeviceType type, String osVersion ){
+    public Device create(String name, DeviceType type, String osVersion){
         Device device = Device.builder()
                 .name( name )
                 .type( type )
@@ -53,11 +53,23 @@ public class DeviceService {
      * @param user
      * @param deviceId
      */
-    public void updateUser(User user, Long deviceId ){
+    public void updateUser(User user, Long deviceId){
         Device device = deviceRepository.findById( deviceId ).orElseThrow(
                 () -> new ApiException(ErrorCode.DEVICE_NOT_FOUND)
         );
         device.updateUser( user );
+    }
+
+    /**
+     * 디바이스 삭제
+     *
+     * @param deviceId
+     */
+    public void delete( Long deviceId, Long deletedBy ){
+        Device device = deviceRepository.findById( deviceId ).orElseThrow(
+                () -> new ApiException(ErrorCode.DEVICE_NOT_FOUND)
+        );
+        device.delete( deletedBy );
     }
 
 }
