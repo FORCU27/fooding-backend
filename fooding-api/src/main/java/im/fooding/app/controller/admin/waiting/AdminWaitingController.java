@@ -1,8 +1,11 @@
 package im.fooding.app.controller.admin.waiting;
 
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingCreateRequest;
+import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingCreateRequest;
+import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingUpdateRequest;
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingUpdateRequest;
 import im.fooding.app.dto.response.admin.waiting.AdminWaitingResponse;
+import im.fooding.app.dto.response.admin.waiting.AdminWaitingSettingResponse;
 import im.fooding.app.service.admin.waiting.AdminWaitingService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.BasicSearch;
@@ -77,6 +80,52 @@ public class AdminWaitingController {
             @PathVariable long id
     ) {
         adminWaitingService.deleteWaiting(id, userInfo.getId());
+        return ApiResult.ok();
+    }
+
+    @PostMapping("/settings")
+    @Operation(summary = "웨이팅 설정 생성")
+    public ApiResult<AdminWaitingSettingResponse> createWaitingSetting(
+            @RequestBody @Valid AdminWaitingSettingCreateRequest request
+    ) {
+        AdminWaitingSettingResponse response = adminWaitingService.createWaitingSetting(request);
+        return ApiResult.ok(response);
+    }
+
+    @GetMapping("/settings/{settingId}")
+    @Operation(summary = "웨이팅 설정 조회")
+    public ApiResult<AdminWaitingSettingResponse> getWaitingSetting(
+            @PathVariable long settingId
+    ) {
+        return ApiResult.ok(adminWaitingService.getWaitingSetting(settingId));
+    }
+
+    @GetMapping("/settings")
+    @Operation(summary = "웨이팅 설정 조회(page)")
+    public ApiResult<PageResponse<AdminWaitingSettingResponse>> getWaitingSettingList(
+            @Parameter(description = "검색 및 페이징 조건")
+            @ModelAttribute BasicSearch search
+    ) {
+        return ApiResult.ok(adminWaitingService.getWaitingSettingList(search));
+    }
+
+    @PutMapping("/settings/{settingId}")
+    @Operation(summary = "웨이팅 설정 수정")
+    public ApiResult<AdminWaitingSettingResponse> UpdateWaitingSetting(
+            @PathVariable long settingId,
+
+            @RequestBody AdminWaitingSettingUpdateRequest request
+    ) {
+        return ApiResult.ok(adminWaitingService.updateWaitingSetting(settingId, request));
+    }
+
+    @DeleteMapping("/settings/{id}")
+    @Operation(summary = "웨이팅 설정 제거")
+    public ApiResult<Void> deleteWaitingSetting(
+            @AuthenticationPrincipal UserInfo userInfo,
+            @PathVariable long id
+    ) {
+        adminWaitingService.deleteWaitingSetting(id, userInfo.getId());
         return ApiResult.ok();
     }
 }

@@ -60,11 +60,22 @@ public class WaitingSetting extends BaseEntity {
         this.entryTimeLimitMinutes = entryTimeLimitMinutes;
     }
 
-    public void update(String label, int minimumCapacity, int maximumCapacity, Integer estimatedWaitingTimeMinutes) {
+    public void update(
+            Waiting waiting,
+            String label,
+            int minimumCapacity,
+            int maximumCapacity,
+            Integer estimatedWaitingTimeMinutes,
+            boolean isActive,
+            int entryTimeLimitMinutes
+    ) {
+        this.waiting = waiting;
         this.label = label;
         this.minimumCapacity = minimumCapacity;
         this.maximumCapacity = maximumCapacity;
         this.estimatedWaitingTimeMinutes = estimatedWaitingTimeMinutes;
+        this.isActive = isActive;
+        this.entryTimeLimitMinutes = entryTimeLimitMinutes;
     }
 
     public void activate() {
