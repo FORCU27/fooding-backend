@@ -25,6 +25,7 @@ public class WaitingSettingService {
 
     public WaitingSetting getActiveSetting(Store store) {
         return waitingSettingRepository.findActive(store)
+                .filter(it -> !it.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.ACTIVE_WAITING_SETTING_NOT_FOUND));
     }
 
@@ -33,7 +34,8 @@ public class WaitingSettingService {
      *  위에 있는 경우 active가 false일 때 예외가 발생하는 문제로 메서드 Optional로 감싼 메서드를 추가했습니다.
      */
     public Optional<WaitingSetting> findActiveSetting(Store store) {
-        return waitingSettingRepository.findActive(store);
+        return waitingSettingRepository.findActive(store)
+                .filter(it -> !it.isDeleted());
     }
 
     @Transactional

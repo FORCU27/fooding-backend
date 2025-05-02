@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StoreWaitingRepository extends JpaRepository<StoreWaiting, Long>, QStoreWaitingRepository {
 
-    long countByStatusAndCreatedAtBefore(StoreWaitingStatus status, LocalDateTime createdAt);
+    long countByStatusAndCreatedAtBeforeAndDeletedFalse(StoreWaitingStatus status, LocalDateTime createdAt);
 
     boolean existsByStoreAndStatusAndDeletedFalse(Store store, StoreWaitingStatus status);
 }

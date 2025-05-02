@@ -19,6 +19,7 @@ public class WaitingUserService {
     @Transactional
     public WaitingUser getOrElseRegister(WaitingUserRegisterRequest request) {
         return waitingUserRepository.findByStoreAndPhoneNumber(request.store(), request.phoneNumber())
+                .filter(it -> !it.isDeleted())
                 .orElseGet(() -> register(request));
     }
 

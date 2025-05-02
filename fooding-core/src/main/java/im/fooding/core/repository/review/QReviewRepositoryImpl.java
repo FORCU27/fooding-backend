@@ -1,14 +1,15 @@
-package im.fooding.core.repository.store;
+package im.fooding.core.repository.review;
 
-import static com.querydsl.core.types.Order.*;
+import static com.querydsl.core.types.Order.ASC;
+import static com.querydsl.core.types.Order.DESC;
 import static im.fooding.core.model.review.QReview.review;
 import static im.fooding.core.model.store.QStore.store;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import im.fooding.core.model.store.Store;
-import im.fooding.core.model.store.StoreSortType;
+import im.fooding.core.model.review.Review;
+import im.fooding.core.model.review.ReviewSortType;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.query.SortDirection;
@@ -17,39 +18,41 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
 @RequiredArgsConstructor
-public class QStoreRepositoryImpl implements QStoreRepository {
+public class QReviewRepositoryImpl implements QReviewRepository {
 
     private final JPAQueryFactory query;
 
     @Override
-    public Page<Store> list(
+    public Page<Review> list(
+            Long storeId,
             Pageable pageable,
-            StoreSortType sortType,
+            ReviewSortType sortType,
             SortDirection sortDirection
     ) {
         OrderSpecifier<?> orderSpecifier = getOrderSpecifier(sortType, sortDirection);
 
-        List<Store> content = query
-                .select(store)
-                .from(store)
-                .leftJoin(review).on(review.store.eq(store))
-                .groupBy(store.id)
+        List<Review> results = query
+                .select(review)
+                .from(review)
+                .where(review.store.id.eq(storeId))
+                .where(review.deleted.isFalse())
                 .orderBy(orderSpecifier)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         JPQLQuery<Long> countQuery = query
-                .select(store.count())
-                .from(store);
+                .select(review.count())
+                .where(review.store.id.eq(storeId))
+                .from(review);
 
-        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+        return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchOne);
     }
 
-    private OrderSpecifier<?> getOrderSpecifier(StoreSortType sortType, SortDirection direction) {
+    private OrderSpecifier<?> getOrderSpecifier(ReviewSortType sortType, SortDirection direction) {
         return switch (sortType) {
             case REVIEW -> new OrderSpecifier<>
-                    (direction == SortDirection.ASCENDING ? ASC : DESC, review.count());
+                    (direction == SortDirection.ASCENDING ? ASC : DESC, review.score.total);
             case RECENT -> new OrderSpecifier<>
                     (direction == SortDirection.ASCENDING ? ASC : DESC, store.createdAt);
         };
