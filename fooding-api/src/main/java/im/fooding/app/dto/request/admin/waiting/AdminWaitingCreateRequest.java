@@ -1,12 +1,9 @@
 package im.fooding.app.dto.request.admin.waiting;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record AdminWaitingCreateRequest(
 
         @Schema(description = "가게 아이디", example = "1")
