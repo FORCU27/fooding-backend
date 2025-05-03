@@ -49,7 +49,7 @@ public class WaitingUser extends BaseEntity {
     private boolean marketingConsent;
 
     @Column(nullable = false)
-    private int count;
+    private int count = 0;
 
     @Builder
     public WaitingUser(
@@ -59,7 +59,8 @@ public class WaitingUser extends BaseEntity {
             boolean termsAgreed,
             boolean privacyPolicyAgreed,
             boolean thirdPartyAgreed,
-            boolean marketingConsent
+            boolean marketingConsent,
+            int count
     ) {
         this.store = store;
         this.name = name;
@@ -68,7 +69,7 @@ public class WaitingUser extends BaseEntity {
         this.privacyPolicyAgreed = privacyPolicyAgreed;
         this.thirdPartyAgreed = thirdPartyAgreed;
         this.marketingConsent = marketingConsent;
-        this.count = 0;
+        this.count = count;
     }
 
     public void visitStore() {
@@ -85,5 +86,25 @@ public class WaitingUser extends BaseEntity {
 
     public void updatePhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void update(
+            Store store,
+            String name,
+            String phoneNumber,
+            boolean termsAgreed,
+            boolean privacyPolicyAgreed,
+            boolean thirdPartyAgreed,
+            boolean marketingConsent,
+            int count
+    ) {
+        this.store = store;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.termsAgreed = termsAgreed;
+        this.privacyPolicyAgreed = privacyPolicyAgreed;
+        this.thirdPartyAgreed = thirdPartyAgreed;
+        this.marketingConsent = marketingConsent;
+        this.count = count;
     }
 }

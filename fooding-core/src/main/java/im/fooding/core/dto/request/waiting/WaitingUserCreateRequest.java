@@ -5,18 +5,20 @@ import im.fooding.core.model.waiting.WaitingUser;
 import lombok.Builder;
 
 @Builder
-public record WaitingUserRegisterRequest(
+public record WaitingUserCreateRequest(
+
         Store store,
         String name,
         String phoneNumber,
-        boolean termsAgreed,
-        boolean privacyPolicyAgreed,
-        boolean thirdPartyAgreed,
-        boolean marketingConsent
+        Boolean termsAgreed,
+        Boolean privacyPolicyAgreed,
+        Boolean thirdPartyAgreed,
+        Boolean marketingConsent,
+        Integer count
 ) {
 
-    public WaitingUserCreateRequest toWaitingUserCreateRequest() {
-        return WaitingUserCreateRequest.builder()
+    public WaitingUser toWaitingUser() {
+        return WaitingUser.builder()
                 .store(store)
                 .name(name)
                 .phoneNumber(phoneNumber)
@@ -24,6 +26,7 @@ public record WaitingUserRegisterRequest(
                 .privacyPolicyAgreed(privacyPolicyAgreed)
                 .thirdPartyAgreed(thirdPartyAgreed)
                 .marketingConsent(marketingConsent)
+                .count(count)
                 .build();
     }
 }

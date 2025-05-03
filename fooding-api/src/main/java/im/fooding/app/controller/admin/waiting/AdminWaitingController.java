@@ -4,8 +4,11 @@ import im.fooding.app.dto.request.admin.waiting.AdminWaitingCreateRequest;
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingCreateRequest;
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingUpdateRequest;
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingUpdateRequest;
+import im.fooding.app.dto.request.admin.waiting.AdminWaitingUserCreateRequest;
+import im.fooding.app.dto.request.admin.waiting.AdminWaitingUserUpdateRequest;
 import im.fooding.app.dto.response.admin.waiting.AdminWaitingResponse;
 import im.fooding.app.dto.response.admin.waiting.AdminWaitingSettingResponse;
+import im.fooding.app.dto.response.admin.waiting.AdminWaitingUserResponse;
 import im.fooding.app.service.admin.waiting.AdminWaitingService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.BasicSearch;
@@ -126,6 +129,52 @@ public class AdminWaitingController {
             @PathVariable long id
     ) {
         adminWaitingService.deleteWaitingSetting(id, userInfo.getId());
+        return ApiResult.ok();
+    }
+
+    @PostMapping("/user")
+    @Operation(summary = "웨이팅 유저 생성")
+    public ApiResult<AdminWaitingUserResponse> createWaitingUser(
+            @RequestBody @Valid AdminWaitingUserCreateRequest request
+    ) {
+        AdminWaitingUserResponse response = adminWaitingService.createWaitingUser(request);
+        return ApiResult.ok(response);
+    }
+
+    @GetMapping("/user/{userId}")
+    @Operation(summary = "웨이팅 유저 조회")
+    public ApiResult<AdminWaitingUserResponse> getWaitingUser(
+            @PathVariable long userId
+    ) {
+        return ApiResult.ok(adminWaitingService.getWaitingUser(userId));
+    }
+
+    @GetMapping("/user")
+    @Operation(summary = "웨이팅 유저 조회(page)")
+    public ApiResult<PageResponse<AdminWaitingUserResponse>> getWaitingUserList(
+            @Parameter(description = "검색 및 페이징 조건")
+            @ModelAttribute BasicSearch search
+    ) {
+        return ApiResult.ok(adminWaitingService.getWaitingUserList(search));
+    }
+
+    @PutMapping("/user/{userId}")
+    @Operation(summary = "웨이팅 유저 수정")
+    public ApiResult<AdminWaitingUserResponse> UpdateWaitingUser(
+            @PathVariable long userId,
+
+            @RequestBody AdminWaitingUserUpdateRequest request
+    ) {
+        return ApiResult.ok(adminWaitingService.updateWaitingUser(userId, request));
+    }
+
+    @DeleteMapping("/user/{userId}")
+    @Operation(summary = "웨이팅 유저 제거")
+    public ApiResult<Void> deleteWaitingUser(
+            @AuthenticationPrincipal UserInfo userInfo,
+            @PathVariable long userId
+    ) {
+        adminWaitingService.deleteWaitingUser(userId, userInfo.getId());
         return ApiResult.ok();
     }
 }
