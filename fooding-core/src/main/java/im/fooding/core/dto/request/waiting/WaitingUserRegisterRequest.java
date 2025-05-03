@@ -15,8 +15,8 @@ public record WaitingUserRegisterRequest(
         boolean marketingConsent
 ) {
 
-    public WaitingUserCreateRequest toWaitingUserCreateRequest() {
-        return WaitingUserCreateRequest.builder()
+    public WaitingUser toWaitingUser() {
+        return WaitingUser.builder()
                 .store(store)
                 .name(name)
                 .phoneNumber(phoneNumber)

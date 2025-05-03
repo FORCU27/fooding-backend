@@ -33,7 +33,9 @@ public class WaitingUserService {
 
     @Transactional
     public WaitingUser register(WaitingUserRegisterRequest request) {
-        return create(request.toWaitingUserCreateRequest());
+        WaitingUser waitingUser = request.toWaitingUser();
+        validPolicyAgreed(waitingUser);
+        return waitingUserRepository.save(waitingUser);
     }
 
     @Transactional

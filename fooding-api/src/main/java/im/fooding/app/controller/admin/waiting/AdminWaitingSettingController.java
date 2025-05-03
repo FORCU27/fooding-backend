@@ -1,9 +1,9 @@
 package im.fooding.app.controller.admin.waiting;
 
-import im.fooding.app.dto.request.admin.waiting.AdminWaitingCreateRequest;
-import im.fooding.app.dto.request.admin.waiting.AdminWaitingUpdateRequest;
-import im.fooding.app.dto.response.admin.waiting.AdminWaitingResponse;
-import im.fooding.app.service.admin.waiting.AdminWaitingService;
+import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingCreateRequest;
+import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingUpdateRequest;
+import im.fooding.app.dto.response.admin.waiting.AdminWaitingSettingResponse;
+import im.fooding.app.service.admin.waiting.AdminWaitingSettingService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageResponse;
@@ -27,56 +27,56 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/waitings")
+@RequestMapping("/admin/waitings/settings")
 @Tag(name = "AdminWaitingController", description = "웨이팅 관리 컨트롤러")
 @Slf4j
-public class AdminWaitingController {
+public class AdminWaitingSettingController {
 
-    private final AdminWaitingService adminWaitingService;
+    private final AdminWaitingSettingService adminWaitingSettingService;
 
     @PostMapping
-    @Operation(summary = "웨이팅 생성")
-    public ApiResult<AdminWaitingResponse> create(
-            @RequestBody @Valid AdminWaitingCreateRequest request
+    @Operation(summary = "웨이팅 설정 생성")
+    public ApiResult<AdminWaitingSettingResponse> create(
+            @RequestBody @Valid AdminWaitingSettingCreateRequest request
     ) {
-        AdminWaitingResponse response = adminWaitingService.create(request);
+        AdminWaitingSettingResponse response = adminWaitingSettingService.create(request);
         return ApiResult.ok(response);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "웨이팅 조회")
-    public ApiResult<AdminWaitingResponse> get(
+    @Operation(summary = "웨이팅 설정 조회")
+    public ApiResult<AdminWaitingSettingResponse> get(
             @PathVariable long id
     ) {
-        return ApiResult.ok(adminWaitingService.get(id));
+        return ApiResult.ok(adminWaitingSettingService.get(id));
     }
 
     @GetMapping
-    @Operation(summary = "웨이팅 조회(page)")
-    public ApiResult<PageResponse<AdminWaitingResponse>> getList(
+    @Operation(summary = "웨이팅 설정 조회(page)")
+    public ApiResult<PageResponse<AdminWaitingSettingResponse>> getList(
             @Parameter(description = "검색 및 페이징 조건")
             @ModelAttribute BasicSearch search
     ) {
-        return ApiResult.ok(adminWaitingService.getList(search));
+        return ApiResult.ok(adminWaitingSettingService.getList(search));
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "웨이팅 수정")
-    public ApiResult<AdminWaitingResponse> update(
+    @Operation(summary = "웨이팅 설정 수정")
+    public ApiResult<AdminWaitingSettingResponse> update(
             @PathVariable long id,
 
-            @RequestBody AdminWaitingUpdateRequest request
+            @RequestBody AdminWaitingSettingUpdateRequest request
     ) {
-        return ApiResult.ok(adminWaitingService.update(id, request));
+        return ApiResult.ok(adminWaitingSettingService.update(id, request));
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "웨이팅 제거")
+    @Operation(summary = "웨이팅 설정 제거")
     public ApiResult<Void> delete(
             @AuthenticationPrincipal UserInfo userInfo,
             @PathVariable long id
     ) {
-        adminWaitingService.deleteWaiting(id, userInfo.getId());
+        adminWaitingSettingService.delete(id, userInfo.getId());
         return ApiResult.ok();
     }
 }
