@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum CouponType {
-    GENERAL("일반"), FIRST_COME_FIRST_SERVED("선착순");
+public enum BenefitType {
+    DISCOUNT("할인"), GIFT("증정");
 
     private final String name;
 }

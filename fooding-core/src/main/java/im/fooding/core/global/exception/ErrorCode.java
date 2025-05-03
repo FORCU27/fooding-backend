@@ -55,9 +55,13 @@ public enum ErrorCode {
     USER_NOTIFICATION_FORBIDDEN(HttpStatus.FORBIDDEN, "5002", "해당 알림에 접근할 권한이 없습니다."),
 
     // 메뉴
-    MENUCATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "6000", "등록된 메뉴 카테고리가 없습니다.");
-
+    MENUCATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "6000", "등록된 메뉴 카테고리가 없습니다."),
     
+    // 쿠폰
+    COUPON_NOT_FOUND(HttpStatus.BAD_REQUEST, "8000", "등록된 쿠폰이 없습니다."),
+    COUPON_ISSUE_QUANTITY_INVALID(HttpStatus.BAD_REQUEST, "8001", "쿠폰 발급 가능한 수량을 초과합니다"),
+    COUPON_ISSUE_DATE_INVALID(HttpStatus.BAD_REQUEST, "8002", "쿠폰 발급 가능한 일자가 아닙니다."),
+    COUPON_USE_DATE_INVALID(HttpStatus.BAD_REQUEST, "8003", "쿠폰 사용 가능한 일자가 아닙니다.");
 
     private final HttpStatus status;
 
