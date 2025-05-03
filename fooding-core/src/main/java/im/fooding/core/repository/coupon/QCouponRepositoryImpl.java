@@ -26,7 +26,7 @@ public class QCouponRepositoryImpl implements QCouponRepository {
                 .leftJoin(coupon.store, store).fetchJoin()
                 .where(
                         coupon.deleted.isFalse(),
-                        store.deleted.isFalse(),
+                        storeDeletedIfStoreExists(),
                         searchStore(storeId),
                         search(searchString)
                 )
@@ -40,7 +40,7 @@ public class QCouponRepositoryImpl implements QCouponRepository {
                 .from(coupon)
                 .where(
                         coupon.deleted.isFalse(),
-                        store.deleted.isFalse(),
+                        storeDeletedIfStoreExists(),
                         searchStore(storeId),
                         search(searchString)
                 )
@@ -55,5 +55,9 @@ public class QCouponRepositoryImpl implements QCouponRepository {
 
     private BooleanExpression search(String searchString) {
         return searchString != null ? coupon.name.contains(searchString).or(store.name.contains(searchString)) : null;
+    }
+
+    private BooleanExpression storeDeletedIfStoreExists() {
+        return store.id.isNull().or(store.deleted.isFalse());
     }
 }

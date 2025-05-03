@@ -30,6 +30,9 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
                 .leftJoin(userCoupon.store, store).fetchJoin()
                 .where(
                         userCoupon.deleted.isFalse(),
+                        user.deleted.isFalse(),
+                        couponDeletedIfStoreExists(),
+                        storeDeletedIfStoreExists(),
                         searchUser(userId),
                         searchStore(storeId)
                 )
@@ -43,6 +46,9 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
                 .from(userCoupon)
                 .where(
                         userCoupon.deleted.isFalse(),
+                        user.deleted.isFalse(),
+                        couponDeletedIfStoreExists(),
+                        storeDeletedIfStoreExists(),
                         searchUser(userId),
                         searchStore(storeId)
                 )
@@ -57,5 +63,13 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
 
     private BooleanExpression searchUser(Long userId) {
         return null != userId ? user.id.eq(userId) : null;
+    }
+
+    private BooleanExpression storeDeletedIfStoreExists() {
+        return store.id.isNull().or(store.deleted.isFalse());
+    }
+
+    private BooleanExpression couponDeletedIfStoreExists() {
+        return coupon.id.isNull().or(coupon.deleted.isFalse());
     }
 }
