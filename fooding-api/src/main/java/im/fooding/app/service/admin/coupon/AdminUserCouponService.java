@@ -41,7 +41,7 @@ public class AdminUserCouponService {
     @Transactional
     public void issueByGift(AdminGiftCouponRequest request) {
         User user = userService.findById(request.getUserId());
-        Store store = storeService.findById(request.getStoreId());
+        Store store = null != request.getStoreId() ? storeService.findById(request.getStoreId()) : null;
         userCouponService.create(null, user, store, request.getBenefitType(), request.getDiscountType(), request.getDiscountValue(), request.getName(), request.getConditions(), request.getExpiredOn());
     }
 
