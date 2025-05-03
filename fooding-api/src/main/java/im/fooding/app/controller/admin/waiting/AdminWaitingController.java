@@ -76,7 +76,7 @@ public class AdminWaitingController {
             @AuthenticationPrincipal UserInfo userInfo,
             @PathVariable long id
     ) {
-        adminWaitingService.deleteWaiting(id, userInfo.getId());
+        adminWaitingService.delete(id, userInfo.getId());
         return ApiResult.ok();
     }
 }

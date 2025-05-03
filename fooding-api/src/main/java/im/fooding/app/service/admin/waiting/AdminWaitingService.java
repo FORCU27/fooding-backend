@@ -53,7 +53,7 @@ public class AdminWaitingService {
     }
 
     @Transactional
-    public void deleteWaiting(long id, long deletedBy) {
+    public void delete(long id, long deletedBy) {
         waitingService.delete(id, deletedBy);
     }
 }
