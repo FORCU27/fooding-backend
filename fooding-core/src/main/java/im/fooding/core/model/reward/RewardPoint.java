@@ -13,8 +13,8 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@Table( name = "reward_account" )
-public class RewardAccount extends BaseEntity {
+@Table( name = "reward_point" )
+public class RewardPoint extends BaseEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
