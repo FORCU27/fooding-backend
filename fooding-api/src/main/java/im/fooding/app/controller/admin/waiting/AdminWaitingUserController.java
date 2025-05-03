@@ -65,7 +65,7 @@ public class AdminWaitingUserController {
     public ApiResult<AdminWaitingUserResponse> update(
             @PathVariable long id,
 
-            @RequestBody AdminWaitingUserUpdateRequest request
+            @RequestBody @Valid AdminWaitingUserUpdateRequest request
     ) {
         return ApiResult.ok(adminWaitingUserService.update(id, request));
     }
