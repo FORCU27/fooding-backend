@@ -1,13 +1,18 @@
 package im.fooding.core.global.exception;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class DetailedError {
-  private String location;
-  private String message;
+    private String location;
+    private String message;
+
+    @Builder
+    public DetailedError(String location, String message) {
+        this.location = location;
+        this.message = message;
+    }
 }
