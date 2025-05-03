@@ -1,6 +1,8 @@
 package im.fooding.core.service.waiting;
 
+import im.fooding.core.dto.request.waiting.StoreWaitingCreateRequest;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
+import im.fooding.core.dto.request.waiting.StoreWaitingUpdateRequest;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.Store;
@@ -56,6 +58,7 @@ public class StoreWaitingService {
         StoreWaiting storeWaiting = StoreWaiting.builder()
                 .user(request.user())
                 .store(request.store())
+                .status(StoreWaitingStatus.WAITING)
                 .callNumber(callNumber)
                 .channel(StoreWaitingChannel.of(request.channel()))
                 .infantChairCount(request.infantChairCount())
@@ -106,5 +109,39 @@ public class StoreWaitingService {
 
     public boolean exists(Store store, StoreWaitingStatus status) {
         return storeWaitingRepository.existsByStoreAndStatusAndDeletedFalse(store, status);
+    }
+
+    @Transactional
+    public StoreWaiting create(StoreWaitingCreateRequest request) {
+        StoreWaiting storeWaiting = request.toStoreWaiting();
+        return storeWaitingRepository.save(storeWaiting);
+    }
+
+    public Page<StoreWaiting> getList(Pageable pageable) {
+        return storeWaitingRepository.findAllByDeletedFalse(pageable);
+    }
+
+    @Transactional
+    public StoreWaiting update(StoreWaitingUpdateRequest request) {
+        StoreWaiting storeWaiting = get(request.id());
+        storeWaiting.update(
+                request.user(),
+                request.store(),
+                StoreWaitingStatus.of(request.status()),
+                StoreWaitingChannel.of(request.channel()),
+                request.infantChairCount(),
+                request.infantCount(),
+                request.adultCount(),
+                request.memo()
+        );
+
+        return storeWaitingRepository.save(storeWaiting);
+    }
+
+    @Transactional
+    public void delete(long id, long deletedBy) {
+        StoreWaiting storeWaiting = get(id);
+
+        storeWaiting.delete(deletedBy);
     }
 }

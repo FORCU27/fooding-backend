@@ -71,28 +71,30 @@ public class StoreWaiting extends BaseEntity {
     private int adultCount;
 
     @Column(name = "memo", nullable = false)
-    private String memo;
+    private String memo = "";
 
     @Builder
     public StoreWaiting(
             WaitingUser user,
             Store store,
             int callNumber,
+            StoreWaitingStatus status,
             StoreWaitingChannel channel,
             int infantChairCount,
             int infantCount,
-            int adultCount
+            int adultCount,
+            String memo
     ) {
         this.user = user;
         this.store = store;
         this.callNumber = callNumber;
         this.callCount = 0;
-        this.status = StoreWaitingStatus.WAITING;
+        this.status = status;
         this.channel = channel;
         this.infantChairCount = infantChairCount;
         this.infantCount = infantCount;
         this.adultCount = adultCount;
-        this.memo = "";
+        this.memo = memo;
     }
 
     public void updateMemo(String memo) {
@@ -147,5 +149,25 @@ public class StoreWaiting extends BaseEntity {
 
     public void injectUser(WaitingUser user) {
         this.user = user;
+    }
+
+    public void update(
+            WaitingUser user,
+            Store store,
+            StoreWaitingStatus status,
+            StoreWaitingChannel channel,
+            Integer infantChairCount,
+            Integer infantCount,
+            Integer adultCount,
+            String memo
+    ) {
+        this.user = user;
+        this.store = store;
+        this.status = status;
+        this.channel = channel;
+        this.infantChairCount = infantChairCount;
+        this.infantCount = infantCount;
+        this.adultCount = adultCount;
+        this.memo = memo;
     }
 }

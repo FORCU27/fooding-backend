@@ -1,0 +1,49 @@
+package im.fooding.app.dto.response.admin.waiting;
+
+import im.fooding.core.model.waiting.StoreWaiting;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record AdminStoreWaitingResponse(
+        @Schema(description = "웨이팅 유저 id", example = "1")
+        @NotNull
+        Long userId,
+
+        @Schema(description = "가게 id", example = "1")
+        @NotNull
+        Long storeId,
+
+        @Schema(description = "등록 방법(IN_PERSON, ONLINE)", example = "IN_PERSON")
+        @NotBlank
+        String channel,
+
+        @Schema(description = "유아용 의자 개수", example = "1")
+        @NotNull
+        Integer infantChairCount,
+
+        @Schema(description = "유아 수", example = "1")
+        @NotNull
+        Integer infantCount,
+
+        @Schema(description = "성인 수", example = "1")
+        @NotNull
+        Integer adultCount,
+
+        @Schema(description = "메모", example = "메모 내용입니다.")
+        @NotNull
+        String memo
+) {
+
+    public static AdminStoreWaitingResponse from(StoreWaiting waiting) {
+            return new AdminStoreWaitingResponse(
+                    waiting.getUser().getId(),
+                    waiting.getStoreId(),
+                    waiting.getChannel().name(),
+                    waiting.getInfantChairCount(),
+                    waiting.getInfantCount(),
+                    waiting.getAdultCount(),
+                    waiting.getMemo()
+            );
+    }
+}
