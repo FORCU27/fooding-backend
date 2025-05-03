@@ -4,7 +4,6 @@ import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
