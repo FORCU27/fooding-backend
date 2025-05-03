@@ -23,10 +23,6 @@ public class RewardLog extends BaseEntity {
     @JoinColumn( name = "store_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT) )
     private Store store;
 
-    @ManyToOne
-    @JoinColumn( name = "service_id" )
-    private StoreService serviceId;
-
     @Column( name = "phone_number" )
     private String phoneNumber;
 

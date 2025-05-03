@@ -4,6 +4,7 @@ import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +14,8 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
-@Table( name = "reward_account" )
-public class RewardAccount extends BaseEntity {
+@Table( name = "reward_point" )
+public class RewardPoint extends BaseEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     private Long id;
