@@ -30,6 +30,7 @@ public class QCouponRepositoryImpl implements QCouponRepository {
                         searchStore(storeId),
                         search(searchString)
                 )
+                .orderBy(coupon.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

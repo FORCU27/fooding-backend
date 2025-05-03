@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface QUserCouponRepository {
-    Page<UserCoupon> list(long userId, Long storeId, Pageable pageable);
+    Page<UserCoupon> list(Long userId, Long storeId, Pageable pageable);
 }

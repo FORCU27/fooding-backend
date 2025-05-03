@@ -38,13 +38,13 @@ public class UserCouponService {
         repository.save(userCoupon);
     }
 
-    public Page<UserCoupon> list(long userId, Long storeId, Pageable pageable) {
+    public Page<UserCoupon> list(Long userId, Long storeId, Pageable pageable) {
         return repository.list(userId, storeId, pageable);
     }
 
     public UserCoupon findById(long id) {
         return repository.findById(id).filter(it -> !it.isDeleted())
-                .orElseThrow(() -> new ApiException(ErrorCode.COUPON_NOT_FOUND));
+                .orElseThrow(() -> new ApiException(ErrorCode.USER_COUPON_NOT_FOUND));
     }
 
     public void use(long id) {

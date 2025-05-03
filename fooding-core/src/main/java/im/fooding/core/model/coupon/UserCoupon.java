@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -73,7 +74,10 @@ public class UserCoupon extends BaseEntity {
 
     public void use() {
         if (!availableExpiredOn()) {
-            throw new ApiException(ErrorCode.COUPON_USE_DATE_INVALID);
+            throw new ApiException(ErrorCode.USER_COUPON_EXPIRED);
+        }
+        if (this.used) {
+            throw new ApiException(ErrorCode.USER_COUPON_ALREADY_USE);
         }
         this.used = true;
         this.usedAt = LocalDateTime.now();
