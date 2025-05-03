@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/admin/waitings/settings")
-@Tag(name = "AdminWaitingController", description = "웨이팅 관리 컨트롤러")
+@Tag(name = "AdminWaitingSettingController", description = "[관리자] 웨이팅 설정 컨트롤러")
 @Slf4j
 public class AdminWaitingSettingController {
 
