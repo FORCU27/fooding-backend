@@ -25,8 +25,8 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
         List<UserCoupon> results = query
                 .select(userCoupon)
                 .from(userCoupon)
-                .join(userCoupon.coupon, coupon).fetchJoin()
                 .join(userCoupon.user, user).fetchJoin()
+                .leftJoin(userCoupon.coupon, coupon).fetchJoin()
                 .leftJoin(userCoupon.store, store).fetchJoin()
                 .where(
                         userCoupon.deleted.isFalse(),

@@ -54,7 +54,7 @@ class UserCouponServiceTest extends TestConfig {
         User user = saveUser();
 
         // when
-        userCouponService.create(savedCoupon, user, savedCoupon.getStore(), savedCoupon.getBenefitType(), savedCoupon.getDiscountType(), savedCoupon.getName(), savedCoupon.getConditions(), savedCoupon.getExpiredOn());
+        userCouponService.create(savedCoupon, user, savedCoupon.getStore(), savedCoupon.getBenefitType(), savedCoupon.getDiscountType(), savedCoupon.getDiscountValue(), savedCoupon.getName(), savedCoupon.getConditions(), savedCoupon.getExpiredOn());
 
         // then
         assertTrue(userCouponRepository.findById(id).isPresent());

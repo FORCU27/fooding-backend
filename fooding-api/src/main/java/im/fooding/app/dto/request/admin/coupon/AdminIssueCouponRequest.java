@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class AdminIssueCouponRequest {
-    @NotNull
+    @NotNull(message = "user id는 필수입니다.")
     @Schema(description = "user id", example = "1")
     private Long userId;
 
-    @NotNull
+    @NotNull(message = "쿠폰 id는 필수입니다.")
     @Schema(description = "coupon id", example = "1")
     private Long couponId;
 

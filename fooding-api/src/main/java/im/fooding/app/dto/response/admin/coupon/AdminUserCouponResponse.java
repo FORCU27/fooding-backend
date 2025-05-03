@@ -85,7 +85,7 @@ public class AdminUserCouponResponse {
                 .couponId(null != userCoupon.getCoupon() ? userCoupon.getCoupon().getId() : null)
                 .storeId(null != userCoupon.getStore() ? userCoupon.getStore().getId() : null)
                 .nickname(userCoupon.getUser().getNickname())
-                .storeName(null != userCoupon.getStore() ? userCoupon.getName() : null)
+                .storeName(null != userCoupon.getStore() ? userCoupon.getStore().getName() : null)
                 .name(userCoupon.getName())
                 .conditions(userCoupon.getConditions())
                 .benefitType(userCoupon.getBenefitType())

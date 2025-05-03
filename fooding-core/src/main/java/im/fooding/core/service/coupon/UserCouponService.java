@@ -24,13 +24,14 @@ public class UserCouponService {
     private final UserCouponRepository repository;
 
     public void create(Coupon coupon, User user, Store store, BenefitType benefitType, DiscountType discountType,
-                       String name, String conditions, LocalDate expiredOn) {
+                       int discountValue, String name, String conditions, LocalDate expiredOn) {
         UserCoupon userCoupon = UserCoupon.builder()
                 .coupon(coupon)
                 .user(user)
                 .store(store)
                 .benefitType(benefitType)
                 .discountType(discountType)
+                .discountValue(discountValue)
                 .name(name)
                 .conditions(conditions)
                 .expiredOn(expiredOn)

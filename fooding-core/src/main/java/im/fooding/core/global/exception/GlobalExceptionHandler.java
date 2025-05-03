@@ -10,6 +10,8 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 @RestControllerAdvice
@@ -69,7 +72,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse> MethodArgumentNotValidException(final MethodArgumentNotValidException e, HttpServletRequest request) {
         log.error("MethodArgumentNotValidException: {}", e.getMessage());
-        ErrorResponse errorResponse = new ErrorResponse(400, "0005", e.getBindingResult().getFieldErrors().get(0).getDefaultMessage(), request.getRequestURI(), request.getMethod());
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.METHOD_ARGUMENT_NOT_VALID, request.getRequestURI(), request.getMethod());
+        errorResponse.setDetailedErrors(new ArrayList<>());
+        errorResponse.getDetailedErrors().addAll(
+                e.getBindingResult().getFieldErrors()
+                        .stream().map(x -> DetailedError.builder()
+                                .message(x.getDefaultMessage())
+                                .location(x.getField())
+                                .build()
+                        ).toList()
+        );
         return ResponseEntity
                 .status(ErrorCode.METHOD_ARGUMENT_NOT_VALID.getStatus().value())
                 .body(errorResponse);
