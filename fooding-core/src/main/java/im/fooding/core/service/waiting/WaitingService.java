@@ -62,4 +62,11 @@ public class WaitingService {
         Waiting waiting = getById(id);
         waiting.updateStatus(status);
     }
+
+    public boolean isOpen(Store store) {
+        Waiting waiting = waitingRepository.findByStore(store)
+                .filter(it -> !it.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.WAITING_NOT_FOUND));
+        return waiting.getStatus() == WaitingStatus.WAITING_OPEN;
+    }
 }
