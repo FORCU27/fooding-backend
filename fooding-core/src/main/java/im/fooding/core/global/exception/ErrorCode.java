@@ -52,6 +52,8 @@ public enum ErrorCode {
     WAITING_USER_TERMS_AGREED_AGREED_REQUIRED(HttpStatus.BAD_REQUEST, "3013", "개인정보 수집 및 동의는 필수입니다."),
     WAITING_USER_THIRD_PARTY_AGREED_REQUIRED(HttpStatus.BAD_REQUEST, "3014", "개인정보 제3자 제공 동의는 필수입니다."),
     WAITING_USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "3015", "등록된 웨이팅 유저 정보가 없습니다."),
+    WAITING_LOG_NOT_FOUND(HttpStatus.BAD_REQUEST, "3016", "기록된 웨이팅 로그 정보가 없습니다."),
+
 
     // 디바이스
     DEVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "7000", "등록된 디바이스가 없습니다."),

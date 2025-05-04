@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface WaitingLogRepository extends JpaRepository<WaitingLog, Long> {
 
     Page<WaitingLog> findAllByStoreWaitingIdAndDeletedFalse(long id, Pageable pageable);
+
+    Page<WaitingLog> findAllByDeletedFalse(Pageable pageable);
 }

@@ -71,8 +71,8 @@ class WaitingLogServiceTest extends TestConfig {
         WaitingUser user = waitingUserRepository.save(WaitingUserDummy.createWithPhoneNumber(store, "01012345678"));
         StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
         List<WaitingLog> waitingLogs = List.of(
-                new WaitingLog(storeWaiting),
-                new WaitingLog(storeWaiting)
+                new WaitingLog(storeWaiting, WaitingLogType.WAITING_REGISTRATION),
+                new WaitingLog(storeWaiting, WaitingLogType.WAITING_REGISTRATION)
         );
         waitingLogRepository.saveAll(waitingLogs);
 
