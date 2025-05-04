@@ -64,6 +64,7 @@ public class StoreWaitingService {
                 .infantChairCount(request.infantChairCount())
                 .infantCount(request.infantCount())
                 .adultCount(request.adultCount())
+                .memo("")
                 .build();
 
         return storeWaitingRepository.save(storeWaiting);
