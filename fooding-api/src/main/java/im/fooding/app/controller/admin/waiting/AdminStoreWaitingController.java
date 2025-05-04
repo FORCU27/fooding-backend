@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin/waitings/requests")
 @Tag(name = "AdminStoreWaitingController", description = "[관리자] 가게 웨이팅 컨트롤러")
 @Slf4j
-public class StoreWaitingController {
+public class AdminStoreWaitingController {
 
     private final AdminStoreWaitingService adminStoreWaitingService;
 
