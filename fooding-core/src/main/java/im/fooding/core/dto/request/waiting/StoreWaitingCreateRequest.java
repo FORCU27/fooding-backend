@@ -18,10 +18,11 @@ public record StoreWaitingCreateRequest(
         Integer adultCount,
         String memo
 ) {
-    public StoreWaiting toStoreWaiting() {
+    public StoreWaiting toStoreWaiting(Integer callNumber) {
         return StoreWaiting.builder()
                 .user(user)
                 .store(store)
+                .callNumber(callNumber)
                 .status(StoreWaitingStatus.of(status))
                 .channel(StoreWaitingChannel.of(channel))
                 .infantChairCount(infantChairCount)

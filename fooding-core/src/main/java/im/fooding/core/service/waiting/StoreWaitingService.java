@@ -52,8 +52,7 @@ public class StoreWaitingService {
 
     @Transactional
     public StoreWaiting register(StoreWaitingRegisterRequest request) {
-        // TODO: 추후에 redis 로 개선
-        int callNumber = (int) storeWaitingRepository.countCreatedOnAndDeletedFalse(LocalDate.now()) + 1;
+        int callNumber = generateCallNumber();
 
         StoreWaiting storeWaiting = StoreWaiting.builder()
                 .user(request.user())
@@ -114,7 +113,7 @@ public class StoreWaitingService {
 
     @Transactional
     public StoreWaiting create(StoreWaitingCreateRequest request) {
-        StoreWaiting storeWaiting = request.toStoreWaiting();
+        StoreWaiting storeWaiting = request.toStoreWaiting(generateCallNumber());
         return storeWaitingRepository.save(storeWaiting);
     }
 
@@ -144,5 +143,10 @@ public class StoreWaitingService {
         StoreWaiting storeWaiting = get(id);
 
         storeWaiting.delete(deletedBy);
+    }
+
+    // TODO: 추후에 redis 로 개선
+    private int generateCallNumber() {
+        return (int) storeWaitingRepository.countCreatedOnAndDeletedFalse(LocalDate.now()) + 1;
     }
 }
