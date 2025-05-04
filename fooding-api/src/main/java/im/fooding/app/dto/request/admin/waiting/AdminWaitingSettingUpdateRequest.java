@@ -1,6 +1,5 @@
 package im.fooding.app.dto.request.admin.waiting;
 
-import im.fooding.core.dto.request.waiting.WaitingSettingCreateRequest;
 import im.fooding.core.dto.request.waiting.WaitingSettingUpdateRequest;
 import im.fooding.core.model.waiting.Waiting;
 import io.swagger.v3.oas.annotations.media.Schema;
