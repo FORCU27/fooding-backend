@@ -3,6 +3,7 @@ package im.fooding.app.service.admin.waiting;
 
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingCreateRequest;
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingUpdateRequest;
+import im.fooding.app.dto.response.admin.waiting.AdminWaitingResponse;
 import im.fooding.app.dto.response.admin.waiting.AdminWaitingSettingResponse;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
@@ -43,19 +44,13 @@ public class AdminWaitingSettingService {
 
     public PageResponse<AdminWaitingSettingResponse> list(BasicSearch search) {
         Page<WaitingSetting> waitingSettings = waitingSettingService.list(search.getPageable());
-        List<AdminWaitingSettingResponse> waitingResponses = waitingSettings.stream()
-                .map(AdminWaitingSettingResponse::from)
-                .toList();
-
-        return PageResponse.of(waitingResponses, PageInfo.of(waitingSettings));
+        return PageResponse.of(waitingSettings.stream().map(AdminWaitingSettingResponse::from).toList(), PageInfo.of(waitingSettings));
     }
 
     @Transactional
-    public AdminWaitingSettingResponse update(long settingId, AdminWaitingSettingUpdateRequest request) {
+    public AdminWaitingSettingResponse update(long id, AdminWaitingSettingUpdateRequest request) {
         Waiting waiting = waitingService.getById(request.waitingId());
-
-        WaitingSettingUpdateRequest waitingSettingUpdateRequest = request.toWaitingSettingUpdateRequest(settingId, waiting);
-        WaitingSetting waitingSetting = waitingSettingService.update(waitingSettingUpdateRequest);
+        WaitingSetting waitingSetting = waitingSettingService.update(request.toWaitingSettingUpdateRequest(id, waiting));
 
         return AdminWaitingSettingResponse.from(waitingSetting);
     }

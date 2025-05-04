@@ -31,8 +31,8 @@ public class AdminWaitingUserService {
         return AdminWaitingUserResponse.from(waitingUser);
     }
 
-    public AdminWaitingUserResponse get(long userId) {
-        return AdminWaitingUserResponse.from(waitingUserService.get(userId));
+    public AdminWaitingUserResponse get(long id) {
+        return AdminWaitingUserResponse.from(waitingUserService.get(id));
     }
 
     public PageResponse<AdminWaitingUserResponse> list(BasicSearch search) {
@@ -41,13 +41,13 @@ public class AdminWaitingUserService {
     }
 
     @Transactional
-    public AdminWaitingUserResponse update(long userId, AdminWaitingUserUpdateRequest request) {
+    public AdminWaitingUserResponse update(long id, AdminWaitingUserUpdateRequest request) {
         Store store = storeService.findById(request.storeId());
-        return AdminWaitingUserResponse.from(waitingUserService.update(request.toWaitingUserUpdateRequest(userId, store)));
+        return AdminWaitingUserResponse.from(waitingUserService.update(request.toWaitingUserUpdateRequest(id, store)));
     }
 
     @Transactional
-    public void delete(long userId, long deletedBy) {
-        waitingUserService.delete(userId, deletedBy);
+    public void delete(long id, long deletedBy) {
+        waitingUserService.delete(id, deletedBy);
     }
 }
