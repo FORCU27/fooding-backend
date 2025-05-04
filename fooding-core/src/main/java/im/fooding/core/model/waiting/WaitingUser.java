@@ -4,6 +4,7 @@ import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
@@ -36,17 +37,8 @@ public class WaitingUser extends BaseEntity {
 
     private String phoneNumber;
 
-    @Column(nullable = false)
-    private boolean termsAgreed;
-
-    @Column(nullable = false)
-    private boolean privacyPolicyAgreed;
-
-    @Column(nullable = false)
-    private boolean thirdPartyAgreed;
-
-    @Column(nullable = false)
-    private boolean marketingConsent;
+    @Embedded
+    private WaitingUserPolicyAgreement policyAgreement;
 
     @Column(nullable = false)
     private int count = 0;
@@ -56,19 +48,13 @@ public class WaitingUser extends BaseEntity {
             Store store,
             String name,
             String phoneNumber,
-            boolean termsAgreed,
-            boolean privacyPolicyAgreed,
-            boolean thirdPartyAgreed,
-            boolean marketingConsent,
+            WaitingUserPolicyAgreement policyAgreement,
             int count
     ) {
         this.store = store;
         this.name = name;
         this.phoneNumber = phoneNumber;
-        this.termsAgreed = termsAgreed;
-        this.privacyPolicyAgreed = privacyPolicyAgreed;
-        this.thirdPartyAgreed = thirdPartyAgreed;
-        this.marketingConsent = marketingConsent;
+        this.policyAgreement = policyAgreement;
         this.count = count;
     }
 
@@ -92,19 +78,13 @@ public class WaitingUser extends BaseEntity {
             Store store,
             String name,
             String phoneNumber,
-            boolean termsAgreed,
-            boolean privacyPolicyAgreed,
-            boolean thirdPartyAgreed,
-            boolean marketingConsent,
+            WaitingUserPolicyAgreement policyAgreement,
             int count
     ) {
         this.store = store;
         this.name = name;
         this.phoneNumber = phoneNumber;
-        this.termsAgreed = termsAgreed;
-        this.privacyPolicyAgreed = privacyPolicyAgreed;
-        this.thirdPartyAgreed = thirdPartyAgreed;
-        this.marketingConsent = marketingConsent;
+        this.policyAgreement = policyAgreement;
         this.count = count;
     }
 }

@@ -6,6 +6,7 @@ import im.fooding.core.dto.request.waiting.WaitingUserUpdateRequest;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.waiting.WaitingUser;
+import im.fooding.core.model.waiting.WaitingUserPolicyAgreement;
 import im.fooding.core.repository.waiting.WaitingUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class WaitingUserService {
     @Transactional
     public WaitingUser create(WaitingUserCreateRequest request) {
         WaitingUser waitingUser = request.toWaitingUser();
-        validPolicyAgreed(waitingUser);
+        validPolicyAgreed(waitingUser.getPolicyAgreement());
         return waitingUserRepository.save(waitingUser);
     }
 
@@ -39,18 +40,26 @@ public class WaitingUserService {
         return waitingUserRepository.findAllByDeletedFalse(pageable);
     }
 
+    @Transactional
     public WaitingUser update(WaitingUserUpdateRequest request) {
         WaitingUser waitingUser = get(request.id());
+
+        WaitingUserPolicyAgreement policyAgreement = WaitingUserPolicyAgreement.builder()
+                .termsAgreed(request.termsAgreed())
+                .privacyPolicyAgreed(request.privacyPolicyAgreed())
+                .thirdPartyAgreed(request.thirdPartyAgreed())
+                .build();
+
+        validPolicyAgreed(policyAgreement);
+
         waitingUser.update(
                 request.store(),
                 request.name(),
                 request.phoneNumber(),
-                request.termsAgreed(),
-                request.privacyPolicyAgreed(),
-                request.thirdPartyAgreed(),
-                request.marketingConsent(),
+                policyAgreement,
                 request.count()
         );
+
         return waitingUser;
     }
 
@@ -70,18 +79,19 @@ public class WaitingUserService {
     @Transactional
     public WaitingUser register(WaitingUserRegisterRequest request) {
         WaitingUser waitingUser = request.toWaitingUser();
-        validPolicyAgreed(waitingUser);
+
+        validPolicyAgreed(waitingUser.getPolicyAgreement());
         return waitingUserRepository.save(waitingUser);
     }
 
-    private void validPolicyAgreed(WaitingUser waitingUser) {
-        if (!waitingUser.isPrivacyPolicyAgreed()) {
+    private void validPolicyAgreed(WaitingUserPolicyAgreement policyAgreement) {
+        if (!policyAgreement.isPrivacyPolicyAgreed()) {
             throw new ApiException(ErrorCode.WAITING_USER_PRIVACY_POLICY_AGREED_REQUIRED);
         }
-        if (!waitingUser.isTermsAgreed()) {
+        if (!policyAgreement.isTermsAgreed()) {
             throw new ApiException(ErrorCode.WAITING_USER_TERMS_AGREED_AGREED_REQUIRED);
         }
-        if (!waitingUser.isThirdPartyAgreed()) {
+        if (!policyAgreement.isThirdPartyAgreed()) {
             throw new ApiException(ErrorCode.WAITING_USER_THIRD_PARTY_AGREED_REQUIRED);
         }
     }

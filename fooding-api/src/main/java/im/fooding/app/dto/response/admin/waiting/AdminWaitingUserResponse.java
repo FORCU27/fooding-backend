@@ -1,6 +1,7 @@
 package im.fooding.app.dto.response.admin.waiting;
 
 import im.fooding.core.model.waiting.WaitingUser;
+import im.fooding.core.model.waiting.WaitingUserPolicyAgreement;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record AdminWaitingUserResponse(
@@ -34,15 +35,17 @@ public record AdminWaitingUserResponse(
 ) {
 
         public static AdminWaitingUserResponse from(WaitingUser waitingUser) {
+                WaitingUserPolicyAgreement policyAgreement = waitingUser.getPolicyAgreement();
+
                 return new AdminWaitingUserResponse(
                         waitingUser.getId(),
                         waitingUser.getStoreId(),
                         waitingUser.getName(),
                         waitingUser.getPhoneNumber(),
-                        waitingUser.isTermsAgreed(),
-                        waitingUser.isPrivacyPolicyAgreed(),
-                        waitingUser.isThirdPartyAgreed(),
-                        waitingUser.isMarketingConsent(),
+                        policyAgreement.isTermsAgreed(),
+                        policyAgreement.isPrivacyPolicyAgreed(),
+                        policyAgreement.isThirdPartyAgreed(),
+                        policyAgreement.isMarketingConsent(),
                         waitingUser.getCount()
                 );
         }
