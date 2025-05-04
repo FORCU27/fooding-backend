@@ -13,11 +13,9 @@ public record AdminWaitingUserUpdateRequest(
         Long storeId,
 
         @Schema(description = "이름", example = "홍길동")
-        @NotBlank
         String name,
 
         @Schema(description = "전화번호", example = "01012345678")
-        @NotBlank
         String phoneNumber,
 
         @Schema(description = "서비스 이용약관 동의", example = "true")
