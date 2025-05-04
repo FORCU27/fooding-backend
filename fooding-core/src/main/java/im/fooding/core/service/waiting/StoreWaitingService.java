@@ -29,6 +29,40 @@ public class StoreWaitingService {
 
     private final StoreWaitingRepository storeWaitingRepository;
 
+    @Transactional
+    public StoreWaiting create(StoreWaitingCreateRequest request) {
+        StoreWaiting storeWaiting = request.toStoreWaiting(generateCallNumber());
+        return storeWaitingRepository.save(storeWaiting);
+    }
+
+    public Page<StoreWaiting> list(Pageable pageable) {
+        return storeWaitingRepository.findAllByDeletedFalse(pageable);
+    }
+
+    @Transactional
+    public StoreWaiting update(StoreWaitingUpdateRequest request) {
+        StoreWaiting storeWaiting = get(request.id());
+        storeWaiting.update(
+                request.user(),
+                request.store(),
+                StoreWaitingStatus.of(request.status()),
+                StoreWaitingChannel.of(request.channel()),
+                request.infantChairCount(),
+                request.infantCount(),
+                request.adultCount(),
+                request.memo()
+        );
+
+        return storeWaitingRepository.save(storeWaiting);
+    }
+
+    @Transactional
+    public void delete(long id, long deletedBy) {
+        StoreWaiting storeWaiting = get(id);
+
+        storeWaiting.delete(deletedBy);
+    }
+
     public Page<StoreWaiting> list(StoreWaitingFilter filter, Pageable pageable) {
         return storeWaitingRepository.findAllWithFilterAndDeletedFalse(filter, pageable);
     }
@@ -109,40 +143,6 @@ public class StoreWaitingService {
 
     public boolean exists(Store store, StoreWaitingStatus status) {
         return storeWaitingRepository.existsByStoreAndStatusAndDeletedFalse(store, status);
-    }
-
-    @Transactional
-    public StoreWaiting create(StoreWaitingCreateRequest request) {
-        StoreWaiting storeWaiting = request.toStoreWaiting(generateCallNumber());
-        return storeWaitingRepository.save(storeWaiting);
-    }
-
-    public Page<StoreWaiting> list(Pageable pageable) {
-        return storeWaitingRepository.findAllByDeletedFalse(pageable);
-    }
-
-    @Transactional
-    public StoreWaiting update(StoreWaitingUpdateRequest request) {
-        StoreWaiting storeWaiting = get(request.id());
-        storeWaiting.update(
-                request.user(),
-                request.store(),
-                StoreWaitingStatus.of(request.status()),
-                StoreWaitingChannel.of(request.channel()),
-                request.infantChairCount(),
-                request.infantCount(),
-                request.adultCount(),
-                request.memo()
-        );
-
-        return storeWaitingRepository.save(storeWaiting);
-    }
-
-    @Transactional
-    public void delete(long id, long deletedBy) {
-        StoreWaiting storeWaiting = get(id);
-
-        storeWaiting.delete(deletedBy);
     }
 
     // TODO: 추후에 redis 로 개선

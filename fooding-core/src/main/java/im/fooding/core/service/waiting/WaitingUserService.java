@@ -23,36 +23,10 @@ public class WaitingUserService {
     private final WaitingUserRepository waitingUserRepository;
 
     @Transactional
-    public WaitingUser getOrElseRegister(WaitingUserRegisterRequest request) {
-        return waitingUserRepository.findByStoreAndPhoneNumber(request.store(), request.phoneNumber())
-                .filter(it -> !it.isDeleted())
-                .orElseGet(() -> register(request));
-    }
-
-    @Transactional
-    public WaitingUser register(WaitingUserRegisterRequest request) {
-        WaitingUser waitingUser = request.toWaitingUser();
-        validPolicyAgreed(waitingUser);
-        return waitingUserRepository.save(waitingUser);
-    }
-
-    @Transactional
     public WaitingUser create(WaitingUserCreateRequest request) {
         WaitingUser waitingUser = request.toWaitingUser();
         validPolicyAgreed(waitingUser);
         return waitingUserRepository.save(waitingUser);
-    }
-
-    private void validPolicyAgreed(WaitingUser waitingUser) {
-        if (!waitingUser.isPrivacyPolicyAgreed()) {
-            throw new ApiException(ErrorCode.WAITING_USER_PRIVACY_POLICY_AGREED_REQUIRED);
-        }
-        if (!waitingUser.isTermsAgreed()) {
-            throw new ApiException(ErrorCode.WAITING_USER_TERMS_AGREED_AGREED_REQUIRED);
-        }
-        if (!waitingUser.isThirdPartyAgreed()) {
-            throw new ApiException(ErrorCode.WAITING_USER_THIRD_PARTY_AGREED_REQUIRED);
-        }
     }
 
     public WaitingUser get(long id) {
@@ -84,5 +58,31 @@ public class WaitingUserService {
     public void delete(long id, long deletedBy) {
         WaitingUser waiting = get(id);
         waiting.delete(deletedBy);
+    }
+
+    @Transactional
+    public WaitingUser getOrElseRegister(WaitingUserRegisterRequest request) {
+        return waitingUserRepository.findByStoreAndPhoneNumber(request.store(), request.phoneNumber())
+                .filter(it -> !it.isDeleted())
+                .orElseGet(() -> register(request));
+    }
+
+    @Transactional
+    public WaitingUser register(WaitingUserRegisterRequest request) {
+        WaitingUser waitingUser = request.toWaitingUser();
+        validPolicyAgreed(waitingUser);
+        return waitingUserRepository.save(waitingUser);
+    }
+
+    private void validPolicyAgreed(WaitingUser waitingUser) {
+        if (!waitingUser.isPrivacyPolicyAgreed()) {
+            throw new ApiException(ErrorCode.WAITING_USER_PRIVACY_POLICY_AGREED_REQUIRED);
+        }
+        if (!waitingUser.isTermsAgreed()) {
+            throw new ApiException(ErrorCode.WAITING_USER_TERMS_AGREED_AGREED_REQUIRED);
+        }
+        if (!waitingUser.isThirdPartyAgreed()) {
+            throw new ApiException(ErrorCode.WAITING_USER_THIRD_PARTY_AGREED_REQUIRED);
+        }
     }
 }

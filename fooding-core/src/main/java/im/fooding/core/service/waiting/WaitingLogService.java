@@ -24,15 +24,6 @@ public class WaitingLogService {
     private final WaitingLogRepository waitingLogRepository;
 
     @Transactional
-    public WaitingLog logRegister(StoreWaiting storeWaiting) {
-        return waitingLogRepository.save(new WaitingLog(storeWaiting, WaitingLogType.WAITING_REGISTRATION));
-    }
-
-    public Page<WaitingLog> list(long storeWaitingId, Pageable pageable) {
-        return waitingLogRepository.findAllByStoreWaitingIdAndDeletedFalse(storeWaitingId, pageable);
-    }
-
-    @Transactional
     public WaitingLog create(WaitingLogCreateRequest request) {
         WaitingLog waitingLog = request.toWaitingLog();
         return waitingLogRepository.save(waitingLog);
@@ -63,5 +54,14 @@ public class WaitingLogService {
     public void delete(long id, long deletedBy) {
         WaitingLog waitingLog = get(id);
         waitingLog.delete(deletedBy);
+    }
+
+    @Transactional
+    public WaitingLog logRegister(StoreWaiting storeWaiting) {
+        return waitingLogRepository.save(new WaitingLog(storeWaiting, WaitingLogType.WAITING_REGISTRATION));
+    }
+
+    public Page<WaitingLog> list(long storeWaitingId, Pageable pageable) {
+        return waitingLogRepository.findAllByStoreWaitingIdAndDeletedFalse(storeWaitingId, pageable);
     }
 }

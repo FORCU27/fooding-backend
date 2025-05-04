@@ -21,18 +21,6 @@ public class WaitingService {
 
     private final WaitingRepository waitingRepository;
 
-    public Waiting getById(long id) {
-        return waitingRepository.findById(id)
-                .filter(it -> !it.isDeleted())
-                .orElseThrow(() -> new ApiException(ErrorCode.WAITING_NOT_FOUND));
-    }
-
-    @Transactional
-    public void updateStatus(long id, WaitingStatus status) {
-        Waiting waiting = getById(id);
-        waiting.updateStatus(status);
-    }
-
     @Transactional
     public Waiting create(Store store, WaitingStatus status) {
         if (waitingRepository.existsByStore(store)) {
@@ -61,5 +49,17 @@ public class WaitingService {
         Waiting waiting = getById(id);
 
         waiting.delete(deletedBy);
+    }
+
+    public Waiting getById(long id) {
+        return waitingRepository.findById(id)
+                .filter(it -> !it.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.WAITING_NOT_FOUND));
+    }
+
+    @Transactional
+    public void updateStatus(long id, WaitingStatus status) {
+        Waiting waiting = getById(id);
+        waiting.updateStatus(status);
     }
 }

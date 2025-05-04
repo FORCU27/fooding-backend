@@ -23,21 +23,6 @@ public class WaitingSettingService {
 
     private final WaitingSettingRepository waitingSettingRepository;
 
-    public WaitingSetting getActiveSetting(Store store) {
-        return waitingSettingRepository.findActive(store)
-                .filter(it -> !it.isDeleted())
-                .orElseThrow(() -> new ApiException(ErrorCode.ACTIVE_WAITING_SETTING_NOT_FOUND));
-    }
-
-    /**
-     * 가게의 대기 시간을 조회합니다.
-     *  위에 있는 경우 active가 false일 때 예외가 발생하는 문제로 메서드 Optional로 감싼 메서드를 추가했습니다.
-     */
-    public Optional<WaitingSetting> findActiveSetting(Store store) {
-        return waitingSettingRepository.findActive(store)
-                .filter(it -> !it.isDeleted());
-    }
-
     @Transactional
     public WaitingSetting create(WaitingSettingCreateRequest request) {
         if (request.isActive()) {
@@ -55,12 +40,6 @@ public class WaitingSettingService {
                 .build();
 
         return waitingSettingRepository.save(waitingSetting);
-    }
-
-    private void validateAlreadyActive() {
-        if (waitingSettingRepository.existsByIsActiveTrueAndDeletedFalse()) {
-            throw new ApiException(ErrorCode.ALREADY_EXIST_ACTIVE_WAITING_SETTING);
-        }
     }
 
     public WaitingSetting get(long id) {
@@ -95,5 +74,26 @@ public class WaitingSettingService {
         WaitingSetting waitingSetting = get(id);
 
         waitingSetting.delete(deletedBy);
+    }
+
+    public WaitingSetting getActiveSetting(Store store) {
+        return waitingSettingRepository.findActive(store)
+                .filter(it -> !it.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.ACTIVE_WAITING_SETTING_NOT_FOUND));
+    }
+
+    /**
+     * 가게의 대기 시간을 조회합니다.
+     *  위에 있는 경우 active가 false일 때 예외가 발생하는 문제로 메서드 Optional로 감싼 메서드를 추가했습니다.
+     */
+    public Optional<WaitingSetting> findActiveSetting(Store store) {
+        return waitingSettingRepository.findActive(store)
+                .filter(it -> !it.isDeleted());
+    }
+
+    private void validateAlreadyActive() {
+        if (waitingSettingRepository.existsByIsActiveTrueAndDeletedFalse()) {
+            throw new ApiException(ErrorCode.ALREADY_EXIST_ACTIVE_WAITING_SETTING);
+        }
     }
 }
