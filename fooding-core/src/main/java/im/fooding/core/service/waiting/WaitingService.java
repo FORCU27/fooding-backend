@@ -43,7 +43,7 @@ public class WaitingService {
         return waitingRepository.save(waiting);
     }
 
-    public Page<Waiting> getList(Pageable pageable) {
+    public Page<Waiting> list(Pageable pageable) {
         return waitingRepository.findAllByDeletedFalse(pageable);
     }
 

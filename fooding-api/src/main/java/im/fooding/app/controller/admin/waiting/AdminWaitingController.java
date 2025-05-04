@@ -53,11 +53,11 @@ public class AdminWaitingController {
 
     @GetMapping
     @Operation(summary = "웨이팅 조회(page)")
-    public ApiResult<PageResponse<AdminWaitingResponse>> getList(
+    public ApiResult<PageResponse<AdminWaitingResponse>> list(
             @Parameter(description = "검색 및 페이징 조건")
             @ModelAttribute BasicSearch search
     ) {
-        return ApiResult.ok(adminWaitingService.getList(search));
+        return ApiResult.ok(adminWaitingService.list(search));
     }
 
     @PutMapping("/{id}")

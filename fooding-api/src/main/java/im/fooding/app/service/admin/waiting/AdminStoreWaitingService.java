@@ -41,8 +41,8 @@ public class AdminStoreWaitingService {
         return AdminStoreWaitingResponse.from(storeWaitingService.get(id));
     }
 
-    public PageResponse<AdminStoreWaitingResponse> getList(BasicSearch search) {
-        Page<StoreWaiting> storeWaitings = storeWaitingService.getList(search.getPageable());
+    public PageResponse<AdminStoreWaitingResponse> list(BasicSearch search) {
+        Page<StoreWaiting> storeWaitings = storeWaitingService.list(search.getPageable());
         return PageResponse.of(storeWaitings.stream().map(AdminStoreWaitingResponse::from).toList(), PageInfo.of(storeWaitings));
     }
 

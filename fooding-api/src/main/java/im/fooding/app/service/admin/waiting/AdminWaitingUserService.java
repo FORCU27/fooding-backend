@@ -35,8 +35,8 @@ public class AdminWaitingUserService {
         return AdminWaitingUserResponse.from(waitingUserService.get(userId));
     }
 
-    public PageResponse<AdminWaitingUserResponse> getList(BasicSearch search) {
-        Page<WaitingUser> waitingUsers = waitingUserService.getList(search.getPageable());
+    public PageResponse<AdminWaitingUserResponse> list(BasicSearch search) {
+        Page<WaitingUser> waitingUsers = waitingUserService.list(search.getPageable());
         return PageResponse.of(waitingUsers.stream().map(AdminWaitingUserResponse::from).toList(), PageInfo.of(waitingUsers));
     }
 

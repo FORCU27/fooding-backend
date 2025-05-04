@@ -69,7 +69,7 @@ public class WaitingSettingService {
                 .orElseThrow(() -> new ApiException(ErrorCode.WAITING_SETTING_NOT_FOUND));
     }
 
-    public Page<WaitingSetting> getList(Pageable pageable) {
+    public Page<WaitingSetting> list(Pageable pageable) {
         return waitingSettingRepository.findAllByDeletedFalse(pageable);
     }
 

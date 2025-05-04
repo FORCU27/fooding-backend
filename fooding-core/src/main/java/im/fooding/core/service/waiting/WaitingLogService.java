@@ -5,7 +5,6 @@ import im.fooding.core.dto.request.waiting.WaitingLogUpdateRequest;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.waiting.StoreWaiting;
-import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingLog;
 import im.fooding.core.model.waiting.WaitingLogType;
 import im.fooding.core.repository.waiting.WaitingLogRepository;
@@ -45,7 +44,7 @@ public class WaitingLogService {
                 .orElseThrow(() -> new ApiException(ErrorCode.WAITING_LOG_NOT_FOUND));
     }
 
-    public Page<WaitingLog> getList(Pageable pageable) {
+    public Page<WaitingLog> list(Pageable pageable) {
         return waitingLogRepository.findAllByDeletedFalse(pageable);
     }
 

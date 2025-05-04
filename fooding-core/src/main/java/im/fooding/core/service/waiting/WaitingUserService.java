@@ -5,8 +5,6 @@ import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserUpdateRequest;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
-import im.fooding.core.model.store.Store;
-import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingUser;
 import im.fooding.core.repository.waiting.WaitingUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -63,7 +61,7 @@ public class WaitingUserService {
                 .orElseThrow(() -> new ApiException(ErrorCode.WAITING_USER_NOT_FOUND));
     }
 
-    public Page<WaitingUser> getList(Pageable pageable) {
+    public Page<WaitingUser> list(Pageable pageable) {
         return waitingUserRepository.findAllByDeletedFalse(pageable);
     }
 

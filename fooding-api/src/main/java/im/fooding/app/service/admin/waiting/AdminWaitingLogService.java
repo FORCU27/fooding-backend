@@ -37,8 +37,8 @@ public class AdminWaitingLogService {
         return AdminWaitingLogResponse.from(waitingLogService.get(id));
     }
 
-    public PageResponse<AdminWaitingLogResponse> getList(BasicSearch search) {
-        Page<WaitingLog> waitingLogs = waitingLogService.getList(search.getPageable());
+    public PageResponse<AdminWaitingLogResponse> list(BasicSearch search) {
+        Page<WaitingLog> waitingLogs = waitingLogService.list(search.getPageable());
         return PageResponse.of(waitingLogs.stream().map(AdminWaitingLogResponse::from).toList(), PageInfo.of(waitingLogs));
     }
 

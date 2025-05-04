@@ -118,7 +118,7 @@ public class StoreWaitingService {
         return storeWaitingRepository.save(storeWaiting);
     }
 
-    public Page<StoreWaiting> getList(Pageable pageable) {
+    public Page<StoreWaiting> list(Pageable pageable) {
         return storeWaitingRepository.findAllByDeletedFalse(pageable);
     }
 
