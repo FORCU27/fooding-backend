@@ -3,18 +3,15 @@ package im.fooding.app.service.admin.waiting;
 
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingCreateRequest;
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingUpdateRequest;
-import im.fooding.app.dto.response.admin.waiting.AdminWaitingResponse;
 import im.fooding.app.dto.response.admin.waiting.AdminWaitingSettingResponse;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.WaitingSettingCreateRequest;
-import im.fooding.core.dto.request.waiting.WaitingSettingUpdateRequest;
 import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -30,7 +27,7 @@ public class AdminWaitingSettingService {
 
     @Transactional
     public AdminWaitingSettingResponse create(AdminWaitingSettingCreateRequest request) {
-        Waiting waiting = waitingService.getById(request.waitingId());
+        Waiting waiting = waitingService.get(request.waitingId());
 
         WaitingSettingCreateRequest waitingSettingCreateRequest = request.toWaitingSettingCreateRequest(waiting);
         WaitingSetting waitingSetting = waitingSettingService.create(waitingSettingCreateRequest);
@@ -49,7 +46,7 @@ public class AdminWaitingSettingService {
 
     @Transactional
     public AdminWaitingSettingResponse update(long id, AdminWaitingSettingUpdateRequest request) {
-        Waiting waiting = waitingService.getById(request.waitingId());
+        Waiting waiting = waitingService.get(request.waitingId());
         WaitingSetting waitingSetting = waitingSettingService.update(request.toWaitingSettingUpdateRequest(id, waiting));
 
         return AdminWaitingSettingResponse.from(waitingSetting);

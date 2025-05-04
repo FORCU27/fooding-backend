@@ -29,13 +29,19 @@ public class WaitingService {
         return waitingRepository.save(waiting);
     }
 
+    public Waiting get(long id) {
+        return waitingRepository.findById(id)
+                .filter(it -> !it.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.WAITING_NOT_FOUND));
+    }
+
     public Page<Waiting> list(Pageable pageable) {
         return waitingRepository.findAllByDeletedFalse(pageable);
     }
 
     @Transactional
     public Waiting update(long id, Store store, WaitingStatus status) {
-        Waiting waiting = getById(id);
+        Waiting waiting = get(id);
         if (!waiting.getStore().equals(store)) {
             validateUniqueStore(store);
         }
@@ -47,20 +53,14 @@ public class WaitingService {
 
     @Transactional
     public void delete(long id, long deletedBy) {
-        Waiting waiting = getById(id);
+        Waiting waiting = get(id);
 
         waiting.delete(deletedBy);
     }
 
-    public Waiting getById(long id) {
-        return waitingRepository.findById(id)
-                .filter(it -> !it.isDeleted())
-                .orElseThrow(() -> new ApiException(ErrorCode.WAITING_NOT_FOUND));
-    }
-
     @Transactional
     public void updateStatus(long id, WaitingStatus status) {
-        Waiting waiting = getById(id);
+        Waiting waiting = get(id);
         waiting.updateStatus(status);
     }
 

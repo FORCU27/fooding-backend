@@ -36,7 +36,7 @@ public class AdminWaitingService {
     }
 
     public AdminWaitingResponse get(long id) {
-        return AdminWaitingResponse.from(waitingService.getById(id));
+        return AdminWaitingResponse.from(waitingService.get(id));
     }
 
     public PageResponse<AdminWaitingResponse> list(BasicSearch search) {

@@ -48,7 +48,7 @@ public class AppWaitingApplicationService {
 
     public PageResponse<StoreWaitingResponse> list(long id, WaitingListRequest request) {
 
-        Waiting waiting = waitingService.getById(id);
+        Waiting waiting = waitingService.get(id);
 
         StoreWaitingFilter storeWaitingFilter = StoreWaitingFilter.builder()
                 .storeId(waiting.getStore().getId())
@@ -68,7 +68,7 @@ public class AppWaitingApplicationService {
     public AppWaitingRegisterResponse register(long id, AppWaitingRegisterRequest request) {
         String phoneNumber = request.phoneNumber();
 
-        Waiting waiting = waitingService.getById(id);
+        Waiting waiting = waitingService.get(id);
         storeWaitingService.validate(waiting);
 
         WaitingUser waitingUser = getOrRegisterUser(request, phoneNumber, waiting);

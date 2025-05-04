@@ -35,6 +35,12 @@ public class StoreWaitingService {
         return storeWaitingRepository.save(storeWaiting);
     }
 
+    public StoreWaiting get(long id) {
+        return storeWaitingRepository.findById(id)
+                .filter(it -> !it.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.STORE_WAITING_NOT_FOUND));
+    }
+
     public Page<StoreWaiting> list(Pageable pageable) {
         return storeWaitingRepository.findAllByDeletedFalse(pageable);
     }
@@ -65,12 +71,6 @@ public class StoreWaitingService {
 
     public Page<StoreWaiting> list(StoreWaitingFilter filter, Pageable pageable) {
         return storeWaitingRepository.findAllWithFilterAndDeletedFalse(filter, pageable);
-    }
-
-    public StoreWaiting get(long id) {
-        return storeWaitingRepository.findById(id)
-                .filter(it -> !it.isDeleted())
-                .orElseThrow(() -> new ApiException(ErrorCode.STORE_WAITING_NOT_FOUND));
     }
 
     @Transactional

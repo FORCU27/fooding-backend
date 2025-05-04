@@ -41,7 +41,7 @@ class WaitingServiceTest extends TestConfig {
         Waiting waiting = waitingRepository.save(new Waiting(store, WaitingStatus.WAITING_OPEN));
 
         // when & then
-        assertThatCode(() -> waitingService.getById(waiting.getId()))
+        assertThatCode(() -> waitingService.get(waiting.getId()))
                 .doesNotThrowAnyException();
     }
 
@@ -50,7 +50,7 @@ class WaitingServiceTest extends TestConfig {
     @DisplayName("웨이팅이 존재하지 않으면 웨이팅을 조회할 수 있다.")
     public void throw_exception_when_not_exist_waiting() {
         // when & then
-        ApiException e = assertThrows(ApiException.class, () -> waitingService.getById(1));
+        ApiException e = assertThrows(ApiException.class, () -> waitingService.get(1));
         assertThat(e.getErrorCode())
                 .isEqualTo(ErrorCode.WAITING_NOT_FOUND);
     }
