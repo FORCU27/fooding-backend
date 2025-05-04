@@ -23,9 +23,7 @@ public class WaitingService {
 
     @Transactional
     public Waiting create(Store store, WaitingStatus status) {
-        if (waitingRepository.existsByStore(store)) {
-            throw new ApiException(ErrorCode.DUPLICATED_STORE_BY_WAITING);
-        }
+        validateUniqueStore(store);
         Waiting waiting = new Waiting(store, status);
 
         return waitingRepository.save(waiting);
@@ -38,6 +36,9 @@ public class WaitingService {
     @Transactional
     public Waiting update(long id, Store store, WaitingStatus status) {
         Waiting waiting = getById(id);
+        if (!waiting.getStore().equals(store)) {
+            validateUniqueStore(store);
+        }
 
         waiting.update(store, status);
 
@@ -68,5 +69,11 @@ public class WaitingService {
                 .filter(it -> !it.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.WAITING_NOT_FOUND));
         return waiting.getStatus() == WaitingStatus.WAITING_OPEN;
+    }
+
+    private void validateUniqueStore(Store store) {
+        if (waitingRepository.existsByStore(store)) {
+            throw new ApiException(ErrorCode.DUPLICATED_STORE_BY_WAITING);
+        }
     }
 }
