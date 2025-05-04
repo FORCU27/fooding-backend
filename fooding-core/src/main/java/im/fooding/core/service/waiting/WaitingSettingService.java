@@ -55,6 +55,9 @@ public class WaitingSettingService {
     @Transactional
     public WaitingSetting update(WaitingSettingUpdateRequest request) {
         WaitingSetting waitingSetting = get(request.id());
+        if (request.isActive() && !waitingSetting.isActive()) {
+            validateAlreadyActive();
+        }
 
         waitingSetting.update(
                 request.waiting(),
