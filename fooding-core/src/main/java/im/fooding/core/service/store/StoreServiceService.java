@@ -23,7 +23,6 @@ public class StoreServiceService {
      * 스토어 서비스 생성
      *
      * @param store
-     * @param type
      */
     public void create(Store store, StoreServiceType type){
         StoreService storeService = StoreService.builder()
@@ -31,6 +30,17 @@ public class StoreServiceService {
                 .type( type )
                 .build();
         repository.save( storeService );
+    }
+
+    /**
+     * 특정 스토어 서비스 상세 조회
+     *
+     * @param id
+     */
+    public StoreService findById( Long id ){
+        return repository.findById( id ).orElseThrow(
+                () -> new ApiException(ErrorCode.STORE_SERVICE_NOT_FOUND)
+        );
     }
 
     /**
@@ -45,7 +55,7 @@ public class StoreServiceService {
     }
 
     /**
-     * 스토어 서비스 해지
+     * 스토어 서비스 해지( 비활성화 )
      *
      * @param id
      */
@@ -55,6 +65,19 @@ public class StoreServiceService {
                 () -> new ApiException(ErrorCode.STORE_SERVICE_NOT_FOUND)
         );
         storeService.inactive();
+    }
+
+    /**
+     * 스토어 서비스 신청( 활성화 )
+     *
+     * @param id
+     */
+    @Transactional
+    public void active( Long id ){
+        StoreService storeService = repository.findById( id ).orElseThrow(
+                () -> new ApiException(ErrorCode.STORE_SERVICE_NOT_FOUND)
+        );
+        storeService.activate();
     }
 
     /**
