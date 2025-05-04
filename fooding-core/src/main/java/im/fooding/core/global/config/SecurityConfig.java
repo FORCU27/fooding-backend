@@ -41,9 +41,10 @@ public class SecurityConfig {
                 .sessionManagement((sess) -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers((this.getPermitUrls())).permitAll()
-                        .requestMatchers("/user/**").hasAnyRole("USER")
-                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-                        .requestMatchers("/ceo/**").hasAnyRole("CEO")
+                        // todo: 인증기능 추가 후 주석 해제
+//                        .requestMatchers("/user/**").hasAnyRole("USER")
+//                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+//                        .requestMatchers("/ceo/**").hasAnyRole("CEO")
                         .anyRequest().permitAll());
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
