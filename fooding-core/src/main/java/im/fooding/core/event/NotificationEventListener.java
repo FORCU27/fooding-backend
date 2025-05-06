@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class NotificationCreatedEventListener {
+public class NotificationEventListener {
     private final SlackClient slackClient;
 
-    public NotificationCreatedEventListener(SlackClient slackClient) {
+    public NotificationEventListener(SlackClient slackClient) {
       this.slackClient = slackClient;
     }
 
