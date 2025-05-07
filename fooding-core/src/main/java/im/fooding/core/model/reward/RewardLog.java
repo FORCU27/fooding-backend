@@ -4,6 +4,7 @@ import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
@@ -39,4 +40,21 @@ public class RewardLog extends BaseEntity {
     @Column( name = "channel" )
     @Enumerated( EnumType.STRING )
     private RewardChannel channel;
+
+    @Builder
+    public RewardLog(
+            Store store,
+            String phoneNumber,
+            int point,
+            RewardStatus status,
+            RewardType type,
+            RewardChannel channel
+    ){
+        this.store = store;
+        this.phoneNumber = phoneNumber;
+        this.point = point;
+        this.status = status;
+        this.type = type;
+        this.channel = channel;
+    }
 }

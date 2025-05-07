@@ -47,6 +47,10 @@ public enum ErrorCode {
     STORE_WAITING_ILLEGAL_STATE_SEAT(HttpStatus.BAD_REQUEST, "3007", "착성 가능한 웨이팅 상태가 아닙니다."),
     WAITING_STATUS_STORE_WAITING_EXIST(HttpStatus.BAD_REQUEST, "3008", "남아있는 대기중인 웨이팅이 존재합니다."),
 
+    // 리워드
+    REWARD_NOT_FOUND( HttpStatus.BAD_REQUEST, "4000", "해당 리워드 정보가 없습니다." ),
+
+    REWARD_LOG_NOT_FOUND( HttpStatus.BAD_REQUEST, "4100", "해당 로그가 존재하지 않습니다" ),
     // 디바이스
     DEVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "7000", "등록된 디바이스가 없습니다."),
     
