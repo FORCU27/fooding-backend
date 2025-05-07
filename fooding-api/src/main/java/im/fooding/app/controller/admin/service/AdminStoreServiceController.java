@@ -63,10 +63,10 @@ public class AdminStoreServiceController {
         return ApiResult.ok();
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/{id}")
     @Operation(summary = "스토어 서비스 삭제")
     public ApiResult<Void> delete(
-            @RequestParam Long id,
+            @PathVariable Long id,
             @RequestParam Long deletedBy
     ){
         service.delete( id, deletedBy );

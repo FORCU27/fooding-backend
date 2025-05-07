@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateStoreServiceRequest {
     @NotNull
-    @Schema( description = "가게 ID" )
+    @Schema( description = "Store ID" )
     private Long storeId;
 
     @NotNull
