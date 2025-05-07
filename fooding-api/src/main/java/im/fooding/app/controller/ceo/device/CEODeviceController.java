@@ -1,4 +1,4 @@
-package im.fooding.app.controller.user.device;
+package im.fooding.app.controller.ceo.device;
 
 import im.fooding.app.dto.request.user.device.ConnectDeviceRequest;
 import im.fooding.app.dto.request.user.device.RetrieveStoreDeviceRequest;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/devices")
-@Tag(name = "User Device Controller", description = "사용자 디바이스 컨트롤러")
-public class UserDeviceController {
+@RequestMapping("/ceo/devices")
+@Tag(name = "CEO Device Controller", description = "CEO 디바이스 컨트롤러")
+public class CEODeviceController {
     private final DeviceApplicationService service;
 
     @GetMapping("")
