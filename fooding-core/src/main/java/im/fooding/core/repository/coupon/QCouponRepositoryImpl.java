@@ -43,8 +43,7 @@ public class QCouponRepositoryImpl implements QCouponRepository {
                         storeDeletedIfStoreExists(),
                         searchStore(storeId),
                         search(searchString)
-                )
-                .where();
+                );
 
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchCount);
     }

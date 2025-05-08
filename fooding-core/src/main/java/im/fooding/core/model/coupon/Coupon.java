@@ -65,7 +65,9 @@ public class Coupon extends BaseEntity {
     private CouponStatus status;
 
     @Builder
-    public Coupon(Store store, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType, String name, String conditions, Integer totalQuantity, int discountValue, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn, CouponStatus status) {
+    public Coupon(Store store, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType,
+        String name, String conditions, Integer totalQuantity, int discountValue, LocalDate issueStartOn, LocalDate issueEndOn,
+        LocalDate expiredOn, CouponStatus status) {
         this.store = store;
         this.benefitType = benefitType;
         this.type = type;
@@ -81,7 +83,9 @@ public class Coupon extends BaseEntity {
         this.status = status;
     }
 
-    public void update(Store store, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType, String name, String conditions, Integer totalQuantity, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn, int discountValue, CouponStatus status) {
+    public void update(Store store, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType,
+        String name, String conditions, Integer totalQuantity, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn,
+        int discountValue, CouponStatus status) {
         this.store = store;
         this.benefitType = benefitType;
         this.type = type;
