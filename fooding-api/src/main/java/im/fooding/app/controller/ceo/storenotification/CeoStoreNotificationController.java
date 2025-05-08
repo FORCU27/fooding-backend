@@ -28,12 +28,8 @@ public class CeoStoreNotificationController {
             @ModelAttribute BasicSearch search
     ) {
       Pageable pageable = search.getPageable();
-
       PageResponse<CeoStoreNotificationResponse> response =
-              (category == null || category.trim().isEmpty())
-                      ? ceoStoreNotificationService.list(storeId, pageable)
-                      : ceoStoreNotificationService.listByCategory(storeId, category, pageable);
-
+              ceoStoreNotificationService.getNotifications(storeId, category, pageable);
       return ApiResult.ok(response);
     }
 }

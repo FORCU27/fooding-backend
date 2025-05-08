@@ -21,17 +21,16 @@ import java.util.List;
 public class CeoStoreNotificationService {
     private final StoreNotificationService storeNotificationService;
 
-    public PageResponse<CeoStoreNotificationResponse> list(Long storeId, Pageable pageable) {
-      Page<StoreNotification> page = storeNotificationService.list(storeId, pageable);
+    public PageResponse<CeoStoreNotificationResponse> getNotifications(Long storeId, String category, Pageable pageable) {
+      Page<StoreNotification> page;
+
+      if (category == null || category.trim().isEmpty()) {
+        page = storeNotificationService.list(storeId, pageable);
+      } else {
+        page = storeNotificationService.listByCategory(storeId, category, pageable);
+      }
+
       List<CeoStoreNotificationResponse> content = page.map(CeoStoreNotificationResponse::from).getContent();
-
-      return PageResponse.of(content, PageInfo.of(page));
-    }
-
-    public PageResponse<CeoStoreNotificationResponse> listByCategory(Long storeId, String category, Pageable pageable) {
-      Page<StoreNotification> page = storeNotificationService.listByCategory(storeId, category, pageable);
-      List<CeoStoreNotificationResponse> content = page.map(CeoStoreNotificationResponse::from).getContent();
-
       return PageResponse.of(content, PageInfo.of(page));
     }
 }
