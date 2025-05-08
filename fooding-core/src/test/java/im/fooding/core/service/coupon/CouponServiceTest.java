@@ -98,8 +98,8 @@ class CouponServiceTest extends TestConfig {
     @DisplayName("쿠폰 리스트를 성공적으로 조회 한다.")
     void testList() {
         // given
-        final String name1 = "테스트쿠폰";
-        final String name2 = "테스트쿠폰";
+        final String name1 = "테스트쿠폰1";
+        final String name2 = "테스트쿠폰2";
         final LocalDate issueStartOn1 = LocalDate.now();
         final LocalDate issueStartOn2 = LocalDate.now().plusMonths(1);
         final int totalQuantity1 = 10;
