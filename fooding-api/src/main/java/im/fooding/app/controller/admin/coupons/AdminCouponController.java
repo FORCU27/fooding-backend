@@ -37,7 +37,7 @@ public class AdminCouponController {
 
     @GetMapping("/{id}")
     @Operation(summary = "쿠폰 조회")
-    public ApiResult<AdminCouponResponse> list(@PathVariable Long id) {
+    public ApiResult<AdminCouponResponse> retrieve(@PathVariable Long id) {
         return ApiResult.ok(service.retrieve(id));
     }
 

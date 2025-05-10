@@ -35,14 +35,15 @@ public class AdminUserCouponService {
         Coupon coupon = couponService.findById(request.getCouponId());
         User user = userService.findById(request.getUserId());
         couponService.issue(coupon);
-        userCouponService.create(coupon, user, coupon.getStore(), coupon.getBenefitType(), coupon.getDiscountType(), coupon.getDiscountValue(), coupon.getName(), coupon.getConditions(), coupon.getExpiredOn());
+        userCouponService.create(coupon, user, coupon.getStore(), coupon.getBenefitType(), coupon.getDiscountType(),
+            coupon.getDiscountValue(), coupon.getName(), coupon.getConditions(), coupon.getExpiredOn());
     }
 
     @Transactional
     public void issueByGift(AdminGiftCouponRequest request) {
         User user = userService.findById(request.getUserId());
-        Store store = null != request.getStoreId() ? storeService.findById(request.getStoreId()) : null;
-        userCouponService.create(null, user, store, request.getBenefitType(), request.getDiscountType(), request.getDiscountValue(), request.getName(), request.getConditions(), request.getExpiredOn());
+        userCouponService.create(null, user, getStore(request.getStoreId()), request.getBenefitType(),
+            request.getDiscountType(), request.getDiscountValue(), request.getName(), request.getConditions(), request.getExpiredOn());
     }
 
     @Transactional
@@ -61,5 +62,9 @@ public class AdminUserCouponService {
     public AdminUserCouponResponse retrieve(long id) {
         UserCoupon userCoupon = userCouponService.findById(id);
         return AdminUserCouponResponse.of(userCoupon);
+    }
+
+    private Store getStore(Long storeId) {
+        return null != storeId ? storeService.findById(storeId) : null;
     }
 }

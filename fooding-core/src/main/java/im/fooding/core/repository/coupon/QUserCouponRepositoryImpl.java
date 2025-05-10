@@ -51,8 +51,7 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
                         storeDeletedIfStoreExists(),
                         searchUser(userId),
                         searchStore(storeId)
-                )
-                .where();
+                );
 
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchCount);
     }

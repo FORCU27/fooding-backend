@@ -17,6 +17,7 @@ import java.time.LocalDate;
 public class AdminGiftCouponRequest {
     @NotNull
     @Schema(description = "user id", example = "1")
+    @Positive
     private Long userId;
 
     @Schema(description = "store id", example = "1")

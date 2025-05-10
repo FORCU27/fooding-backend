@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -63,6 +64,7 @@ public class AdminCreateCouponRequest {
     @Schema(description = "상태", example = "ACTIVE")
     private CouponStatus status;
 
+    @Builder
     public AdminCreateCouponRequest(Long storeId, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType, String name, String conditions, Integer totalQuantity, int discountValue, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn, CouponStatus status) {
         this.storeId = storeId;
         this.benefitType = benefitType;
