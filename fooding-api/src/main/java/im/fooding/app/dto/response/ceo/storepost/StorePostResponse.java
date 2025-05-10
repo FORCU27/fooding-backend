@@ -32,7 +32,7 @@ public class StorePostResponse {
 
     @Builder
     private StorePostResponse(
-            Long id,
+            long id,
             String title,
             String content,
             List<String> tags,
