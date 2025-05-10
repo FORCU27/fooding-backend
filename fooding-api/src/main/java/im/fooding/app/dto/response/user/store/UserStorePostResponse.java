@@ -1,4 +1,4 @@
-package im.fooding.app.dto.response.ceo.storepost;
+package im.fooding.app.dto.response.user.store;
 
 import im.fooding.core.model.store.StorePost;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,14 +11,14 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class StorePostResponse {
-    @Schema(description = "소식 id", example = "1")
+public class UserStorePostResponse {
+    @Schema(description = "유저 소식 ID", example = "1")
     private long id;
 
-    @Schema(description = "소식 제목", example = "새로운 메뉴 출시 안내")
+    @Schema(description = "소식 제목", example = "점심시간 예약 관련 공지")
     private String title;
 
-    @Schema(description = "소식 내용", example = "저희 가게에 새로운 메뉴가 출시되었습니다!")
+    @Schema(description = "소식 내용", example = "점심시간에는 예약 없이 방문 시 대기시간이 길어질 수 있습니다.")
     private String content;
 
     @Schema(description = "태그 목록", example = "[\"대표\", \"소식\"]")
@@ -31,7 +31,7 @@ public class StorePostResponse {
     private LocalDateTime createdAt;
 
     @Builder
-    private StorePostResponse(
+    private UserStorePostResponse(
             long id,
             String title,
             String content,
@@ -47,8 +47,8 @@ public class StorePostResponse {
       this.createdAt = createdAt;
     }
 
-    public static StorePostResponse from(StorePost storePost) {
-      return new StorePostResponse(
+    public static UserStorePostResponse from(StorePost storePost) {
+      return new UserStorePostResponse(
               storePost.getId(),
               storePost.getTitle(),
               storePost.getContent(),
