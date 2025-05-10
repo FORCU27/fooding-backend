@@ -49,23 +49,36 @@ public class StoreService {
 
     /**
      * 가게 생성
-     * 
-     * @param store
-     * @return 생성된 가게의 ID
      */
     @Transactional
-    public Long create(Store store) {
+    public Long create(String name, String city, String address, String category, String description,
+            String priceCategory, String eventDescription, String contactNumber, String direction,
+            String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut) {
+        Store store = Store.builder()
+                .name(name)
+                .city(city)
+                .address(address)
+                .category(category)
+                .description(description)
+                .priceCategory(priceCategory)
+                .eventDescription(eventDescription)
+                .contactNumber(contactNumber)
+                .direction(direction)
+                .information(information)
+                .isParkingAvailable(isParkingAvailable)
+                .isNewOpen(isNewOpen)
+                .isTakeOut(isTakeOut)
+                .build();
         Store savedStore = storeRepository.save(store);
         return savedStore.getId();
     }
 
     /**
      * 가게 삭제
-     * 
-     * @param store
      */
     @Transactional
-    public void delete(Store store) {
-        store.delete();
+    public void delete(long id, Long deletedBy) {
+        Store store = findById(id);
+        store.delete(deletedBy);
     }
 }
