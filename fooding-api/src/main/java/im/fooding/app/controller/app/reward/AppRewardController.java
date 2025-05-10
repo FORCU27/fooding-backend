@@ -21,15 +21,7 @@ public class AppRewardController {
     private final RewardApplicationService service;
 
     @GetMapping("/point")
-    @Operation(summary = "모든 리워드 내역 조회")
-    public ApiResult<Page<GetRewardPointResponse>> getAllRewardPoint(
-            @RequestBody GetRewardPointRequest request
-    ){
-        return ApiResult.ok( service.getAllRewardPoint() );
-    }
-
-    @GetMapping("/point/detail")
-    @Operation(summary = "특정 리워드 내역 조회")
+    @Operation(summary = "리워드 내역 조회")
     public ApiResult<Page<GetRewardPointResponse>> getRewardPoint(
         @RequestBody GetRewardPointRequest request
     ){
@@ -37,15 +29,7 @@ public class AppRewardController {
     }
 
     @GetMapping("/log")
-    @Operation(summary = "모든 로그 내역 조회")
-    public ApiResult<Page<GetRewardLogResponse>> getAllRewardLog(
-            @RequestBody GetRewardLogRequest request
-    ){
-        return ApiResult.ok( service.getAllRewardLog() );
-    }
-
-    @GetMapping("/log/detail")
-    @Operation(summary = "특정 리워드 로그 내역 조회")
+    @Operation(summary = "리워드 로그 내역 조회")
     public ApiResult<Page<GetRewardLogResponse>> getRewardLog(
         @RequestBody GetRewardLogRequest request
     ){
