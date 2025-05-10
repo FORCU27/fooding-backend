@@ -64,20 +64,24 @@ class StoreWaitingServiceTest extends TestConfig {
                 .user(waitingUser)
                 .store(store)
                 .callNumber(1)
+                .status(StoreWaitingStatus.WAITING)
                 .channel(StoreWaitingChannel.IN_PERSON)
                 .infantChairCount(1)
                 .infantCount(1)
                 .adultCount(1)
+                .memo("")
                 .build();
 
         StoreWaiting cancledStoreWaiting = StoreWaiting.builder()
                 .user(waitingUser)
                 .store(store)
                 .callNumber(2)
+                .status(StoreWaitingStatus.WAITING)
                 .channel(StoreWaitingChannel.IN_PERSON)
                 .infantChairCount(1)
                 .infantCount(1)
                 .adultCount(1)
+                .memo("")
                 .build();
         cancledStoreWaiting.cancel();
 

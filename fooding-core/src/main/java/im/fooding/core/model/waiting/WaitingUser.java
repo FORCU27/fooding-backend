@@ -4,6 +4,7 @@ import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
@@ -36,39 +37,25 @@ public class WaitingUser extends BaseEntity {
 
     private String phoneNumber;
 
-    @Column(nullable = false)
-    private boolean termsAgreed;
+    @Embedded
+    private WaitingUserPolicyAgreement policyAgreement;
 
     @Column(nullable = false)
-    private boolean privacyPolicyAgreed;
-
-    @Column(nullable = false)
-    private boolean thirdPartyAgreed;
-
-    @Column(nullable = false)
-    private boolean marketingConsent;
-
-    @Column(nullable = false)
-    private int count;
+    private int count = 0;
 
     @Builder
     public WaitingUser(
             Store store,
             String name,
             String phoneNumber,
-            boolean termsAgreed,
-            boolean privacyPolicyAgreed,
-            boolean thirdPartyAgreed,
-            boolean marketingConsent
+            WaitingUserPolicyAgreement policyAgreement,
+            int count
     ) {
         this.store = store;
         this.name = name;
         this.phoneNumber = phoneNumber;
-        this.termsAgreed = termsAgreed;
-        this.privacyPolicyAgreed = privacyPolicyAgreed;
-        this.thirdPartyAgreed = thirdPartyAgreed;
-        this.marketingConsent = marketingConsent;
-        this.count = 0;
+        this.policyAgreement = policyAgreement;
+        this.count = count;
     }
 
     public void visitStore() {
@@ -85,5 +72,19 @@ public class WaitingUser extends BaseEntity {
 
     public void updatePhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void update(
+            Store store,
+            String name,
+            String phoneNumber,
+            WaitingUserPolicyAgreement policyAgreement,
+            int count
+    ) {
+        this.store = store;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.policyAgreement = policyAgreement;
+        this.count = count;
     }
 }

@@ -2,7 +2,6 @@ package im.fooding.app.service.waiting;
 
 import im.fooding.app.dto.request.waiting.PosUpdateWaitingContactInfoRequest;
 import im.fooding.app.dto.request.waiting.WaitingListRequest;
-import im.fooding.app.dto.response.waiting.WaitingResponse;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
@@ -48,9 +47,9 @@ public class PosWaitingService {
         return StoreWaitingResponse.from(storeWaitingService.get(id));
     }
 
-    public PageResponse<WaitingResponse> list(long id, WaitingListRequest request) {
+    public PageResponse<StoreWaitingResponse> list(long id, WaitingListRequest request) {
 
-        Waiting waiting = waitingService.getById(id);
+        Waiting waiting = waitingService.get(id);
 
         StoreWaitingFilter storeWaitingFilter = StoreWaitingFilter.builder()
                 .storeId(waiting.getStore().getId())
@@ -58,9 +57,9 @@ public class PosWaitingService {
                 .build();
         Page<StoreWaiting> storeWaitings = storeWaitingService.list(storeWaitingFilter, request.pageable());
 
-        List<WaitingResponse> list = storeWaitings.getContent()
+        List<StoreWaitingResponse> list = storeWaitings.getContent()
                 .stream()
-                .map(WaitingResponse::from)
+                .map(StoreWaitingResponse::from)
                 .toList();
 
         return PageResponse.of(list, PageInfo.of(storeWaitings));
@@ -119,7 +118,7 @@ public class PosWaitingService {
     }
 
     public void register(long id, PosWaitingRegisterRequest request) {
-        Waiting waiting = waitingService.getById(id);
+        Waiting waiting = waitingService.get(id);
         storeWaitingService.validate(waiting);
 
         String name = request.name();
@@ -180,7 +179,7 @@ public class PosWaitingService {
     }
     @Transactional
     public void updateWaitingStatus(long id, String statusValue) {
-        Waiting waiting = waitingService.getById(id);
+        Waiting waiting = waitingService.get(id);
         WaitingStatus updatedStatus = WaitingStatus.of(statusValue);
 
         validateUpdateWaitingStatus(waiting, updatedStatus);
@@ -225,7 +224,7 @@ public class PosWaitingService {
 
     @Transactional
     public void updateWaitingTime(long id, int estimatedWaitingTimeMinutes) {
-        Waiting waiting = waitingService.getById(id);
+        Waiting waiting = waitingService.get(id);
         WaitingSetting activeSetting = waitingSettingService.getActiveSetting(waiting.getStore());
 
         activeSetting.updateWaitingTimeMinutes(estimatedWaitingTimeMinutes);

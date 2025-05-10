@@ -36,9 +36,9 @@ public class WaitingLog extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private WaitingLogType type;
 
-    public WaitingLog(StoreWaiting storeWaiting) {
+    public WaitingLog(StoreWaiting storeWaiting, WaitingLogType type) {
         this.storeWaiting = storeWaiting;
-        this.type = WaitingLogType.WAITING_REGISTRATION;
+        this.type = type;
     }
 
     public void entry() {
@@ -47,5 +47,10 @@ public class WaitingLog extends BaseEntity {
 
     public String getTypeValue() {
         return type.getValue();
+    }
+
+    public void update(StoreWaiting storeWaiting, WaitingLogType type) {
+        this.storeWaiting = storeWaiting;
+        this.type = type;
     }
 }
