@@ -23,6 +23,7 @@ public record WaitingUserCreateRequest(
                 .termsAgreed(termsAgreed)
                 .privacyPolicyAgreed(privacyPolicyAgreed)
                 .thirdPartyAgreed(thirdPartyAgreed)
+                .marketingConsent(marketingConsent)
                 .build();
 
         return WaitingUser.builder()

@@ -53,8 +53,8 @@ public enum ErrorCode {
     WAITING_USER_THIRD_PARTY_AGREED_REQUIRED(HttpStatus.BAD_REQUEST, "3014", "개인정보 제3자 제공 동의는 필수입니다."),
     WAITING_USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "3015", "등록된 웨이팅 유저 정보가 없습니다."),
     WAITING_LOG_NOT_FOUND(HttpStatus.BAD_REQUEST, "3016", "기록된 웨이팅 로그 정보가 없습니다."),
-    STORE_WAITING_(HttpStatus.BAD_REQUEST, "3017", "기록된 웨이팅 로그 정보가 없습니다."),
-
+    STORE_WAITING_EXCEEDS_MAXIMUM_CAPACITY(HttpStatus.BAD_REQUEST, "3017", "허용된 최대 인원을 초과했습니다."),
+    STORE_WAITING_BELOW_MINIMUM_CAPACITY(HttpStatus.BAD_REQUEST, "3018", "허용된 최소 인원보다 적습니다."),
 
     // 디바이스
     DEVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "7000", "등록된 디바이스가 없습니다."),

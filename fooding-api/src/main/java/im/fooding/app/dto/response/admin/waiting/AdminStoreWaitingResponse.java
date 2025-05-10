@@ -29,8 +29,12 @@ public record AdminStoreWaitingResponse(
 ) {
 
     public static AdminStoreWaitingResponse from(StoreWaiting waiting) {
+            Long userId = null;
+            if (waiting.getUser() != null) {
+                    userId = waiting.getUser().getId();
+            }
             return new AdminStoreWaitingResponse(
-                    waiting.getUser().getId(),
+                    userId,
                     waiting.getStoreId(),
                     waiting.getChannel().name(),
                     waiting.getInfantChairCount(),

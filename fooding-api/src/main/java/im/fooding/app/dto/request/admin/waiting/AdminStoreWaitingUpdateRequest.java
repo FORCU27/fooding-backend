@@ -17,7 +17,7 @@ public record AdminStoreWaitingUpdateRequest(
         Long storeId,
 
         @Schema(description = "등록 방법(IN_PERSON, ONLINE)", example = "IN_PERSON")
-        @NotBlank
+        @NotNull
         String channel,
 
         @Schema(description = "유아용 의자 개수", example = "1")

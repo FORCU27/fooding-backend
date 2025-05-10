@@ -47,7 +47,7 @@ public class WaitingLogService {
                 request.type()
         );
 
-        return waitingLogRepository.save(waitingLog);
+        return waitingLog;
     }
 
     @Transactional

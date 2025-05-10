@@ -41,7 +41,7 @@ public class AdminWaitingSettingService {
 
     public PageResponse<AdminWaitingSettingResponse> list(BasicSearch search) {
         Page<WaitingSetting> waitingSettings = waitingSettingService.list(search.getPageable());
-        return PageResponse.of(waitingSettings.stream().map(AdminWaitingSettingResponse::from).toList(), PageInfo.of(waitingSettings));
+        return PageResponse.of(waitingSettings.getContent().stream().map(AdminWaitingSettingResponse::from).toList(), PageInfo.of(waitingSettings));
     }
 
     @Transactional

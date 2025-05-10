@@ -82,10 +82,10 @@ public class AdminStoreWaitingService {
 
     private void validateWaitingCondition(WaitingSetting waitingSetting, Long capacity) {
         if (capacity > waitingSetting.getMaximumCapacity()) {
-            throw new ApiException(ErrorCode.WAITING_SETTING_NOT_FOUND);
+            throw new ApiException(ErrorCode.STORE_WAITING_EXCEEDS_MAXIMUM_CAPACITY);
         }
         if (capacity < waitingSetting.getMinimumCapacity()) {
-            throw new ApiException(ErrorCode.STORE_WAITING_NOT_FOUND);
+            throw new ApiException(ErrorCode.STORE_WAITING_BELOW_MINIMUM_CAPACITY);
         }
     }
 }

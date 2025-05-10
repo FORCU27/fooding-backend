@@ -45,6 +45,7 @@ public record AdminStoreWaitingCreateRequest(
                 return StoreWaitingCreateRequest.builder()
                         .user(user)
                         .store(store)
+                        .status(status)
                         .channel(channel)
                         .infantChairCount(infantChairCount)
                         .infantCount(infantCount)
