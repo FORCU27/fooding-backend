@@ -58,6 +58,7 @@ public class AdminStoreService {
                 request.getIsTakeOut());
     }
 
+    // TODO: put -> dynamic update 하도록 수정
     @Transactional
     public void update(Long id, AdminUpdateStoreRequest request) {
         Store store = storeService.findById(id);
