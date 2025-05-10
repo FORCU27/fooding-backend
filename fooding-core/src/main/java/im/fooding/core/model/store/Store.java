@@ -84,8 +84,7 @@ public class Store extends BaseEntity {
             String information,
             boolean isParkingAvailable,
             boolean isNewOpen,
-            boolean isTakeOut
-    ) {
+            boolean isTakeOut) {
         this.name = name;
         this.city = city;
         this.address = address;
@@ -151,5 +150,9 @@ public class Store extends BaseEntity {
 
     public void updateAddress(String address) {
         this.address = address;
+    }
+
+    public void delete() {
+        // TODO: soft delete 추가
     }
 }
