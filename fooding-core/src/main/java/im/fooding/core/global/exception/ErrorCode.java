@@ -33,6 +33,7 @@ public enum ErrorCode {
     STORE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2000", "등록된 가게 정보가 없습니다."),
     STORE_SERVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2100", "등록된 가게 서비스가 없습니다."),
     STORE_IMAGE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2001", "등록된 가게 이미지가 없습니다."),
+    STORE_POST_NOT_FOUND(HttpStatus.BAD_REQUEST,"2200", "등록된 가게 소식이 없습니다."),
 
 
     // 웨이팅

@@ -1,5 +1,7 @@
 package im.fooding.core.service.store;
 
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.StorePost;
 import im.fooding.core.repository.store.StorePostRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,4 +21,26 @@ public class StorePostService {
     public List<StorePost> list(Long storeId) {
       return storePostRepository.findByStoreIdOrderByIsFixedDescUpdatedAtDesc(storeId);
     }
+
+    public StorePost findById(Long id) {
+      return storePostRepository.findById(id)
+              .filter(it -> !it.isDeleted())
+              .orElseThrow(() -> new ApiException(ErrorCode.STORE_POST_NOT_FOUND));
+    }
+
+    @Transactional
+    public StorePost create(StorePost storePost) {
+      return storePostRepository.save(storePost);
+    }
+
+    @Transactional
+    public void update(StorePost storePost, String title, String content, List<String> tags, boolean isFixed) {
+      storePost.update(title, content, tags, isFixed);
+    }
+
+    @Transactional
+      public void delete(Long id, Long deletedBy) {
+        StorePost storePost = findById(id);
+        storePost.delete(deletedBy);
+      }
 }

@@ -24,6 +24,7 @@ public class UserNotificationService {
 
   public UserNotification getNotification(Long userId, Long notificationId) {
     UserNotification notification = userNotificationRepository.findById(notificationId)
+            .filter(it -> !it.isDeleted())
             .orElseThrow(() -> new ApiException(ErrorCode.USER_NOTIFICATION_NOT_FOUND));
 
     if (!notification.getUser().getId().equals(userId)) {
