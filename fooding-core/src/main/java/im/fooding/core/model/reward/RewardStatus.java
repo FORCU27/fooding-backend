@@ -1,5 +1,5 @@
 package im.fooding.core.model.reward;
 
 public enum RewardStatus {
-    PUBLISHED, EARNED, CANCELED
+    PUBLISHED, EARNED, CANCELED, USED
 }
