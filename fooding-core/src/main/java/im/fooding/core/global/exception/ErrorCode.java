@@ -56,9 +56,10 @@ public enum ErrorCode {
     USER_NOTIFICATION_FORBIDDEN(HttpStatus.FORBIDDEN, "5002", "해당 알림에 접근할 권한이 없습니다."),
 
     // 메뉴
-    MENUCATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "6000", "등록된 메뉴 카테고리가 없습니다.");
+    MENUCATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "6000", "등록된 메뉴 카테고리가 없습니다."),
 
-    
+    // 게시긓
+    POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "9000", "등록된 게시글이 없습니다.");
 
     private final HttpStatus status;
 
