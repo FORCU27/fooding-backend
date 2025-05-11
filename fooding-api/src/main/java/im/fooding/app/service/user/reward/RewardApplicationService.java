@@ -6,6 +6,9 @@ import im.fooding.app.dto.request.user.reward.GetRewardPointRequest;
 import im.fooding.app.dto.request.user.reward.UpdateRewardPointRequest;
 import im.fooding.app.dto.response.user.reward.GetRewardLogResponse;
 import im.fooding.app.dto.response.user.reward.GetRewardPointResponse;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.model.reward.RewardPoint;
 import im.fooding.core.model.reward.RewardStatus;
 import im.fooding.core.service.reward.RewardLogService;
 import im.fooding.core.service.reward.RewardService;
@@ -75,6 +78,14 @@ public class RewardApplicationService {
      * @param request
      */
     public void usePoint(UpdateRewardPointRequest request){
+        // Point가 있는지 확인
+        //  데이터가 존재하는지 확인
+        Pageable pageable = PageRequest.of(0, 5);
+        List<GetRewardPointResponse> result = pointService.list( null, request.getStoreId(), request.getPhoneNumber(), pageable ).map(GetRewardPointResponse::of).stream().collect(Collectors.toList());
+        if( result.size() == 0 ) throw new ApiException(ErrorCode.REWARD_NOT_FOUND);
+        //  잔여 포인트가 있는지 확인
+        if( result.get(0).getPoint() < request.getPoint() )  throw new ApiException(ErrorCode.REWARD_POINT_NOT_ENOUGH);
+        // Point가 있는 경우 소비
         pointService.usePoint( request.getPhoneNumber(), request.getStoreId(), request.getPoint() );
         logService.create(
                 storeService.findById(request.getStoreId()),

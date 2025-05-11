@@ -23,7 +23,7 @@ public class AppRewardController {
     @GetMapping("/point")
     @Operation(summary = "리워드 내역 조회")
     public ApiResult<Page<GetRewardPointResponse>> getRewardPoint(
-        @RequestBody GetRewardPointRequest request
+        @ModelAttribute GetRewardPointRequest request
     ){
         return ApiResult.ok( service.getRewardPoint( request ) );
     }
@@ -31,7 +31,7 @@ public class AppRewardController {
     @GetMapping("/log")
     @Operation(summary = "리워드 로그 내역 조회")
     public ApiResult<Page<GetRewardLogResponse>> getRewardLog(
-        @RequestBody GetRewardLogRequest request
+        @ModelAttribute GetRewardLogRequest request
     ){
         return ApiResult.ok( service.getRewardLog( request ) );
     }
