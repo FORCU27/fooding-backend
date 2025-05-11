@@ -30,8 +30,8 @@ public class AdminStoreController {
     @Operation(summary = "가게 전체 조회")
     public ApiResult<PageResponse<AdminStoreResponse>> list(
             Pageable pageable,
-            @RequestParam(required = false) StoreSortType sortType,
-            @RequestParam(required = false) SortDirection sortDirection) {
+            @RequestParam(required = false, defaultValue = "RECENT") StoreSortType sortType,
+            @RequestParam(required = false, defaultValue = "DESCENDING") SortDirection sortDirection) {
         PageResponse<AdminStoreResponse> stores = adminStoreService.list(pageable, sortType, sortDirection);
         return ApiResult.ok(stores);
     }

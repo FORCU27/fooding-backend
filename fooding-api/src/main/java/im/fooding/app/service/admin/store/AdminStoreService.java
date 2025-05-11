@@ -42,25 +42,23 @@ public class AdminStoreService {
 
     @Transactional
     public Long create(AdminCreateStoreRequest request) {
-        Store store = Store.builder()
-                .name(request.getName())
-                .city(request.getCity())
-                .address(request.getAddress())
-                .category(request.getCategory())
-                .description(request.getDescription())
-                .priceCategory(request.getPriceCategory())
-                .eventDescription(request.getEventDescription())
-                .contactNumber(request.getContactNumber())
-                .direction(request.getDirection())
-                .information(request.getInformation())
-                .isParkingAvailable(request.getIsParkingAvailable())
-                .isNewOpen(request.getIsNewOpen())
-                .isTakeOut(request.getIsTakeOut())
-                .build();
-
-        return storeService.create(store);
+        return storeService.create(
+                request.getName(),
+                request.getCity(),
+                request.getAddress(),
+                request.getCategory(),
+                request.getDescription(),
+                request.getPriceCategory(),
+                request.getEventDescription(),
+                request.getContactNumber(),
+                request.getDirection(),
+                request.getInformation(),
+                request.getIsParkingAvailable(),
+                request.getIsNewOpen(),
+                request.getIsTakeOut());
     }
 
+    // TODO: put -> dynamic update 하도록 수정
     @Transactional
     public void update(Long id, AdminUpdateStoreRequest request) {
         Store store = storeService.findById(id);
@@ -78,7 +76,6 @@ public class AdminStoreService {
 
     @Transactional
     public void delete(Long id) {
-        Store store = storeService.findById(id);
-        storeService.delete(store);
+        storeService.delete(id, null);
     }
 }
