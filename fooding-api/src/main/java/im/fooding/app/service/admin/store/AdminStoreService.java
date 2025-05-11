@@ -28,7 +28,7 @@ public class AdminStoreService {
 
     public PageResponse<AdminStoreResponse> list(Pageable pageable, StoreSortType sortType,
             SortDirection sortDirection) {
-        Page<Store> result = storeService.list(pageable, sortType, sortDirection);
+        Page<Store> result = storeService.list(pageable, sortType, sortDirection, false);
         PageInfo pageInfo = PageInfo.of(result);
         return PageResponse.of(
                 result.getContent().stream().map(AdminStoreResponse::new).collect(Collectors.toList()),
@@ -63,15 +63,18 @@ public class AdminStoreService {
     public void update(Long id, AdminUpdateStoreRequest request) {
         Store store = storeService.findById(id);
         store.updateStoreName(request.getName());
+        store.updateCity(request.getCity());
+        store.updateAddress(request.getAddress());
+        store.updateCategory(request.getCategory());
         store.updateDescription(request.getDescription());
         store.updateContactNumber(request.getContactNumber());
         store.updatePriceCategory(request.getPriceCategory());
+        store.updateEventDescription(request.getEventDescription());
         store.updateDirection(request.getDirection());
         store.updateInformation(request.getInformation());
         store.updateParkingAvailability(request.getIsParkingAvailable());
         store.updateIsNewOpen(request.getIsNewOpen());
         store.updateIsTakeOut(request.getIsTakeOut());
-        store.updateCategory(request.getCategory());
     }
 
     @Transactional

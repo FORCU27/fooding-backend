@@ -1,5 +1,6 @@
 package im.fooding.app.dto.response.admin.store;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import im.fooding.core.model.store.Store;
 import lombok.Getter;
 
@@ -16,8 +17,14 @@ public class AdminStoreResponse {
     private final String contactNumber;
     private final String direction;
     private final String information;
+
+    @JsonProperty("isParkingAvailable")
     private final boolean isParkingAvailable;
+
+    @JsonProperty("isNewOpen")
     private final boolean isNewOpen;
+
+    @JsonProperty("isTakeOut")
     private final boolean isTakeOut;
 
     public AdminStoreResponse(Store store) {

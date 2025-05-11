@@ -32,8 +32,9 @@ public class StoreService {
     public Page<Store> list(
             Pageable pageable,
             StoreSortType sortType,
-            SortDirection sortDirection) {
-        return storeRepository.list(pageable, sortType, sortDirection);
+            SortDirection sortDirection,
+            boolean includeDeleted) {
+        return storeRepository.list(pageable, sortType, sortDirection,includeDeleted);
     }
 
     /**
@@ -79,6 +80,8 @@ public class StoreService {
     @Transactional
     public void delete(long id, Long deletedBy) {
         Store store = findById(id);
-        store.delete(deletedBy);
+
+        // TODO: 유저 정보
+        store.delete(0);
     }
 }
