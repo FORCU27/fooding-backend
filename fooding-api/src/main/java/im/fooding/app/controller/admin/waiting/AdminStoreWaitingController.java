@@ -36,11 +36,11 @@ public class AdminStoreWaitingController {
 
     @PostMapping
     @Operation(summary = "가게 웨이팅 생성")
-    public ApiResult<AdminStoreWaitingResponse> create(
+    public ApiResult<Void> create(
             @RequestBody @Valid AdminStoreWaitingCreateRequest request
     ) {
-        AdminStoreWaitingResponse response = adminStoreWaitingService.create(request);
-        return ApiResult.ok(response);
+        adminStoreWaitingService.create(request);
+        return ApiResult.ok();
     }
 
     @GetMapping("/{id}")
@@ -62,12 +62,13 @@ public class AdminStoreWaitingController {
 
     @PutMapping("/{id}")
     @Operation(summary = "가게 웨이팅 수정")
-    public ApiResult<AdminStoreWaitingResponse> update(
+    public ApiResult<Void> update(
             @PathVariable long id,
 
             @RequestBody AdminStoreWaitingUpdateRequest request
     ) {
-        return ApiResult.ok(adminStoreWaitingService.update(id, request));
+        adminStoreWaitingService.update(id, request);
+        return ApiResult.ok();
     }
 
     @DeleteMapping("/{id}")

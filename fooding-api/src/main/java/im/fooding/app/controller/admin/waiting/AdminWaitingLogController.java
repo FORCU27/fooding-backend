@@ -39,8 +39,8 @@ public class AdminWaitingLogController {
     public ApiResult<AdminWaitingLogResponse> create(
             @RequestBody @Valid AdminWaitingLogCreateRequest request
     ) {
-        AdminWaitingLogResponse response = adminWaitingLogService.create(request);
-        return ApiResult.ok(response);
+        adminWaitingLogService.create(request);
+        return ApiResult.ok();
     }
 
     @GetMapping("/{id}")
@@ -67,7 +67,8 @@ public class AdminWaitingLogController {
 
             @RequestBody @Valid AdminWaitingLogUpdateRequest request
     ) {
-        return ApiResult.ok(adminWaitingLogService.update(id, request));
+        adminWaitingLogService.update(id, request);
+        return ApiResult.ok();
     }
 
     @DeleteMapping("/{id}")

@@ -22,11 +22,10 @@ public class WaitingService {
     private final WaitingRepository waitingRepository;
 
     @Transactional
-    public Waiting create(Store store, WaitingStatus status) {
+    public void create(Store store, WaitingStatus status) {
         validateUniqueStore(store);
         Waiting waiting = new Waiting(store, status);
-
-        return waitingRepository.save(waiting);
+        waitingRepository.save(waiting);
     }
 
     public Waiting get(long id) {
@@ -40,15 +39,13 @@ public class WaitingService {
     }
 
     @Transactional
-    public Waiting update(long id, Store store, WaitingStatus status) {
+    public void update(long id, Store store, WaitingStatus status) {
         Waiting waiting = get(id);
         if (!waiting.getStore().equals(store)) {
             validateUniqueStore(store);
         }
 
         waiting.update(store, status);
-
-        return waiting;
     }
 
     @Transactional

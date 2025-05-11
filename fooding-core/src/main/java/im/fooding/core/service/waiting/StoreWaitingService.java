@@ -30,9 +30,9 @@ public class StoreWaitingService {
     private final StoreWaitingRepository storeWaitingRepository;
 
     @Transactional
-    public StoreWaiting create(StoreWaitingCreateRequest request) {
+    public void create(StoreWaitingCreateRequest request) {
         StoreWaiting storeWaiting = request.toStoreWaiting(generateCallNumber());
-        return storeWaitingRepository.save(storeWaiting);
+        storeWaitingRepository.save(storeWaiting);
     }
 
     public StoreWaiting get(long id) {
@@ -46,7 +46,7 @@ public class StoreWaitingService {
     }
 
     @Transactional
-    public StoreWaiting update(StoreWaitingUpdateRequest request) {
+    public void update(StoreWaitingUpdateRequest request) {
         StoreWaiting storeWaiting = get(request.id());
         storeWaiting.update(
                 request.user(),
@@ -58,8 +58,6 @@ public class StoreWaitingService {
                 request.adultCount(),
                 request.memo()
         );
-
-        return storeWaitingRepository.save(storeWaiting);
     }
 
     @Transactional

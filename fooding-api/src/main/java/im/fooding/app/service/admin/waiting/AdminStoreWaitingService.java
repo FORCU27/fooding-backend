@@ -35,7 +35,7 @@ public class AdminStoreWaitingService {
     private final WaitingSettingService waitingSettingService;
 
     @Transactional
-    public AdminStoreWaitingResponse create(AdminStoreWaitingCreateRequest request) {
+    public void create(AdminStoreWaitingCreateRequest request) {
         WaitingUser user = waitingUserService.get(request.userId());
         Store store = storeService.findById(request.storeId());
         WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(store);
@@ -43,8 +43,7 @@ public class AdminStoreWaitingService {
         validateWaitingOpen(store);
         validateWaitingCondition(waitingSetting, (long) request.adultCount() + request.infantCount());
 
-        StoreWaiting storeWaiting = storeWaitingService.create(request.toStoreWaitingCreateRequest(user, store));
-        return AdminStoreWaitingResponse.from(storeWaiting);
+        storeWaitingService.create(request.toStoreWaitingCreateRequest(user, store));
     }
 
     public AdminStoreWaitingResponse get(long id) {
@@ -57,7 +56,7 @@ public class AdminStoreWaitingService {
     }
 
     @Transactional
-    public AdminStoreWaitingResponse update(long id, AdminStoreWaitingUpdateRequest request) {
+    public void update(long id, AdminStoreWaitingUpdateRequest request) {
         Store store = storeService.findById(request.storeId());
         WaitingUser user = waitingUserService.get(request.userId());
         WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(store);
@@ -65,8 +64,7 @@ public class AdminStoreWaitingService {
         validateWaitingOpen(store);
         validateWaitingCondition(waitingSetting, (long) request.adultCount() + request.infantCount());
 
-        StoreWaiting storeWaiting = storeWaitingService.update(request.toStoreWaitingUpdateRequest(id, user, store));
-        return AdminStoreWaitingResponse.from(storeWaiting);
+        storeWaitingService.update(request.toStoreWaitingUpdateRequest(id, user, store));
     }
 
     @Transactional

@@ -36,11 +36,11 @@ public class AdminWaitingUserController {
 
     @PostMapping
     @Operation(summary = "웨이팅 유저 생성")
-    public ApiResult<AdminWaitingUserResponse> create(
+    public ApiResult<Void> create(
             @RequestBody @Valid AdminWaitingUserCreateRequest request
     ) {
-        AdminWaitingUserResponse response = adminWaitingUserService.create(request);
-        return ApiResult.ok(response);
+        adminWaitingUserService.create(request);
+        return ApiResult.ok();
     }
 
     @GetMapping("/{id}")
@@ -62,12 +62,13 @@ public class AdminWaitingUserController {
 
     @PutMapping("/{id}")
     @Operation(summary = "웨이팅 유저 수정")
-    public ApiResult<AdminWaitingUserResponse> update(
+    public ApiResult<Void> update(
             @PathVariable long id,
 
             @RequestBody @Valid AdminWaitingUserUpdateRequest request
     ) {
-        return ApiResult.ok(adminWaitingUserService.update(id, request));
+        adminWaitingUserService.update(id, request);
+        return ApiResult.ok();
     }
 
     @DeleteMapping("/{id}")

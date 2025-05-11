@@ -24,7 +24,7 @@ public class WaitingSettingService {
     private final WaitingSettingRepository waitingSettingRepository;
 
     @Transactional
-    public WaitingSetting create(WaitingSettingCreateRequest request) {
+    public void create(WaitingSettingCreateRequest request) {
         if (request.isActive()) {
             validateAlreadyActive();
         }
@@ -39,7 +39,7 @@ public class WaitingSettingService {
                 .entryTimeLimitMinutes(request.entryTimeLimitMinutes())
                 .build();
 
-        return waitingSettingRepository.save(waitingSetting);
+        waitingSettingRepository.save(waitingSetting);
     }
 
     public WaitingSetting get(long id) {
@@ -53,7 +53,7 @@ public class WaitingSettingService {
     }
 
     @Transactional
-    public WaitingSetting update(WaitingSettingUpdateRequest request) {
+    public void update(WaitingSettingUpdateRequest request) {
         WaitingSetting waitingSetting = get(request.id());
         if (request.isActive() && !waitingSetting.isActive()) {
             validateAlreadyActive();
@@ -68,8 +68,6 @@ public class WaitingSettingService {
                 request.isActive(),
                 request.entryTimeLimitMinutes()
         );
-
-        return waitingSetting;
     }
 
     @Transactional

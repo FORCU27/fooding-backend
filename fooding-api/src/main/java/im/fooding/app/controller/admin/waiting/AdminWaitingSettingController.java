@@ -36,11 +36,11 @@ public class AdminWaitingSettingController {
 
     @PostMapping
     @Operation(summary = "웨이팅 설정 생성")
-    public ApiResult<AdminWaitingSettingResponse> create(
+    public ApiResult<Void> create(
             @RequestBody @Valid AdminWaitingSettingCreateRequest request
     ) {
-        AdminWaitingSettingResponse response = adminWaitingSettingService.create(request);
-        return ApiResult.ok(response);
+        adminWaitingSettingService.create(request);
+        return ApiResult.ok();
     }
 
     @GetMapping("/{id}")
@@ -62,12 +62,13 @@ public class AdminWaitingSettingController {
 
     @PutMapping("/{id}")
     @Operation(summary = "웨이팅 설정 수정")
-    public ApiResult<AdminWaitingSettingResponse> update(
+    public ApiResult<Void> update(
             @PathVariable long id,
 
             @RequestBody @Valid AdminWaitingSettingUpdateRequest request
     ) {
-        return ApiResult.ok(adminWaitingSettingService.update(id, request));
+        adminWaitingSettingService.update(id, request);
+        return ApiResult.ok();
     }
 
     @DeleteMapping("/{id}")

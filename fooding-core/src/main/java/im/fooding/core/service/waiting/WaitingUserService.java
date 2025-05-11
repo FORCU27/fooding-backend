@@ -24,10 +24,10 @@ public class WaitingUserService {
     private final WaitingUserRepository waitingUserRepository;
 
     @Transactional
-    public WaitingUser create(WaitingUserCreateRequest request) {
+    public void create(WaitingUserCreateRequest request) {
         WaitingUser waitingUser = request.toWaitingUser();
         validPolicyAgreed(waitingUser.getPolicyAgreement());
-        return waitingUserRepository.save(waitingUser);
+        waitingUserRepository.save(waitingUser);
     }
 
     public WaitingUser get(long id) {
@@ -41,7 +41,7 @@ public class WaitingUserService {
     }
 
     @Transactional
-    public WaitingUser update(WaitingUserUpdateRequest request) {
+    public void update(WaitingUserUpdateRequest request) {
         WaitingUser waitingUser = get(request.id());
 
         WaitingUserPolicyAgreement policyAgreement = WaitingUserPolicyAgreement.builder()
@@ -59,8 +59,6 @@ public class WaitingUserService {
                 policyAgreement,
                 request.count()
         );
-
-        return waitingUser;
     }
 
     @Transactional

@@ -26,13 +26,11 @@ public class AdminWaitingSettingService {
     private final WaitingSettingService waitingSettingService;
 
     @Transactional
-    public AdminWaitingSettingResponse create(AdminWaitingSettingCreateRequest request) {
+    public void create(AdminWaitingSettingCreateRequest request) {
         Waiting waiting = waitingService.get(request.waitingId());
 
         WaitingSettingCreateRequest waitingSettingCreateRequest = request.toWaitingSettingCreateRequest(waiting);
-        WaitingSetting waitingSetting = waitingSettingService.create(waitingSettingCreateRequest);
-
-        return AdminWaitingSettingResponse.from(waitingSetting);
+        waitingSettingService.create(waitingSettingCreateRequest);
     }
 
     public AdminWaitingSettingResponse get(long settingId) {
@@ -45,11 +43,9 @@ public class AdminWaitingSettingService {
     }
 
     @Transactional
-    public AdminWaitingSettingResponse update(long id, AdminWaitingSettingUpdateRequest request) {
+    public void update(long id, AdminWaitingSettingUpdateRequest request) {
         Waiting waiting = waitingService.get(request.waitingId());
-        WaitingSetting waitingSetting = waitingSettingService.update(request.toWaitingSettingUpdateRequest(id, waiting));
-
-        return AdminWaitingSettingResponse.from(waitingSetting);
+        waitingSettingService.update(request.toWaitingSettingUpdateRequest(id, waiting));
     }
 
     @Transactional

@@ -25,10 +25,9 @@ public class AdminWaitingUserService {
     private final StoreService storeService;
 
     @Transactional
-    public AdminWaitingUserResponse create(AdminWaitingUserCreateRequest request) {
+    public void create(AdminWaitingUserCreateRequest request) {
         Store store = storeService.findById(request.storeId());
-        WaitingUser waitingUser = waitingUserService.create(request.toWaitingUserCreateRequest(store));
-        return AdminWaitingUserResponse.from(waitingUser);
+        waitingUserService.create(request.toWaitingUserCreateRequest(store));
     }
 
     public AdminWaitingUserResponse get(long id) {
@@ -41,9 +40,9 @@ public class AdminWaitingUserService {
     }
 
     @Transactional
-    public AdminWaitingUserResponse update(long id, AdminWaitingUserUpdateRequest request) {
+    public void update(long id, AdminWaitingUserUpdateRequest request) {
         Store store = storeService.findById(request.storeId());
-        return AdminWaitingUserResponse.from(waitingUserService.update(request.toWaitingUserUpdateRequest(id, store)));
+        waitingUserService.update(request.toWaitingUserUpdateRequest(id, store));
     }
 
     @Transactional

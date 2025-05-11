@@ -25,12 +25,10 @@ public class AdminWaitingLogService {
     private final StoreWaitingService storeWaitingService;
 
     @Transactional
-    public AdminWaitingLogResponse create(AdminWaitingLogCreateRequest request) {
+    public void create(AdminWaitingLogCreateRequest request) {
         StoreWaiting storeWaiting = storeWaitingService.get(request.storeWaitingId());
 
-        WaitingLog waitingLog = waitingLogService.create(request.toWaitingLogCreateRequest(storeWaiting));
-
-        return AdminWaitingLogResponse.from(waitingLog);
+        waitingLogService.create(request.toWaitingLogCreateRequest(storeWaiting));
     }
 
     public AdminWaitingLogResponse get(long id) {
@@ -43,10 +41,10 @@ public class AdminWaitingLogService {
     }
 
     @Transactional
-    public AdminWaitingLogResponse update(long id, AdminWaitingLogUpdateRequest request) {
+    public void update(long id, AdminWaitingLogUpdateRequest request) {
         StoreWaiting storeWaiting = storeWaitingService.get(request.storeWaitingId());
 
-        return AdminWaitingLogResponse.from(waitingLogService.update(request.toWaitingLogUpdateRequest(id, storeWaiting)));
+        waitingLogService.update(request.toWaitingLogUpdateRequest(id, storeWaiting));
     }
 
     @Transactional

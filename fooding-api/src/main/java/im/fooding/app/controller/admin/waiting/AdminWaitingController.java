@@ -36,11 +36,11 @@ public class AdminWaitingController {
 
     @PostMapping
     @Operation(summary = "웨이팅 생성")
-    public ApiResult<AdminWaitingResponse> create(
+    public ApiResult<Void> create(
             @RequestBody @Valid AdminWaitingCreateRequest request
     ) {
-        AdminWaitingResponse response = adminWaitingService.create(request);
-        return ApiResult.ok(response);
+        adminWaitingService.create(request);
+        return ApiResult.ok();
     }
 
     @GetMapping("/{id}")
@@ -67,7 +67,8 @@ public class AdminWaitingController {
 
             @RequestBody @Valid AdminWaitingUpdateRequest request
     ) {
-        return ApiResult.ok(adminWaitingService.update(id, request));
+        adminWaitingService.update(id, request);
+        return ApiResult.ok();
     }
 
     @DeleteMapping("/{id}")

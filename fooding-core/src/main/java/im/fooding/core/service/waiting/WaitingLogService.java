@@ -24,9 +24,9 @@ public class WaitingLogService {
     private final WaitingLogRepository waitingLogRepository;
 
     @Transactional
-    public WaitingLog create(WaitingLogCreateRequest request) {
+    public void create(WaitingLogCreateRequest request) {
         WaitingLog waitingLog = request.toWaitingLog();
-        return waitingLogRepository.save(waitingLog);
+        waitingLogRepository.save(waitingLog);
     }
 
     public WaitingLog get(long id) {
@@ -40,14 +40,12 @@ public class WaitingLogService {
     }
 
     @Transactional
-    public WaitingLog update(WaitingLogUpdateRequest request) {
+    public void update(WaitingLogUpdateRequest request) {
         WaitingLog waitingLog = get(request.id());
         waitingLog.update(
                 request.storeWaiting(),
                 request.type()
         );
-
-        return waitingLog;
     }
 
     @Transactional

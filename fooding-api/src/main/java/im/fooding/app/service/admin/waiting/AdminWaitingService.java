@@ -26,13 +26,11 @@ public class AdminWaitingService {
     private final StoreService storeService;
 
     @Transactional
-    public AdminWaitingResponse create(AdminWaitingCreateRequest request) {
+    public void create(AdminWaitingCreateRequest request) {
         Store store = storeService.findById(request.storeId());
         WaitingStatus status = WaitingStatus.of(request.status());
 
-        Waiting waiting = waitingService.create(store, status);
-
-        return AdminWaitingResponse.from(waiting);
+        waitingService.create(store, status);
     }
 
     public AdminWaitingResponse get(long id) {
@@ -45,11 +43,11 @@ public class AdminWaitingService {
     }
 
     @Transactional
-    public AdminWaitingResponse update(long id, AdminWaitingUpdateRequest request) {
+    public void update(long id, AdminWaitingUpdateRequest request) {
         Store store = storeService.findById(request.storeId());
         WaitingStatus status = WaitingStatus.of(request.status());
 
-        return AdminWaitingResponse.from(waitingService.update(id, store, status));
+        waitingService.update(id, store, status);
     }
 
     @Transactional
