@@ -4,12 +4,18 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class FileUploadRequest {
-    @NotNull(message = "파일을 전송해주세요.")
+    @NotNull
     @Schema(description = "파일", example = "첨부파일")
     private MultipartFile[] files;
+
+    public FileUploadRequest(MultipartFile[] files) {
+        this.files = files;
+    }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/files")
+@RequestMapping("/file-upload")
 @Tag(name = "FileUploadController", description = "파일 컨트롤러")
 public class FileUploadController {
     private final FileUploadService fileUploadService;
@@ -24,6 +24,6 @@ public class FileUploadController {
     @PostMapping
     @Operation(summary = "파일 업로드", description = "파일을  업로드합니다")
     public ApiResult<List<FileResponse>> upload(@Valid FileUploadRequest request) {
-        return fileUploadService.upload(request);
+        return ApiResult.ok(fileUploadService.upload(request));
     }
 }

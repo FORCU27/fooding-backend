@@ -91,6 +91,11 @@ auth:
     token-uri: https://appleid.apple.com/auth/token
     redirect-uri: https://localhost.com:8080/user/auth/apple/token
 
+storage:
+  base-uri: ${STORAGE_BASE_URI}
+  bucket-id: ${STORAGE_BUCKET_ID}
+  access-token: ${STORAGE_ACCESS_TOKEN}
+
 #server:
 #  port: 8080
 #  ssl:

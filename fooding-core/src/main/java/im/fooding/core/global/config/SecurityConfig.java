@@ -45,6 +45,7 @@ public class SecurityConfig {
 //                        .requestMatchers("/user/**").hasAnyRole("USER")
 //                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
 //                        .requestMatchers("/ceo/**").hasAnyRole("CEO")
+//                        .requestMatchers(HttpMethod.POST, "/file-upload").hasAnyRole("USER", "ADMIN", "CEO")
                         .anyRequest().permitAll());
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

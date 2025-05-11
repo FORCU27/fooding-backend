@@ -1,7 +1,6 @@
 package im.fooding.app.controller.user.users;
 
 import im.fooding.app.dto.response.admin.manager.AdminManagerResponse;
-import im.fooding.app.service.admin.manager.AdminManagerApplicationService;
 import im.fooding.app.service.user.user.UserApplicationService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.global.UserInfo;
