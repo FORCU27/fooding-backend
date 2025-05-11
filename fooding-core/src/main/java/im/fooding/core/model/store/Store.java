@@ -18,6 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Getter
@@ -62,12 +63,15 @@ public class Store extends BaseEntity {
 
     @Column(nullable = false)
     @ColumnDefault("false")
+    @JsonProperty("isParkingAvailable")
     private boolean isParkingAvailable;
 
     @Column(nullable = false)
+    @JsonProperty("isNewOpen")
     private boolean isNewOpen;
 
     @Column(nullable = false)
+    @JsonProperty("isTakeOut")
     private boolean isTakeOut;
 
     @Builder
