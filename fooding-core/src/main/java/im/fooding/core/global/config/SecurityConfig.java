@@ -60,6 +60,18 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(
                 List.of(
                         "http://localhost:3000",
+                        "https://fooding.im",
+                        "https://stage.fooding.im",
+                        "https://back-office-stage.fooding.im",
+                        "https://back-office.fooding.im",
+                        "https://app.fooding.im",
+                        "https://app-stage.fooding.im",
+                        "https://pos.fooding.im",
+                        "https://pos-stage.fooding.im",
+                        "https://place.fooding.im",
+                        "https://place-stage.fooding.im",
+                        "https://ceo.fooding.im",
+                        "https://ceo-stage.fooding.im",
                         "https://appleid.apple.com"
                 ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "OPTIONS", "PUT", "DELETE"));
