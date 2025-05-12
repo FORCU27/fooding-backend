@@ -1,15 +1,13 @@
-package im.fooding.app.dto.request.waiting;
+package im.fooding.app.dto.request.pos.waiting;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
-public record AppWaitingRegisterRequest(
+public record PosWaitingRegisterRequest(
         @Schema(description = "웨이팅 유저 이름", example = "홍길동")
         String name,
 
-        @NotBlank
         @Schema(description = "핸드폰 번호", example = "01012345678")
         String phoneNumber,
 
@@ -24,10 +22,6 @@ public record AppWaitingRegisterRequest(
         @NotNull
         @Schema(description = "개인정보 제3자 제공 동의", example = "true")
         Boolean thirdPartyAgreed,
-
-        @NotNull
-        @Schema(description = "마케팅 정보 수신 동의", example = "true")
-        Boolean marketingConsent,
 
         @NotNull
         @PositiveOrZero

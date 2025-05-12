@@ -1,9 +1,9 @@
-package im.fooding.app.dto.response.waiting;
+package im.fooding.app.dto.response.pos.waiting;
 
 import im.fooding.core.model.waiting.WaitingUser;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public record WaitingUserResponse(
+public record PosWaitingUserResponse(
         @Schema(description = "id", example = "1")
         long id,
 
@@ -19,8 +19,8 @@ public record WaitingUserResponse(
         @Schema(description = "방문 횟수", example = "1")
         int count
 ) {
-    public static WaitingUserResponse from(WaitingUser waitingUser) {
-        return new WaitingUserResponse(
+    public static PosWaitingUserResponse from(WaitingUser waitingUser) {
+        return new PosWaitingUserResponse(
                 waitingUser.getId(),
                 waitingUser.getStoreId(),
                 waitingUser.getName(),

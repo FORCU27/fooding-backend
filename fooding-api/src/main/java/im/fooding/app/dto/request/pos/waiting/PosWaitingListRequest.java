@@ -1,10 +1,10 @@
-package im.fooding.app.dto.request.waiting;
+package im.fooding.app.dto.request.pos.waiting;
 
 import im.fooding.core.common.BasicSearch;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.domain.Pageable;
 
-public record WaitingListRequest(
+public record PosWaitingListRequest(
         @Schema(description = "search 정보")
         BasicSearch search,
 
@@ -12,7 +12,7 @@ public record WaitingListRequest(
         String status
 ) {
 
-    public WaitingListRequest {
+    public PosWaitingListRequest {
         if (search == null) {
             search = new BasicSearch();
         }

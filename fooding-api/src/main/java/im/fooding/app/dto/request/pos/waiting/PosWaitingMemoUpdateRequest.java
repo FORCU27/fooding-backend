@@ -1,4 +1,4 @@
-package im.fooding.app.dto.request.waiting;
+package im.fooding.app.dto.request.pos.waiting;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
