@@ -56,7 +56,7 @@ logging:
 
 webhook:
   slack:
-    url: ${WEBHOOK_SLACK_URL}
+    url: ${WEBHOOK_SLACK_URL:}
 
 message:
   sender: ${MESSAGE_SENDER:02-1234-5678}
@@ -91,6 +91,6 @@ auth:
     redirect-uri: ${APPLE_REDIRECT_URI:https://api.fooding.im/api/auth/social/callback}
 
 storage:
-  base-uri: ${STORAGE_BASE_URI}
-  bucket-id: ${STORAGE_BUCKET_ID}
-  access-token: ${STORAGE_ACCESS_TOKEN}
+  base-uri: ${STORAGE_BASE_URI:}
+  bucket-id: ${STORAGE_BUCKET_ID:}
+  access-token: ${STORAGE_ACCESS_TOKEN:}

@@ -57,7 +57,7 @@ logging:
 
 webhook:
   slack:
-    url: ${WEBHOOK_SLACK_URL}
+    url: ${WEBHOOK_SLACK_URL:}
 
 message:
   sender: 02-1234-5678
@@ -92,9 +92,9 @@ auth:
     redirect-uri: https://localhost.com:8080/user/auth/apple/token
 
 storage:
-  base-uri: ${STORAGE_BASE_URI}
-  bucket-id: ${STORAGE_BUCKET_ID}
-  access-token: ${STORAGE_ACCESS_TOKEN}
+  base-uri: ${STORAGE_BASE_URI:}
+  bucket-id: ${STORAGE_BUCKET_ID:}
+  access-token: ${STORAGE_ACCESS_TOKEN:}
 
 #server:
 #  port: 8080
