@@ -7,6 +7,7 @@ import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.global.feign.client.StorageClient;
 import im.fooding.core.global.feign.dto.storage.StorageInfo;
 import im.fooding.core.global.feign.dto.storage.StorageResponse;
+import im.fooding.core.model.file.File;
 import im.fooding.core.service.file.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,18 +54,17 @@ public class FileUploadService {
     }
 
     @Transactional
-    public void commit(List<String> ids) {
-        if (ids != null && !ids.isEmpty()) {
-            ids.forEach(id -> {
-                if (StringUtils.hasText(id)) {
-                    fileService.commit(id);
-                    try {
-                        storageClient.commit(storageInfo.getCommitUri(id), storageInfo.getAccessToken());
-                    } catch (Exception e) {
-                        throw new ApiException(ErrorCode.FILE_UPLOAD_FAILED, e.getMessage());
-                    }
-                }
-            });
+    public File commit(String id) {
+        if (StringUtils.hasText(id)) {
+            try {
+                File file = fileService.commit(id);
+                storageClient.commit(storageInfo.getCommitUri(id), storageInfo.getAccessToken());
+                return file;
+            } catch (Exception e) {
+                throw new ApiException(ErrorCode.FILE_UPLOAD_FAILED, e.getMessage());
+            }
+        } else {
+            return null;
         }
     }
 }

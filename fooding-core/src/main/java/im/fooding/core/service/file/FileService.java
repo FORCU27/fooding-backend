@@ -24,9 +24,10 @@ public class FileService {
         repository.save(file);
     }
 
-    public void commit(String id) {
+    public File commit(String id) {
         File file = findById(id);
         file.commit();
+        return file;
     }
 
     public File findById(String id) {
