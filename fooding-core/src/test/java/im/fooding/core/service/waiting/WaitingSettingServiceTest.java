@@ -3,6 +3,7 @@ package im.fooding.core.service.waiting;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import im.fooding.core.TestConfig;
+import im.fooding.core.dto.request.waiting.WaitingSettingCreateRequest;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.Store;
@@ -65,5 +66,49 @@ class WaitingSettingServiceTest extends TestConfig {
         ApiException e = assertThrows(ApiException.class, () -> waitingSettingService.getActiveSetting(store));
         Assertions.assertThat(e.getErrorCode())
                 .isEqualTo(ErrorCode.ACTIVE_WAITING_SETTING_NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("웨이팅 세팅을 생성할 수 있다.")
+    public void testCreate() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        Waiting waiting = waitingRepository.save(WaitingDummy.create(store));
+        WaitingSettingCreateRequest request = WaitingSettingCreateRequest.builder()
+                .waiting(waiting)
+                .label("label")
+                .minimumCapacity(1)
+                .maximumCapacity(3)
+                .estimatedWaitingTimeMinutes(10)
+                .isActive(true)
+                .entryTimeLimitMinutes(5)
+                .build();
+
+        // when & then
+        Assertions.assertThatCode(() -> waitingSettingService.create(request))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("이미 활성화된 웨이팅 세팅이 존재하는 경우 활성 웨이팅 세팅을 생성할 수 없다.")
+    public void testCreate_fail_whenAlreadyExistActiveWaitingSetting() {
+        // given
+        Store store = storeRepository.save(StoreDummy.create());
+        Waiting waiting = waitingRepository.save(WaitingDummy.create(store));
+        WaitingSettingCreateRequest request = WaitingSettingCreateRequest.builder()
+                .waiting(waiting)
+                .label("label")
+                .minimumCapacity(1)
+                .maximumCapacity(3)
+                .estimatedWaitingTimeMinutes(10)
+                .isActive(true)
+                .entryTimeLimitMinutes(5)
+                .build();
+
+        // when & then
+        waitingSettingService.create(request);
+        ApiException e = assertThrows(ApiException.class, () -> waitingSettingService.create(request));
+        Assertions.assertThat(e.getErrorCode())
+                .isEqualTo(ErrorCode.ALREADY_EXIST_ACTIVE_WAITING_SETTING);
     }
 }
