@@ -3,10 +3,13 @@ package im.fooding.core.global.exception;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class ErrorResponse {
     @Schema(description = "시간", example = "2023-11-05T22:13:54.003779")
@@ -26,7 +29,10 @@ public class ErrorResponse {
 
     @Schema(description = "요청Method", example = "POST")
     private String method;
-    
+
+    @Schema(description = "디테일 에러")
+    private List<DetailedError> detailedErrors;
+
     public ErrorResponse(ErrorCode errorCode) {
         this.status = errorCode.getStatus().value();
         this.code = errorCode.getCode();
