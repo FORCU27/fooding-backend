@@ -11,7 +11,7 @@ public class FileResponse {
     @Schema(description = "id", example = "819f4bca-2739-46ca-9156-332c86eda619")
     private String id;
 
-    @Schema(description = "파일명", example = "819f4bca-2739-46ca-9156-332c86eda619")
+    @Schema(description = "파일명", example = "test.png")
     private String name;
 
     @Schema(description = "url", example = "https://d27gz6v6wvae1d.cloudfront.net/fooding/gigs/...")
