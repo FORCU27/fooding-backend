@@ -46,6 +46,16 @@ public enum ErrorCode {
     STORE_WAITING_ILLEGAL_STATE_REVERT(HttpStatus.BAD_REQUEST, "3006", "되돌리기 가능한 웨이팅 상태가 아닙니다."),
     STORE_WAITING_ILLEGAL_STATE_SEAT(HttpStatus.BAD_REQUEST, "3007", "착성 가능한 웨이팅 상태가 아닙니다."),
     WAITING_STATUS_STORE_WAITING_EXIST(HttpStatus.BAD_REQUEST, "3008", "남아있는 대기중인 웨이팅이 존재합니다."),
+    DUPLICATED_STORE_BY_WAITING(HttpStatus.BAD_REQUEST, "3009", "가게와 관련된 웨이팅 정보가 존재합니다."),
+    ALREADY_EXIST_ACTIVE_WAITING_SETTING(HttpStatus.BAD_REQUEST, "3010", "이미 활성화된 웨이팅 세팅이 존재합니다."),
+    WAITING_SETTING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3011", "등록된 웨이팅 설정 정보가 없습니다."),
+    WAITING_USER_PRIVACY_POLICY_AGREED_REQUIRED(HttpStatus.BAD_REQUEST, "3012", "서비스 이용약관 동의는 필수입니다."),
+    WAITING_USER_TERMS_AGREED_AGREED_REQUIRED(HttpStatus.BAD_REQUEST, "3013", "개인정보 수집 및 동의는 필수입니다."),
+    WAITING_USER_THIRD_PARTY_AGREED_REQUIRED(HttpStatus.BAD_REQUEST, "3014", "개인정보 제3자 제공 동의는 필수입니다."),
+    WAITING_USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "3015", "등록된 웨이팅 유저 정보가 없습니다."),
+    WAITING_LOG_NOT_FOUND(HttpStatus.BAD_REQUEST, "3016", "기록된 웨이팅 로그 정보가 없습니다."),
+    STORE_WAITING_EXCEEDS_MAXIMUM_CAPACITY(HttpStatus.BAD_REQUEST, "3017", "허용된 최대 인원을 초과했습니다."),
+    STORE_WAITING_BELOW_MINIMUM_CAPACITY(HttpStatus.BAD_REQUEST, "3018", "허용된 최소 인원보다 적습니다."),
 
     // 디바이스
     DEVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "7000", "등록된 디바이스가 없습니다."),
@@ -57,7 +67,15 @@ public enum ErrorCode {
 
     // 메뉴
     MENUCATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "6000", "등록된 메뉴 카테고리가 없습니다."),
-
+    
+    // 쿠폰
+    COUPON_NOT_FOUND(HttpStatus.BAD_REQUEST, "8000", "등록된 쿠폰이 없습니다."),
+    COUPON_ISSUE_QUANTITY_INVALID(HttpStatus.BAD_REQUEST, "8001", "쿠폰 발급 가능한 수량을 초과합니다"),
+    COUPON_ISSUE_DATE_INVALID(HttpStatus.BAD_REQUEST, "8002", "쿠폰 발급 가능한 일자가 아닙니다."),
+    USER_COUPON_NOT_FOUND(HttpStatus.BAD_REQUEST, "8003", "발급 받은 쿠폰이 없습니다."),
+    USER_COUPON_EXPIRED(HttpStatus.BAD_REQUEST, "8004", "쿠폰 사용 가능한 일자가 아닙니다."),
+    USER_COUPON_ALREADY_USE(HttpStatus.BAD_REQUEST, "8005", "이미 사용된 쿠폰입니다."),
+  
     // 게시긓
     POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "9000", "등록된 게시글이 없습니다.");
 
