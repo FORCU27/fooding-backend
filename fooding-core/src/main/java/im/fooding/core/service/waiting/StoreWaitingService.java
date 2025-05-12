@@ -1,6 +1,8 @@
 package im.fooding.core.service.waiting;
 
+import im.fooding.core.dto.request.waiting.StoreWaitingCreateRequest;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
+import im.fooding.core.dto.request.waiting.StoreWaitingUpdateRequest;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.Store;
@@ -27,14 +29,46 @@ public class StoreWaitingService {
 
     private final StoreWaitingRepository storeWaitingRepository;
 
-    public Page<StoreWaiting> list(StoreWaitingFilter filter, Pageable pageable) {
-        return storeWaitingRepository.findAllWithFilterAndDeletedFalse(filter, pageable);
+    @Transactional
+    public void create(StoreWaitingCreateRequest request) {
+        StoreWaiting storeWaiting = request.toStoreWaiting(generateCallNumber());
+        storeWaitingRepository.save(storeWaiting);
     }
 
     public StoreWaiting get(long id) {
         return storeWaitingRepository.findById(id)
                 .filter(it -> !it.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_WAITING_NOT_FOUND));
+    }
+
+    public Page<StoreWaiting> list(Pageable pageable) {
+        return storeWaitingRepository.findAllByDeletedFalse(pageable);
+    }
+
+    @Transactional
+    public void update(StoreWaitingUpdateRequest request) {
+        StoreWaiting storeWaiting = get(request.id());
+        storeWaiting.update(
+                request.user(),
+                request.store(),
+                StoreWaitingStatus.of(request.status()),
+                StoreWaitingChannel.of(request.channel()),
+                request.infantChairCount(),
+                request.infantCount(),
+                request.adultCount(),
+                request.memo()
+        );
+    }
+
+    @Transactional
+    public void delete(long id, long deletedBy) {
+        StoreWaiting storeWaiting = get(id);
+
+        storeWaiting.delete(deletedBy);
+    }
+
+    public Page<StoreWaiting> list(StoreWaitingFilter filter, Pageable pageable) {
+        return storeWaitingRepository.findAllWithFilterAndDeletedFalse(filter, pageable);
     }
 
     @Transactional
@@ -50,17 +84,18 @@ public class StoreWaitingService {
 
     @Transactional
     public StoreWaiting register(StoreWaitingRegisterRequest request) {
-        // TODO: 추후에 redis 로 개선
-        int callNumber = (int) storeWaitingRepository.countCreatedOnAndDeletedFalse(LocalDate.now()) + 1;
+        int callNumber = generateCallNumber();
 
         StoreWaiting storeWaiting = StoreWaiting.builder()
                 .user(request.user())
                 .store(request.store())
+                .status(StoreWaitingStatus.WAITING)
                 .callNumber(callNumber)
                 .channel(StoreWaitingChannel.of(request.channel()))
                 .infantChairCount(request.infantChairCount())
                 .infantCount(request.infantCount())
                 .adultCount(request.adultCount())
+                .memo("")
                 .build();
 
         return storeWaitingRepository.save(storeWaiting);
@@ -106,5 +141,10 @@ public class StoreWaitingService {
 
     public boolean exists(Store store, StoreWaitingStatus status) {
         return storeWaitingRepository.existsByStoreAndStatusAndDeletedFalse(store, status);
+    }
+
+    // TODO: 추후에 redis 로 개선
+    private int generateCallNumber() {
+        return (int) storeWaitingRepository.countCreatedOnAndDeletedFalse(LocalDate.now()) + 1;
     }
 }
