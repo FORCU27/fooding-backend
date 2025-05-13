@@ -1,21 +1,21 @@
-package im.fooding.app.controller.waiting;
+package im.fooding.app.controller.pos.waiting;
 
-import im.fooding.app.dto.request.waiting.PosUpdateWaitingTimeRequest;
-import im.fooding.app.dto.request.waiting.PosUpdateWaitingContactInfoRequest;
-import im.fooding.app.service.waiting.PosWaitingService;
-import im.fooding.app.dto.request.waiting.PosWaitingCancelRequest;
-import im.fooding.app.dto.request.waiting.PosWaitingOccupancyUpdateRequest;
-import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
-import im.fooding.app.dto.response.waiting.WaitingLogResponse;
-import im.fooding.app.dto.request.waiting.PosWaitingStatusUpdateRequest;
-import im.fooding.app.dto.request.waiting.PosWaitingRegisterRequest;
-import im.fooding.app.dto.request.waiting.PosWaitingMemoUpdateRequest;
+import im.fooding.app.dto.request.pos.waiting.PosUpdateWaitingTimeRequest;
+import im.fooding.app.dto.request.pos.waiting.PosUpdateWaitingContactInfoRequest;
+import im.fooding.app.dto.response.pos.waiting.PosStoreWaitingResponse;
+import im.fooding.app.dto.response.pos.waiting.PosWaitingLogResponse;
+import im.fooding.app.service.pos.waiting.PosWaitingService;
+import im.fooding.app.dto.request.pos.waiting.PosWaitingCancelRequest;
+import im.fooding.app.dto.request.pos.waiting.PosWaitingOccupancyUpdateRequest;
+import im.fooding.app.dto.request.pos.waiting.PosWaitingStatusUpdateRequest;
+import im.fooding.app.dto.request.pos.waiting.PosWaitingRegisterRequest;
+import im.fooding.app.dto.request.pos.waiting.PosWaitingMemoUpdateRequest;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.BasicSearch;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import im.fooding.app.dto.request.waiting.WaitingListRequest;
+import im.fooding.app.dto.request.pos.waiting.PosWaitingListRequest;
 import im.fooding.core.common.PageResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,18 +34,18 @@ public class PosWaitingController {
 
     @GetMapping("/{id}/requests")
     @Operation(summary = "웨이팅 목록 조회")
-    ApiResult<PageResponse<StoreWaitingResponse>> list(
+    ApiResult<PageResponse<PosStoreWaitingResponse>> list(
             @Parameter(description = "웨이팅 id", example = "1")
             @PathVariable long id,
 
-            @ModelAttribute WaitingListRequest request
+            @ModelAttribute PosWaitingListRequest request
     ) {
         return ApiResult.ok(posWaitingService.list(id, request));
     }
 
     @GetMapping("/requests/{requestId}")
     @Operation(summary = "웨이팅 상세 조회")
-    public ApiResult<StoreWaitingResponse> details(
+    public ApiResult<PosStoreWaitingResponse> details(
             @Parameter(description = "웨이팅 id", example = "1")
             @PathVariable long requestId
     ) {
@@ -54,7 +54,7 @@ public class PosWaitingController {
 
     @GetMapping("/requests/{requestId}/logs")
     @Operation(summary = "웨이팅 로그 리스트 조회")
-    public ApiResult<PageResponse<WaitingLogResponse>> listLogs(
+    public ApiResult<PageResponse<PosWaitingLogResponse>> listLogs(
             @Parameter(description = "웨이팅 id", example = "1")
             @PathVariable long requestId,
 

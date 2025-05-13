@@ -1,7 +1,9 @@
-package im.fooding.app.service.waiting;
+package im.fooding.app.service.pos.waiting;
 
-import im.fooding.app.dto.request.waiting.PosUpdateWaitingContactInfoRequest;
-import im.fooding.app.dto.request.waiting.WaitingListRequest;
+import im.fooding.app.dto.request.pos.waiting.PosUpdateWaitingContactInfoRequest;
+import im.fooding.app.dto.request.pos.waiting.PosWaitingListRequest;
+import im.fooding.app.dto.response.pos.waiting.PosStoreWaitingResponse;
+import im.fooding.app.dto.response.pos.waiting.PosWaitingLogResponse;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
@@ -12,16 +14,14 @@ import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import im.fooding.core.service.waiting.WaitingUserService;
-import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
-import im.fooding.app.dto.response.waiting.WaitingLogResponse;
 import im.fooding.core.common.BasicSearch;
-import im.fooding.app.dto.request.waiting.PosWaitingRegisterRequest;
+import im.fooding.app.dto.request.pos.waiting.PosWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
-import im.fooding.app.dto.request.waiting.PosWaitingOccupancyUpdateRequest;
+import im.fooding.app.dto.request.pos.waiting.PosWaitingOccupancyUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -43,11 +43,11 @@ public class PosWaitingService {
     private final WaitingUserService waitingUserService;
     private final WaitingLogService waitingLogService;
 
-    public StoreWaitingResponse details(long id) {
-        return StoreWaitingResponse.from(storeWaitingService.get(id));
+    public PosStoreWaitingResponse details(long id) {
+        return PosStoreWaitingResponse.from(storeWaitingService.get(id));
     }
 
-    public PageResponse<StoreWaitingResponse> list(long id, WaitingListRequest request) {
+    public PageResponse<PosStoreWaitingResponse> list(long id, PosWaitingListRequest request) {
 
         Waiting waiting = waitingService.get(id);
 
@@ -57,9 +57,9 @@ public class PosWaitingService {
                 .build();
         Page<StoreWaiting> storeWaitings = storeWaitingService.list(storeWaitingFilter, request.pageable());
 
-        List<StoreWaitingResponse> list = storeWaitings.getContent()
+        List<PosStoreWaitingResponse> list = storeWaitings.getContent()
                 .stream()
-                .map(StoreWaitingResponse::from)
+                .map(PosStoreWaitingResponse::from)
                 .toList();
 
         return PageResponse.of(list, PageInfo.of(storeWaitings));
@@ -196,12 +196,12 @@ public class PosWaitingService {
         }
     }
 
-    public PageResponse<WaitingLogResponse> listLogs(long requestId, BasicSearch search) {
+    public PageResponse<PosWaitingLogResponse> listLogs(long requestId, BasicSearch search) {
         Page<WaitingLog> logs = waitingLogService.list(requestId, search.getPageable());
 
-        List<WaitingLogResponse> list = logs.getContent()
+        List<PosWaitingLogResponse> list = logs.getContent()
                 .stream()
-                .map(WaitingLogResponse::from)
+                .map(PosWaitingLogResponse::from)
                 .toList();
 
         return PageResponse.of(list, PageInfo.of(logs));

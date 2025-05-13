@@ -1,21 +1,21 @@
-package im.fooding.app.controller.waiting;
+package im.fooding.app.controller.app.waiting;
 
-import im.fooding.app.dto.request.waiting.AppWaitingRegisterRequest;
-import im.fooding.app.dto.response.waiting.AppWaitingRegisterResponse;
-import im.fooding.app.dto.response.waiting.WaitingLogResponse;
-import im.fooding.app.service.waiting.AppWaitingApplicationService;
+import im.fooding.app.dto.request.app.waiting.AppWaitingListRequest;
+import im.fooding.app.dto.request.app.waiting.AppWaitingRegisterRequest;
+import im.fooding.app.dto.response.app.waiting.AppWaitingRegisterResponse;
+import im.fooding.app.dto.response.app.waiting.AppWaitingLogResponse;
+import im.fooding.app.service.app.waiting.AppWaitingApplicationService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.BasicSearch;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import im.fooding.app.dto.request.waiting.WaitingListRequest;
 import im.fooding.core.common.PageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
+import im.fooding.app.dto.response.app.waiting.AppStoreWaitingResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,17 +32,17 @@ public class AppWaitingController {
 
     @GetMapping("/{id}/requests")
     @Operation(summary = "웨이팅 목록 조회")
-    ApiResult<PageResponse<StoreWaitingResponse>> list(
+    ApiResult<PageResponse<AppStoreWaitingResponse>> list(
             @Parameter(description = "웨이팅 id", example = "1")
             @PathVariable long id,
 
-            @ModelAttribute WaitingListRequest request
+            @ModelAttribute AppWaitingListRequest request
     ) {
         return ApiResult.ok(appWaitingApplicationService.list(id, request));
     }
 
     @GetMapping("/requests/{requestId}")
-    public ApiResult<StoreWaitingResponse> details(
+    public ApiResult<AppStoreWaitingResponse> details(
             @Parameter(description = "웨이팅 id", example = "1")
             @PathVariable long requestId
     ) {
@@ -50,7 +50,7 @@ public class AppWaitingController {
     }
 
     @GetMapping("/requests/{requestId}/logs")
-    public ApiResult<PageResponse<WaitingLogResponse>> listLogs(
+    public ApiResult<PageResponse<AppWaitingLogResponse>> listLogs(
             @Parameter(description = "웨이팅 id", example = "1")
             @PathVariable long requestId,
 

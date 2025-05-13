@@ -1,9 +1,10 @@
-package im.fooding.app.service.waiting;
+package im.fooding.app.service.app.waiting;
 
-import im.fooding.app.dto.request.waiting.AppWaitingRegisterRequest;
-import im.fooding.app.dto.response.waiting.AppWaitingRegisterResponse;
+import im.fooding.app.dto.request.app.waiting.AppWaitingListRequest;
+import im.fooding.app.dto.request.app.waiting.AppWaitingRegisterRequest;
+import im.fooding.app.dto.response.app.waiting.AppWaitingRegisterResponse;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
-import im.fooding.app.dto.response.waiting.WaitingLogResponse;
+import im.fooding.app.dto.response.app.waiting.AppWaitingLogResponse;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
@@ -17,10 +18,9 @@ import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingUserService;
-import im.fooding.app.dto.response.waiting.StoreWaitingResponse;
+import im.fooding.app.dto.response.app.waiting.AppStoreWaitingResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import im.fooding.app.dto.request.waiting.WaitingListRequest;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
@@ -42,11 +42,11 @@ public class AppWaitingApplicationService {
     private final WaitingLogService waitingLogService;
     private final UserNotificationApplicationService userNotificationApplicationService;
 
-    public StoreWaitingResponse details(long id) {
-        return StoreWaitingResponse.from(storeWaitingService.get(id));
+    public AppStoreWaitingResponse details(long id) {
+        return AppStoreWaitingResponse.from(storeWaitingService.get(id));
     }
 
-    public PageResponse<StoreWaitingResponse> list(long id, WaitingListRequest request) {
+    public PageResponse<AppStoreWaitingResponse> list(long id, AppWaitingListRequest request) {
 
         Waiting waiting = waitingService.get(id);
 
@@ -56,9 +56,9 @@ public class AppWaitingApplicationService {
                 .build();
         Page<StoreWaiting> storeWaitings = storeWaitingService.list(storeWaitingFilter, request.pageable());
 
-        List<StoreWaitingResponse> list = storeWaitings.getContent()
+        List<AppStoreWaitingResponse> list = storeWaitings.getContent()
                 .stream()
-                .map(StoreWaitingResponse::from)
+                .map(AppStoreWaitingResponse::from)
                 .toList();
 
         return PageResponse.of(list, PageInfo.of(storeWaitings));
@@ -121,12 +121,12 @@ public class AppWaitingApplicationService {
         );
     }
 
-    public PageResponse<WaitingLogResponse> listLogs(long requestId, BasicSearch search) {
+    public PageResponse<AppWaitingLogResponse> listLogs(long requestId, BasicSearch search) {
         Page<WaitingLog> logs = waitingLogService.list(requestId, search.getPageable());
 
-        List<WaitingLogResponse> list = logs.getContent()
+        List<AppWaitingLogResponse> list = logs.getContent()
                 .stream()
-                .map(WaitingLogResponse::from)
+                .map(AppWaitingLogResponse::from)
                 .toList();
 
         return PageResponse.of(list, PageInfo.of(logs));
