@@ -1,9 +1,9 @@
-package im.fooding.app.dto.response.waiting;
+package im.fooding.app.dto.response.app.waiting;
 
 import im.fooding.core.model.waiting.StoreWaiting;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public record StoreWaitingResponse(
+public record AppStoreWaitingResponse(
         @Schema(description = "id", example = "1")
         long id,
 
@@ -11,7 +11,7 @@ public record StoreWaitingResponse(
         long storeId,
 
         @Schema(description = "유저 정보")
-        WaitingUserResponse user,
+        AppWaitingUserResponse user,
 
         @Schema(description = "호출 번호", example = "1")
         int callNumber,
@@ -32,11 +32,11 @@ public record StoreWaitingResponse(
         String memo
 ) {
 
-    public static StoreWaitingResponse from(StoreWaiting storeWaiting) {
-        return new StoreWaitingResponse(
+    public static AppStoreWaitingResponse from(StoreWaiting storeWaiting) {
+        return new AppStoreWaitingResponse(
                 storeWaiting.getId(),
                 storeWaiting.getStoreId(),
-                WaitingUserResponse.from(storeWaiting.getUser()),
+                AppWaitingUserResponse.from(storeWaiting.getUser()),
                 storeWaiting.getCallNumber(),
                 storeWaiting.getChannelValue(),
                 storeWaiting.getInfantChairCount(),
