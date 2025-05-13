@@ -37,6 +37,10 @@ jwt:
     header: ${JWT_REFRESH_HEADER:Authorization-refresh}
 
 springdoc:
+  swagger-ui:
+    groups-order: ASC
+    tags-sorter: alpha
+    operations-sorter: method
   api-docs:
     path: ${SPRINGDOC_PATH:/api-docs}
   packages-to-exclude: ${SPRINGDOC_EXCLUDE_PACKAGES:/im/fooding/app/controller}
