@@ -46,4 +46,8 @@ public class StoreService {
         return storeRepository.findById(storeId).filter(it -> !it.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_NOT_FOUND));
     }
+
+    public Page<Store> list(Pageable pageable) {
+        return storeRepository.findAll(pageable);
+    }
 }

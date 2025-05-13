@@ -26,6 +26,7 @@ public class AppStoreController {
             @AuthenticationPrincipal UserInfo userInfo,
             @ModelAttribute BasicSearch basicSearch
     ) {
-        return appStoreService.getMyStores(userInfo.getId(), basicSearch);
+        // TODO: 유저, 권한 개발 후 자신이 접근할 수 있는 Store 만 조회할 수 있도록 수정한다
+        return appStoreService.getMyStores(1L, basicSearch);
     }
 }
