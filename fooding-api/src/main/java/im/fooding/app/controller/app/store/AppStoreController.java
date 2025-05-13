@@ -21,7 +21,7 @@ public class AppStoreController {
     
     private final AppStoreService appStoreService;
 
-    @GetMapping("/me")
+    @GetMapping
     public PageResponse<AppStoreResponse> getMyStores(
             @AuthenticationPrincipal UserInfo userInfo,
             @ModelAttribute BasicSearch basicSearch
