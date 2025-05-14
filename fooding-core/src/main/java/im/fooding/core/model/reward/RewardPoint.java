@@ -5,6 +5,7 @@ import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
@@ -38,4 +39,12 @@ public class RewardPoint extends BaseEntity {
     }
 
     public void usePoint( int usePoint ) { this.point -= usePoint; };
+
+    @Builder
+    public RewardPoint( Store store, String phoneNumber, User user, int point ){
+        this.store = store;
+        this.phoneNumber = phoneNumber;
+        this.user = user;
+        this.point = point;
+    }
 }
