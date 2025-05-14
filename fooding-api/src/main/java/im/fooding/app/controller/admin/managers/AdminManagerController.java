@@ -1,7 +1,7 @@
 package im.fooding.app.controller.admin.managers;
 
 import im.fooding.app.dto.request.admin.manager.AdminUpdateMangerRequest;
-import im.fooding.app.dto.response.admin.manager.AdminManagerResponse;
+import im.fooding.app.dto.response.auth.AuthUserResponse;
 import im.fooding.app.service.admin.manager.AdminManagerApplicationService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.BasicSearch;
@@ -23,12 +23,6 @@ import org.springframework.web.bind.annotation.*;
 public class AdminManagerController {
     private final AdminManagerApplicationService service;
 
-    @GetMapping("/me")
-    @Operation(summary = "로그인한 정보")
-    public ApiResult<AdminManagerResponse> me(@AuthenticationPrincipal UserInfo userInfo) {
-        return ApiResult.ok(service.retrieve(userInfo.getId()));
-    }
-
     @GetMapping
     @Operation(summary = "관리자 리스트")
     public ApiResult<PageResponse> list(BasicSearch search) {
@@ -37,7 +31,7 @@ public class AdminManagerController {
 
     @GetMapping("/{id}")
     @Operation(summary = "관리자 조회")
-    public ApiResult<AdminManagerResponse> retrieve(@PathVariable long id) {
+    public ApiResult<AuthUserResponse> retrieve(@PathVariable long id) {
         return ApiResult.ok(service.retrieve(id));
     }
 

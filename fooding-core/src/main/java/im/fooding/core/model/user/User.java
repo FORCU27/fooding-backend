@@ -11,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,10 +23,7 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
     private String password;
@@ -78,9 +76,11 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private Gender gender;
 
+    @OneToMany(mappedBy = "user")
+    List<UserAuthority> authorities;
+
     @Builder
-    public User(Role role, String email, String password, AuthProvider provider, String nickname, String phoneNumber, String referralCode, String profileImage, boolean termsAgreed, boolean privacyPolicyAgreed, boolean marketingConsent, Gender gender) {
-        this.role = role;
+    public User(String email, String password, AuthProvider provider, String nickname, String phoneNumber, String referralCode, String profileImage, boolean termsAgreed, boolean privacyPolicyAgreed, boolean marketingConsent, Gender gender) {
         this.email = email;
         this.password = password;
         this.provider = provider;

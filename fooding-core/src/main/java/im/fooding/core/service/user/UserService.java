@@ -20,14 +20,14 @@ public class UserService {
     private final UserRepository userRepository;
 
     /**
-     * 등록
+     * 유저 등록
      *
      * @param email
      * @param nickname
      * @param password
      */
-    public void save(String email, String nickname, String password, Role role) {
-        checkDuplicateEmail(email);
+    public User create(String email, String nickname, String password) {
+        checkDuplicateEmail(email, AuthProvider.FOODING);
         if (checkDuplicatedNickname(nickname)) {
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
         }
@@ -35,11 +35,26 @@ public class UserService {
                 .email(email)
                 .nickname(nickname)
                 .password(password)
-                .role(role)
                 .provider(AuthProvider.FOODING)
                 .gender(Gender.NONE)
                 .build();
-        userRepository.save(user);
+        return userRepository.save(user);
+    }
+
+    /**
+     * 소셜 유저 등록
+     *
+     * @param email
+     * @param provider
+     */
+    public User createSocialUser(String email, AuthProvider provider) {
+        User user = User.builder()
+                .email(email)
+                .provider(provider)
+                .gender(Gender.NONE)
+                .build();
+
+        return userRepository.save(user);
     }
 
     /**
@@ -61,17 +76,6 @@ public class UserService {
      */
     public User findById(long id) {
         return userRepository.findById(id).filter(it -> !it.isDeleted())
-                .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
-    }
-
-    /**
-     * 이메일로 조회
-     *
-     * @param email
-     * @return User
-     */
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
     }
 
@@ -111,21 +115,14 @@ public class UserService {
     }
 
     /**
-     * 이메일로 유저 조회(없으면 생성 후 리턴)
+     * email, provider로 유저 조회
      *
      * @param email
+     * @param provider
      * @return User
      */
-    public User findByEmailOrCreateUser(String email, AuthProvider provider, Role role) {
-        return userRepository.findByEmail(email).orElseGet(() -> {
-            User user = User.builder()
-                    .email(email)
-                    .provider(provider)
-                    .role(role)
-                    .gender(Gender.NONE)
-                    .build();
-            return userRepository.save(user);
-        });
+    public User findByEmailAndProvider(String email, AuthProvider provider) {
+        return userRepository.findByEmailAndProvider(email, provider).orElse(null);
     }
 
     /**
@@ -133,8 +130,8 @@ public class UserService {
      *
      * @param email
      */
-    private void checkDuplicateEmail(String email) {
-        userRepository.findByEmail(email).ifPresent(it -> {
+    private void checkDuplicateEmail(String email, AuthProvider provider) {
+        userRepository.findByEmailAndProvider(email, provider).ifPresent(it -> {
             throw new ApiException(ErrorCode.DUPLICATED_REGISTER_EMAIL);
         });
     }

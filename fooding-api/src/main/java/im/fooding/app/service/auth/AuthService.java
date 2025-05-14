@@ -1,6 +1,10 @@
-package im.fooding.app.service.user.auth;
+package im.fooding.app.service.auth;
 
 import feign.FeignException;
+import im.fooding.app.dto.request.auth.AuthCreateRequest;
+import im.fooding.app.dto.request.auth.AuthLoginRequest;
+import im.fooding.app.dto.request.auth.AuthSocialLoginRequest;
+import im.fooding.app.dto.response.auth.AuthUserResponse;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.global.feign.client.SocialLoginClient;
@@ -16,33 +20,90 @@ import im.fooding.core.global.util.AppleLoginUtil;
 import im.fooding.core.model.user.AuthProvider;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
+import im.fooding.core.model.user.UserAuthority;
+import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
+import java.util.List;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
-public class UserAuthApplicationService {
+@Slf4j
+public class AuthService {
     private final JwtService jwtService;
     private final OauthInfo oauthInfo;
     private final SocialLoginClient client;
     private final UserService userService;
+    private final UserAuthorityService userAuthorityService;
+    private final PasswordEncoder passwordEncoder;
+
+    /**
+     * user id로 조회
+     *
+     * @param id
+     * @return AuthUserResponse
+     */
+    @Transactional(readOnly = true)
+    public AuthUserResponse retrieve(long id) {
+        return AuthUserResponse.of(userService.findById(id));
+    }
+
+    /**
+     * 일반 회원가입
+     *
+     * @param request
+     */
+    @Transactional
+    public void register(AuthCreateRequest request) {
+        User user = userService.create(request.getEmail(), request.getNickname(), passwordEncoder.encode(request.getPassword()));
+        userAuthorityService.create(user, request.getRole());
+    }
+
+    /**
+     * 일반 로그인
+     *
+     * @param request
+     * @return TokenResponse
+     */
+    @Transactional
+    public TokenResponse login(AuthLoginRequest request) {
+        User user = userService.findByEmailAndProvider(request.getEmail(), AuthProvider.FOODING);
+
+        List<Role> roles = user.getAuthorities().stream()
+                .map(UserAuthority::getRole)
+                .toList();
+
+        if (!roles.contains(request.getRole())) {
+            throw new ApiException(ErrorCode.LOGIN_FAILED);
+        }
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new ApiException(ErrorCode.LOGIN_FAILED);
+        }
+
+        TokenResponse tokenResponse = jwtService.issueJwtToken(user.getId());
+        user.updatedRefreshToken(tokenResponse.getRefreshToken());
+        return tokenResponse;
+    }
 
     /**
      * 소셜 로그인
      *
-     * @param provider
-     * @param code
+     * @param request
      * @return TokenResponse
      */
-    @Transactional
-    public TokenResponse login(AuthProvider provider, String code, Role role) {
-        String token = getToken(provider, code);
+    public TokenResponse loginWithSocial(AuthSocialLoginRequest request) {
+        AuthProvider provider = request.getProvider();
+        Role role = request.getRole();
+
+        String token = getToken(request.getProvider(), request.getCode(), request.getRedirectUri());
+
         switch (provider) {
             // TODO: 디자인 패턴 적용
             case KAKAO -> {
@@ -72,16 +133,16 @@ public class UserAuthApplicationService {
      * @param code
      * @return String
      */
-    private String getToken(AuthProvider provider, String code) {
+    private String getToken(AuthProvider provider, String code, String redirectUri) {
         try {
             switch (provider) {
                 case KAKAO -> {
                     return client.getKakaoToken(
                             new URI(oauthInfo.getKakaoTokenUri()),
                             oauthInfo.getKakaoRestApiKey(),
-                            oauthInfo.getKakaoRedirectUri(),
+                            redirectUri,
                             code,
-                            "authorization_code"
+                            oauthInfo.getGrantType()
                     ).getAccessToken();
                 }
                 case GOOGLE -> {
@@ -89,9 +150,9 @@ public class UserAuthApplicationService {
                             new URI(oauthInfo.getGoogleTokenUri()),
                             oauthInfo.getGoogleClientId(),
                             oauthInfo.getGoogleClientSecret(),
-                            oauthInfo.getGoogleRedirectUri(),
+                            redirectUri,
                             code,
-                            "authorization_code"
+                            oauthInfo.getGrantType()
                     ).getAccessToken();
                 }
                 case NAVER -> {
@@ -100,7 +161,7 @@ public class UserAuthApplicationService {
                             oauthInfo.getNaverClientId(),
                             oauthInfo.getNaverClientSecret(),
                             code,
-                            "authorization_code"
+                            oauthInfo.getGrantType()
                     ).getAccessToken();
                 }
                 case APPLE -> {
@@ -108,17 +169,15 @@ public class UserAuthApplicationService {
                             new URI(oauthInfo.getAppleTokenUri()),
                             oauthInfo.getAppleClientId(),
                             oauthInfo.getAppleClientSecret(),
-                            oauthInfo.getAppleRedirectUri(),
+                            redirectUri,
                             code,
-                            "authorization_code"
+                            oauthInfo.getGrantType()
                     ).getIdToken();
                 }
                 default -> throw new ApiException(ErrorCode.UNSUPPORTED_SOCIAL);
             }
         } catch (FeignException e) {
-            String detailMessage = e.responseBody()
-                    .map(bytes -> new String(bytes.array()))
-                    .orElse(null);
+            String detailMessage = e.responseBody().map(bytes -> new String(bytes.array())).orElse(null);
             throw new ApiException(ErrorCode.OAUTH_FAILED, detailMessage);
         } catch (Exception e) {
             throw new ApiException(ErrorCode.OAUTH_FAILED, e.getMessage());
@@ -140,11 +199,9 @@ public class UserAuthApplicationService {
             }
             return kakaoUserProfile;
         } catch (FeignException e) {
-            String detailMessage = e.responseBody()
-                    .map(bytes -> new String(bytes.array()))
-                    .orElse(null);
+            String detailMessage = e.responseBody().map(bytes -> new String(bytes.array())).orElse(null);
             throw new ApiException(ErrorCode.OAUTH_FAILED, detailMessage);
-        }  catch (Exception e) {
+        } catch (Exception e) {
             throw new ApiException(ErrorCode.OAUTH_FAILED);
         }
     }
@@ -163,9 +220,7 @@ public class UserAuthApplicationService {
             }
             return googleUserResponse;
         } catch (FeignException e) {
-            String detailMessage = e.responseBody()
-                    .map(bytes -> new String(bytes.array()))
-                    .orElse(null);
+            String detailMessage = e.responseBody().map(bytes -> new String(bytes.array())).orElse(null);
             throw new ApiException(ErrorCode.OAUTH_FAILED, detailMessage);
         } catch (Exception e) {
             throw new ApiException(ErrorCode.OAUTH_FAILED);
@@ -187,9 +242,7 @@ public class UserAuthApplicationService {
             }
             return naverUserProfile;
         } catch (FeignException e) {
-            String detailMessage = e.responseBody()
-                    .map(bytes -> new String(bytes.array()))
-                    .orElse(null);
+            String detailMessage = e.responseBody().map(bytes -> new String(bytes.array())).orElse(null);
             throw new ApiException(ErrorCode.OAUTH_FAILED, detailMessage);
         } catch (Exception e) {
             throw new ApiException(ErrorCode.OAUTH_FAILED);
@@ -219,7 +272,17 @@ public class UserAuthApplicationService {
      * @return TokenResponse
      */
     private TokenResponse verifyOrRegisterAndIssueToken(String email, AuthProvider provider, Role role) {
-        User user = userService.findByEmailOrCreateUser(email, provider, role);
+        User user = userService.findByEmailAndProvider(email, provider);
+        if (user == null) {
+            user = userService.createSocialUser(email, provider);
+            userAuthorityService.create(user, role);
+        } else {
+            List<UserAuthority> authorities = user.getAuthorities();
+            List<Role> userRoles = authorities.stream().map(UserAuthority::getRole).toList();
+            if (!userRoles.contains(role)) {
+                userAuthorityService.create(user, role);
+            }
+        }
         TokenResponse tokenResponse = jwtService.issueJwtToken(user.getId());
         user.updatedRefreshToken(tokenResponse.getRefreshToken());
         return tokenResponse;
