@@ -32,18 +32,56 @@ public class StoreService {
     public Page<Store> list(
             Pageable pageable,
             StoreSortType sortType,
-            SortDirection sortDirection
-    ) {
-        return storeRepository.list(pageable, sortType, sortDirection);
+            SortDirection sortDirection,
+            boolean includeDeleted) {
+        return storeRepository.list(pageable, sortType, sortDirection,includeDeleted);
     }
 
     /**
      * 가게 아이디로 조회
+     * 
      * @param storeId
      * @return
      */
     public Store findById(long storeId) {
         return storeRepository.findById(storeId).filter(it -> !it.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_NOT_FOUND));
+    }
+
+    /**
+     * 가게 생성
+     */
+    @Transactional
+    public Long create(String name, String city, String address, String category, String description,
+            String priceCategory, String eventDescription, String contactNumber, String direction,
+            String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut) {
+        Store store = Store.builder()
+                .name(name)
+                .city(city)
+                .address(address)
+                .category(category)
+                .description(description)
+                .priceCategory(priceCategory)
+                .eventDescription(eventDescription)
+                .contactNumber(contactNumber)
+                .direction(direction)
+                .information(information)
+                .isParkingAvailable(isParkingAvailable)
+                .isNewOpen(isNewOpen)
+                .isTakeOut(isTakeOut)
+                .build();
+        Store savedStore = storeRepository.save(store);
+        return savedStore.getId();
+    }
+
+    /**
+     * 가게 삭제
+     */
+    @Transactional
+    public void delete(long id, Long deletedBy) {
+        Store store = findById(id);
+
+        // TODO: 유저 정보
+        store.delete(0);
     }
 }

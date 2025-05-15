@@ -11,6 +11,7 @@ public interface QStoreRepository {
     Page<Store> list(
             Pageable pageable,
             StoreSortType sortType,
-            SortDirection sortDirection
+            SortDirection sortDirection,
+            boolean includeDeleted
     );
 }
