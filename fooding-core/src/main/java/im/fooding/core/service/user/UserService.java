@@ -20,7 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     /**
-     * 유저 등록
+     * 유저 등록(ADMIN, CEO)
      *
      * @param email
      * @param nickname
@@ -42,7 +42,7 @@ public class UserService {
     }
 
     /**
-     * 소셜 유저 등록
+     * 소셜 유저 등록(USER, CEO)
      *
      * @param email
      * @param provider
@@ -84,13 +84,17 @@ public class UserService {
      *
      * @param id
      * @param nickname
+     * @param phoneNumber
+     * @param gender
+     * @param referralCode
+     * @param marketingConsent
      */
-    public void update(long id, String nickname, String phoneNumber, String profileImage) {
+    public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent) {
         User user = findById(id);
         if (!user.getNickname().equals(nickname) && checkDuplicatedNickname(nickname)) {
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
         }
-        user.update(nickname, phoneNumber, profileImage);
+        user.update(nickname, phoneNumber, gender, referralCode, marketingConsent);
     }
 
     /**
@@ -108,7 +112,7 @@ public class UserService {
      * 닉네임 중복체크
      *
      * @param nickname
-     * @return
+     * @return boolean
      */
     public boolean checkDuplicatedNickname(String nickname) {
         return userRepository.findByNickname(nickname).isPresent();
@@ -123,6 +127,16 @@ public class UserService {
      */
     public User findByEmailAndProvider(String email, AuthProvider provider) {
         return userRepository.findByEmailAndProvider(email, provider).orElse(null);
+    }
+
+    /**
+     * 프로필 이미지 수정
+     *
+     * @param user
+     * @param profileImage
+     */
+    public void updateProfileImage(User user, String profileImage) {
+        user.updateProfileImage(profileImage);
     }
 
     /**

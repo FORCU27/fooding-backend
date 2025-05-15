@@ -100,10 +100,18 @@ public class User extends BaseEntity {
         this.lastLoggedInAt = LocalDateTime.now();
     }
 
-    public void update(String nickname, String phoneNumber, String profileImage) {
+    public void update(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent) {
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
-        this.profileImage = profileImage;
+        this.gender = gender;
+        this.referralCode = referralCode;
+        if (marketingConsent) {
+            this.marketingConsent = true;
+            this.marketingConsentAt = this.marketingConsentAt == null ? LocalDateTime.now() : this.marketingConsentAt;
+        } else {
+            this.marketingConsent = false;
+            this.marketingConsentAt = null;
+        }
     }
 
     public void updatePassword(String password) {
@@ -116,5 +124,9 @@ public class User extends BaseEntity {
 
     public void saveMarketingConsentAt() {
         this.marketingConsentAt = LocalDateTime.now();
+    }
+
+    public void updateProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }

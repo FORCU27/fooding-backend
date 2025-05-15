@@ -33,29 +33,20 @@ public class AuthUserResponse {
     @Schema(description = "로그인 횟수", example = "1")
     private int loginCount;
 
-    @Schema(description = "마지막 로그인 시간", example = "2025-03-15T05:17:04.069")
-    private LocalDateTime lastLoggedInAt;
+    @Schema(description = "성별", example = "MALE")
+    private Gender gender;
 
     @Schema(description = "이용약관 동의 여부", example = "true")
     private boolean termsAgreed;
 
-    @Schema(description = "이용약관 동의 날짜", example = "2025-03-15T05:17:04.069")
-    private LocalDateTime termsAgreedAt;
-
     @Schema(description = "개인정보처리방침 동의 여부", example = "true")
     private boolean privacyPolicyAgreed;
-
-    @Schema(description = "개인정보 처리방침 동의 날짜", example = "2025-03-15T05:17:04.069")
-    private LocalDateTime privacyPolicyAgreedAt;
 
     @Schema(description = "마케팅 수신 동의 여부", example = "true")
     private boolean marketingConsent;
 
-    @Schema(description = "마케팅 수신 동의 날짜", example = "2025-03-15T05:17:04.069")
-    private LocalDateTime marketingConsentAt;
-
-    @Schema(description = "성별", example = "MALE")
-    private Gender gender;
+    @Schema(description = "마지막 로그인 시간", example = "2025-03-15T05:17:04.069")
+    private LocalDateTime lastLoggedInAt;
 
     @Schema(description = "가입일자", example = "2025-03-15T05:17:04.069")
     private LocalDateTime createdAt;
@@ -64,7 +55,7 @@ public class AuthUserResponse {
     private LocalDateTime updatedAt;
 
     @Builder
-    private AuthUserResponse(long id, String email, String nickname, String phoneNumber, String referralCode, String profileImage, int loginCount, LocalDateTime lastLoggedInAt, boolean termsAgreed, LocalDateTime termsAgreedAt, boolean privacyPolicyAgreed, LocalDateTime privacyPolicyAgreedAt, boolean marketingConsent, LocalDateTime marketingConsentAt, Gender gender, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private AuthUserResponse(long id, String email, String nickname, String phoneNumber, String referralCode, String profileImage, int loginCount, Gender gender, boolean termsAgreed, boolean privacyPolicyAgreed, boolean marketingConsent, LocalDateTime lastLoggedInAt, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
@@ -72,14 +63,11 @@ public class AuthUserResponse {
         this.referralCode = referralCode;
         this.profileImage = profileImage;
         this.loginCount = loginCount;
-        this.lastLoggedInAt = lastLoggedInAt;
-        this.termsAgreed = termsAgreed;
-        this.termsAgreedAt = termsAgreedAt;
-        this.privacyPolicyAgreed = privacyPolicyAgreed;
-        this.privacyPolicyAgreedAt = privacyPolicyAgreedAt;
-        this.marketingConsent = marketingConsent;
-        this.marketingConsentAt = marketingConsentAt;
         this.gender = gender;
+        this.termsAgreed = termsAgreed;
+        this.privacyPolicyAgreed = privacyPolicyAgreed;
+        this.marketingConsent = marketingConsent;
+        this.lastLoggedInAt = lastLoggedInAt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -93,14 +81,11 @@ public class AuthUserResponse {
                 .referralCode(user.getReferralCode())
                 .profileImage(user.getProfileImage())
                 .loginCount(user.getLoginCount())
-                .lastLoggedInAt(user.getLastLoggedInAt())
-                .termsAgreed(user.isTermsAgreed())
-                .termsAgreedAt(user.getTermsAgreedAt())
-                .privacyPolicyAgreed(user.isPrivacyPolicyAgreed())
-                .privacyPolicyAgreedAt(user.getPrivacyPolicyAgreedAt())
-                .marketingConsent(user.isMarketingConsent())
-                .marketingConsentAt(user.getMarketingConsentAt())
                 .gender(user.getGender())
+                .termsAgreed(user.isTermsAgreed())
+                .privacyPolicyAgreed(user.isPrivacyPolicyAgreed())
+                .marketingConsent(user.isMarketingConsent())
+                .lastLoggedInAt(user.getLastLoggedInAt())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .build();

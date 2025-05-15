@@ -4,6 +4,7 @@ import feign.FeignException;
 import im.fooding.app.dto.request.auth.AuthCreateRequest;
 import im.fooding.app.dto.request.auth.AuthLoginRequest;
 import im.fooding.app.dto.request.auth.AuthSocialLoginRequest;
+import im.fooding.app.dto.request.auth.AuthUpdateProfileRequest;
 import im.fooding.app.dto.response.auth.AuthUserResponse;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
@@ -28,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.net.URI;
 import java.util.List;
@@ -52,6 +54,33 @@ public class AuthService {
     @Transactional(readOnly = true)
     public AuthUserResponse retrieve(long id) {
         return AuthUserResponse.of(userService.findById(id));
+    }
+
+    /**
+     * 로그인한 유저 정보 수정
+     *
+     * @param id
+     * @param request
+     */
+    @Transactional
+    public void update(long id, AuthUpdateProfileRequest request) {
+        userService.update(id, request.getNickname(), request.getPhoneNumber(), request.getGender(), request.getReferralCode(), request.getMarketingConsent());
+    }
+
+    /**
+     * 로그인한 유저 프로필 이미지 수정
+     *
+     * @param id
+     * @param imageId(uuid)
+     */
+    @Transactional
+    public void updateProfileImage(long id, String imageId) {
+        User user = userService.findById(id);
+        if (StringUtils.hasText(imageId)) {
+            // 커밋 후 File entity 에서 받은 url 업데이트
+        } else {
+            userService.updateProfileImage(user, null);
+        }
     }
 
     /**

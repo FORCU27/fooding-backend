@@ -48,11 +48,11 @@ public class AdminManagerApplicationService {
      * 관리자 정보 수정
      *
      * @param id
-     * @param adminUpdateMangerRequest
+     * @param request
      */
     @Transactional
-    public void update(long id, AdminUpdateMangerRequest adminUpdateMangerRequest) {
-        userService.update(id, adminUpdateMangerRequest.getNickname(), adminUpdateMangerRequest.getPhoneNumber(), adminUpdateMangerRequest.getProfileImage());
+    public void update(long id, AdminUpdateMangerRequest request) {
+        userService.update(id, request.getNickname(), request.getPhoneNumber(), request.getGender(),null,  false);
     }
 
     /**

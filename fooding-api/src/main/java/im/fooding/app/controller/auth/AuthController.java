@@ -1,8 +1,6 @@
 package im.fooding.app.controller.auth;
 
-import im.fooding.app.dto.request.auth.AuthCreateRequest;
-import im.fooding.app.dto.request.auth.AuthLoginRequest;
-import im.fooding.app.dto.request.auth.AuthSocialLoginRequest;
+import im.fooding.app.dto.request.auth.*;
 import im.fooding.app.dto.response.auth.AuthUserResponse;
 import im.fooding.app.service.auth.AuthService;
 import im.fooding.core.common.ApiResult;
@@ -30,6 +28,22 @@ public class AuthController {
     @Operation(summary = "로그인한 정보", description = "로그인한 유저의 정보를 응답한다.")
     public ApiResult<AuthUserResponse> me(@AuthenticationPrincipal UserInfo userInfo) {
         return ApiResult.ok(service.retrieve(userInfo.getId()));
+    }
+
+    @PutMapping("/me")
+    @Operation(summary = "로그인한 유저 정보 수정", description = "로그인된 상태에서 정보 수정")
+    public ApiResult<Void> update(@RequestBody @Valid AuthUpdateProfileRequest request,
+                                         @AuthenticationPrincipal UserInfo userInfo) {
+        service.update(userInfo.getId(), request);
+        return ApiResult.ok();
+    }
+
+    @PatchMapping("/me/profile-image")
+    @Operation(summary = "로그인한 유저 프로필 이미지 수정", description = "로그인된 상태에서 프로필 이미지 수정")
+    public ApiResult<Void> updateProfileImage(@RequestBody @Valid AuthUpdateProfileImageRequest request,
+                                              @AuthenticationPrincipal UserInfo userInfo) {
+        service.updateProfileImage(userInfo.getId(), request.getImageId());
+        return ApiResult.ok();
     }
 
     @PostMapping("/register")
