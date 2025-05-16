@@ -22,15 +22,15 @@ public class UserNotificationResponse {
     @Schema(description = "발송 시간", example = "2025-04-17 12:00:00")
     private LocalDateTime sentAt;
 
-    @Schema(description = "읽은 시간", example = "2025-04-11 12:30:00")
-    private LocalDateTime readAt;
+    @Schema(description = "읽음 여부", example = "false")
+    private boolean isRead;
 
-    public UserNotificationResponse(long id, String title, String content, LocalDateTime sentAt, LocalDateTime readAt) {
+    public UserNotificationResponse(long id, String title, String content, LocalDateTime sentAt, boolean isRead) {
       this.id = id;
       this.title = title;
       this.content = content;
       this.sentAt = sentAt;
-      this.readAt = readAt;
+      this.isRead = isRead;
     }
 
     public static UserNotificationResponse from(UserNotification userNotification) {
@@ -39,7 +39,7 @@ public class UserNotificationResponse {
               userNotification.getTitle(),
               userNotification.getContent(),
               userNotification.getSentAt(),
-              userNotification.getReadAt()
+              userNotification.isRead()
       );
     }
 }
