@@ -5,6 +5,8 @@ import im.fooding.app.service.app.store.AppStoreService;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.UserInfo;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,15 +15,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/app/stores")
+@Tag(name="App Store Controller", description = "[APP] 가게 컨트롤")
+@Slf4j
 public class AppStoreController {
     
     private final AppStoreService appStoreService;
 
     @GetMapping
+    @Operation(summary = "본인 가게 페이징 조회")
     public PageResponse<AppStoreResponse> getMyStores(
             @AuthenticationPrincipal UserInfo userInfo,
             @ModelAttribute BasicSearch basicSearch
