@@ -39,7 +39,6 @@ public class StoreService {
 
     /**
      * 가게 아이디로 조회
-     * 
      * @param storeId
      * @return
      */
@@ -83,5 +82,9 @@ public class StoreService {
 
         // TODO: 유저 정보
         store.delete(0);
+    }
+
+    public Page<Store> list(Pageable pageable) {
+        return storeRepository.findAll(pageable);
     }
 }
