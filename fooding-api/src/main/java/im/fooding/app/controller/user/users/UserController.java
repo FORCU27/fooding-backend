@@ -1,7 +1,6 @@
 package im.fooding.app.controller.user.users;
 
 import im.fooding.app.dto.response.admin.manager.AdminManagerResponse;
-import im.fooding.app.service.admin.manager.AdminManagerApplicationService;
 import im.fooding.app.service.user.user.UserApplicationService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.global.UserInfo;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user/users")
-@Tag(name = "UserController", description = "유저 소셜 로그인 컨트롤러")
+@Tag(name = "UserController", description = "유저 정보 컨트롤러")
 public class UserController {
     private final UserApplicationService service;
 
