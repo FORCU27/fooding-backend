@@ -15,43 +15,51 @@ import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
+import com.querydsl.core.BooleanBuilder;
 
 @RequiredArgsConstructor
 public class QStoreRepositoryImpl implements QStoreRepository {
 
-    private final JPAQueryFactory query;
+        private final JPAQueryFactory query;
 
-    @Override
-    public Page<Store> list(
-            Pageable pageable,
-            StoreSortType sortType,
-            SortDirection sortDirection
-    ) {
-        OrderSpecifier<?> orderSpecifier = getOrderSpecifier(sortType, sortDirection);
+        @Override
+        public Page<Store> list(
+                        Pageable pageable,
+                        StoreSortType sortType,
+                        SortDirection sortDirection,
+                        boolean includeDeleted) {
+                OrderSpecifier<?> orderSpecifier = getOrderSpecifier(sortType, sortDirection);
 
-        List<Store> content = query
-                .select(store)
-                .from(store)
-                .leftJoin(review).on(review.store.eq(store))
-                .groupBy(store.id)
-                .orderBy(orderSpecifier)
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
+                BooleanBuilder builder = new BooleanBuilder();
+                if (!includeDeleted) {
+                        builder.and(store.deleted.eq(false));
+                }
 
-        JPQLQuery<Long> countQuery = query
-                .select(store.count())
-                .from(store);
+                List<Store> content = query
+                                .select(store)
+                                .from(store)
+                                .leftJoin(review).on(review.store.eq(store))
+                                .where(builder)
+                                .groupBy(store.id)
+                                .orderBy(orderSpecifier)
+                                .offset(pageable.getOffset())
+                                .limit(pageable.getPageSize())
+                                .fetch();
 
-        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
-    }
+                JPQLQuery<Long> countQuery = query
+                                .select(store.count())
+                                .from(store)
+                                .where(builder);
 
-    private OrderSpecifier<?> getOrderSpecifier(StoreSortType sortType, SortDirection direction) {
-        return switch (sortType) {
-            case REVIEW -> new OrderSpecifier<>
-                    (direction == SortDirection.ASCENDING ? ASC : DESC, review.count());
-            case RECENT -> new OrderSpecifier<>
-                    (direction == SortDirection.ASCENDING ? ASC : DESC, store.createdAt);
-        };
-    }
+                return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+        }
+
+        private OrderSpecifier<?> getOrderSpecifier(StoreSortType sortType, SortDirection direction) {
+                return switch (sortType) {
+                        case REVIEW ->
+                                new OrderSpecifier<>(direction == SortDirection.ASCENDING ? ASC : DESC, review.count());
+                        case RECENT -> new OrderSpecifier<>(direction == SortDirection.ASCENDING ? ASC : DESC,
+                                        store.createdAt);
+                };
+        }
 }

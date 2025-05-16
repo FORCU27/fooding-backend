@@ -36,7 +36,8 @@ public class UserStoreService {
         Page<Store> storePage = storeService.list(
                 pageable,
                 request.getSortType(),
-                request.getSortDirection()
+                request.getSortDirection(),
+                false
         );
 
         List<UserStoreResponse> content = storePage.getContent().stream()
