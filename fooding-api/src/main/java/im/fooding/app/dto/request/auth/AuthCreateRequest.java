@@ -2,6 +2,7 @@ package im.fooding.app.dto.request.auth;
 
 import im.fooding.core.model.user.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,21 +17,21 @@ public class AuthCreateRequest {
     @NotBlank
     @Email
     @Size(max = 50)
-    @Schema(description = "이메일", example = "admin@gmail.com")
+    @Schema(description = "이메일", requiredMode = RequiredMode.REQUIRED, example = "admin@gmail.com")
     private String email;
 
     @NotBlank
     @Size(max = 50)
-    @Schema(description = "닉네임", example = "홍길동")
+    @Schema(description = "닉네임", requiredMode = RequiredMode.REQUIRED, example = "홍길동")
     private String nickname;
 
     @NotBlank
     @Size(min = 4, max = 20)
-    @Schema(description = "비밀번호", example = "1234")
+    @Schema(description = "비밀번호", requiredMode = RequiredMode.REQUIRED, example = "1234")
     private String password;
 
     @NotNull
-    @Schema(description = "권한(CEO, ADMIN)", example = "ADMIN")
+    @Schema(description = "권한(CEO, ADMIN)", requiredMode = RequiredMode.REQUIRED, example = "ADMIN")
     private Role role;
 
     @Builder
