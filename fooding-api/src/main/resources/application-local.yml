@@ -61,7 +61,7 @@ logging:
 
 webhook:
   slack:
-    url: ${WEBHOOK_SLACK_URL}
+    url: ${WEBHOOK_SLACK_URL:}
 
 message:
   sender: 02-1234-5678
@@ -90,6 +90,11 @@ auth:
     key-id: 4PPY69KNW8
     private-key: MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgrHlqh7uGlOTNbxyBSeyyZ4JyLKNMDboPO+K4he/6URKgCgYIKoZIzj0DAQehRANCAASN1R+nHzVoAbh7kRGG4GBdlOAqZTWsvC4AaWjQl2osHTB7Vu2ctjTvKJTD6Col9dCt4eFTPSQyMX+7ezJyucy2
     token-uri: https://appleid.apple.com/auth/token
+
+storage:
+  api:
+    bucket-id: ${STORAGE_API_BUCKET_ID:}
+    token: ${STORAGE_API_TOKEN:}
 
 #server:
 #  port: 8080

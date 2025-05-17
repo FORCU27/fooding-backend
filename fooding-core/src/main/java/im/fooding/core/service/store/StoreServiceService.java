@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -52,6 +54,16 @@ public class StoreServiceService {
      */
     public Page<StoreService> list(String searchString, Pageable pageable ){
         return repository.list( searchString, pageable );
+    }
+
+    /**
+     * 가게에 가입된 스토어 서비스 조회
+     *
+     * @param storeId
+     * @return StoreService[]
+     */
+    public List<StoreService> findByStoreId(Long storeId ) {
+        return repository.findByStoreId( storeId );
     }
 
     /**

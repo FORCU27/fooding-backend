@@ -5,6 +5,7 @@ import im.fooding.app.dto.request.admin.service.RetrieveStoreServiceRequest;
 import im.fooding.app.dto.response.admin.service.StoreServiceResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.model.store.StoreServiceType;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.store.StoreServiceService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,10 +51,21 @@ public class StoreServiceApplicationService {
     }
 
     /**
+     * 특정 가게의 Store Service 조회
+     *
+     * @param storeId
+     * @return List<StoreServiceType>
+     */
+    public List<StoreServiceResponse> findSignedStoreService( Long storeId ){
+        return service.findByStoreId( storeId ).stream().map(StoreServiceResponse::of).collect(Collectors.toList());
+    }
+
+
+    /**
      * 특정 Store Service 조회
      *
      * @param id
-     * @return Page<StoreServiceResponse>
+     * @return StoreServiceResponse
      */
     public StoreServiceResponse findById( Long id ){
         return StoreServiceResponse.of( service.findById(id) );

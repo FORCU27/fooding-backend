@@ -20,6 +20,9 @@ public enum ErrorCode {
     DATABASE_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "0012", "데이터베이스 에러 입니다."),
     FEIGN_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "0013", "토큰이 만료되었습니다."),
     OAUTH_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "0014", "소셜로그인에 실패하셨습니다."),
+    FILE_NOT_FOUND(HttpStatus.BAD_REQUEST, "0015", "파일의 정보가 없습니다."),
+    FILE_SIZE_INVALID(HttpStatus.BAD_REQUEST, "0016", "파일 크기가 허용된 최대 크기를 초과했습니다."),
+    FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "0017", "파일 업로드에 실패했습니다."),
 
     // 회원
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "1000", "가입된 정보가 없습니다."),
