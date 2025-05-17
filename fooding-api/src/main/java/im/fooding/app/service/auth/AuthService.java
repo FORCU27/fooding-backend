@@ -6,6 +6,7 @@ import im.fooding.app.dto.request.auth.AuthLoginRequest;
 import im.fooding.app.dto.request.auth.AuthSocialLoginRequest;
 import im.fooding.app.dto.request.auth.AuthUpdateProfileRequest;
 import im.fooding.app.dto.response.auth.AuthUserResponse;
+import im.fooding.app.service.file.FileUploadService;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.global.feign.client.SocialLoginClient;
@@ -18,10 +19,12 @@ import im.fooding.core.global.feign.dto.naver.NaverUserResponse;
 import im.fooding.core.global.jwt.dto.TokenResponse;
 import im.fooding.core.global.jwt.service.JwtService;
 import im.fooding.core.global.util.AppleLoginUtil;
+import im.fooding.core.model.file.File;
 import im.fooding.core.model.user.AuthProvider;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.model.user.UserAuthority;
+import im.fooding.core.service.file.FileService;
 import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -44,6 +48,7 @@ public class AuthService {
     private final UserService userService;
     private final UserAuthorityService userAuthorityService;
     private final PasswordEncoder passwordEncoder;
+    private final FileUploadService fileUploadService;
 
     /**
      * user id로 조회
@@ -64,7 +69,7 @@ public class AuthService {
      */
     @Transactional
     public void update(long id, AuthUpdateProfileRequest request) {
-        userService.update(id, request.getNickname(), request.getPhoneNumber(), request.getGender(), request.getReferralCode(), request.getMarketingConsent());
+        userService.update(id, request.getNickname(), request.getPhoneNumber(), request.getGender(), request.getReferralCode(), request.isMarketingConsent());
     }
 
     /**
@@ -76,11 +81,12 @@ public class AuthService {
     @Transactional
     public void updateProfileImage(long id, String imageId) {
         User user = userService.findById(id);
+        String profileImageUrl = null;
         if (StringUtils.hasText(imageId)) {
-            // 커밋 후 File entity 에서 받은 url 업데이트
-        } else {
-            userService.updateProfileImage(user, null);
+            File file = fileUploadService.commit(imageId);
+            profileImageUrl = file.getUrl();
         }
+        userService.updateProfileImage(user, profileImageUrl);
     }
 
     /**

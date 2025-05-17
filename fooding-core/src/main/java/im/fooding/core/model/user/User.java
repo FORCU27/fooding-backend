@@ -118,14 +118,6 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public void updateLastLoggedInAt() {
-        this.lastLoggedInAt = LocalDateTime.now();
-    }
-
-    public void saveMarketingConsentAt() {
-        this.marketingConsentAt = LocalDateTime.now();
-    }
-
     public void updateProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }

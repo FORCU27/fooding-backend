@@ -3,7 +3,6 @@ package im.fooding.app.dto.request.auth;
 import im.fooding.core.model.user.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,12 +25,11 @@ public class AuthUpdateProfileRequest {
     @Schema(description = "추천인코드", example = "123213")
     private String referralCode;
 
-    @NotNull
     @Schema(description = "마케팅 수신 동의 여부", example = "true")
-    private Boolean marketingConsent;
+    private boolean marketingConsent;
 
     @Builder
-    public AuthUpdateProfileRequest(String nickname, String phoneNumber, Gender gender, String referralCode, Boolean marketingConsent) {
+    public AuthUpdateProfileRequest(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent) {
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
