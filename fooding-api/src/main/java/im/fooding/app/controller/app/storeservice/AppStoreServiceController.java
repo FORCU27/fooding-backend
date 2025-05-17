@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping( "/app/storeservice" )
+@RequestMapping( "/app/store-service" )
 public class AppStoreServiceController {
     private final StoreServiceApplicationService service;
 
