@@ -14,10 +14,9 @@ public class StorageInfo {
     private final String bucketId;
     private final String accessToken;
 
-    public StorageInfo(@Value("${storage.base-uri:null}") String baseUri,
-                       @Value("${storage.bucket-id:null}") String bucketId,
-                       @Value("${storage.access-token:null}") String accessToken) {
-        this.baseUri = baseUri;
+    public StorageInfo(@Value("${storage.api.bucket-id:null}") String bucketId,
+                       @Value("${storage.api.token:null}") String accessToken) {
+        this.baseUri = "https://storage-api.zerocloud.im/objects";
         this.bucketId = bucketId;
         this.accessToken = accessToken;
     }

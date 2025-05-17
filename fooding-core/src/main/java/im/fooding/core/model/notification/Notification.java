@@ -40,6 +40,10 @@ public class Notification extends BaseEntity {
     @Column(nullable = false)
     private NotificationStatus status;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private NotificationCategory category;
+
     private LocalDateTime sentAt;
 
     private LocalDateTime readAt;
@@ -48,13 +52,17 @@ public class Notification extends BaseEntity {
 
     @Builder
     public Notification(String source, String destination,
-                        String title, String content, NotificationChannel channel, NotificationStatus status, LocalDateTime scheduledAt) {
+                        String title, String content,
+                        NotificationChannel channel, NotificationStatus status,
+                        NotificationCategory category,
+                        LocalDateTime scheduledAt) {
       this.source = source;
       this.destination = destination;
       this.title = title;
       this.content = content;
       this.channel = channel;
       this.status = status;
+      this.category = category;
       this.scheduledAt = scheduledAt;
     }
 

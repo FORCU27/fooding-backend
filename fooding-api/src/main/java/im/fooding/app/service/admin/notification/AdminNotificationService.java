@@ -44,6 +44,7 @@ public class AdminNotificationService {
               .title(request.getTitle())
               .content(request.getContent())
               .channel(request.getChannel())
+              .category(request.getCategory())
               .build();
 
       if (request.getScheduledAt() != null) {
@@ -59,7 +60,8 @@ public class AdminNotificationService {
                       savedNotification.getTitle(),
                       savedNotification.getContent(),
                       request.getDestinations(),
-                      savedNotification.getChannel()
+                      savedNotification.getChannel(),
+                      savedNotification.getCategory()
               )
       );
       return savedNotification.getId();

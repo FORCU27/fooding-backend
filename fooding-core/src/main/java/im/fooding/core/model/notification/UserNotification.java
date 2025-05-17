@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
@@ -34,7 +35,9 @@ public class UserNotification extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime sentAt;
 
-    private LocalDateTime readAt;
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private boolean isRead;
 
     @Builder
     public UserNotification(User user, String title, String content, LocalDateTime sentAt) {
@@ -43,8 +46,4 @@ public class UserNotification extends BaseEntity {
       this.content = content;
       this.sentAt = sentAt;
     }
-
-    public void read() {
-      this.readAt = LocalDateTime.now();
-  }
 }
