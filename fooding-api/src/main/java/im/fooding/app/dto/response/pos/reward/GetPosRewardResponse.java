@@ -7,6 +7,8 @@ import im.fooding.core.model.reward.RewardType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
+import java.time.LocalDateTime;
+
 @Builder
 public record GetPosRewardResponse(
         @Schema( description = "ID" )
@@ -25,7 +27,10 @@ public record GetPosRewardResponse(
         RewardType type,
 
         @Schema( description = "리워드 채널" )
-        RewardChannel channel
+        RewardChannel channel,
+
+        @Schema( description = "적립 시간" )
+        LocalDateTime createdAt
 ) {
         public static GetPosRewardResponse of(RewardLog rewardLog){
                 return GetPosRewardResponse.builder()
@@ -35,6 +40,7 @@ public record GetPosRewardResponse(
                         .status(rewardLog.getStatus())
                         .type(rewardLog.getType())
                         .channel(rewardLog.getChannel())
+                        .createdAt(rewardLog.getCreatedAt())
                         .build();
         }
 }
