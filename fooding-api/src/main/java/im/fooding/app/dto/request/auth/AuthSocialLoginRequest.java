@@ -3,6 +3,7 @@ package im.fooding.app.dto.request.auth;
 import im.fooding.core.model.user.AuthProvider;
 import im.fooding.core.model.user.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -13,19 +14,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthSocialLoginRequest {
     @NotNull
-    @Schema(description = "소셜타입(GOOGLE, APPLE, NAVER, KAKAO)", example = "GOOGLE")
+    @Schema(description = "소셜타입(GOOGLE, APPLE, NAVER, KAKAO)", requiredMode = RequiredMode.REQUIRED, example = "GOOGLE")
     private AuthProvider provider;
 
     @NotBlank
-    @Schema(description = "code", example = "4/0AQlEd8z...")
+    @Schema(description = "code", requiredMode = RequiredMode.REQUIRED, example = "4/0AQlEd8z...")
     private String code;
 
     @NotBlank
-    @Schema(description = "redirect url", example = "http://localhost:3000/api/auth/social/callback")
+    @Schema(description = "redirect url", requiredMode = RequiredMode.REQUIRED, example = "http://localhost:3000/api/auth/social/callback")
     private String redirectUri;
 
     @NotNull
-    @Schema(description = "로그인 권한(CEO, USER)", example = "USER")
+    @Schema(description = "로그인 권한(CEO, USER)", requiredMode = RequiredMode.REQUIRED, example = "USER")
     private Role role;
 
     @Builder
