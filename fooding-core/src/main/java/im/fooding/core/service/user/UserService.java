@@ -91,7 +91,7 @@ public class UserService {
      */
     public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent) {
         User user = findById(id);
-        if (!user.getNickname().equals(nickname) && checkDuplicatedNickname(nickname)) {
+        if (!nickname.equals(user.getNickname()) && checkDuplicatedNickname(nickname)) {
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
         }
         user.update(nickname, phoneNumber, gender, referralCode, marketingConsent);
