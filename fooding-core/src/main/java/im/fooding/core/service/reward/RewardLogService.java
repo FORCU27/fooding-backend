@@ -28,10 +28,19 @@ public class RewardLogService {
      * @param phoneNumber
      * @param searchString
      * @param pageable
-     * @return
+     * @return Page<RewardLog>
      */
     public Page<RewardLog> list(String searchString, Pageable pageable, Long storeId, String phoneNumber ){
         return repository.list( searchString, pageable, storeId, phoneNumber );
+    }
+
+    /**
+     * 특정 리워드 로그 조회
+     * @param logId
+     * @return RewardLog
+     */
+    public RewardLog findById( Long logId ){
+        return repository.findById( logId ).orElseThrow( () -> new ApiException(ErrorCode.REWARD_LOG_NOT_FOUND) );
     }
 
     /**
