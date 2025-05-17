@@ -46,13 +46,26 @@ public class SecurityConfig {
 //                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
 //                        .requestMatchers("/ceo/**").hasAnyRole("CEO")
 //                        .requestMatchers(HttpMethod.POST, "/file-upload").hasAnyRole("USER", "ADMIN", "CEO")
+//                        .requestMatchers("/app/**").hasAnyRole("CEO")
+//                        .requestMatchers("/pos/**").hasAnyRole("CEO")
                         .anyRequest().permitAll());
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
     private String[] getPermitUrls() {
-        return new String[]{"/ping", "/swagger-ui/**", "/api-docs/**", "/user/auth/**", "/admin/auth/**"};
+        return new String[]{
+                "/ping",
+                "/swagger-ui/**",
+                "/api-docs/**",
+                "/auth/register",
+                "/auth/login",
+                "/auth/social-login",
+                "/auth/google/token",
+                "/auth/kakao/token",
+                "/auth/naver/token",
+                "/auth/apple/token"
+        };
     }
 
     @Bean

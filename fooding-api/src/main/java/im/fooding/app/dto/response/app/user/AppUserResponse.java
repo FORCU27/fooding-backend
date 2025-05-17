@@ -12,9 +12,6 @@ public record AppUserResponse(
         @Schema(description = "ID", example = "1")
         Long id,
 
-        @Schema(description = "역할", example = "USER")
-        Role role,
-
         @Schema(description = "이메일", example = "aaa111@mail.com")
         String email,
 
@@ -64,7 +61,6 @@ public record AppUserResponse(
     public static AppUserResponse from(User user) {
             return new AppUserResponse(
                     user.getId(),
-                    user.getRole(),
                     user.getEmail(),
                     user.getProvider(),
                     user.getNickname(),

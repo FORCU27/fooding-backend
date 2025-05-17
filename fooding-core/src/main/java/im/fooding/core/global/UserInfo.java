@@ -48,7 +48,6 @@ public class UserInfo implements CredentialsContainer, UserDetails {
         this.id = user.getId();
         this.email = user.getEmail();
         this.nickname = user.getNickname();
-        this.role = user.getRole();
     }
 
     @Override

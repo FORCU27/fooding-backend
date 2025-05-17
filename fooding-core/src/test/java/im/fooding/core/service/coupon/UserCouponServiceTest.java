@@ -6,13 +6,11 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.coupon.*;
 import im.fooding.core.model.store.Store;
-import im.fooding.core.model.user.AuthProvider;
-import im.fooding.core.model.user.Gender;
-import im.fooding.core.model.user.Role;
-import im.fooding.core.model.user.User;
+import im.fooding.core.model.user.*;
 import im.fooding.core.repository.coupon.CouponRepository;
 import im.fooding.core.repository.coupon.UserCouponRepository;
 import im.fooding.core.repository.store.StoreRepository;
+import im.fooding.core.repository.user.UserAuthorityRepository;
 import im.fooding.core.repository.user.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,6 +40,9 @@ class UserCouponServiceTest extends TestConfig {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserAuthorityRepository userAuthorityRepository;
 
     @Test
     @DisplayName("유저에게 쿠폰을 성공적으로 발급한다.")
@@ -186,12 +187,20 @@ class UserCouponServiceTest extends TestConfig {
         User user = User.builder()
                 .email("test@gmail.com")
                 .nickname("닉네임")
-                .role(Role.USER)
                 .password("1234")
                 .gender(Gender.NONE)
                 .provider(AuthProvider.FOODING)
                 .build();
-        return userRepository.save(user);
+
+        userRepository.save(user);
+
+        UserAuthority userAuthority = UserAuthority.builder()
+                .user(user)
+                .role(Role.USER)
+                .build();
+        userAuthorityRepository.save(userAuthority);
+
+        return user;
     }
 
     private Store saveStore() {

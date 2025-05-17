@@ -53,7 +53,6 @@ public class FileUploadService {
         return files;
     }
 
-    @Transactional
     public File commit(String id) {
         if (StringUtils.hasText(id)) {
             try {

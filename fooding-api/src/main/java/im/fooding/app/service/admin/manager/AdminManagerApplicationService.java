@@ -1,7 +1,7 @@
 package im.fooding.app.service.admin.manager;
 
 import im.fooding.app.dto.request.admin.manager.AdminUpdateMangerRequest;
-import im.fooding.app.dto.response.admin.manager.AdminManagerResponse;
+import im.fooding.app.dto.response.auth.AuthUserResponse;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
@@ -29,7 +29,7 @@ public class AdminManagerApplicationService {
     @Transactional(readOnly = true)
     public PageResponse list(BasicSearch search) {
         Page<User> users = userService.list(search.getSearchString(), search.getPageable(), Role.ADMIN);
-        List<AdminManagerResponse> list = users.getContent().stream().map(AdminManagerResponse::of).toList();
+        List<AuthUserResponse> list = users.getContent().stream().map(AuthUserResponse::of).toList();
         return PageResponse.of(list, PageInfo.of(users));
     }
 
@@ -40,19 +40,19 @@ public class AdminManagerApplicationService {
      * @return ResponseUserDto
      */
     @Transactional(readOnly = true)
-    public AdminManagerResponse retrieve(long id) {
-        return AdminManagerResponse.of(userService.findById(id));
+    public AuthUserResponse retrieve(long id) {
+        return AuthUserResponse.of(userService.findById(id));
     }
 
     /**
      * 관리자 정보 수정
      *
      * @param id
-     * @param adminUpdateMangerRequest
+     * @param request
      */
     @Transactional
-    public void update(long id, AdminUpdateMangerRequest adminUpdateMangerRequest) {
-        userService.update(id, adminUpdateMangerRequest.getNickname(), adminUpdateMangerRequest.getPhoneNumber(), adminUpdateMangerRequest.getProfileImage());
+    public void update(long id, AdminUpdateMangerRequest request) {
+        userService.update(id, request.getNickname(), request.getPhoneNumber(), request.getGender(),null,  false);
     }
 
     /**
