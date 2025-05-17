@@ -92,9 +92,9 @@ auth:
     redirect-uri: https://localhost.com:8080/user/auth/apple/token
 
 storage:
-  base-uri: ${STORAGE_BASE_URI:}
-  bucket-id: ${STORAGE_BUCKET_ID:}
-  access-token: ${STORAGE_ACCESS_TOKEN:}
+  api:
+    bucket-id: ${STORAGE_API_BUCKET_ID:}
+    token: ${STORAGE_API_TOKEN:}
 
 #server:
 #  port: 8080

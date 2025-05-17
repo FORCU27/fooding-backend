@@ -91,6 +91,6 @@ auth:
     redirect-uri: ${APPLE_REDIRECT_URI:https://localhost.com/api/auth/social/callback}
 
 storage:
-  base-uri: ${STORAGE_BASE_URI:}
-  bucket-id: ${STORAGE_BUCKET_ID:}
-  access-token: ${STORAGE_ACCESS_TOKEN:}
+  api:
+    bucket-id: ${STORAGE_API_BUCKET_ID:}
+    token: ${STORAGE_API_TOKEN:}
