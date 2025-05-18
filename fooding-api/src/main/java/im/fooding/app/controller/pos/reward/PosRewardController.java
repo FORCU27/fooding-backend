@@ -27,7 +27,7 @@ public class PosRewardController {
         return ApiResult.ok( service.list( request ) );
     }
 
-    @PostMapping("/cancel/{id}")
+    @PostMapping("/{id}/cancel")
     @Operation( summary = "특정 리워드 로그에 대한 적립 취소" )
     public ApiResult<Void> cancelReward(
             @PathVariable Long id
