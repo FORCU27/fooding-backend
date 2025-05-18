@@ -17,33 +17,38 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
 public class UserNotification extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private User user;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+  private User user;
 
-    @Column(nullable = false)
-    private String title;
+  @Column(nullable = false)
+  private String title;
 
-    @Lob
-    @Column(nullable = false, columnDefinition = "LONGTEXT")
-    private String content;
+  @Lob
+  @Column(nullable = false, columnDefinition = "LONGTEXT")
+  private String content;
 
-    @Column(nullable = false)
-    private LocalDateTime sentAt;
+  @Column(nullable = false)
+  private LocalDateTime sentAt;
 
-    @Column(nullable = false)
-    @ColumnDefault("false")
-    private boolean isRead;
+  @Column(nullable = false)
+  @ColumnDefault("false")
+  private boolean isRead;
 
-    @Builder
-    public UserNotification(User user, String title, String content, LocalDateTime sentAt) {
-      this.user = user;
-      this.title = title;
-      this.content = content;
-      this.sentAt = sentAt;
-    }
+  @Builder
+  public UserNotification(User user, String title, String content, LocalDateTime sentAt) {
+    this.user = user;
+    this.title = title;
+    this.content = content;
+    this.sentAt = sentAt;
+  }
+
+  public void update(String title, String content) {
+    this.title = title;
+    this.content = content;
+  }
 }
