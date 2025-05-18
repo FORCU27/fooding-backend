@@ -29,7 +29,7 @@ public class AdminUserController {
 
     @PostMapping
     @Operation(summary = "유저 생성")
-    public ApiResult<Void> register(@RequestBody @Valid AdminCreateManagerRequest adminCreateManagerRequest) {
+    public ApiResult<Void> create(@RequestBody @Valid AdminCreateManagerRequest adminCreateManagerRequest) {
         // TODO: 변경
         adminAuthApplicationService.register(adminCreateManagerRequest);
         return ApiResult.ok();
