@@ -23,7 +23,7 @@ public class QDeviceRepositoryImpl implements QDeviceRepository{
         BooleanBuilder condition = new BooleanBuilder();
         condition.and( device.deleted.isFalse() );
         if( search( searchString ) != null ) condition.and( search( searchString ) );
-        if( storeId != Long.MIN_VALUE ) condition.and( device.store.id.eq( storeId ) );
+        if( storeId != null ) condition.and( device.store.id.eq( storeId ) );
 
         List<Device> results = query
                 .select(device)
@@ -32,8 +32,8 @@ public class QDeviceRepositoryImpl implements QDeviceRepository{
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-        JPAQuery<Device> countQuery = query
-                .select(device)
+        JPAQuery<Long> countQuery = query
+                .select(device.count())
                 .from(device)
                 .where(condition);
         return PageableExecutionUtils.getPage( results, pageable, countQuery::fetchCount );
