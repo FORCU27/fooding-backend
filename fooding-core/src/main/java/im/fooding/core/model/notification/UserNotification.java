@@ -33,6 +33,9 @@ public class UserNotification extends BaseEntity {
   private String content;
 
   @Column(nullable = false)
+  private String category;
+
+  @Column(nullable = false)
   private LocalDateTime sentAt;
 
   @Column(nullable = false)
@@ -40,15 +43,17 @@ public class UserNotification extends BaseEntity {
   private boolean isRead;
 
   @Builder
-  public UserNotification(User user, String title, String content, LocalDateTime sentAt) {
+  public UserNotification(User user, String title, String content, String category, LocalDateTime sentAt) {
     this.user = user;
     this.title = title;
     this.content = content;
+    this.category = category;
     this.sentAt = sentAt;
   }
 
-  public void update(String title, String content) {
+  public void update(String title, String content, String category) {
     this.title = title;
     this.content = content;
+    this.category = category;
   }
 }

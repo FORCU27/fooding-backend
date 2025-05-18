@@ -55,19 +55,20 @@ public class UserNotificationService {
   }
 
   @Transactional
-  public UserNotification create(User user, String title, String content, LocalDateTime sentAt) {
+  public UserNotification create(User user, String title, String content, String category, LocalDateTime sentAt) {
     UserNotification notification = UserNotification.builder()
         .user(user)
         .title(title)
         .content(content)
+        .category(category)
         .sentAt(sentAt)
         .build();
     return userNotificationRepository.save(notification);
   }
 
   @Transactional
-  public void update(UserNotification notification, String title, String content) {
-    notification.update(title, content);
+  public void update(UserNotification notification, String title, String content, String category) {
+    notification.update(title, content, category);
   }
 
   @Transactional
