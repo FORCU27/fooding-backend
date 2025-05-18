@@ -1,4 +1,4 @@
-package im.fooding.app.service.admin.notification;
+package im.fooding.app.service.admin.userNotifications;
 
 import im.fooding.app.dto.request.admin.userNotifications.AdminCreateUserNotificationRequest;
 import im.fooding.app.dto.response.admin.notification.AdminUserNotificationResponse;
@@ -42,7 +42,7 @@ public class AdminUserNotificationService {
     public Long create(AdminCreateUserNotificationRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + request.getUserId()));
-        UserNotification notification = userNotificationService.create(user, request.getTitle(), request.getContent(),
+        UserNotification notification = userNotificationService.create(user, request.getTitle(), request.getContent(), request.getCategory(),
                 LocalDateTime.now());
         return notification.getId();
     }

@@ -24,4 +24,8 @@ public class AdminCreateUserNotificationRequest {
     @NotBlank(message = "내용을 입력해주세요.")
     @Schema(description = "알림 내용", example = "오후 1시 시스템 점검 예정입니다.")
     private String content;
+
+    @NotBlank(message = "카테고리를 입력해주세요.")
+    @Schema(description = "알림 내용", example = "오후 1시 시스템 점검 예정입니다.")
+    private String category;
 }

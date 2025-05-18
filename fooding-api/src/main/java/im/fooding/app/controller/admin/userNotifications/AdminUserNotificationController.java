@@ -2,7 +2,7 @@ package im.fooding.app.controller.admin.userNotifications;
 
 import im.fooding.app.dto.request.admin.userNotifications.AdminCreateUserNotificationRequest;
 import im.fooding.app.dto.response.admin.notification.AdminUserNotificationResponse;
-import im.fooding.app.service.admin.notification.AdminUserNotificationService;
+import im.fooding.app.service.admin.userNotifications.AdminUserNotificationService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;

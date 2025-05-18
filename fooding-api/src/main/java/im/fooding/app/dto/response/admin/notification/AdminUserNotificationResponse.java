@@ -14,11 +14,12 @@ public class AdminUserNotificationResponse {
     private Long userId;
     private String title;
     private String content;
+    private String category;
     private java.time.LocalDateTime sentAt;
     private boolean isRead;
 
     @Builder
-    private AdminUserNotificationResponse(Long id, Long userId, String title, String content,
+    private AdminUserNotificationResponse(Long id, Long userId, String title, String content, String category,
             java.time.LocalDateTime sentAt, boolean isRead) {
         this.id = id;
         this.userId = userId;
@@ -35,6 +36,7 @@ public class AdminUserNotificationResponse {
                 .title(notification.getTitle())
                 .content(notification.getContent())
                 .sentAt(notification.getSentAt())
+                .category(notification.getCategory())
                 .isRead(notification.isRead())
                 .build();
     }
