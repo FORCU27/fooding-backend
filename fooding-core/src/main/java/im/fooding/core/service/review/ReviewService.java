@@ -41,4 +41,12 @@ public class ReviewService {
     public List<Review> list(Store store) {
         return reviewRepository.findAllByStore(store);
     }
+
+    /**
+     * * 리뷰 생성
+     * @param review
+     */
+    public void create(Review review) {
+        reviewRepository.save(review);
+    }
 }
