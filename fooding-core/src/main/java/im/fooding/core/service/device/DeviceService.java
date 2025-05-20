@@ -26,7 +26,7 @@ public class DeviceService {
      * @param pageable
      * @return Page<Device>
      */
-    public Page<Device> list(String searchString, long storeId, Pageable pageable){
+    public Page<Device> list(String searchString, Long storeId, Pageable pageable){
         return deviceRepository.list(searchString, pageable, storeId);
     }
 

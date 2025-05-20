@@ -24,7 +24,7 @@ public class CEODeviceController {
     @GetMapping("")
     @Operation(summary="가게 소속 디바이스 조회")
     public ApiResult<PageResponse<StoreDeviceResponse>> retrieve(
-            @Valid @RequestBody RetrieveStoreDeviceRequest request
+            @ModelAttribute RetrieveStoreDeviceRequest request
     ) {
         return ApiResult.ok(service.retrieveStoreDevice( request ));
     }
@@ -32,7 +32,7 @@ public class CEODeviceController {
     @GetMapping( "/connect" )
     @Operation(summary="로그인 유저 디바이스 연결")
     public ApiResult<Void> connect(
-            @Valid @RequestBody ConnectDeviceRequest request
+            @Valid @ModelAttribute ConnectDeviceRequest request
     ){
         service.connect( request );
         return ApiResult.ok();
