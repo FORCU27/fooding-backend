@@ -12,15 +12,15 @@ import lombok.NoArgsConstructor;
 public class AdminUpdateMangerRequest {
     @NotBlank
     @Size(max = 50)
-    @Schema(description = "닉네임", requiredMode = Schema.RequiredMode.REQUIRED, example = "관리자")
+    @Schema(description = "닉네임", example = "관리자")
     private String nickname;
 
     @NotBlank
     @Size(max = 15)
-    @Schema(description = "핸드폰번호", requiredMode = Schema.RequiredMode.REQUIRED, example = "010-1234-5678")
+    @Schema(description = "핸드폰번호", example = "010-1234-5678")
     private String phoneNumber;
 
-    @Schema(description = "성별(MALE, FEMALE, OTHER, NONE)", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "https://example.com/images/profile.jpg")
+    @Schema(description = "성별(MALE, FEMALE, OTHER, NONE)", example = "https://example.com/images/profile.jpg")
     private Gender gender;
 
     public AdminUpdateMangerRequest(String nickname, String phoneNumber, Gender gender) {
