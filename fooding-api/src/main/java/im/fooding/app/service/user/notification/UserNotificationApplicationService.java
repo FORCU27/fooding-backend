@@ -3,13 +3,19 @@ package im.fooding.app.service.user.notification;
 import im.fooding.app.dto.response.user.notification.UserNotificationResponse;
 import im.fooding.core.global.infra.slack.SlackClient;
 import im.fooding.core.global.util.WaitingMessageBuilder;
+import im.fooding.core.model.notification.UserNotification;
 import im.fooding.core.service.notification.UserNotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import im.fooding.core.common.PageInfo;
+import im.fooding.core.common.PageResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +32,7 @@ public class UserNotificationApplicationService {
                 storeName,
                 personnel,
                 order,
-                callNumber
-        );
+                callNumber);
         slackClient.sendNotificationMessage(message);
     }
 
@@ -46,7 +51,8 @@ public class UserNotificationApplicationService {
      * @param limitTime
      */
     public void sendEnterStoreMessage(String receiver, String store, String notice, int waitingNumber, int limitTime) {
-        String message = WaitingMessageBuilder.buildEnterStoreMessage(SENDER, receiver, store, notice, waitingNumber, limitTime);
+        String message = WaitingMessageBuilder.buildEnterStoreMessage(SENDER, receiver, store, notice, waitingNumber,
+                limitTime);
         slackClient.sendNotificationMessage(message);
     }
 
@@ -55,10 +61,11 @@ public class UserNotificationApplicationService {
         slackClient.sendNotificationMessage(message);
     }
 
-    public List<UserNotificationResponse> list(Long userId) {
-        return userNotificationService.getUserNotifications(userId).stream()
-                .map(UserNotificationResponse::from)
-                .toList();
+    public PageResponse<UserNotificationResponse> list(Long userId, Pageable pageable) {
+        Page<UserNotification> page = userNotificationService.getUserNotifications(userId, pageable);
+        return PageResponse.of(
+                page.getContent().stream().map(UserNotificationResponse::from).toList(),
+                PageInfo.of(page));
     }
 
     public UserNotificationResponse retrieve(Long userId, Long notificationId) {
