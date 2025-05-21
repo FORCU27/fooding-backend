@@ -1,17 +1,24 @@
 package im.fooding.app.service.user.review;
 
+import im.fooding.app.dto.request.user.review.CreateReviewRequest;
 import im.fooding.app.dto.request.user.review.UserRetrieveReviewRequest;
 import im.fooding.app.dto.response.user.review.UserReviewResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.review.Review;
 import im.fooding.core.model.review.ReviewImage;
+import im.fooding.core.model.review.ReviewScore;
+import im.fooding.core.model.store.Store;
+import im.fooding.core.model.user.User;
 import im.fooding.core.service.review.ReviewImageService;
 import im.fooding.core.service.review.ReviewLikeService;
 import im.fooding.core.service.review.ReviewService;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import im.fooding.core.service.store.StoreService;
+import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,12 +34,12 @@ public class UserReviewService {
     private final ReviewService reviewService;
     private final ReviewImageService reviewImageService;
     private final ReviewLikeService reviewLikeService;
+    private final UserService userService;
+    private final StoreService storeService;
 
     public PageResponse<UserReviewResponse> list(Long storeId, UserRetrieveReviewRequest request) {
-        Pageable pageable = PageRequest.of(request.getPageNum() - 1, request.getPageSize());
-
         Page<Review> reviewPage = reviewService.list(
-                storeId, pageable, request.getSortType(), request.getSortDirection()
+                storeId, request.getPageable(), request.getSortType(), request.getSortDirection()
         );
 
         List<Long> reviewIds = getReviewIds(reviewPage.getContent());
@@ -64,5 +71,25 @@ public class UserReviewService {
 
     private Map<Long, Long> getReviewLikeMap(List<Long> reviewIds) {
         return reviewLikeService.list(reviewIds);
+    }
+
+    public void create(CreateReviewRequest request){
+        User writer = userService.findById( request.getUserId() );
+        Store store = storeService.findById( request.getStoreId() );
+        ReviewScore reviewScore = ReviewScore.builder()
+                .taste( request.getTaste() )
+                .mood( request.getMood() )
+                .service( request.getService() )
+                .total( request.getTotal() )
+                .build();
+
+        Review review = Review.builder()
+                .store( store )
+                .writer( writer )
+                .score( reviewScore )
+                .content( request.getContent() )
+                .visitPurposeType( request.getVisitPurpose() )
+                .build();
+        reviewService.create(review);
     }
 }
