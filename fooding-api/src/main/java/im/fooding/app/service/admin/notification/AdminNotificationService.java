@@ -11,6 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import im.fooding.core.model.notification.NotificationSortType;
+import org.hibernate.query.SortDirection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import im.fooding.core.common.PageInfo;
+import im.fooding.core.common.PageResponse;
 
 import java.util.List;
 
@@ -20,60 +26,61 @@ import java.util.List;
 @Slf4j
 public class AdminNotificationService {
 
-    private final NotificationService notificationService;
-    private final ApplicationEventPublisher publisher;
+  private final NotificationService notificationService;
+  private final ApplicationEventPublisher publisher;
 
-    public List<AdminNotificationResponse> list() {
-        return notificationService.findAll().stream()
-                .map(AdminNotificationResponse::of)
-                .toList();
-      }
+  public PageResponse<AdminNotificationResponse> list(Pageable pageable, NotificationSortType sortType,
+      SortDirection sortDirection) {
+    Page<Notification> page = notificationService.findAll(pageable, sortType, sortDirection);
+    return PageResponse.of(
+        page.getContent().stream().map(AdminNotificationResponse::of).toList(),
+        PageInfo.of(page));
+  }
 
-    public AdminNotificationResponse retrieve(Long id) {
+  public AdminNotificationResponse retrieve(Long id) {
     Notification notification = notificationService.findById(id);
     return AdminNotificationResponse.of(notification);
+  }
+
+  @Transactional
+  public Long create(AdminCreateNotificationRequest request) {
+    String destinationString = String.join(",", request.getDestinations());
+
+    Notification notification = Notification.builder()
+        .source(request.getSource())
+        .destination(destinationString)
+        .title(request.getTitle())
+        .content(request.getContent())
+        .channel(request.getChannel())
+        .category(request.getCategory())
+        .build();
+
+    if (request.getScheduledAt() != null) {
+      notification.schedule(request.getScheduledAt());
+    } else {
+      notification.send();
     }
 
-    @Transactional
-    public Long create(AdminCreateNotificationRequest request) {
-      String destinationString = String.join(",", request.getDestinations());
+    Notification savedNotification = notificationService.create(notification);
 
-      Notification notification = Notification.builder()
-              .source(request.getSource())
-              .destination(destinationString)
-              .title(request.getTitle())
-              .content(request.getContent())
-              .channel(request.getChannel())
-              .category(request.getCategory())
-              .build();
+    publisher.publishEvent(
+        new NotificationCreatedEvent(
+            savedNotification.getTitle(),
+            savedNotification.getContent(),
+            request.getDestinations(),
+            savedNotification.getChannel(),
+            savedNotification.getCategory()));
+    return savedNotification.getId();
+  }
 
-      if (request.getScheduledAt() != null) {
-        notification.schedule(request.getScheduledAt());
-      } else {
-        notification.send();
-      }
+  @Transactional
+  public void update(Long id, AdminUpdateNotificationRequest request) {
+    notificationService.update(id, request.getTitle(), request.getContent(), request.getChannel(),
+        request.getScheduledAt());
+  }
 
-      Notification savedNotification = notificationService.create(notification);
-
-      publisher.publishEvent(
-              new NotificationCreatedEvent(
-                      savedNotification.getTitle(),
-                      savedNotification.getContent(),
-                      request.getDestinations(),
-                      savedNotification.getChannel(),
-                      savedNotification.getCategory()
-              )
-      );
-      return savedNotification.getId();
-    }
-
-    @Transactional
-    public void update(Long id, AdminUpdateNotificationRequest request) {
-      notificationService.update(id, request.getTitle(), request.getContent(), request.getChannel(), request.getScheduledAt());
-    }
-
-    @Transactional
-    public void delete(Long id, Long deletedBy) {
-      notificationService.delete(id, deletedBy);
-    }
+  @Transactional
+  public void delete(Long id, Long deletedBy) {
+    notificationService.delete(id, deletedBy);
+  }
 }
