@@ -1,5 +1,6 @@
 package im.fooding.app.dto.response.admin.user;
 
+import im.fooding.core.model.user.Gender;
 import im.fooding.core.model.user.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -23,6 +24,9 @@ public class AdminUserResponse {
     @Schema(description = "전화번호", example = "010-1234-5678")
     private String phoneNumber;
 
+    @Schema(description = "성별(MALE, FEMALE, OTHER, NONE)", example = "MALE")
+    private Gender gender;
+
     @Schema(description = "가입일시", example = "2024-03-20 14:30:00")
     private LocalDateTime createdAt;
 
@@ -31,12 +35,13 @@ public class AdminUserResponse {
 
 
     @Builder
-    private AdminUserResponse(Long id, String email, String nickname, String phoneNumber,
-            LocalDateTime createdAt, LocalDateTime lastLoggedInAt) {
+    private AdminUserResponse(Long id, String email, String nickname, String phoneNumber, Gender gender,
+                              LocalDateTime createdAt, LocalDateTime lastLoggedInAt) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
+        this.gender = gender;
         this.createdAt = createdAt;
         this.lastLoggedInAt = lastLoggedInAt;
     }
@@ -47,6 +52,7 @@ public class AdminUserResponse {
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .phoneNumber(user.getPhoneNumber())
+                .gender(user.getGender())
                 .createdAt(user.getCreatedAt())
                 .lastLoggedInAt(user.getLastLoggedInAt())
                 .build();

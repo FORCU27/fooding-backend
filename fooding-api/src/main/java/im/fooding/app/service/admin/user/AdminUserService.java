@@ -1,45 +1,60 @@
 package im.fooding.app.service.admin.user;
 
+import im.fooding.app.dto.request.admin.user.AdminCreateUserRequest;
+import im.fooding.app.dto.request.admin.user.AdminSearchUserRequest;
 import im.fooding.app.dto.request.admin.user.AdminUpdateUserRequest;
 import im.fooding.app.dto.response.admin.user.AdminUserResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.user.UserRepository;
+import im.fooding.core.service.user.UserAuthorityService;
+import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class AdminUserService {
+    private final UserService userService;
+    private final UserAuthorityService userAuthorityService;
+    private final PasswordEncoder passwordEncoder;
 
-    private final UserRepository userRepository;
-
-    public PageResponse<AdminUserResponse> list(Pageable pageable, String sortType, SortDirection sortDirection) {
-        Page<User> page = userRepository.findAll(pageable);
+    @Transactional(readOnly = true)
+    public PageResponse<AdminUserResponse> list(AdminSearchUserRequest search) {
+        Page<User> page = userService.list(search.getSearchString(), search.getPageable(), search.getRole());
         return PageResponse.of(
                 page.getContent().stream().map(AdminUserResponse::from).toList(),
                 PageInfo.of(page));
     }
 
-    public AdminUserResponse findById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found: " + id));
+    @Transactional(readOnly = true)
+    public AdminUserResponse retrieve(long id) {
+        User user = userService.findById(id);
         return AdminUserResponse.from(user);
     }
 
     @Transactional
-    public void update(Long id, AdminUpdateUserRequest request) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found: " + id));
+    public Long create(AdminCreateUserRequest request) {
+        User user = userService.create(request.getEmail(), request.getNickname(), passwordEncoder.encode(request.getPassword()));
+        userAuthorityService.create(user, request.getRole());
+        return user.getId();
+    }
 
-        // TODO
+    @Transactional
+    public void update(long id, AdminUpdateUserRequest request) {
+        userService.update(id, request.getNickname(), request.getPhoneNumber(), request.getGender(), null, false);
+    }
+
+    @Transactional
+    public void delete(long id, long deletedBy) {
+        userService.delete(id, deletedBy);
     }
 }
