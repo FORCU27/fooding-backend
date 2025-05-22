@@ -39,7 +39,7 @@ class UserServiceTest extends TestConfig {
         String phoneNumber = "010-0000-0000";
 
         //when
-        userService.create(email, nickname, password, phoneNumber);
+        userService.create(email, nickname, password, phoneNumber, Gender.NONE);
 
         //then
         assertTrue(userRepository.findByEmailAndProvider(email, AuthProvider.FOODING).isPresent());
@@ -61,7 +61,7 @@ class UserServiceTest extends TestConfig {
         // when && then
         ApiException apiException =
                 assertThrows(ApiException.class, () -> {
-                    userService.create(email, nickname2, password, phoneNumber);
+                    userService.create(email, nickname2, password, phoneNumber, Gender.NONE);
                 });
         assertEquals(ErrorCode.DUPLICATED_REGISTER_EMAIL, apiException.getErrorCode());
     }
@@ -82,7 +82,7 @@ class UserServiceTest extends TestConfig {
         // when && then
         ApiException apiException =
                 assertThrows(ApiException.class, () -> {
-                    userService.create(email2, nickname, password, phoneNumber);
+                    userService.create(email2, nickname, password, phoneNumber, Gender.NONE);
                 });
         assertEquals(ErrorCode.DUPLICATED_NICKNAME, apiException.getErrorCode());
     }
