@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 import static im.fooding.core.model.user.QUser.user;
+import static im.fooding.core.model.user.QUserAuthority.userAuthority;
 
 @RequiredArgsConstructor
 public class QUserRepositoryImpl implements QUserRepository {
@@ -24,9 +25,10 @@ public class QUserRepositoryImpl implements QUserRepository {
         List<User> results = query
                 .select(user)
                 .from(user)
+                .innerJoin(user.authorities, userAuthority).fetchJoin()
                 .where(
                         user.deleted.isFalse(),
-                        user.role.eq(role),
+                        userAuthority.role.eq(role),
                         search(searchString)
                 )
                 .orderBy(user.id.desc())
@@ -37,8 +39,10 @@ public class QUserRepositoryImpl implements QUserRepository {
         JPAQuery<User> countQuery = query
                 .select(user)
                 .from(user)
+                .innerJoin(user.authorities, userAuthority).fetchJoin()
                 .where(
                         user.deleted.isFalse(),
+                        userAuthority.role.eq(role),
                         search(searchString)
                 );
 
