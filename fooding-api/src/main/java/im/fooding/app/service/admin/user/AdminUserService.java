@@ -6,6 +6,9 @@ import im.fooding.app.dto.request.admin.user.AdminUpdateUserRequest;
 import im.fooding.app.dto.response.admin.user.AdminUserResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
@@ -40,7 +43,11 @@ public class AdminUserService {
 
     @Transactional
     public Long create(AdminCreateUserRequest request) {
-        User user = userService.create(request.getEmail(), request.getNickname(), passwordEncoder.encode(request.getPassword()));
+        Role role = request.getRole();
+        if (Role.USER == role) {
+            throw new ApiException(ErrorCode.SOCIAL_LOGIN_ONLY);
+        }
+        User user = userService.create(request.getEmail(), request.getNickname(), passwordEncoder.encode(request.getPassword()), request.getPhoneNumber(), request.getGender());
         userAuthorityService.create(user, request.getRole());
         return user.getId();
     }

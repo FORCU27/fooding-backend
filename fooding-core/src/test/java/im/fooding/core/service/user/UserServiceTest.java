@@ -36,9 +36,10 @@ class UserServiceTest extends TestConfig {
         String email = "admin@gmail.com";
         String nickname = "관리자";
         String password = "1234";
+        String phoneNumber = "010-0000-0000";
 
         //when
-        userService.create(email, nickname, password);
+        userService.create(email, nickname, password, phoneNumber, Gender.NONE);
 
         //then
         assertTrue(userRepository.findByEmailAndProvider(email, AuthProvider.FOODING).isPresent());
@@ -51,6 +52,7 @@ class UserServiceTest extends TestConfig {
         String email = "admin@gmail.com";
         String nickname = "관리자";
         String password = "1234";
+        String phoneNumber = "010-0000-0000";
         Role role = Role.ADMIN;
         saveUser(email, nickname, role);
 
@@ -59,7 +61,7 @@ class UserServiceTest extends TestConfig {
         // when && then
         ApiException apiException =
                 assertThrows(ApiException.class, () -> {
-                    userService.create(email, nickname2, password);
+                    userService.create(email, nickname2, password, phoneNumber, Gender.NONE);
                 });
         assertEquals(ErrorCode.DUPLICATED_REGISTER_EMAIL, apiException.getErrorCode());
     }
@@ -71,6 +73,7 @@ class UserServiceTest extends TestConfig {
         String email = "admin@gmail.com";
         String nickname = "관리자";
         String password = "1234";
+        String phoneNumber = "010-0000-0000";
         Role role = Role.ADMIN;
         saveUser(email, nickname, role);
 
@@ -79,7 +82,7 @@ class UserServiceTest extends TestConfig {
         // when && then
         ApiException apiException =
                 assertThrows(ApiException.class, () -> {
-                    userService.create(email2, nickname, password);
+                    userService.create(email2, nickname, password, phoneNumber, Gender.NONE);
                 });
         assertEquals(ErrorCode.DUPLICATED_NICKNAME, apiException.getErrorCode());
     }
