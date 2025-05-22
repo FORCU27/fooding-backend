@@ -47,7 +47,7 @@ public class AdminUserService {
         if (Role.USER == role) {
             throw new ApiException(ErrorCode.SOCIAL_LOGIN_ONLY);
         }
-        User user = userService.create(request.getEmail(), request.getNickname(), passwordEncoder.encode(request.getPassword()));
+        User user = userService.create(request.getEmail(), request.getNickname(), passwordEncoder.encode(request.getPassword()), request.getPhoneNumber());
         userAuthorityService.create(user, request.getRole());
         return user.getId();
     }

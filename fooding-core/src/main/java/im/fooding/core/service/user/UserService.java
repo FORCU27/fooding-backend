@@ -25,8 +25,9 @@ public class UserService {
      * @param email
      * @param nickname
      * @param password
+     * @param phoneNumber
      */
-    public User create(String email, String nickname, String password) {
+    public User create(String email, String nickname, String password, String phoneNumber) {
         checkDuplicateEmail(email, AuthProvider.FOODING);
         if (checkDuplicatedNickname(nickname)) {
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
@@ -35,6 +36,7 @@ public class UserService {
                 .email(email)
                 .nickname(nickname)
                 .password(password)
+                .phoneNumber(phoneNumber)
                 .provider(AuthProvider.FOODING)
                 .gender(Gender.NONE)
                 .build();
