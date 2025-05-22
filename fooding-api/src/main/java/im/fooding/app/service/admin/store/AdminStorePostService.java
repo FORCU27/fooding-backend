@@ -41,7 +41,6 @@ public class AdminStorePostService {
         return AdminStorePostResponse.from(storePostService.findById(id));
     }
 
-    @Transactional
     public PageResponse<AdminStorePostResponse> list(BasicSearch search) {
         Page<StorePost> storePosts = storePostService.list(search.getPageable());
         return PageResponse.of(storePosts.stream().map(AdminStorePostResponse::from).toList(), PageInfo.of(storePosts));
