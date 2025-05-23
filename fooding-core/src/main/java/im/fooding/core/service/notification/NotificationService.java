@@ -4,9 +4,15 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.notification.Notification;
 import im.fooding.core.model.notification.NotificationChannel;
+import im.fooding.core.model.notification.NotificationSortType;
 import im.fooding.core.repository.notification.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.query.SortDirection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,5 +52,19 @@ public class NotificationService {
     public void delete(Long id, Long deletedBy) {
         Notification notification = findById(id);
         notification.delete(deletedBy);
+    }
+
+    public Page<Notification> findAll(Pageable pageable, NotificationSortType sortType, SortDirection sortDirection) {
+        Sort sort;
+        switch (sortType) {
+            case TITLE -> sort = Sort
+                    .by(sortDirection == SortDirection.ASCENDING ? Sort.Direction.ASC : Sort.Direction.DESC, "title");
+            case RECENT ->
+                sort = Sort.by(sortDirection == SortDirection.ASCENDING ? Sort.Direction.ASC : Sort.Direction.DESC,
+                        "createdAt");
+            default -> sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        }
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+        return notificationRepository.findAll(sortedPageable);
     }
 }

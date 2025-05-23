@@ -33,7 +33,7 @@ public class SlackClient {
      * @param errorResponse
      */
     @Async
-    public void sendErrorMessage(ErrorResponse errorResponse, String stackTrace) {
+    public void sendErrorMessage(ErrorResponse errorResponse, String message) {
         if (!activeProfile.equals("local")) {
             try {
                 String profile = activeProfile.equals("prod") ? "*[PROD] " : "*[STAGING] ";
@@ -45,7 +45,7 @@ public class SlackClient {
                                         generateSlackField(SlackConstant.ERROR.TIME, errorResponse.getTimestamp().toString()),
                                         generateSlackField(SlackConstant.ERROR.CODE, errorResponse.getCode()),
                                         generateSlackField(SlackConstant.ERROR.MESSAGE, errorResponse.getMessage()),
-                                        generateSlackField(SlackConstant.ERROR.STACK_TRACE, stackTrace)
+                                        generateSlackField(SlackConstant.ERROR.STACK_TRACE, message)
                                 ))
                                 .build())))
                 );

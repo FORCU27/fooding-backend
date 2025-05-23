@@ -53,7 +53,8 @@ jobs:
             SPRING_PROFILES_ACTIVE=${{ secrets.STAGE_SPRING_PROFILES_ACTIVE }}
             UPLOAD_PATH=${{ secrets.STAGE_UPLOAD_PATH  }}
             STORAGE_API_URL=${{ secrets.STAGE_STORAGE_API_URL  }}
-            STORAGE_API_AUTHORIZATION=${{ secrets.STAGE_STORAGE_API_AUTHORIZATION  }}
+            STORAGE_API_TOKEN=${{ secrets.STAGE_STORAGE_API_TOKEN  }}
+            STORAGE_API_BUCKET_ID=${{ secrets.STAGE_STORAGE_API_BUCKET_ID  }}
             JPA_DDL_AUTO=${{ secrets.STAGE_JPA_DDL_AUTO  }}
       - name: Deployment
         uses: appleboy/ssh-action@master
