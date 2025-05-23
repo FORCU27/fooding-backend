@@ -13,10 +13,7 @@ public record AppUserResponse(
         @Schema(description = "ID", requiredMode = RequiredMode.REQUIRED, example = "1")
         Long id,
 
-        @Schema(description = "역할", requiredMode = RequiredMode.NOT_REQUIRED, example = "USER")
-        Role role,
-
-        @Schema(description = "이메일", requiredMode = RequiredMode.REQUIRED, example = "aaa111@mail.com")
+        @Schema(description = "이메일", example = "aaa111@mail.com")
         String email,
 
         @Schema(description = "소셜 로그인 제공자", requiredMode = RequiredMode.REQUIRED, example = "FOODING")
@@ -65,7 +62,6 @@ public record AppUserResponse(
     public static AppUserResponse from(User user) {
             return new AppUserResponse(
                     user.getId(),
-                    user.getRole(),
                     user.getEmail(),
                     user.getProvider(),
                     user.getNickname(),

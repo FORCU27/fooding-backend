@@ -1,9 +1,7 @@
 package im.fooding.app.controller.admin.user;
 
-import im.fooding.app.dto.request.admin.manager.AdminCreateManagerRequest;
 import im.fooding.app.dto.request.admin.user.AdminUpdateUserRequest;
 import im.fooding.app.dto.response.admin.user.AdminUserResponse;
-import im.fooding.app.service.admin.auth.AdminAuthApplicationService;
 import im.fooding.app.service.admin.user.AdminUserService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
@@ -25,15 +23,15 @@ public class AdminUserController {
 
     private final AdminUserService adminUserService;
 
-    private final AdminAuthApplicationService adminAuthApplicationService;
+//    private final AdminAuthApplicationService adminAuthApplicationService;
 
-    @PostMapping
-    @Operation(summary = "유저 생성")
-    public ApiResult<Void> create(@RequestBody @Valid AdminCreateManagerRequest adminCreateManagerRequest) {
-        // TODO: 변경
-        adminAuthApplicationService.register(adminCreateManagerRequest);
-        return ApiResult.ok();
-    }
+//    @PostMapping
+//    @Operation(summary = "유저 생성")
+//    public ApiResult<Void> create(@RequestBody @Valid AdminCreateManagerRequest adminCreateManagerRequest) {
+//        // TODO: 변경
+//        adminAuthApplicationService.register(adminCreateManagerRequest);
+//        return ApiResult.ok();
+//    }
 
     @GetMapping
     @Operation(summary = "유저 목록 조회")
