@@ -4,6 +4,7 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreSortType;
+import im.fooding.core.model.user.User;
 import im.fooding.core.repository.store.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,11 +35,12 @@ public class StoreService {
             StoreSortType sortType,
             SortDirection sortDirection,
             boolean includeDeleted) {
-        return storeRepository.list(pageable, sortType, sortDirection,includeDeleted);
+        return storeRepository.list(pageable, sortType, sortDirection, includeDeleted);
     }
 
     /**
      * 가게 아이디로 조회
+     *
      * @param storeId
      * @return
      */
@@ -50,11 +52,11 @@ public class StoreService {
     /**
      * 가게 생성
      */
-    @Transactional
-    public Long create(String name, String city, String address, String category, String description,
-            String priceCategory, String eventDescription, String contactNumber, String direction,
-            String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut) {
+    public Store create(User owner, String name, String city, String address, String category, String description,
+                        String priceCategory, String eventDescription, String contactNumber, String direction,
+                        String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut) {
         Store store = Store.builder()
+                .owner(owner)
                 .name(name)
                 .city(city)
                 .address(address)
@@ -69,19 +71,19 @@ public class StoreService {
                 .isNewOpen(isNewOpen)
                 .isTakeOut(isTakeOut)
                 .build();
-        Store savedStore = storeRepository.save(store);
-        return savedStore.getId();
+        return storeRepository.save(store);
     }
 
-    /**
-     * 가게 삭제
-     */
-    @Transactional
+    public void update(long id, String name, String city, String address, String category, String description,
+                       String priceCategory, String eventDescription, String contactNumber, String direction,
+                       String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut) {
+        Store store = findById(id);
+        store.update(name, city, address, category, description, priceCategory, eventDescription, contactNumber, direction, information, isParkingAvailable, isNewOpen, isTakeOut);
+    }
+
     public void delete(long id, Long deletedBy) {
         Store store = findById(id);
-
-        // TODO: 유저 정보
-        store.delete(0);
+        store.delete(deletedBy);
     }
 
     public Page<Store> list(Pageable pageable) {
