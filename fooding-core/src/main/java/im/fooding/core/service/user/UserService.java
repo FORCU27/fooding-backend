@@ -25,8 +25,10 @@ public class UserService {
      * @param email
      * @param nickname
      * @param password
+     * @param phoneNumber
+     * @param gender
      */
-    public User create(String email, String nickname, String password) {
+    public User create(String email, String nickname, String password, String phoneNumber, Gender gender) {
         checkDuplicateEmail(email, AuthProvider.FOODING);
         if (checkDuplicatedNickname(nickname)) {
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
@@ -35,8 +37,9 @@ public class UserService {
                 .email(email)
                 .nickname(nickname)
                 .password(password)
+                .phoneNumber(phoneNumber)
                 .provider(AuthProvider.FOODING)
-                .gender(Gender.NONE)
+                .gender(gender)
                 .build();
         return userRepository.save(user);
     }
@@ -62,6 +65,7 @@ public class UserService {
      *
      * @param searchString
      * @param pageable
+     * @param role
      * @return Page<User>
      */
     public Page<User> list(String searchString, Pageable pageable, Role role) {
@@ -143,6 +147,7 @@ public class UserService {
      * 이메일 중복체크
      *
      * @param email
+     * @param provider
      */
     private void checkDuplicateEmail(String email, AuthProvider provider) {
         userRepository.findByEmailAndProvider(email, provider).ifPresent(it -> {

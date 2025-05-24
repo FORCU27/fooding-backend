@@ -20,11 +20,7 @@ import im.fooding.core.global.jwt.dto.TokenResponse;
 import im.fooding.core.global.jwt.service.JwtService;
 import im.fooding.core.global.util.AppleLoginUtil;
 import im.fooding.core.model.file.File;
-import im.fooding.core.model.user.AuthProvider;
-import im.fooding.core.model.user.Role;
-import im.fooding.core.model.user.User;
-import im.fooding.core.model.user.UserAuthority;
-import im.fooding.core.service.file.FileService;
+import im.fooding.core.model.user.*;
 import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -96,7 +91,7 @@ public class AuthService {
      */
     @Transactional
     public void register(AuthCreateRequest request) {
-        User user = userService.create(request.getEmail(), request.getNickname(), passwordEncoder.encode(request.getPassword()));
+        User user = userService.create(request.getEmail(), request.getNickname(), passwordEncoder.encode(request.getPassword()), null, Gender.NONE);
         userAuthorityService.create(user, request.getRole());
     }
 

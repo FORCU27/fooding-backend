@@ -1,20 +1,17 @@
 package im.fooding.app.controller.admin.stores;
 
 import im.fooding.app.dto.request.admin.store.AdminCreateStoreRequest;
+import im.fooding.app.dto.request.admin.store.AdminSearchStoreRequest;
 import im.fooding.app.dto.request.admin.store.AdminUpdateStoreRequest;
 import im.fooding.app.dto.response.admin.store.AdminStoreResponse;
 import im.fooding.app.service.admin.store.AdminStoreService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
-import im.fooding.core.model.store.StoreSortType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.query.SortDirection;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -23,23 +20,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin/stores")
 @Tag(name = "AdminStoreController", description = "관리자 가게 컨트롤러")
 public class AdminStoreController {
-
     private final AdminStoreService adminStoreService;
 
     @GetMapping
     @Operation(summary = "가게 전체 조회")
-    public ApiResult<PageResponse<AdminStoreResponse>> list(
-            Pageable pageable,
-            @RequestParam(required = false, defaultValue = "RECENT") StoreSortType sortType,
-            @RequestParam(required = false, defaultValue = "DESCENDING") SortDirection sortDirection) {
-        PageResponse<AdminStoreResponse> stores = adminStoreService.list(pageable, sortType, sortDirection);
+    public ApiResult<PageResponse<AdminStoreResponse>> list(@Valid AdminSearchStoreRequest request) {
+        PageResponse<AdminStoreResponse> stores = adminStoreService.list(request);
         return ApiResult.ok(stores);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "가게 상세 조회")
-    public ApiResult<AdminStoreResponse> findById(@PathVariable Long id) {
-        AdminStoreResponse store = adminStoreService.findById(id);
+    public ApiResult<AdminStoreResponse> retrieve(@PathVariable Long id) {
+        AdminStoreResponse store = adminStoreService.retrieve(id);
         return ApiResult.ok(store);
     }
 

@@ -28,7 +28,7 @@ public class QUserRepositoryImpl implements QUserRepository {
                 .innerJoin(user.authorities, userAuthority).fetchJoin()
                 .where(
                         user.deleted.isFalse(),
-                        userAuthority.role.eq(role),
+                        searchRole(role),
                         search(searchString)
                 )
                 .orderBy(user.id.desc())
@@ -42,7 +42,7 @@ public class QUserRepositoryImpl implements QUserRepository {
                 .innerJoin(user.authorities, userAuthority).fetchJoin()
                 .where(
                         user.deleted.isFalse(),
-                        userAuthority.role.eq(role),
+                        searchRole(role),
                         search(searchString)
                 );
 
@@ -53,5 +53,9 @@ public class QUserRepositoryImpl implements QUserRepository {
         return StringUtils.hasText(searchString)
                 ? user.nickname.contains(searchString).or(user.email.contains(searchString))
                 : null;
+    }
+
+    private BooleanExpression searchRole(Role role) {
+        return role != null ? userAuthority.role.eq(role) : null;
     }
 }
