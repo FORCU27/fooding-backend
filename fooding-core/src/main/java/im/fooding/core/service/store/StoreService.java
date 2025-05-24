@@ -68,10 +68,11 @@ public class StoreService {
     }
 
     public void update(long id, String name, String city, String address, String category, String description,
-                       String priceCategory, String eventDescription, String contactNumber, String direction,
+                       String contactNumber, String priceCategory, String eventDescription, String direction,
                        String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut) {
         Store store = findById(id);
-        store.update(name, city, address, category, description, priceCategory, eventDescription, contactNumber, direction, information, isParkingAvailable, isNewOpen, isTakeOut);
+        store.update(name, city, address, category, description, contactNumber, priceCategory, eventDescription,
+                direction, information, isParkingAvailable, isNewOpen, isTakeOut);
     }
 
     public void delete(long id, Long deletedBy) {
