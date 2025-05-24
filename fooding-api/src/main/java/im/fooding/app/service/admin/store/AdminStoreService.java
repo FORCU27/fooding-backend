@@ -69,7 +69,7 @@ public class AdminStoreService {
     @Transactional
     public void update(Long id, AdminUpdateStoreRequest request) {
         storeService.update(id, request.getName(), request.getCity(), request.getAddress(), request.getCategory(), request.getDescription(),
-                request.getPriceCategory(), request.getEventDescription(), request.getContactNumber(), request.getDirection(),
+                request.getContactNumber(), request.getPriceCategory(), request.getEventDescription(), request.getDirection(),
                 request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut());
     }
 
