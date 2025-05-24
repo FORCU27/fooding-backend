@@ -2,33 +2,62 @@ package im.fooding.app.dto.response.admin.store;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import im.fooding.core.model.store.Store;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
 public class AdminStoreResponse {
+    @Schema(description = "id", example = "1")
     private final Long id;
+
+    @Schema(description = "점주 id", example = "1")
+    private final Long ownerId;
+
+    @Schema(description = "가게명", example = "홍가네")
     private final String name;
+
+    @Schema(description = "도시", example = "홍대")
     private final String city;
+
+    @Schema(description = "주소", example = "서울특별시 마포구")
     private final String address;
+
+    @Schema(description = "카테고리", example = "한식")
     private final String category;
+
+    @Schema(description = "설명", example = "설명설명")
     private final String description;
+
+    @Schema(description = "가격대", example = "15000 ~ 30000")
     private final String priceCategory;
+
+    @Schema(description = "이벤트설명", example = "이벤트없음")
     private final String eventDescription;
+
+    @Schema(description = "연락처", example = "010-0000-0000")
     private final String contactNumber;
+
+    @Schema(description = "오시는길", example = "홍대입구역 2번출구 앞")
     private final String direction;
+
+    @Schema(description = "영업 정보", example = "오전9시 ~ 오후9시")
     private final String information;
 
     @JsonProperty("isParkingAvailable")
+    @Schema(description = "주차가능여부", example = "true")
     private final boolean isParkingAvailable;
 
     @JsonProperty("isNewOpen")
+    @Schema(description = "신규오픈여부", example = "true")
     private final boolean isNewOpen;
 
     @JsonProperty("isTakeOut")
+    @Schema(description = "포장가능여부", example = "true")
     private final boolean isTakeOut;
 
     public AdminStoreResponse(Store store) {
         this.id = store.getId();
+        this.ownerId = store.getOwner() != null ? store.getOwner().getId() : null;
         this.name = store.getName();
         this.city = store.getCity();
         this.address = store.getAddress();
