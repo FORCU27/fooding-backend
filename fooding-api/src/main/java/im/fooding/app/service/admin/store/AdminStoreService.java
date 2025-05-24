@@ -9,6 +9,7 @@ import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StorePosition;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.model.user.UserAuthority;
@@ -60,7 +61,7 @@ public class AdminStoreService {
                 request.getDirection(), request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(),
                 request.getIsTakeOut());
 
-        storeMemberService.create(store, user);
+        storeMemberService.create(store, user, StorePosition.OWNER);
 
         return store.getId();
     }

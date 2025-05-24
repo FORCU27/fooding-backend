@@ -2,6 +2,7 @@ package im.fooding.core.service.store;
 
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreMember;
+import im.fooding.core.model.store.StorePosition;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.store.StoreMemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +25,13 @@ public class StoreMemberService {
                 .map(StoreMember::getStore);
     }
 
-    public void create(Store store, User user) {
+    public void create(Store store, User user, StorePosition position) {
         storeMemberRepository.save(
                 StoreMember.builder()
-                    .store(store)
-                    .user(user)
-                    .build()
+                        .store(store)
+                        .user(user)
+                        .position(position)
+                        .build()
         );
     }
 }

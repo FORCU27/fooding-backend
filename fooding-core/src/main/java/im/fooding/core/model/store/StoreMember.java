@@ -2,15 +2,7 @@ package im.fooding.core.model.store;
 
 import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.user.User;
-import jakarta.persistence.ConstraintMode;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,9 +35,13 @@ public class StoreMember extends BaseEntity {
     )
     private Store store;
 
+    @Enumerated(EnumType.STRING)
+    private StorePosition position;
+
     @Builder
-    public StoreMember(User user, Store store) {
+    public StoreMember(User user, Store store, StorePosition position) {
         this.user = user;
         this.store = store;
+        this.position = position;
     }
 }

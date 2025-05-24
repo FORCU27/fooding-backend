@@ -12,14 +12,11 @@ import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Slf4j
 public class StoreService {
-
     private final StoreRepository storeRepository;
 
     /**
@@ -30,11 +27,7 @@ public class StoreService {
      * @param sortType
      * @param sortDirection
      */
-    public Page<Store> list(
-            Pageable pageable,
-            StoreSortType sortType,
-            SortDirection sortDirection,
-            boolean includeDeleted) {
+    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, boolean includeDeleted) {
         return storeRepository.list(pageable, sortType, sortDirection, includeDeleted);
     }
 
