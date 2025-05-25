@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,5 +47,15 @@ public class UserNotificationController {
     Long userId = userInfo.getId();
     UserNotificationResponse notification = userNotificationApplicationService.retrieve(userId, notificationId);
     return ApiResult.ok(notification);
+  }
+
+  @PostMapping("/read")
+  @Operation(summary = "유저 알림 읽음 상태 변경")
+  public ApiResult<Void> markAsRead(
+      @AuthenticationPrincipal UserInfo userInfo,
+      @RequestBody List<Long> notificationIds) {
+    Long userId = userInfo.getId();
+    userNotificationApplicationService.markAsRead(userId, notificationIds);
+    return ApiResult.ok();
   }
 }
