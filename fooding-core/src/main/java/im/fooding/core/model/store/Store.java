@@ -1,34 +1,27 @@
 package im.fooding.core.model.store;
 
 import im.fooding.core.model.BaseEntity;
-import im.fooding.core.model.review.Review;
-import im.fooding.core.model.waiting.Waiting;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
+import im.fooding.core.model.user.User;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
 public class Store extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private User owner;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -36,7 +29,6 @@ public class Store extends BaseEntity {
     @Column(name = "city", nullable = false)
     private String city;
 
-    // TODO : 추후 VO 설계
     @Column(name = "address", nullable = false)
     private String address;
 
@@ -72,20 +64,10 @@ public class Store extends BaseEntity {
     private boolean isTakeOut;
 
     @Builder
-    private Store(
-            String name,
-            String city,
-            String address,
-            String category,
-            String description,
-            String contactNumber,
-            String priceCategory,
-            String eventDescription,
-            String direction,
-            String information,
-            boolean isParkingAvailable,
-            boolean isNewOpen,
-            boolean isTakeOut) {
+    private Store(User owner, String name, String city, String address, String category, String description, String contactNumber,
+                  String priceCategory, String eventDescription, String direction, String information, boolean isParkingAvailable,
+                  boolean isNewOpen, boolean isTakeOut) {
+        this.owner = owner;
         this.name = name;
         this.city = city;
         this.address = address;
@@ -101,59 +83,21 @@ public class Store extends BaseEntity {
         this.isTakeOut = isTakeOut;
     }
 
-    public void updateStoreName(String name) {
+    public void update(String name, String city, String address, String category, String description, String contactNumber,
+                       String priceCategory, String eventDescription, String direction, String information, boolean isParkingAvailable,
+                       boolean isNewOpen, boolean isTakeOut) {
         this.name = name;
-    }
-
-    public void updateDescription(String description) {
-        this.description = description;
-    }
-
-    public void updateContactNumber(String contactNumber) {
-        this.contactNumber = this.contactNumber;
-    }
-
-    public void updatePriceCategory(String priceCategory) {
-        this.priceCategory = priceCategory;
-    }
-
-    public void updateDirection(String direction) {
-        this.direction = direction;
-    }
-
-    public void updateInformation(String information) {
-        this.information = information;
-    }
-
-    public void updateParkingAvailability(boolean isParkingAvailable) {
-        this.isParkingAvailable = isParkingAvailable;
-    }
-
-    public void updateIsNewOpen(boolean isNewOpen) {
-        this.isNewOpen = isNewOpen;
-    }
-
-    public void updateIsTakeOut(boolean isTakeOut) {
-        this.isTakeOut = isTakeOut;
-    }
-
-    public void updateCategory(String category) {
-        this.category = category;
-    }
-
-    public void updateCity(String city) {
         this.city = city;
-    }
-
-    public void updateEventDescription(String eventDescription) {
-        this.eventDescription = eventDescription;
-    }
-
-    public void updateAddress(String address) {
         this.address = address;
-    }
-
-    public void delete() {
-        // TODO: soft delete 추가
+        this.category = category;
+        this.description = description;
+        this.contactNumber = contactNumber;
+        this.priceCategory = priceCategory;
+        this.eventDescription = eventDescription;
+        this.direction = direction;
+        this.information = information;
+        this.isParkingAvailable = isParkingAvailable;
+        this.isNewOpen = isNewOpen;
+        this.isTakeOut = isTakeOut;
     }
 }
