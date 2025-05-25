@@ -35,7 +35,7 @@ public class AdminMenuController {
     private final AdminMenuService adminMenuService;
 
     @PostMapping
-    @Operation(summary = "웨이팅 생성")
+    @Operation(summary = "메뉴 생성")
     public ApiResult<Void> create(
             @RequestBody @Valid AdminMenuCreateRequest request
     ) {
@@ -44,7 +44,7 @@ public class AdminMenuController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "웨이팅 조회")
+    @Operation(summary = "메뉴 조회")
     public ApiResult<AdminMenuResponse> get(
             @PathVariable long id
     ) {
@@ -52,7 +52,7 @@ public class AdminMenuController {
     }
 
     @GetMapping
-    @Operation(summary = "웨이팅 조회(page)")
+    @Operation(summary = "메뉴 조회(page)")
     public ApiResult<PageResponse<AdminMenuResponse>> list(
             @Parameter(description = "검색 및 페이징 조건")
             @ModelAttribute BasicSearch search
@@ -61,7 +61,7 @@ public class AdminMenuController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "웨이팅 수정")
+    @Operation(summary = "메뉴 수정")
     public ApiResult<AdminMenuResponse> update(
             @PathVariable long id,
 
@@ -72,7 +72,7 @@ public class AdminMenuController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "웨이팅 제거")
+    @Operation(summary = "메뉴 제거")
     public ApiResult<Void> delete(
             @AuthenticationPrincipal UserInfo userInfo,
             @PathVariable long id
