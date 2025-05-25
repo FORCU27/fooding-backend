@@ -68,6 +68,14 @@ public class UserNotificationApplicationService {
                 PageInfo.of(page));
     }
 
+    @Transactional
+    public void markAsRead(Long userId, List<Long> notificationIds) {
+        List<UserNotification> notifications = notificationIds.stream()
+                .map(id -> userNotificationService.getNotification(userId, id))
+                .toList();
+        notifications.forEach(UserNotification::read);
+    }
+
     public UserNotificationResponse retrieve(Long userId, Long notificationId) {
         return UserNotificationResponse.from(userNotificationService.getNotification(userId, notificationId));
     }
