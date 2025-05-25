@@ -5,18 +5,22 @@ import im.fooding.app.dto.request.admin.menu.AdminMenuCreateRequest;
 import im.fooding.app.dto.request.admin.menu.AdminMenuUpdateRequest;
 import im.fooding.app.dto.response.admin.menu.AdminMenuResponse;
 import im.fooding.app.dto.response.admin.waiting.AdminWaitingResponse;
+import im.fooding.app.service.file.FileUploadService;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.model.file.File;
 import im.fooding.core.model.menu.Menu;
 import im.fooding.core.model.menu.MenuCategory;
 import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.service.menu.MenuCategoryService;
 import im.fooding.core.service.menu.MenuService;
+import im.fooding.core.service.waiting.WaitingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -25,12 +29,19 @@ public class AdminMenuService {
 
     private final MenuService menuService;
     private final MenuCategoryService menuCategoryService;
+    private final FileUploadService fileUploadService;
 
     @Transactional
     public void create(AdminMenuCreateRequest request) {
         MenuCategory menuCategory = menuCategoryService.get(request.categoryId());
 
-        menuService.create(request.toMenuCreateRequest(menuCategory));
+        String menuImageUrl = null;
+        if (StringUtils.hasText(request.imageId())) {
+            File file = fileUploadService.commit(request.imageId());
+            menuImageUrl = file.getUrl();
+        }
+
+        menuService.create(request.toMenuCreateRequest(menuCategory, menuImageUrl));
     }
 
     public AdminMenuResponse get(long id) {

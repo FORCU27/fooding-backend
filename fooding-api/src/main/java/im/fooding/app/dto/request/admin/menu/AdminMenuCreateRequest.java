@@ -24,9 +24,9 @@ public record AdminMenuCreateRequest(
         @NotNull
         String description,
 
-        @Schema(description = "메뉴 사진")
+        @Schema(description = "이미지 업로드 후 받은 id", example = "819f4bca-2739-46ca-9156-332c86eda619")
         @NotNull
-        String imageUrl,
+        String imageId,
 
         @Schema(description = "카테고리 정렬")
         @NotNull
@@ -41,7 +41,7 @@ public record AdminMenuCreateRequest(
         Boolean isRecommend
 ) {
 
-    public MenuCreateRequest toMenuCreateRequest(MenuCategory category) {
+    public MenuCreateRequest toMenuCreateRequest(MenuCategory category, String imageUrl) {
         return MenuCreateRequest.builder()
                 .category(category)
                 .name(name)
