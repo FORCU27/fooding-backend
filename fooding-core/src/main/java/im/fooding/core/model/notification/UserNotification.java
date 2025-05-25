@@ -56,4 +56,8 @@ public class UserNotification extends BaseEntity {
     this.content = content;
     this.category = category;
   }
+
+  public void read() {
+    this.isRead = true;
+  }
 }
