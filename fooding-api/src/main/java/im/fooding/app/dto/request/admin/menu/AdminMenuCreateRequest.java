@@ -2,11 +2,16 @@ package im.fooding.app.dto.request.admin.menu;
 
 import im.fooding.core.dto.request.menu.MenuCreateRequest;
 import im.fooding.core.model.menu.MenuCategory;
+import im.fooding.core.model.store.Store;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record AdminMenuCreateRequest(
+
+        @Schema(description = "가게 ID")
+        @NotNull
+        Long storeId,
 
         @Schema(description = "메뉴 카테고리 ID")
         @NotNull
@@ -41,8 +46,9 @@ public record AdminMenuCreateRequest(
         Boolean isRecommend
 ) {
 
-    public MenuCreateRequest toMenuCreateRequest(MenuCategory category, String imageUrl) {
+    public MenuCreateRequest toMenuCreateRequest(Store store, MenuCategory category, String imageUrl) {
         return MenuCreateRequest.builder()
+                .store(store)
                 .category(category)
                 .name(name)
                 .price(price)

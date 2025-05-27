@@ -11,6 +11,9 @@ public record AdminMenuResponse(
         @Schema(description = "ID")
         long id,
 
+        @Schema(description = "가게 ID")
+        long storeId,
+
         @Schema(description = "메뉴 카테고리 ID")
         long categoryId,
 
@@ -39,6 +42,7 @@ public record AdminMenuResponse(
     public static AdminMenuResponse from(Menu menu) {
         return AdminMenuResponse.builder()
                 .id(menu.getId())
+                .storeId(menu.getStore().getId())
                 .categoryId(menu.getCategory().getId())
                 .name(menu.getName())
                 .price(menu.getPrice())

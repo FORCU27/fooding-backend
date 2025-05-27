@@ -12,9 +12,11 @@ import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.file.File;
 import im.fooding.core.model.menu.Menu;
 import im.fooding.core.model.menu.MenuCategory;
+import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.service.menu.MenuCategoryService;
 import im.fooding.core.service.menu.MenuService;
+import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.waiting.WaitingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,11 +30,13 @@ import org.springframework.util.StringUtils;
 public class AdminMenuService {
 
     private final MenuService menuService;
+    private final StoreService storeService;
     private final MenuCategoryService menuCategoryService;
     private final FileUploadService fileUploadService;
 
     @Transactional
     public void create(AdminMenuCreateRequest request) {
+        Store store = storeService.findById(request.storeId());
         MenuCategory menuCategory = menuCategoryService.get(request.categoryId());
 
         String menuImageUrl = null;
@@ -41,7 +45,7 @@ public class AdminMenuService {
             menuImageUrl = file.getUrl();
         }
 
-        menuService.create(request.toMenuCreateRequest(menuCategory, menuImageUrl));
+        menuService.create(request.toMenuCreateRequest(store, menuCategory, menuImageUrl));
     }
 
     public AdminMenuResponse get(long id) {
@@ -55,9 +59,10 @@ public class AdminMenuService {
 
     @Transactional
     public void update(long id, AdminMenuUpdateRequest request) {
+        Store store = storeService.findById(request.storeId());
         MenuCategory menuCategory = menuCategoryService.get(id);
 
-        menuService.update(request.toMenuUpdateRequest(id, menuCategory));
+        menuService.update(request.toMenuUpdateRequest(id, store, menuCategory));
     }
 
     @Transactional
