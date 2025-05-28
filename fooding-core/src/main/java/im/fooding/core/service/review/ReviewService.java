@@ -38,8 +38,8 @@ public class ReviewService {
         return reviewRepository.list(storeId, pageable, sortType, sortDirection);
     }
 
-    public List<Review> list(Store store) {
-        return reviewRepository.findAllByStore(store);
+    public Page<Review> list(Store store, Pageable pageable) {
+        return reviewRepository.findAllByStore(store, pageable);
     }
 
     /**
