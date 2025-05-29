@@ -49,7 +49,8 @@ public class UserStoreService {
 
     private UserStoreResponse mapStoreToResponse(Store store) {
         StoreImage storeImage = storeImageService.findByStore(store.getId());
-        List<Review> reviews = reviewService.list(store);
+        Pageable pageable = PageRequest.of( 0, 100 );
+        List<Review> reviews = reviewService.list(store, pageable).stream().toList();
 
         // 대기 시간 비활성화한 경우에는 -1로 반환하도록 구현
         Integer estimatedWaitingTime = waitingSettingService.findActiveSetting(store)
