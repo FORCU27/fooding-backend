@@ -3,6 +3,7 @@ package im.fooding.core.repository.store;
 import static com.querydsl.core.types.Order.*;
 import static im.fooding.core.model.review.QReview.review;
 import static im.fooding.core.model.store.QStore.store;
+import static im.fooding.core.model.store.QStoreMember.storeMember;
 
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.JPQLQuery;
@@ -50,6 +51,17 @@ public class QStoreRepositoryImpl implements QStoreRepository {
                 .where(builder);
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+    }
+
+    @Override
+    public List<Store> listByUserId(long userId) {
+        return query
+                .select(store)
+                .from(store)
+                .innerJoin(storeMember).on(store.id.eq(storeMember.store.id))
+                .where(storeMember.user.id.eq(userId), store.deleted.isFalse())
+                .orderBy(store.id.desc())
+                .fetch();
     }
 
     private OrderSpecifier<?> getOrderSpecifier(StoreSortType sortType, SortDirection direction) {
