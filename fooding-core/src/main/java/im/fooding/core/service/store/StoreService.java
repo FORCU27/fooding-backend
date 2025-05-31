@@ -95,4 +95,20 @@ public class StoreService {
     public Page<Store> list(Pageable pageable) {
         return storeRepository.findAll(pageable);
     }
+
+    public void increaseVisitCount(Store store) {
+        store.increaseVisitCount();
+    }
+
+    public void increaseReviewCount(Store store) {
+        store.increaseReviewCount();
+    }
+
+    public void decreaseReviewCount(Store store) {
+        store.decreaseReviewCount();
+    }
+
+    public void updateAverageRating(Store store, double averageRating) {
+        store.updateAverageRating(averageRating);
+    }
 }

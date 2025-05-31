@@ -5,6 +5,7 @@ import static im.fooding.core.model.review.QReview.review;
 import static im.fooding.core.model.store.QStore.store;
 import static im.fooding.core.model.store.QStoreMember.storeMember;
 
+import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -37,7 +38,6 @@ public class QStoreRepositoryImpl implements QStoreRepository {
         List<Store> content = query
                 .select(store)
                 .from(store)
-                .leftJoin(review).on(review.store.eq(store))
                 .where(builder)
                 .groupBy(store.id)
                 .orderBy(orderSpecifier)
@@ -65,13 +65,13 @@ public class QStoreRepositoryImpl implements QStoreRepository {
     }
 
     private OrderSpecifier<?> getOrderSpecifier(StoreSortType sortType, SortDirection direction) {
-        if (sortType == null) {
-            return new OrderSpecifier<>(direction == SortDirection.ASCENDING ? ASC : DESC, store.id);
-        }
+        Order order = direction == SortDirection.ASCENDING ? ASC : DESC;
+
         return switch (sortType) {
-            case REVIEW -> new OrderSpecifier<>(direction == SortDirection.ASCENDING ? ASC : DESC, review.count());
-            case RECENT -> new OrderSpecifier<>(direction == SortDirection.ASCENDING ? ASC : DESC,
-                    store.createdAt);
+            case REVIEW -> new OrderSpecifier<>(order, store.reviewCount);
+            case RECENT -> new OrderSpecifier<>(order, store.createdAt);
+            case AVERAGE_RATING -> new OrderSpecifier<>(order, store.averageRating);
+            case VISIT -> new OrderSpecifier<>(order, store.visitCount);
         };
     }
 }
