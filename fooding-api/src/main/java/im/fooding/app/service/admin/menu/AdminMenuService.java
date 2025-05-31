@@ -62,7 +62,13 @@ public class AdminMenuService {
         Store store = storeService.findById(request.storeId());
         MenuCategory menuCategory = menuCategoryService.get(id);
 
-        menuService.update(request.toMenuUpdateRequest(id, store, menuCategory));
+        String menuImageUrl = null;
+        if (StringUtils.hasText(request.imageId())) {
+            File file = fileUploadService.commit(request.imageId());
+            menuImageUrl = file.getUrl();
+        }
+
+        menuService.update(request.toMenuUpdateRequest(id, store, menuCategory, menuImageUrl));
     }
 
     @Transactional

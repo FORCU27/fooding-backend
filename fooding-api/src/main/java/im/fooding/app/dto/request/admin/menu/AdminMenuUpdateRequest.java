@@ -31,7 +31,7 @@ public record AdminMenuUpdateRequest(
 
         @Schema(description = "메뉴 사진")
         @NotNull
-        String imageUrl,
+        String imageId,
 
         @Schema(description = "카테고리 정렬")
         @NotNull
@@ -46,7 +46,7 @@ public record AdminMenuUpdateRequest(
         Boolean isRecommend
 ) {
 
-    public MenuUpdateRequest toMenuUpdateRequest(long id, Store store, MenuCategory category) {
+    public MenuUpdateRequest toMenuUpdateRequest(long id, Store store, MenuCategory category, String imageUrl) {
         return MenuUpdateRequest.builder()
                 .store(store)
                 .id(id)
