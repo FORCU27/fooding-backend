@@ -35,10 +35,10 @@ public enum ErrorCode {
 
     // 가게
     STORE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2000", "등록된 가게 정보가 없습니다."),
-    STORE_SERVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2100", "등록된 가게 서비스가 없습니다."),
     STORE_IMAGE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2001", "등록된 가게 이미지가 없습니다."),
+    STORE_SERVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2100", "등록된 가게 서비스가 없습니다."),
     STORE_POST_NOT_FOUND(HttpStatus.BAD_REQUEST,"2200", "등록된 가게 소식이 없습니다."),
-
+    STORE_MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "2300", "해당 가게의 직원이 아닙니다."),
 
     // 웨이팅
     WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3000", "등록된 웨이팅 정보가 없습니다."),

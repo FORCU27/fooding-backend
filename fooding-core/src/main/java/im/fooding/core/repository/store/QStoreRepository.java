@@ -6,6 +6,8 @@ import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface QStoreRepository {
 
     Page<Store> list(
@@ -14,4 +16,6 @@ public interface QStoreRepository {
             SortDirection sortDirection,
             boolean includeDeleted
     );
+
+    List<Store> listByUserId(long userId);
 }

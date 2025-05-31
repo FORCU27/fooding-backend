@@ -12,9 +12,17 @@ import org.hibernate.query.SortDirection;
 @Setter
 @NoArgsConstructor
 public class AdminSearchStoreRequest extends BasicSearch {
-    @Schema(description = "정렬타입", example = "RECENT")
-    private StoreSortType sortType;
+    @Schema(
+            description = "정렬 타입",
+            example = "RECENT",
+            allowableValues = {"RECENT", "AVERAGE_RATING", "REVIEW", "VISIT"}
+    )
+    private StoreSortType sortType = StoreSortType.RECENT;
 
-    @Schema(description = "정렬방향", example = "DESCENDING")
-    private SortDirection sortDirection;
+    @Schema(
+            description = "정렬 순서",
+            example = "ASCENDING",
+            allowableValues = {"ASCENDING", "DESCENDING"}
+    )
+    private SortDirection sortDirection = SortDirection.DESCENDING;
 }
