@@ -48,30 +48,26 @@ public class DeviceApplicationService {
      */
     @Transactional
     public void connect(ConnectDeviceRequest request, Long userId) {
-        if (request.deviceId() == null) {
-            Store store = request.storeId() != null ? storeService.findById(request.storeId()) : null;
-            
-            // uuid, store, packageName으로 기존 디바이스 조회
-            Device existingDevice = deviceService.findByUuidAndStoreAndPackageName(request.uuid(), store, request.packageName());
-            if (existingDevice != null) {
-                // 기존 디바이스가 있으면 업데이트
-                existingDevice.update(request.name());
-                existingDevice.updateOsVersion(request.osVersion());
-                if (userId != null) {
-                    User user = userService.findById(userId);
-                    existingDevice.updateUser(user);
-                }
-            } else {
-                // 없으면 새로 생성
-                Device device = deviceService.create(request.uuid(), request.name(), request.type(), request.osVersion(), request.packageName(), store);
-                if (userId != null) {
-                    User user = userService.findById(userId);
-                    device.updateUser(user);
-                }
+        Store store = request.storeId() != null ? storeService.findById(request.storeId()) : null;
+
+        // uuid, store, packageName으로 기존 디바이스 조회
+        Device existingDevice = deviceService.findByUuidAndStoreAndPackageName(request.uuid(), store, request.packageName());
+        if (existingDevice != null) {
+            // 기존 디바이스가 있으면 업데이트
+            // TODO: 기타 메타데이터도 업데이트
+            existingDevice.update(request.name());
+            existingDevice.updateOsVersion(request.osVersion());
+            if (userId != null) {
+                User user = userService.findById(userId);
+                existingDevice.updateUser(user);
             }
-        } else if (userId != null) {
-            User user = userService.findById(userId);
-            deviceService.updateUser(user, request.deviceId());
+        } else {
+            // 없으면 새로 생성
+            Device device = deviceService.create(request.uuid(), request.name(), request.type(), request.osVersion(), request.packageName(), store);
+            if (userId != null) {
+                User user = userService.findById(userId);
+                device.updateUser(user);
+            }
         }
     }
 }
