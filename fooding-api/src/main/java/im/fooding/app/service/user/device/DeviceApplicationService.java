@@ -1,55 +1,44 @@
 package im.fooding.app.service.user.device;
 
-import im.fooding.app.dto.request.admin.device.RetrieveAllDeviceRequest;
 import im.fooding.app.dto.request.user.device.ConnectDeviceRequest;
-import im.fooding.app.dto.request.user.device.RetrieveStoreDeviceRequest;
+import im.fooding.app.dto.request.user.device.RetrieveDeviceRequest;
 import im.fooding.app.dto.response.user.device.StoreDeviceResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.device.Device;
+import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
-import im.fooding.core.service.device.DeviceAppService;
 import im.fooding.core.service.device.DeviceService;
+import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DeviceApplicationService {
     private final DeviceService deviceService;
-    private final DeviceAppService deviceAppService;
     private final UserService userService;
+    private final StoreService storeService;
 
     /**
-     * store id로 조회
+     * 디바이스 목록 조회
      *
      * @param request
      * @return StoreDeviceResponse
      */
     @Transactional(readOnly = true)
-    public PageResponse<StoreDeviceResponse> retrieveStoreDevice(RetrieveStoreDeviceRequest request ){
-        Page<Device> result = deviceService.list( null, request.getStoreId(), request.getPageable() );
-        PageInfo pageInfo = PageInfo.of( result );
-        return PageResponse.of( result.getContent().stream().map(StoreDeviceResponse::of).collect(Collectors.toList()), pageInfo );
-    }
-
-    /**
-     * 모든 디바이스 조회
-     *
-     * @param request
-     * @return StoreDeviceResponse
-     */
-    @Transactional(readOnly = true)
-    public PageResponse<StoreDeviceResponse> retrieveAllDevice(RetrieveAllDeviceRequest request ){
-        Page<Device> result = deviceService.list(null, null, request.getPageable());
-        return PageResponse.of( result.getContent().stream().map(StoreDeviceResponse::of).collect(Collectors.toList()), PageInfo.of( result ) );
+    public PageResponse<StoreDeviceResponse> list(String service, RetrieveDeviceRequest request) {
+        // TODO: CEO이면 storeId 필수인뎨?, 코드에서 validation or service 쪼개기
+        Page<Device> result = deviceService.list(null, request.getStoreId(), null, request.getPageable());
+        PageInfo pageInfo = PageInfo.of(result);
+        return PageResponse.of(result.getContent().stream().map(StoreDeviceResponse::of).collect(Collectors.toList()), pageInfo);
     }
 
     /**
@@ -58,14 +47,31 @@ public class DeviceApplicationService {
      * @param request
      */
     @Transactional
-    public void connect(ConnectDeviceRequest request){
-        if( request.deviceId() == null ) {
-            Device device = deviceService.create( request.name(), request.type(), request.osVersion() );
-            deviceAppService.create( device, request.appVersion(), request.packageName() );
-        }
-        else if( request.deviceId() != null && request.userId() != null ){
-            User user = userService.findById(request.userId() );
-            deviceService.updateUser( user, request.deviceId() );
+    public void connect(ConnectDeviceRequest request, Long userId) {
+        if (request.deviceId() == null) {
+            Store store = request.storeId() != null ? storeService.findById(request.storeId()) : null;
+            
+            // uuid, store, packageName으로 기존 디바이스 조회
+            Device existingDevice = deviceService.findByUuidAndStoreAndPackageName(request.uuid(), store, request.packageName());
+            if (existingDevice != null) {
+                // 기존 디바이스가 있으면 업데이트
+                existingDevice.update(request.name());
+                existingDevice.updateOsVersion(request.osVersion());
+                if (userId != null) {
+                    User user = userService.findById(userId);
+                    existingDevice.updateUser(user);
+                }
+            } else {
+                // 없으면 새로 생성
+                Device device = deviceService.create(request.uuid(), request.name(), request.type(), request.osVersion(), request.packageName(), store);
+                if (userId != null) {
+                    User user = userService.findById(userId);
+                    device.updateUser(user);
+                }
+            }
+        } else if (userId != null) {
+            User user = userService.findById(userId);
+            deviceService.updateUser(user, request.deviceId());
         }
     }
 }
