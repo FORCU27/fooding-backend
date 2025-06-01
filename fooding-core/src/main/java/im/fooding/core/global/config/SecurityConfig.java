@@ -73,7 +73,12 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(
                 List.of(
+                        // NOTE: 로컬 개발 허용(정규식?)
                         "http://localhost:3000",
+                        "http://localhost:3001",
+                        "http://localhost:3002",
+                        "http://localhost:3003",
+                        // NOTE: 서비스 허용
                         "https://fooding.im",
                         "https://stage.fooding.im",
                         "https://back-office-stage.fooding.im",
