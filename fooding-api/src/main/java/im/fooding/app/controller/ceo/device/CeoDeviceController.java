@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/ceo/devices")
 @Tag(name = "CEO Device Controller", description = "CEO 디바이스 컨트롤러")
-public class CEODeviceController {
+public class CeoDeviceController {
     private final AppDeviceService service;
 
     @GetMapping

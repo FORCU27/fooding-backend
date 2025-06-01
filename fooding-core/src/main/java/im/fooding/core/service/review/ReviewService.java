@@ -1,5 +1,7 @@
 package im.fooding.core.service.review;
 
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.review.Review;
 import im.fooding.core.model.review.ReviewSortType;
 import im.fooding.core.model.store.Store;
@@ -25,21 +27,23 @@ public class ReviewService {
      * * 리뷰 목록 조회
      * @param storeId
      * @param pageable
-     * @param sortType
-     * @param sortDirection
      * @return
      */
     public Page<Review> list(
             Long storeId,
-            Pageable pageable,
-            ReviewSortType sortType,
-            SortDirection sortDirection
+            Pageable pageable
     ) {
-        return reviewRepository.list(storeId, pageable, sortType, sortDirection);
+        return reviewRepository.list(storeId, pageable);
     }
 
-    public List<Review> list(Store store) {
-        return reviewRepository.findAllByStore(store);
+    public Page<Review> list(Store store, Pageable pageable) {
+        return reviewRepository.findAllByStore(store, pageable);
+    }
+
+    public Review findById( Long id ){
+        return reviewRepository.findById( id ).orElseThrow(
+                () -> new ApiException(ErrorCode.REVIEW_NOT_FOUND)
+        );
     }
 
     /**
@@ -49,4 +53,17 @@ public class ReviewService {
     public void create(Review review) {
         reviewRepository.save(review);
     }
+
+    /**
+     * * 리뷰 삭제
+     * @param id
+     * @param deletedBy
+     */
+    public void delete( Long id, Long deletedBy ){
+        Review review = reviewRepository.findById( id ).orElseThrow(
+                () -> new ApiException(ErrorCode.REVIEW_NOT_FOUND)
+        );
+        review.delete( deletedBy );
+    }
+
 }
