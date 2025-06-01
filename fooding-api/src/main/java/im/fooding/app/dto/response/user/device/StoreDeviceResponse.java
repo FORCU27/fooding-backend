@@ -1,7 +1,7 @@
 package im.fooding.app.dto.response.user.device;
 
 import im.fooding.core.model.device.Device;
-import im.fooding.core.model.device.DeviceType;
+import im.fooding.core.model.device.DevicePlatform;
 import im.fooding.core.model.device.ServiceType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -16,7 +16,7 @@ public class StoreDeviceResponse {
     private long id;
 
     @Schema(description = "디바이스 종류", example = "IOS")
-    private DeviceType deviceType;
+    private DevicePlatform deviceType;
 
     @Schema(description = "디바이스 이름", example = "iPad 12")
     private String name;
@@ -35,7 +35,7 @@ public class StoreDeviceResponse {
 
     @Builder
     private StoreDeviceResponse(
-            long id, DeviceType deviceType,
+            long id, DevicePlatform deviceType,
             String name,
             String osVersion,
             LocalDateTime installedAt,
