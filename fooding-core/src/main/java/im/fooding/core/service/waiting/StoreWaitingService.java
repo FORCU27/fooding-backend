@@ -143,6 +143,10 @@ public class StoreWaitingService {
         return storeWaitingRepository.existsByStoreAndStatusAndDeletedFalse(store, status);
     }
 
+    public long getWaitingCount(Store store) {
+        return storeWaitingRepository.countByStoreAndStatusAndDeletedFalse(store, StoreWaitingStatus.WAITING);
+    }
+
     // TODO: 추후에 redis 로 개선
     private int generateCallNumber() {
         return (int) storeWaitingRepository.countCreatedOnAndDeletedFalse(LocalDate.now()) + 1;

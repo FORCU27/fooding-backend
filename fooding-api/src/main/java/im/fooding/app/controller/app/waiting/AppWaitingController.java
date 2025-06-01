@@ -2,6 +2,7 @@ package im.fooding.app.controller.app.waiting;
 
 import im.fooding.app.dto.request.app.waiting.AppWaitingListRequest;
 import im.fooding.app.dto.request.app.waiting.AppWaitingRegisterRequest;
+import im.fooding.app.dto.response.app.waiting.AppWaitingOverviewResponse;
 import im.fooding.app.dto.response.app.waiting.AppWaitingRegisterResponse;
 import im.fooding.app.dto.response.app.waiting.AppWaitingLogResponse;
 import im.fooding.app.service.app.waiting.AppWaitingApplicationService;
@@ -69,5 +70,14 @@ public class AppWaitingController {
             @RequestBody @Valid AppWaitingRegisterRequest request
     ) {
         return ApiResult.ok(appWaitingApplicationService.register(id, request));
+    }
+
+    @GetMapping("/{id}/overview")
+    @Operation(summary = "웨이팅 현황 조회")
+    ApiResult<AppWaitingOverviewResponse> overview(
+            @Parameter(description = "웨이팅 id", example = "1")
+            @PathVariable long id
+    ) {
+        return ApiResult.ok(appWaitingApplicationService.overview(id));
     }
 }
