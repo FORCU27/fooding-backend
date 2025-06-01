@@ -10,9 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,7 +33,7 @@ public class Device extends BaseEntity {
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    private DeviceType type;
+    private DevicePlatform type;
 
     @Column(name = "os_version")
     private String osVersion;
@@ -47,7 +44,7 @@ public class Device extends BaseEntity {
     @Builder
     public Device(
             String name,
-            DeviceType type,
+            DevicePlatform type,
             String osVersion
     ){
         this.name = name;

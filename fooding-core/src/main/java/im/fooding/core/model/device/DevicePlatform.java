@@ -5,6 +5,6 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum DeviceType {
+public enum DevicePlatform {
     IOS, ANDROID
 }

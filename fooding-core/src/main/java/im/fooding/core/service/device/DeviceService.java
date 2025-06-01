@@ -3,7 +3,7 @@ package im.fooding.core.service.device;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.device.Device;
-import im.fooding.core.model.device.DeviceType;
+import im.fooding.core.model.device.DevicePlatform;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.device.DeviceRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class DeviceService {
      * @param osVersion
      * @return deviceId
      */
-    public Device create(String name, DeviceType type, String osVersion){
+    public Device create(String name, DevicePlatform type, String osVersion){
         Device device = Device.builder()
                 .name( name )
                 .type( type )
