@@ -1,6 +1,7 @@
 package im.fooding.core.model.menu;
 
 import im.fooding.core.model.BaseEntity;
+import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
@@ -28,6 +29,14 @@ public class Menu extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "store_id",
+            nullable = false,
+            foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+    )
+    private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -79,31 +88,35 @@ public class Menu extends BaseEntity {
         this.isRecommend = isRecommend;
     }
 
-    private void updateName(String name) {
+    public void updateCategory(MenuCategory category) {
+        this.category = category;
+    }
+
+    public void updateName(String name) {
         this.name = name;
     }
 
-    private void updatePrice(BigDecimal price) {
+    public void updatePrice(BigDecimal price) {
         this.price = price;
     }
 
-    private void updateDescription(String description) {
+    public void updateDescription(String description) {
         this.description = description;
     }
 
-    private void updateImageUrl(String imageUrl) {
+    public void updateImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
-    private void updateSortOrder(int sortOrder) {
+    public void updateSortOrder(int sortOrder) {
         this.sortOrder = sortOrder;
     }
 
-    private void updateIsSignature(boolean isSignature) {
+    public void updateIsSignature(boolean isSignature) {
         this.isSignature = isSignature;
     }
 
-    private void updateIsRecommend(boolean isRecommend) {
+    public void updateIsRecommend(boolean isRecommend) {
         this.isRecommend = isRecommend;
     }
 }

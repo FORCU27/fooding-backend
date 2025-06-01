@@ -76,7 +76,8 @@ public enum ErrorCode {
 
     // 메뉴
     MENUCATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "6000", "등록된 메뉴 카테고리가 없습니다."),
-    
+    MENU_NOT_FOUND(HttpStatus.BAD_REQUEST, "6001", "등록된 메뉴가 없습니다."),
+
     // 쿠폰
     COUPON_NOT_FOUND(HttpStatus.BAD_REQUEST, "8000", "등록된 쿠폰이 없습니다."),
     COUPON_ISSUE_QUANTITY_INVALID(HttpStatus.BAD_REQUEST, "8001", "쿠폰 발급 가능한 수량을 초과합니다"),
@@ -84,9 +85,10 @@ public enum ErrorCode {
     USER_COUPON_NOT_FOUND(HttpStatus.BAD_REQUEST, "8003", "발급 받은 쿠폰이 없습니다."),
     USER_COUPON_EXPIRED(HttpStatus.BAD_REQUEST, "8004", "쿠폰 사용 가능한 일자가 아닙니다."),
     USER_COUPON_ALREADY_USE(HttpStatus.BAD_REQUEST, "8005", "이미 사용된 쿠폰입니다."),
-  
+
     // 게시긓
-    POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "9000", "등록된 게시글이 없습니다.");
+    POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "9000", "등록된 게시글이 없습니다.")
+    ;
 
     private final HttpStatus status;
 
