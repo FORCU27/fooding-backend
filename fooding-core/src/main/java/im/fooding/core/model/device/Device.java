@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -23,8 +22,11 @@ public class Device extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "uuid", nullable = false)
+    private String uuid;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "store_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,24 +38,41 @@ public class Device extends BaseEntity {
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    private DeviceType type;
+    private DevicePlatform type;
 
     @Column(name = "os_version")
     private String osVersion;
 
+    @Column(name = "package_name")
+    private String packageName;
+
     @Column(name = "status")
     private boolean status;
 
+    @Column(name = "installed_at")
+    private LocalDateTime installedAt;
+
+    @Column(name = "last_connected_at")
+    private LocalDateTime lastConnectedAt;
+
     @Builder
     public Device(
+            String uuid,
+            Store store,
             String name,
-            DeviceType type,
-            String osVersion
+            DevicePlatform type,
+            String osVersion,
+            String packageName
     ){
+        this.uuid = uuid;
+        this.store = store;
         this.name = name;
         this.type = type;
         this.osVersion = osVersion;
+        this.packageName = packageName;
         this.status = true;
+        this.installedAt = LocalDateTime.now();
+        this.lastConnectedAt = LocalDateTime.now();
     }
 
     public void update(String name) {
@@ -68,6 +87,7 @@ public class Device extends BaseEntity {
 
     public void connectDevice() {
         this.status = true;
+        this.lastConnectedAt = LocalDateTime.now();
     }
 
     public void disconnectDevice() {
