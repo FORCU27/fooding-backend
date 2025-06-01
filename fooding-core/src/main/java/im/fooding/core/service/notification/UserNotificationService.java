@@ -32,6 +32,10 @@ public class UserNotificationService {
     return userNotificationRepository.findAllByUserIdOrderBySentAtDesc(userId, pageable);
   }
 
+  public List<UserNotification> getUnreadUserNotifications(Long userId) {
+    return userNotificationRepository.findAllByUserIdAndIsReadFalseOrderBySentAtDesc(userId);
+  }
+
   public UserNotification getNotification(Long userId, Long notificationId) {
     UserNotification notification = userNotificationRepository.findById(notificationId)
         .filter(it -> !it.isDeleted())
