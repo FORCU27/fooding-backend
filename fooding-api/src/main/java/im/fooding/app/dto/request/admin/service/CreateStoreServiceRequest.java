@@ -16,4 +16,8 @@ public class CreateStoreServiceRequest {
     @NotNull
     @Schema( description = "가입 서비스 타입" )
     private StoreServiceType type;
+
+    @NotNull
+    @Schema( description = "서비스 등록자" )
+    private Long userId;
 }
