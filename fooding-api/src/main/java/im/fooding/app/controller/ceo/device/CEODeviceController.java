@@ -3,7 +3,7 @@ package im.fooding.app.controller.ceo.device;
 import im.fooding.app.dto.request.user.device.ConnectDeviceRequest;
 import im.fooding.app.dto.request.user.device.RetrieveDeviceRequest;
 import im.fooding.app.dto.response.user.device.StoreDeviceResponse;
-import im.fooding.app.service.user.device.DeviceApplicationService;
+import im.fooding.app.service.app.device.AppDeviceService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.UserInfo;
@@ -23,7 +23,7 @@ import java.util.Optional;
 @RequestMapping("/ceo/devices")
 @Tag(name = "CEO Device Controller", description = "CEO 디바이스 컨트롤러")
 public class CEODeviceController {
-    private final DeviceApplicationService service;
+    private final AppDeviceService service;
 
     @GetMapping
     @Operation(summary = "가게 소속 디바이스 조회")

@@ -1,4 +1,4 @@
-package im.fooding.app.service.user.device;
+package im.fooding.app.service.app.device;
 
 import im.fooding.app.dto.request.user.device.ConnectDeviceRequest;
 import im.fooding.app.dto.request.user.device.RetrieveDeviceRequest;
@@ -22,7 +22,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class DeviceApplicationService {
+// TODO: CEO 분리
+public class AppDeviceService {
     private final DeviceService deviceService;
     private final UserService userService;
     private final StoreService storeService;
@@ -35,7 +36,6 @@ public class DeviceApplicationService {
      */
     @Transactional(readOnly = true)
     public PageResponse<StoreDeviceResponse> list(String service, RetrieveDeviceRequest request) {
-        // TODO: CEO이면 storeId 필수인뎨?, 코드에서 validation or service 쪼개기
         Page<Device> result = deviceService.list(null, request.getStoreId(), null, request.getPageable());
         PageInfo pageInfo = PageInfo.of(result);
         return PageResponse.of(result.getContent().stream().map(StoreDeviceResponse::of).collect(Collectors.toList()), pageInfo);
