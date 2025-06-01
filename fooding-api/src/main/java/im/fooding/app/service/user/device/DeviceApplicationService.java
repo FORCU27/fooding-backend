@@ -57,6 +57,7 @@ public class DeviceApplicationService {
             // TODO: 기타 메타데이터도 업데이트
             existingDevice.update(request.name());
             existingDevice.updateOsVersion(request.osVersion());
+            existingDevice.connectDevice();
             if (userId != null) {
                 User user = userService.findById(userId);
                 existingDevice.updateUser(user);

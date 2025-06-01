@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -47,6 +49,12 @@ public class Device extends BaseEntity {
     @Column(name = "status")
     private boolean status;
 
+    @Column(name = "installed_at")
+    private LocalDateTime installedAt;
+
+    @Column(name = "last_connected_at")
+    private LocalDateTime lastConnectedAt;
+
     @Builder
     public Device(
             String uuid,
@@ -63,6 +71,8 @@ public class Device extends BaseEntity {
         this.osVersion = osVersion;
         this.packageName = packageName;
         this.status = true;
+        this.installedAt = LocalDateTime.now();
+        this.lastConnectedAt = LocalDateTime.now();
     }
 
     public void update(String name) {
@@ -77,6 +87,7 @@ public class Device extends BaseEntity {
 
     public void connectDevice() {
         this.status = true;
+        this.lastConnectedAt = LocalDateTime.now();
     }
 
     public void disconnectDevice() {
