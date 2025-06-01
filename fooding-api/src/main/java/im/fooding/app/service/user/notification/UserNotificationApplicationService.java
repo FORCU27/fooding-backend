@@ -69,10 +69,8 @@ public class UserNotificationApplicationService {
     }
 
     @Transactional
-    public void markAsRead(Long userId, List<Long> notificationIds) {
-        List<UserNotification> notifications = notificationIds.stream()
-                .map(id -> userNotificationService.getNotification(userId, id))
-                .toList();
+    public void markAsRead(Long userId) {
+        List<UserNotification> notifications = userNotificationService.getUnreadUserNotifications(userId);
         notifications.forEach(UserNotification::read);
     }
 

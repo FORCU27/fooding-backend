@@ -52,10 +52,9 @@ public class UserNotificationController {
   @PostMapping("/read")
   @Operation(summary = "유저 알림 읽음 상태 변경")
   public ApiResult<Void> markAsRead(
-      @AuthenticationPrincipal UserInfo userInfo,
-      @RequestBody List<Long> notificationIds) {
+      @AuthenticationPrincipal UserInfo userInfo) {
     Long userId = userInfo.getId();
-    userNotificationApplicationService.markAsRead(userId, notificationIds);
+    userNotificationApplicationService.markAsRead(userId);
     return ApiResult.ok();
   }
 }

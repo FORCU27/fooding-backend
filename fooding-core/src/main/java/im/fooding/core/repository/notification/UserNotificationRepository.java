@@ -16,4 +16,8 @@ public interface UserNotificationRepository extends JpaRepository<UserNotificati
     Optional<UserNotification> findByIdAndUserId(Long id, Long userId);
 
     Page<UserNotification> findAllByUserIdOrderBySentAtDesc(Long userId, Pageable pageable);
+
+    List<UserNotification> findAllByUserIdAndIsReadFalseOrderBySentAtDesc(Long userId);
+
+    Page<UserNotification> findAllByUserIdAndIsReadFalseOrderBySentAtDesc(Long userId, Pageable pageable);
 }
