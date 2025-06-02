@@ -2,7 +2,7 @@ package im.fooding.app.controller.admin.device;
 
 import im.fooding.app.dto.request.user.device.RetrieveDeviceRequest;
 import im.fooding.app.dto.response.user.device.StoreDeviceResponse;
-import im.fooding.app.service.user.device.DeviceApplicationService;
+import im.fooding.app.service.app.device.AppDeviceService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin/devices")
 @Tag(name = "Admin Device Controller", description = "관리자 디바이스 컨트롤러")
 public class AdminDeviceController {
-    private final DeviceApplicationService service;
+    private final AppDeviceService service;
 
     @GetMapping()
     @Operation(summary = "모든 디바이스 조회")

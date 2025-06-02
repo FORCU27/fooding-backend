@@ -30,4 +30,11 @@ public class ReviewScore {
         this.mood = mood;
         this.service = service;
     }
+
+    public void update( float total, float taste, float mood, float service ){
+        this.total = total;
+        this.taste = taste;
+        this.mood = mood;
+        this.service = service;
+    }
 }

@@ -38,9 +38,7 @@ public class UserReviewService {
     private final StoreService storeService;
 
     public PageResponse<UserReviewResponse> list(Long storeId, UserRetrieveReviewRequest request) {
-        Page<Review> reviewPage = reviewService.list(
-                storeId, request.getPageable(), request.getSortType(), request.getSortDirection()
-        );
+        Page<Review> reviewPage = reviewService.list(storeId, request.getPageable());
 
         List<Long> reviewIds = getReviewIds(reviewPage.getContent());
 

@@ -1,7 +1,7 @@
 package im.fooding.app.controller.app.device;
 
 import im.fooding.app.dto.request.user.device.ConnectDeviceRequest;
-import im.fooding.app.service.user.device.DeviceApplicationService;
+import im.fooding.app.service.app.device.AppDeviceService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.global.UserInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/app/devices")
 public class AppDeviceController {
-    private final DeviceApplicationService service;
+    private final AppDeviceService service;
 
     @PostMapping
     @Operation(summary = "비로그인 유저 디바이스 연결")

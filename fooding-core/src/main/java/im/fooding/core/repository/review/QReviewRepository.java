@@ -10,8 +10,6 @@ public interface QReviewRepository {
 
     Page<Review> list(
             Long storeId,
-            Pageable pageable,
-            ReviewSortType sortType,
-            SortDirection sortDirection
+            Pageable pageable
     );
 }
