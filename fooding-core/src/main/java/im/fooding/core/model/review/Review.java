@@ -73,8 +73,7 @@ public class Review extends BaseEntity {
         this.visitPurposeType = visitPurposeType;
     }
 
-    public void update(ReviewScore score, String content, VisitPurposeType visitPurposeType) {
-        this.score = score;
+    public void update(String content, VisitPurposeType visitPurposeType) {
         this.content = content;
         this.visitPurposeType = visitPurposeType;
     }

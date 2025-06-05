@@ -2,6 +2,7 @@ package im.fooding.core.service.menu;
 
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.menu.MenuCategory;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.repository.menu.MenuCategoryRepository;
@@ -16,6 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class MenuCategoryService {
 
     private final MenuCategoryRepository menuCategoryRepository;
+
+    public MenuCategory get(Long id) {
+        return menuCategoryRepository.findById(id)
+                .filter(menuCategory -> !menuCategory.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.MENUCATEGORY_NOT_FOUND));
+    }
 
     /**
      * 메뉴 카테고리 생성

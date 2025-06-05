@@ -1,0 +1,69 @@
+package im.fooding.app.service.admin.review;
+
+import im.fooding.app.dto.request.admin.review.AdminCreateReviewRequest;
+import im.fooding.app.dto.request.admin.review.AdminReviewRequest;
+import im.fooding.app.dto.request.admin.review.AdminUpdateReviewRequest;
+import im.fooding.app.dto.response.admin.review.AdminReviewResponse;
+import im.fooding.core.common.PageInfo;
+import im.fooding.core.common.PageResponse;
+import im.fooding.core.model.review.Review;
+import im.fooding.core.model.review.ReviewScore;
+import im.fooding.core.service.review.ReviewService;
+import im.fooding.core.service.store.StoreService;
+import im.fooding.core.service.user.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+public class AdminReviewService {
+    private final ReviewService reviewService;
+    private final StoreService storeService;
+    private final UserService userService;
+
+    public PageResponse<AdminReviewResponse> list( AdminReviewRequest request ){
+        Page<Review> result = reviewService.list( request.getStoreId(), request.getPageable() );
+        return PageResponse.of( result.map(AdminReviewResponse::of).stream().toList(), PageInfo.of( result ) );
+    }
+
+    public AdminReviewResponse findById( Long reviewId ){
+        return AdminReviewResponse.of( reviewService.findById( reviewId ) );
+    }
+
+    @Transactional
+    public void update( Long id, AdminUpdateReviewRequest request){
+        Review review = reviewService.findById( id );
+        review.getScore().update(
+                request.getTotalScore(),
+                request.getTasteScore(),
+                request.getMoodScore(),
+                request.getServiceScore()
+        );
+        review.update( request.getContent(), request.getVisitPurposeType() );
+    }
+
+    @Transactional
+    public void create(AdminCreateReviewRequest request){
+        ReviewScore score = ReviewScore.builder()
+                .mood(request.getMoodScore())
+                .taste(request.getTasteScore())
+                .service(request.getServiceScore())
+                .total(request.getTotalScore())
+                .build();
+        Review review = Review.builder()
+                .store( storeService.findById(request.getStoreId()) )
+                .writer( userService.findById(request.getWriterId()) )
+                .score( score )
+                .content( request.getContent() )
+                .visitPurposeType( request.getVisitPurposeType() )
+                .build();
+        reviewService.create( review );
+    }
+
+    @Transactional
+    public void delete(Long id, Long deletedBy){
+        reviewService.delete( id, deletedBy );
+    }
+}

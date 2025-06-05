@@ -1,46 +1,54 @@
 package im.fooding.core.repository.device;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.model.device.Device;
+import im.fooding.core.model.device.QDevice;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
 
-import static im.fooding.core.model.device.QDevice.device;
-
+@Repository
 @RequiredArgsConstructor
-public class QDeviceRepositoryImpl implements QDeviceRepository{
-    private final JPAQueryFactory query;
+public class QDeviceRepositoryImpl implements QDeviceRepository {
+    private final JPAQueryFactory queryFactory;
+
     @Override
     public Page<Device> list(String searchString, Pageable pageable, Long storeId) {
-        BooleanBuilder condition = new BooleanBuilder();
-        condition.and( device.deleted.isFalse() );
-        if( search( searchString ) != null ) condition.and( search( searchString ) );
-        if( storeId != null ) condition.and( device.store.id.eq( storeId ) );
+        QDevice device = QDevice.device;
 
-        List<Device> results = query
-                .select(device)
-                .from(device)
-                .where(condition)
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-        JPAQuery<Long> countQuery = query
-                .select(device.count())
-                .from(device)
-                .where(condition);
-        return PageableExecutionUtils.getPage( results, pageable, countQuery::fetchCount );
-    }
+        BooleanExpression whereClause = device.deleted.isFalse();
 
-    private BooleanExpression search(String searchString){
-        return StringUtils.hasText(searchString)
-                ? device.name.contains(searchString) : null;
+        if (storeId != null) {
+            whereClause = whereClause.and(device.store.id.eq(storeId));
+        }
+        
+        if (StringUtils.hasText(searchString)) {
+            whereClause = whereClause.and(
+                device.name.containsIgnoreCase(searchString)
+                .or(device.uuid.containsIgnoreCase(searchString))
+            );
+        }
+
+        List<Device> devices = queryFactory
+            .selectFrom(device)
+            .where(whereClause)
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .orderBy(device.createdAt.desc())
+            .fetch();
+
+        Long total = queryFactory
+            .select(device.count())
+            .from(device)
+            .where(whereClause)
+            .fetchOne();
+
+        return new PageImpl<>(devices, pageable, total != null ? total : 0L);
     }
 }
