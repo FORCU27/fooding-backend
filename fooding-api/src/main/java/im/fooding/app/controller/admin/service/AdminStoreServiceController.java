@@ -25,6 +25,7 @@ public class AdminStoreServiceController {
     public ApiResult<Void> create(
             @RequestBody CreateStoreServiceRequest request
     ){
+        System.out.println( request.getStoreId() );
         service.create( request );
         return ApiResult.ok();
     }
@@ -32,7 +33,7 @@ public class AdminStoreServiceController {
     @GetMapping()
     @Operation(summary = "모든 서비스 가입 내역 조회")
     public ApiResult<PageResponse<StoreServiceResponse>> list(
-            @RequestBody RetrieveStoreServiceRequest request
+            @ModelAttribute RetrieveStoreServiceRequest request
     ){
         return ApiResult.ok( service.list( request ) );
     }

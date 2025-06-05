@@ -1,15 +1,21 @@
 package im.fooding.app.service.user.reward;
 
 
+import im.fooding.app.dto.request.app.coupon.AppSearchCouponRequest;
 import im.fooding.app.dto.request.user.reward.GetRewardLogRequest;
 import im.fooding.app.dto.request.user.reward.GetRewardPointRequest;
 import im.fooding.app.dto.request.user.reward.UpdateRewardPointRequest;
+import im.fooding.app.dto.response.app.coupon.AppUserCouponResponse;
 import im.fooding.app.dto.response.user.reward.GetRewardLogResponse;
 import im.fooding.app.dto.response.user.reward.GetRewardPointResponse;
+import im.fooding.core.common.PageInfo;
+import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
-import im.fooding.core.model.reward.RewardPoint;
+import im.fooding.core.model.coupon.UserCoupon;
 import im.fooding.core.model.reward.RewardStatus;
+import im.fooding.core.model.user.User;
+import im.fooding.core.service.coupon.UserCouponService;
 import im.fooding.core.service.reward.RewardLogService;
 import im.fooding.core.service.reward.RewardService;
 import im.fooding.core.service.store.StoreService;
@@ -19,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +37,7 @@ public class RewardApplicationService {
     private final RewardService pointService;
     private final StoreService storeService;
     private final UserService userService;
+    private final UserCouponService userCouponService;
 
     /**
      * Reward Log 조회
@@ -96,5 +104,17 @@ public class RewardApplicationService {
                 request.getChannel()
         );
     }
-    
+
+    @Transactional(readOnly = true)
+    public PageResponse<AppUserCouponResponse> getRewardCoupons(AppSearchCouponRequest search) {
+        User user = userService.findByPhoneNumber(search.getPhoneNumber());
+        Page<UserCoupon> coupons = userCouponService.list(user.getId(), search.getStoreId(), search.getPageable());
+        List<AppUserCouponResponse> list = coupons.getContent().stream().map(AppUserCouponResponse::of).toList();
+        return PageResponse.of(list, PageInfo.of(coupons));
+    }
+
+    @Transactional
+    public void useCoupon(Long couponId) {
+        userCouponService.use(couponId);
+    }
 }

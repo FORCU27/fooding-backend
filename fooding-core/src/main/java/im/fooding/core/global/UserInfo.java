@@ -9,10 +9,13 @@ import lombok.ToString;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.TreeSet;
 
 @Getter
@@ -48,6 +51,12 @@ public class UserInfo implements CredentialsContainer, UserDetails {
         this.id = user.getId();
         this.email = user.getEmail();
         this.nickname = user.getNickname();
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.addAll(user.getAuthorities()
+                .stream()
+                .map(it -> new SimpleGrantedAuthority(it.getRole().getValue()))
+                .toList());
+        this.authorities = grantedAuthorities;
     }
 
     @Override
@@ -83,5 +92,9 @@ public class UserInfo implements CredentialsContainer, UserDetails {
     @Override
     public void eraseCredentials() {
         this.password = "";
+    }
+
+    public void setAuthorities() {
+
     }
 }
