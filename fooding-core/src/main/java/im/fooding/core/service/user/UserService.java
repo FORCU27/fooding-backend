@@ -154,4 +154,10 @@ public class UserService {
             throw new ApiException(ErrorCode.DUPLICATED_REGISTER_EMAIL);
         });
     }
+
+    public User findByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber)
+                .filter(it -> !it.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
+    }
 }
