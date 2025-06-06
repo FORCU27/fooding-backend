@@ -15,4 +15,6 @@ public interface StoreWaitingRepository extends JpaRepository<StoreWaiting, Long
     boolean existsByStoreAndStatusAndDeletedFalse(Store store, StoreWaitingStatus status);
 
     Page<StoreWaiting> findAllByDeletedFalse(Pageable pageable);
+
+    long countByStoreAndStatusAndDeletedFalse(Store store, StoreWaitingStatus status);
 }
