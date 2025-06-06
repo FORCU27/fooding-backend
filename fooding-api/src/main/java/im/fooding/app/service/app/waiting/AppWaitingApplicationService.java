@@ -2,6 +2,7 @@ package im.fooding.app.service.app.waiting;
 
 import im.fooding.app.dto.request.app.waiting.AppWaitingListRequest;
 import im.fooding.app.dto.request.app.waiting.AppWaitingRegisterRequest;
+import im.fooding.app.dto.response.app.waiting.AppWaitingOverviewResponse;
 import im.fooding.app.dto.response.app.waiting.AppWaitingRegisterResponse;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
 import im.fooding.app.dto.response.app.waiting.AppWaitingLogResponse;
@@ -13,10 +14,12 @@ import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
 import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingLog;
+import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingUser;
 import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.service.waiting.WaitingService;
+import im.fooding.core.service.waiting.WaitingSettingService;
 import im.fooding.core.service.waiting.WaitingUserService;
 import im.fooding.app.dto.response.app.waiting.AppStoreWaitingResponse;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +44,7 @@ public class AppWaitingApplicationService {
     private final StoreWaitingService storeWaitingService;
     private final WaitingLogService waitingLogService;
     private final UserNotificationApplicationService userNotificationApplicationService;
+    private final WaitingSettingService waitingSettingService;
 
     public AppStoreWaitingResponse details(long id) {
         return AppStoreWaitingResponse.from(storeWaitingService.get(id));
@@ -130,5 +134,16 @@ public class AppWaitingApplicationService {
                 .toList();
 
         return PageResponse.of(list, PageInfo.of(logs));
+    }
+
+    public AppWaitingOverviewResponse overview(long id) {
+        Waiting waiting = waitingService.get(id);
+        Store store = waiting.getStore();
+        WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(store);
+
+        int waitingCount = (int) storeWaitingService.getWaitingCount(store);
+        int estimatedWaitingTimeMinutes = waitingSetting.getEstimatedWaitingTimeMinutes() * waitingCount;
+
+        return new AppWaitingOverviewResponse(waitingCount, estimatedWaitingTimeMinutes);
     }
 }
