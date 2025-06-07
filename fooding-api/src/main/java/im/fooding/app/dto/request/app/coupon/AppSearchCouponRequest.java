@@ -19,4 +19,7 @@ public class AppSearchCouponRequest extends BasicSearch {
     @NotBlank
     @Schema(description = "전화번호")
     private String phoneNumber;
+
+    @Schema(description = "사용여부")
+    private Boolean used;
 }

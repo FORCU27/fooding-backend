@@ -108,7 +108,7 @@ public class RewardApplicationService {
     @Transactional(readOnly = true)
     public PageResponse<AppUserCouponResponse> getRewardCoupons(AppSearchCouponRequest search) {
         User user = userService.findByPhoneNumber(search.getPhoneNumber());
-        Page<UserCoupon> coupons = userCouponService.list(user.getId(), search.getStoreId(), search.getPageable());
+        Page<UserCoupon> coupons = userCouponService.list(user.getId(), search.getStoreId(), search.getUsed(), search.getPageable());
         List<AppUserCouponResponse> list = coupons.getContent().stream().map(AppUserCouponResponse::of).toList();
         return PageResponse.of(list, PageInfo.of(coupons));
     }
