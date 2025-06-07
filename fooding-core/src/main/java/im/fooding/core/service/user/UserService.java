@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -98,6 +99,10 @@ public class UserService {
         if (!nickname.equals(user.getNickname()) && checkDuplicatedNickname(nickname)) {
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
         }
+        if (StringUtils.hasText(phoneNumber) && !phoneNumber.equals(user.getPhoneNumber())) {
+            checkDuplicatePhoneNumber(phoneNumber);
+        }
+
         user.update(nickname, phoneNumber, gender, referralCode, marketingConsent);
     }
 
@@ -152,6 +157,17 @@ public class UserService {
     private void checkDuplicateEmail(String email, AuthProvider provider) {
         userRepository.findByEmailAndProvider(email, provider).ifPresent(it -> {
             throw new ApiException(ErrorCode.DUPLICATED_REGISTER_EMAIL);
+        });
+    }
+
+    /**
+     * 전화번호 중복체크
+     *
+     * @param phoneNumber
+     */
+    private void checkDuplicatePhoneNumber(String phoneNumber) {
+        userRepository.findByPhoneNumber(phoneNumber).ifPresent(it -> {
+            throw new ApiException(ErrorCode.DUPLICATED_PHONE_NUMBER);
         });
     }
 
