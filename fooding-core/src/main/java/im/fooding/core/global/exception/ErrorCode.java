@@ -29,19 +29,20 @@ public enum ErrorCode {
     LOGIN_FAILED(HttpStatus.BAD_REQUEST, "1001", "로그인에 실패하셨습니다."),
     DUPLICATED_REGISTER_EMAIL(HttpStatus.BAD_REQUEST, "1002", "이미 가입된 이메일입니다."),
     DUPLICATED_NICKNAME(HttpStatus.BAD_REQUEST, "1003", "이미 가입된 닉네임입니다."),
-    UNSUPPORTED_SOCIAL(HttpStatus.BAD_REQUEST, "1004", "지원하지 않는 소셜로그인 입니다."),
-    EMAIL_CONSENT_REQUIRED(HttpStatus.BAD_REQUEST, "1005", "이메일 제공 동의가 필요합니다."),
-    SOCIAL_LOGIN_ONLY(HttpStatus.BAD_REQUEST, "1006", "유저는 소셜로그인으로만 가입 가능합니다."),
+    DUPLICATED_PHONE_NUMBER(HttpStatus.BAD_REQUEST, "1004", "이미 가입된 전화번호입니다."),
+    UNSUPPORTED_SOCIAL(HttpStatus.BAD_REQUEST, "1005", "지원하지 않는 소셜로그인 입니다."),
+    EMAIL_CONSENT_REQUIRED(HttpStatus.BAD_REQUEST, "1006", "이메일 제공 동의가 필요합니다."),
+    SOCIAL_LOGIN_ONLY(HttpStatus.BAD_REQUEST, "1007", "유저는 소셜로그인으로만 가입 가능합니다."),
 
     // 가게
     STORE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2000", "등록된 가게 정보가 없습니다."),
-    STORE_SERVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2100", "등록된 가게 서비스가 없습니다."),
     STORE_IMAGE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2001", "등록된 가게 이미지가 없습니다."),
+    STORE_SERVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2100", "등록된 가게 서비스가 없습니다."),
     STORE_POST_NOT_FOUND(HttpStatus.BAD_REQUEST,"2200", "등록된 가게 소식이 없습니다."),
+    STORE_MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "2300", "해당 가게의 직원이 아닙니다."),
 
     // 리뷰
-    REVIEW_NOT_FOUND( HttpStatus.BAD_REQUEST, "2300", "등록된 리뷰가 없습니다" ),
-
+    REVIEW_NOT_FOUND( HttpStatus.BAD_REQUEST, "2202", "등록된 리뷰가 없습니다" ),
 
     // 웨이팅
     WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3000", "등록된 웨이팅 정보가 없습니다."),

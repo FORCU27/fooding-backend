@@ -15,4 +15,7 @@ public class AdminSearchUserCouponRequest extends BasicSearch {
 
     @Schema(description = "가게 id", example = "1")
     private Long storeId;
+
+    @Schema(description = "사용여부", example = "false")
+    private Boolean used;
 }

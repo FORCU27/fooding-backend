@@ -7,11 +7,13 @@ import im.fooding.app.dto.response.admin.store.AdminStoreResponse;
 import im.fooding.app.service.admin.store.AdminStoreService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.global.UserInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -52,8 +54,8 @@ public class AdminStoreController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "가게 삭제")
-    public ApiResult<Void> delete(@PathVariable Long id) {
-        adminStoreService.delete(id);
+    public ApiResult<Void> delete(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo) {
+        adminStoreService.delete(id, userInfo.getId());
         return ApiResult.ok();
     }
 }

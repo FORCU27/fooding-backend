@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -29,6 +31,16 @@ public class StoreService {
      */
     public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, boolean includeDeleted) {
         return storeRepository.list(pageable, sortType, sortDirection, includeDeleted);
+    }
+
+    /**
+     * userId로 가게 목록 조회
+     *
+     * @param userId
+     * @return List<Store>
+     */
+    public List<Store> list(long userId) {
+        return storeRepository.listByUserId(userId);
     }
 
     /**
@@ -82,5 +94,21 @@ public class StoreService {
 
     public Page<Store> list(Pageable pageable) {
         return storeRepository.findAll(pageable);
+    }
+
+    public void increaseVisitCount(Store store) {
+        store.increaseVisitCount();
+    }
+
+    public void increaseReviewCount(Store store) {
+        store.increaseReviewCount();
+    }
+
+    public void decreaseReviewCount(Store store) {
+        store.decreaseReviewCount();
+    }
+
+    public void updateAverageRating(Store store, double averageRating) {
+        store.updateAverageRating(averageRating);
     }
 }

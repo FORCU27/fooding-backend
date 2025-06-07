@@ -14,4 +14,10 @@ public interface UserRepository extends JpaRepository<User, Long>, QUserReposito
     Optional<User> findByEmailAndProvider(String email, AuthProvider provider);
 
     Optional<User> findByNickname(String nickname);
+
+    Optional<User> findByPhoneNumber(String phoneNumber);
+
+    @Override
+    @EntityGraph(attributePaths = {"authorities"})
+    Optional<User> findById(Long id);
 }

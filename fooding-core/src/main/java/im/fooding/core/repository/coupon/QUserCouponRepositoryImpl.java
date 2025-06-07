@@ -21,7 +21,7 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<UserCoupon> list(Long userId, Long storeId, Pageable pageable) {
+    public Page<UserCoupon> list(Long userId, Long storeId, Boolean used, Pageable pageable) {
         List<UserCoupon> results = query
                 .select(userCoupon)
                 .from(userCoupon)
@@ -34,7 +34,8 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
                         couponDeletedIfStoreExists(),
                         storeDeletedIfStoreExists(),
                         searchUser(userId),
-                        searchStore(storeId)
+                        searchStore(storeId),
+                        searchUsed(used)
                 )
                 .orderBy(userCoupon.id.desc())
                 .offset(pageable.getOffset())
@@ -50,7 +51,8 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
                         couponDeletedIfStoreExists(),
                         storeDeletedIfStoreExists(),
                         searchUser(userId),
-                        searchStore(storeId)
+                        searchStore(storeId),
+                        searchUsed(used)
                 );
 
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchCount);
@@ -70,5 +72,9 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
 
     private BooleanExpression couponDeletedIfStoreExists() {
         return coupon.id.isNull().or(coupon.deleted.isFalse());
+    }
+
+    private BooleanExpression searchUsed(Boolean used) {
+        return null != used ? userCoupon.used.eq(used) : null;
     }
 }
