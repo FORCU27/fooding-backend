@@ -22,6 +22,7 @@ import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import im.fooding.core.service.waiting.WaitingUserService;
 import im.fooding.app.dto.response.app.waiting.AppStoreWaitingResponse;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import im.fooding.core.common.PageInfo;
@@ -77,12 +78,24 @@ public class AppWaitingApplicationService {
 
         WaitingUser waitingUser = getOrRegisterUser(request, phoneNumber, waiting);
         StoreWaiting storeWaiting = registerStoreWaiting(request, waiting, waitingUser);
+        Store store = storeWaiting.getStore();
+        WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(store);
 
         waitingLogService.logRegister(storeWaiting);
 
         sendNotification(waiting, storeWaiting);
 
-        return new AppWaitingRegisterResponse(storeWaiting.getCallNumber());
+        long callNumber = storeWaiting.getCallNumber();
+        long waitingTurn = storeWaitingService.getWaitingCount(store);
+        long expectedTimeMinute = waitingSetting.getEstimatedWaitingTimeMinutes() * waitingTurn;
+        long recentEntryTimeMinute = 5; // todo: 최근 입장 시간 구현 필요
+
+        return new AppWaitingRegisterResponse(
+                callNumber,
+                waitingTurn,
+                expectedTimeMinute,
+                recentEntryTimeMinute
+        );
     }
 
     private WaitingUser getOrRegisterUser(AppWaitingRegisterRequest request, String phoneNumber, Waiting waiting) {
