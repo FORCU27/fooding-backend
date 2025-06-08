@@ -28,8 +28,6 @@ public class AppUserController {
     ApiResult<AppUserResponse> getUser(
             @AuthenticationPrincipal UserInfo userInfo
     ) {
-        // TODO: 유저, 권한 개발 후 자신이 접근할 수 있는 Store 만 조회할 수 있도록 수정
-        return ApiResult.ok(appUserService.getUser(1L));
-//        return ApiResult.ok(appUserService.getUser(userInfo.getId()));
+        return ApiResult.ok(appUserService.getUser(userInfo.getId()));
     }
 }
