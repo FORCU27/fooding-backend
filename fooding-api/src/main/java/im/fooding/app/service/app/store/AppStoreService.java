@@ -13,24 +13,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Slf4j
 public class AppStoreService {
-
-    private final StoreMemberService storeMemberService;
     private final StoreService storeService;
+    private final StoreMemberService storeMemberService;
 
-    // TODO: 유저, 권한 개발 후 자신이 접근할 수 있는 Store 만 조회할 수 있도록 수정한다
-    public PageResponse<AppStoreResponse> getMyStores(Long userId, BasicSearch basicSearch) {
-        Page<AppStoreResponse> storeResponsePage = storeService.list(basicSearch.getPageable())
-                .map(AppStoreResponse::from);
+    @Transactional(readOnly = true)
+    public List<AppStoreResponse> list(long userId) {
+        return storeService.list(userId).stream().map(AppStoreResponse::from).toList();
+    }
 
-        return PageResponse.of(storeResponsePage.toList(), PageInfo.of(storeResponsePage));
-//        Page<AppStoreResponse> storeResponsePage = storeMemberService.getStores(userId, basicSearch.getPageable())
-//                .map(AppStoreResponse::from);
-//
-//        return PageResponse.of(storeResponsePage.toList(), PageInfo.of(storeResponsePage));
+    @Transactional(readOnly = true)
+    public AppStoreResponse retrieve(long id, long userId) {
+        storeMemberService.checkMember(id, userId);
+        return AppStoreResponse.from(storeService.findById(id));
     }
 }

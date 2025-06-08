@@ -63,6 +63,12 @@ public class Store extends BaseEntity {
     @Column(nullable = false)
     private boolean isTakeOut;
 
+    private int reviewCount;
+
+    private int visitCount;
+
+    private double averageRating;
+
     @Builder
     private Store(User owner, String name, String city, String address, String category, String description, String contactNumber,
                   String priceCategory, String eventDescription, String direction, String information, boolean isParkingAvailable,
@@ -99,5 +105,21 @@ public class Store extends BaseEntity {
         this.isParkingAvailable = isParkingAvailable;
         this.isNewOpen = isNewOpen;
         this.isTakeOut = isTakeOut;
+    }
+
+    public void increaseVisitCount() {
+        this.visitCount++;
+    }
+
+    public void increaseReviewCount() {
+        this.reviewCount++;
+    }
+
+    public void decreaseReviewCount() {
+        this.reviewCount--;
+    }
+
+    public void updateAverageRating(double averageRating) {
+        this.averageRating = averageRating;
     }
 }

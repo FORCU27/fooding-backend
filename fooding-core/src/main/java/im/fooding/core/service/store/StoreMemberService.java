@@ -1,5 +1,7 @@
 package im.fooding.core.service.store;
 
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreMember;
 import im.fooding.core.model.store.StorePosition;
@@ -33,5 +35,11 @@ public class StoreMemberService {
                         .position(position)
                         .build()
         );
+    }
+
+    public void checkMember(long storeId, long userId) {
+        if (!storeMemberRepository.findByStoreIdAndUserId(storeId, userId).filter(it -> !it.isDeleted()).isPresent()) {
+            throw new ApiException(ErrorCode.STORE_MEMBER_NOT_FOUND);
+        }
     }
 }
