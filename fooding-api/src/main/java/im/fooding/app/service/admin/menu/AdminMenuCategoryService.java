@@ -1,6 +1,7 @@
 package im.fooding.app.service.admin.menu;
 
 import im.fooding.app.dto.request.admin.menu.AdminMenuCategoryCreateRequest;
+import im.fooding.app.dto.response.admin.menu.AdminMenuCategoryResponse;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.service.menu.MenuCategoryService;
 import im.fooding.core.service.store.StoreService;
@@ -21,5 +22,9 @@ public class AdminMenuCategoryService {
         Store store = storeService.findById(request.getStoreId());
 
         menuCategoryService.create(store, request.getName(), request.getDescription(), request.getSortOrder());
+    }
+
+    public AdminMenuCategoryResponse get(long id) {
+        return AdminMenuCategoryResponse.from(menuCategoryService.get(id));
     }
 }
