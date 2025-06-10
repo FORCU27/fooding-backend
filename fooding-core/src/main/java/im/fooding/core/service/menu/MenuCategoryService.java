@@ -41,6 +41,18 @@ public class MenuCategoryService {
         return menuCategoryRepository.save(menuCategory).getId();
     }
 
+    @Transactional
+    public Long create(Store store, String categoryName, String description, int sortOrder) {
+        MenuCategory menuCategory = MenuCategory.builder()
+                .store(store)
+                .name(categoryName)
+                .description(description)
+                .sortOrder(sortOrder)
+                .build();
+
+        return menuCategoryRepository.save(menuCategory).getId();
+    }
+
     /**
      * 메뉴 카테고리 수정
      *
