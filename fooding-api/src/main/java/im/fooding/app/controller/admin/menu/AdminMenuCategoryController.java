@@ -1,11 +1,11 @@
 package im.fooding.app.controller.admin.menu;
 
 import im.fooding.app.dto.request.admin.menu.AdminMenuCategoryCreateRequest;
-import im.fooding.app.dto.request.admin.menu.AdminMenuCreateRequest;
+import im.fooding.app.dto.request.admin.menu.AdminMenuCategoryListRequest;
 import im.fooding.app.dto.response.admin.menu.AdminMenuCategoryResponse;
-import im.fooding.app.dto.response.admin.menu.AdminMenuResponse;
 import im.fooding.app.service.admin.menu.AdminMenuCategoryService;
 import im.fooding.core.common.ApiResult;
+import im.fooding.core.common.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -43,5 +43,14 @@ public class AdminMenuCategoryController {
             @PathVariable long id
     ) {
         return ApiResult.ok(adminMenuCategoryService.get(id));
+    }
+
+    @GetMapping
+    @Operation(summary = "메뉴 카테고리 조회(page)")
+    public ApiResult<PageResponse<AdminMenuCategoryResponse>> list(
+            @Valid AdminMenuCategoryListRequest request
+
+    ) {
+        return ApiResult.ok(adminMenuCategoryService.list(request));
     }
 }

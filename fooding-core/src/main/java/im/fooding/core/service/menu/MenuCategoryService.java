@@ -2,12 +2,13 @@ package im.fooding.core.service.menu;
 
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
-import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.menu.MenuCategory;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.repository.menu.MenuCategoryRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,6 +87,10 @@ public class MenuCategoryService {
      */
     public List<MenuCategory> list(long storeId) {
         return menuCategoryRepository.findAllByStoreIdAndDeletedFalse(storeId);
+    }
+
+    public Page<MenuCategory> list(Pageable pageable) {
+        return menuCategoryRepository.findAllByDeletedFalse(pageable);
     }
 
     /**
