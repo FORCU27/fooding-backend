@@ -2,10 +2,8 @@ package im.fooding.app.service.app.waiting;
 
 import im.fooding.app.dto.request.app.waiting.AppWaitingListRequest;
 import im.fooding.app.dto.request.app.waiting.AppWaitingRegisterRequest;
-import im.fooding.app.dto.response.app.waiting.AppWaitingOverviewResponse;
-import im.fooding.app.dto.response.app.waiting.AppWaitingRegisterResponse;
+import im.fooding.app.dto.response.app.waiting.*;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
-import im.fooding.app.dto.response.app.waiting.AppWaitingLogResponse;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
@@ -21,7 +19,6 @@ import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import im.fooding.core.service.waiting.WaitingUserService;
-import im.fooding.app.dto.response.app.waiting.AppStoreWaitingResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +28,9 @@ import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.model.waiting.StoreWaitingStatus;
 import java.util.List;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -158,5 +158,15 @@ public class AppWaitingApplicationService {
         int estimatedWaitingTimeMinutes = waitingSetting.getEstimatedWaitingTimeMinutes() * waitingCount;
 
         return new AppWaitingOverviewResponse(waitingCount, estimatedWaitingTimeMinutes);
+    }
+
+    public List<AppWaitingStatusResponse> waitingStatus( long storeId ){
+        StoreWaitingFilter filter = StoreWaitingFilter.builder()
+                .storeId( storeId )
+                .status( StoreWaitingStatus.WAITING )
+                .build();
+        Pageable pageable = PageRequest.of( 0, Integer.MAX_VALUE );
+        Page<StoreWaiting> response = storeWaitingService.list( filter, pageable );
+        return response.map( AppWaitingStatusResponse::of ).stream().toList();
     }
 }
