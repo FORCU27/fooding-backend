@@ -49,4 +49,8 @@ public class AdminMenuCategoryService {
 
         menuCategoryService.update(id, store, request.getName(), request.getDescription(), request.getSortOrder());
     }
+
+    public void delete(long id, long deletedBy) {
+        menuCategoryService.delete(deletedBy, id);
+    }
 }
