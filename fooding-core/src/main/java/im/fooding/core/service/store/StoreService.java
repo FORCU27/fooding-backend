@@ -44,13 +44,24 @@ public class StoreService {
     }
 
     /**
+     * 가게 아이디로 조회(image 포함)
+     *
+     * @param storeId
+     * @return Store
+     */
+    public Store retrieve(long storeId) {
+        return storeRepository.retrieve(storeId).orElseThrow(() -> new ApiException(ErrorCode.STORE_NOT_FOUND));
+    }
+
+    /**
      * 가게 아이디로 조회
      *
      * @param storeId
-     * @return
+     * @return Store
      */
     public Store findById(long storeId) {
-        return storeRepository.findById(storeId).filter(it -> !it.isDeleted())
+        return storeRepository.findById(storeId)
+                .filter(it -> !it.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_NOT_FOUND));
     }
 

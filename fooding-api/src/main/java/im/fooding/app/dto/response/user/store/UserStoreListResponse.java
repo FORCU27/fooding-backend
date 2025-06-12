@@ -1,6 +1,7 @@
 package im.fooding.app.dto.response.user.store;
 
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,9 +48,11 @@ public class UserStoreListResponse {
     }
 
     public static UserStoreListResponse of(Store store, Integer estimatedWaitingTime) {
+        String imageUrl = store.getImages() != null ? store.getImages().stream().findFirst().map(StoreImage::getImageUrl).orElse(null) : null;
         return UserStoreListResponse.builder()
                 .id(store.getId())
                 .name(store.getName())
+                .image(imageUrl)
                 .city(store.getCity())
                 .visitCount(store.getVisitCount())
                 .reviewCount(store.getReviewCount())

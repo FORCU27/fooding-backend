@@ -41,7 +41,7 @@ public class FileUploadService {
                     FileResponse fileResponse = FileResponse.builder()
                             .id(storageResponse.getId())
                             .url(storageResponse.getPublicUrl())
-                            .name(storageResponse.getFileName())
+                            .name(multipartFile.getOriginalFilename())
                             .size(storageResponse.getFileSize())
                             .build();
                     files.add(fileResponse);
