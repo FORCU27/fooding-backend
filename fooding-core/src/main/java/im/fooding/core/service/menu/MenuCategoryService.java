@@ -67,6 +67,16 @@ public class MenuCategoryService {
         return menuCategory.getId();
     }
 
+    @Transactional
+    public void update(long categoryId, Store store, String categoryName, String description, int sortOrder) {
+        MenuCategory menuCategory = findByid(categoryId);
+
+        menuCategory.updateStore(store);
+        menuCategory.updateCategoryName(categoryName);
+        menuCategory.updateDescription(description);
+        menuCategory.updateSortOrder(sortOrder);
+    }
+
     /**
      * 메뉴 카테고리 삭제
      *

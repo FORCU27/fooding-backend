@@ -53,8 +53,16 @@ public class MenuCategory extends BaseEntity {
         this.sortOrder = sortOrder;
     }
 
+    public void updateStore(Store store) {
+        this.store = store;
+    }
+
     public void updateCategoryName(String categoryName) {
         this.name = categoryName;
+    }
+
+    public void updateDescription(String description) {
+        this.description = description;
     }
 
     public void updateSortOrder(int sortOrder) {
