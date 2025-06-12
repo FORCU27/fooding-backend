@@ -24,33 +24,24 @@ public class UserStoreService {
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreListResponse> list(UserSearchStoreRequest request) {
-        Page<Store> storePage = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), false);
-
-        List<UserStoreListResponse> content = storePage.getContent().stream()
-                .map(this::mapStoreToResponse)
-                .toList();
-
-        return PageResponse.of(content, PageInfo.of(storePage));
+        Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), false);
+        return PageResponse.of(
+                stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList(),
+                PageInfo.of(stores)
+        );
     }
 
     @Transactional
     public UserStoreResponse retrieve(Long id) {
-        Store store = storeService.findById(id);
+        Store store = storeService.retrieve(id);
         storeService.increaseVisitCount(store);
-        return UserStoreResponse.of(store, getEstimatedWaitingTime(store));
+        return UserStoreResponse.of(store, null);
     }
 
     private Integer getEstimatedWaitingTime(Store store) {
+        //TODO: n + 1 이슈있음 예상 웨이팅 시간 어떻게할지
         return waitingSettingService.findActiveSetting(store)
                 .map(WaitingSetting::getEstimatedWaitingTimeMinutes)
                 .orElse(null);
-    }
-
-    private UserStoreListResponse mapStoreToResponse(Store store) {
-        //TODO: 이미지 추가
-        return UserStoreListResponse.of(
-                store,
-                getEstimatedWaitingTime(store)
-        );
     }
 }
