@@ -21,11 +21,11 @@ public class AppStoreServiceService {
     private final StoreService storeService;
 
     public List<StoreServiceResponse> list( long storeId, long userId ){
-        if( !authentication( storeId, userId ) ) return null;
+        if( !isStoreOwner( storeId, userId ) ) return null;
         return service.findByStoreId( storeId ).stream().map(StoreServiceResponse::of).collect(Collectors.toList());
     }
 
-    private boolean authentication( long storeId, long userId ){
+    private boolean isStoreOwner( long storeId, long userId ){
         Store store = storeService.findById( storeId );
         if( store.getOwner().getId() == userId ) return true;
         return false;
