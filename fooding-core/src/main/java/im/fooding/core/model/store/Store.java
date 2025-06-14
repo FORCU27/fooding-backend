@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -68,6 +70,9 @@ public class Store extends BaseEntity {
     private int visitCount;
 
     private double averageRating;
+
+    @OneToMany(mappedBy = "store")
+    private List<StoreImage> images;
 
     @Builder
     private Store(User owner, String name, String city, String address, String category, String description, String contactNumber,
