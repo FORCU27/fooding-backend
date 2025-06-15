@@ -14,12 +14,12 @@ import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingLog;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingUser;
+import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import im.fooding.core.service.waiting.WaitingUserService;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import im.fooding.core.common.PageInfo;
@@ -30,7 +30,6 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +45,7 @@ public class AppWaitingApplicationService {
     private final WaitingLogService waitingLogService;
     private final UserNotificationApplicationService userNotificationApplicationService;
     private final WaitingSettingService waitingSettingService;
+    private final StoreService storeService;
 
     public AppStoreWaitingResponse details(long id) {
         return AppStoreWaitingResponse.from(storeWaitingService.get(id));
@@ -149,9 +149,8 @@ public class AppWaitingApplicationService {
         return PageResponse.of(list, PageInfo.of(logs));
     }
 
-    public AppWaitingOverviewResponse overview(long id) {
-        Waiting waiting = waitingService.get(id);
-        Store store = waiting.getStore();
+    public AppWaitingOverviewResponse overviewRequests(long storeId) {
+        Store store = storeService.findById(storeId);
         WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(store);
 
         int waitingCount = (int) storeWaitingService.getWaitingCount(store);

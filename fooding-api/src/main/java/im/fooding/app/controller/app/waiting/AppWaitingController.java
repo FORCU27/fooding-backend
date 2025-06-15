@@ -6,6 +6,7 @@ import im.fooding.app.dto.response.app.waiting.*;
 import im.fooding.app.service.app.waiting.AppWaitingApplicationService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.BasicSearch;
+import im.fooding.core.global.UserInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +14,7 @@ import jakarta.validation.Valid;
 import im.fooding.core.common.PageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -73,13 +75,12 @@ public class AppWaitingController {
         return ApiResult.ok(appWaitingApplicationService.register(id, request));
     }
 
-    @GetMapping("/{id}/overview")
+    @GetMapping("/stores/{storeId}/requests/overview")
     @Operation(summary = "웨이팅 현황 조회")
-    ApiResult<AppWaitingOverviewResponse> overview(
-            @Parameter(description = "웨이팅 id", example = "1")
-            @PathVariable long id
+    ApiResult<AppWaitingOverviewResponse> requestOverview(
+            @PathVariable long storeId
     ) {
-        return ApiResult.ok(appWaitingApplicationService.overview(id));
+        return ApiResult.ok(appWaitingApplicationService.overviewRequests(storeId));
     }
 
     @GetMapping("/store/{storeId}/waiting-status")
