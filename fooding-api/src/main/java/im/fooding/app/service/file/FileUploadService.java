@@ -35,6 +35,7 @@ public class FileUploadService {
         for (MultipartFile multipartFile : request.getFiles()) {
             validateFile(multipartFile);
             try {
+                log.info("bucketId : {}, accessToken : {}", storageInfo.getBucketId(), storageInfo.getAccessToken());
                 StorageResponse storageResponse = storageClient.upload(storageInfo.getUploadUri(), storageInfo.getAccessToken(), multipartFile);
                 if (storageResponse != null) {
                     fileService.create(storageResponse.getId(), storageResponse.getFileName(), storageResponse.getPublicUrl(), storageResponse.getFileSize());
