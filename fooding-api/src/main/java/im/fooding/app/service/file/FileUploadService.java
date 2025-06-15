@@ -47,6 +47,7 @@ public class FileUploadService {
                     files.add(fileResponse);
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new ApiException(ErrorCode.FILE_UPLOAD_FAILED, e.getMessage());
             }
         }
@@ -60,6 +61,7 @@ public class FileUploadService {
                 storageClient.commit(storageInfo.getCommitUri(id), storageInfo.getAccessToken());
                 return file;
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new ApiException(ErrorCode.FILE_UPLOAD_FAILED, e.getMessage());
             }
         } else {
