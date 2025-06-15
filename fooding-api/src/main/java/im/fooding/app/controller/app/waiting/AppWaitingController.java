@@ -82,7 +82,7 @@ public class AppWaitingController {
         return ApiResult.ok(appWaitingApplicationService.overview(id));
     }
 
-    @GetMapping("/{storeId}/waiting-status")
+    @GetMapping("/store/{storeId}/waiting-status")
     @Operation(summary = "현재 가게에 남아있는 웨이팅 목록 조회")
     ApiResult<List<AppWaitingStatusResponse>> waitingStatus(
         @PathVariable long storeId
