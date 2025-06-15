@@ -2,6 +2,7 @@ package im.fooding.app.dto.response.app.waiting;
 
 import im.fooding.core.model.waiting.StoreWaiting;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Optional;
 
 public record AppStoreWaitingResponse(
         @Schema(description = "id", example = "1")
@@ -33,10 +34,14 @@ public record AppStoreWaitingResponse(
 ) {
 
     public static AppStoreWaitingResponse from(StoreWaiting storeWaiting) {
+        AppWaitingUserResponse userResponse = Optional.ofNullable(storeWaiting.getUser())
+                .map(AppWaitingUserResponse::from)
+                .orElse(null);
+
         return new AppStoreWaitingResponse(
                 storeWaiting.getId(),
                 storeWaiting.getStoreId(),
-                AppWaitingUserResponse.from(storeWaiting.getUser()),
+                userResponse,
                 storeWaiting.getCallNumber(),
                 storeWaiting.getChannelValue(),
                 storeWaiting.getInfantChairCount(),
