@@ -51,15 +51,12 @@ public class AppWaitingApplicationService {
         return AppStoreWaitingResponse.from(storeWaitingService.get(id));
     }
 
-    public PageResponse<AppStoreWaitingResponse> list(long id, AppWaitingListRequest request) {
-
-        Waiting waiting = waitingService.get(id);
-
+    public PageResponse<AppStoreWaitingResponse> list(long storeId, AppWaitingListRequest request) {
         StoreWaitingFilter storeWaitingFilter = StoreWaitingFilter.builder()
-                .storeId(waiting.getStore().getId())
-                .status(StoreWaitingStatus.of(request.status()))
+                .storeId(storeId)
+                .status(StoreWaitingStatus.of(request.getStatus()))
                 .build();
-        Page<StoreWaiting> storeWaitings = storeWaitingService.list(storeWaitingFilter, request.pageable());
+        Page<StoreWaiting> storeWaitings = storeWaitingService.list(storeWaitingFilter, request.getPageable());
 
         List<AppStoreWaitingResponse> list = storeWaitings.getContent()
                 .stream()
