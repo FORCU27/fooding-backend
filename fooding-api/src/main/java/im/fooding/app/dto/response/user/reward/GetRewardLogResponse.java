@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 public class GetRewardLogResponse {
@@ -33,8 +35,11 @@ public class GetRewardLogResponse {
     @Schema( description = "리워드 채널" )
     private RewardChannel channel;
 
+    @Schema( description = "적립 시간" )
+    private LocalDateTime createdAt;
+
     @Builder
-    public GetRewardLogResponse( Long id, String storeName, String phoneNumber, int point, RewardStatus status, RewardType type, RewardChannel channel){
+    public GetRewardLogResponse( Long id, String storeName, String phoneNumber, int point, RewardStatus status, RewardType type, RewardChannel channel, LocalDateTime createdAt ){
         this.id = id;
         this.storeName = storeName;
         this.phoneNumber = phoneNumber;
@@ -42,6 +47,7 @@ public class GetRewardLogResponse {
         this.status = status;
         this.type = type;
         this.channel = channel;
+        this.createdAt = createdAt;
     }
 
     public static GetRewardLogResponse of( RewardLog rewardLog ){
@@ -53,6 +59,7 @@ public class GetRewardLogResponse {
                 .status(rewardLog.getStatus())
                 .type(rewardLog.getType())
                 .channel(rewardLog.getChannel())
+                .createdAt( rewardLog.getCreatedAt() )
                 .build();
     }
 }
