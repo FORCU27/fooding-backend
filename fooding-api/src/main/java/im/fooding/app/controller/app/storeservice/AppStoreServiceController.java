@@ -7,10 +7,7 @@ import im.fooding.core.common.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,11 +18,14 @@ import java.util.List;
 public class AppStoreServiceController {
     private final AppStoreServiceService service;
 
-    @GetMapping("/{id}" )
+    @GetMapping("/{storeId}" )
     @Operation( summary = "해당 가게에 대한 가입 스토어 서비스 목록 조회" )
     public ApiResult<List<StoreServiceResponse>> getSignedStoreService(
-            @PathVariable Long id
+            @PathVariable Long storeId,
+            @RequestParam Long userId
     ){
-        return ApiResult.ok( service.list( id ) );
+        List<StoreServiceResponse> response = service.list( storeId, userId );
+        if( response == null ) return ApiResult.ok();
+        return ApiResult.ok( response );
     }
 }
