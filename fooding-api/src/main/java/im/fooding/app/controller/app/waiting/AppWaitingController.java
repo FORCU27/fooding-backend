@@ -2,9 +2,7 @@ package im.fooding.app.controller.app.waiting;
 
 import im.fooding.app.dto.request.app.waiting.AppWaitingListRequest;
 import im.fooding.app.dto.request.app.waiting.AppWaitingRegisterRequest;
-import im.fooding.app.dto.response.app.waiting.AppWaitingOverviewResponse;
-import im.fooding.app.dto.response.app.waiting.AppWaitingRegisterResponse;
-import im.fooding.app.dto.response.app.waiting.AppWaitingLogResponse;
+import im.fooding.app.dto.response.app.waiting.*;
 import im.fooding.app.service.app.waiting.AppWaitingApplicationService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.BasicSearch;
@@ -16,11 +14,12 @@ import im.fooding.core.common.PageResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import im.fooding.app.dto.response.app.waiting.AppStoreWaitingResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,6 +42,7 @@ public class AppWaitingController {
     }
 
     @GetMapping("/requests/{requestId}")
+    @Operation(summary = "웨이팅 상세 조회")
     public ApiResult<AppStoreWaitingResponse> details(
             @Parameter(description = "웨이팅 id", example = "1")
             @PathVariable long requestId
@@ -51,6 +51,7 @@ public class AppWaitingController {
     }
 
     @GetMapping("/requests/{requestId}/logs")
+    @Operation(summary = "웨이팅 로그 조회")
     public ApiResult<PageResponse<AppWaitingLogResponse>> listLogs(
             @Parameter(description = "웨이팅 id", example = "1")
             @PathVariable long requestId,
@@ -79,5 +80,13 @@ public class AppWaitingController {
             @PathVariable long id
     ) {
         return ApiResult.ok(appWaitingApplicationService.overview(id));
+    }
+
+    @GetMapping("/store/{storeId}/waiting-status")
+    @Operation(summary = "현재 가게에 남아있는 웨이팅 목록 조회")
+    ApiResult<List<AppWaitingStatusResponse>> waitingStatus(
+        @PathVariable long storeId
+    ){
+        return ApiResult.ok( appWaitingApplicationService.waitingStatus( storeId ) );
     }
 }
