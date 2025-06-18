@@ -13,6 +13,7 @@ import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.coupon.UserCoupon;
+import im.fooding.core.model.reward.RewardPoint;
 import im.fooding.core.model.reward.RewardStatus;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.coupon.UserCouponService;
@@ -56,7 +57,8 @@ public class RewardApplicationService {
      * @return Page<GetRewardPointResponse>
      */
     public Page<GetRewardPointResponse> getRewardPoint(GetRewardPointRequest request){
-        return pointService.list( request.getSearchString(), request.getStoreId(), request.getPhoneNumber(), request.getPageable() ).map(GetRewardPointResponse::of);
+        System.out.println( request.getStoreId() + ": " + request.getPhoneNumber() );
+        return pointService.list( request.getSearchString(), request.getStoreId(), request.getPhoneNumber(), request.getPageable() ).map( GetRewardPointResponse::of );
     }
 
     /**
@@ -64,7 +66,7 @@ public class RewardApplicationService {
      *
      * @param request
      */
-    public void getPoint(UpdateRewardPointRequest request){
+    public void earnPoint(UpdateRewardPointRequest request){
         Pageable pageable = PageRequest.of(0, 5);
         List<GetRewardPointResponse> result = pointService.list( null, request.getStoreId(), request.getPhoneNumber(), pageable ).map(GetRewardPointResponse::of).stream().collect(Collectors.toList());
         if( result.size() == 0 ) pointService.create(storeService.findById( request.getStoreId() ), request.getPhoneNumber(), request.getPoint(), null);
