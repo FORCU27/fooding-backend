@@ -57,4 +57,8 @@ public class RewardLog extends BaseEntity {
         this.type = type;
         this.channel = channel;
     }
+
+    public void updateStatus( RewardStatus status ){
+        this.status = status;
+    }
 }

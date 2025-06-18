@@ -27,7 +27,7 @@ public class AppRewardController {
     private final RewardApplicationService service;
 
     @GetMapping("/point")
-    @Operation(summary = "리워드 내역 조회")
+    @Operation(summary = "리워드 내역 조회", description = "특정 가게에 누적된 리워드 포인트 확인")
     public ApiResult<Page<GetRewardPointResponse>> getRewardPoint(
             @ModelAttribute GetRewardPointRequest request
     ) {
@@ -56,7 +56,7 @@ public class AppRewardController {
     public ApiResult<Void> getPoint(
             @RequestBody UpdateRewardPointRequest request
     ) {
-        service.getPoint(request);
+        service.earnPoint(request);
         return ApiResult.ok();
     }
 

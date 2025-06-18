@@ -34,12 +34,13 @@ public class GetRewardPointResponse {
     }
 
     public static GetRewardPointResponse of(RewardPoint rewardPoint){
-        return GetRewardPointResponse.builder()
+        GetRewardPointResponseBuilder result = GetRewardPointResponse.builder();
+        if( rewardPoint.getUser() != null ) result.userId( rewardPoint.getUser().getId() );
+        return result
                 .id(rewardPoint.getId())
-                .storeName( rewardPoint.getStore().getName())
-                .phoneNumber( rewardPoint.getPhoneNumber())
-                .userId( rewardPoint.getUser().getId())
-                .point( rewardPoint.getPoint())
+                .storeName( rewardPoint.getStore().getName() )
+                .phoneNumber( rewardPoint.getPhoneNumber() )
+                .point( rewardPoint.getPoint() )
                 .build();
     }
 }

@@ -22,7 +22,6 @@ public class QRewardLogRepositoryImpl implements QRewardLogRepository {
     public Page<RewardLog> list(String searchString, Pageable pageable, Long storeId, String phoneNumber) {
         BooleanBuilder condition = new BooleanBuilder();
         condition.and( rewardLog.deleted.isFalse() );
-        if( search( searchString ) != null ) condition.and( search( searchString ) );
         if( storeId != null ) condition.and( rewardLog.store.id.eq( storeId ) );
         if( phoneNumber != null ) condition.and( rewardLog.phoneNumber.eq( phoneNumber ) );
 
