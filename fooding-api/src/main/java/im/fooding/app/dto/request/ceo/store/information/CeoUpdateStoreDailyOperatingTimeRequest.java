@@ -20,11 +20,9 @@ public class CeoUpdateStoreDailyOperatingTimeRequest {
     @Schema(description = "요일 MONDAY, TUESDAY", example = "MONDAY")
     private DayOfWeek dayOfWeek;
 
-    @NotNull
     @Schema(description = "오픈시간", example = "10:00")
     private LocalTime openTime;
 
-    @NotNull
     @Schema(description = "마감시간", example = "22:00")
     private LocalTime closeTime;
 
@@ -36,6 +34,7 @@ public class CeoUpdateStoreDailyOperatingTimeRequest {
 
     @Builder
     public CeoUpdateStoreDailyOperatingTimeRequest(Long id, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime, LocalTime breakStartTime, LocalTime breakEndTime) {
+        this.id = id;
         this.dayOfWeek = dayOfWeek;
         this.openTime = openTime;
         this.closeTime = closeTime;
