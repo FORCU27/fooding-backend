@@ -51,16 +51,15 @@ public class AppDeviceService {
         Store store = request.storeId() != null ? storeService.findById(request.storeId()) : null;
 
         // uuid, store, packageName으로 기존 디바이스 조회
-        Device existingDevice = deviceService.findByUuidAndStoreAndPackageName(request.uuid(), store, request.packageName());
-        if (existingDevice != null) {
+        Device existedDevice = deviceService.findByUuidAndStoreAndPackageName(request.uuid(), store, request.packageName());
+        if (existedDevice != null) {
             // 기존 디바이스가 있으면 업데이트
-            // TODO: 기타 메타데이터도 업데이트
-            existingDevice.update(request.name());
-            existingDevice.updateOsVersion(request.osVersion());
-            existingDevice.connectDevice();
+            existedDevice.update(request.name());
+            existedDevice.updateOsVersion(request.osVersion());
+            existedDevice.connectDevice();
             if (userId != null) {
                 User user = userService.findById(userId);
-                existingDevice.updateUser(user);
+                existedDevice.updateUser(user);
             }
         } else {
             // 없으면 새로 생성

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -20,10 +21,19 @@ public class AdminDeviceController {
     private final AppDeviceService service;
 
     @GetMapping()
-    @Operation(summary = "모든 디바이스 조회")
+    @Operation(summary = "해당 매장의 모든 디바이스 조회")
     public ApiResult<PageResponse<StoreDeviceResponse>> list(
             @ModelAttribute RetrieveDeviceRequest request
     ) {
         return ApiResult.ok(service.list("Admin", request));
+    }
+
+    @GetMapping("/all")
+    @Operation(summary = "모든 디바이스 조회")
+    public ApiResult<PageResponse<StoreDeviceResponse>> listAll(
+            @AuthenticationPrincipal long userId
+    ) {
+        RetrieveDeviceRequest request = RetrieveDeviceRequest.builder().build();
+        return ApiResult.ok(service.list("Admin", request ));
     }
 }
