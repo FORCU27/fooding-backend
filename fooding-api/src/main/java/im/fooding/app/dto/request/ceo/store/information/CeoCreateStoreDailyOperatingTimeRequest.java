@@ -12,14 +12,12 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class CeoCreateStoreDailyOperatingTimeRequest {
     @NotNull
-    @Schema(description = "요일 MONDAY, TUESDAY", example = "MONDAY")
+    @Schema(description = "요일 MONDAY, TUESDAY ... SUNDAY", example = "MONDAY")
     private DayOfWeek dayOfWeek;
 
-    @NotNull
     @Schema(description = "오픈시간", example = "10:00")
     private LocalTime openTime;
 
-    @NotNull
     @Schema(description = "마감시간", example = "22:00")
     private LocalTime closeTime;
 
