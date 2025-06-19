@@ -73,7 +73,7 @@ public class QStoreRepositoryImpl implements QStoreRepository {
                 .where(
                         store.id.eq(storeId),
                         store.deleted.isFalse(),
-                        storeImage.deleted.isFalse()
+                        storeImageDeletedIfExists()
                 )
                 .fetchOne()
         );
