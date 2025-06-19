@@ -70,7 +70,7 @@ public class StoreService {
      */
     public Store create(User owner, String name, String city, String address, String category, String description,
                         String priceCategory, String eventDescription, String contactNumber, String direction,
-                        String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut) {
+                        String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut, Double latitude, Double longitude) {
         Store store = Store.builder()
                 .owner(owner)
                 .name(name)
@@ -86,16 +86,18 @@ public class StoreService {
                 .isParkingAvailable(isParkingAvailable)
                 .isNewOpen(isNewOpen)
                 .isTakeOut(isTakeOut)
+                .latitude(latitude)
+                .longitude(longitude)
                 .build();
         return storeRepository.save(store);
     }
 
     public void update(long id, String name, String city, String address, String category, String description,
                        String contactNumber, String priceCategory, String eventDescription, String direction,
-                       String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut) {
+                       String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut, Double latitude, Double longitude) {
         Store store = findById(id);
         store.update(name, city, address, category, description, contactNumber, priceCategory, eventDescription,
-                direction, information, isParkingAvailable, isNewOpen, isTakeOut);
+                direction, information, isParkingAvailable, isNewOpen, isTakeOut, latitude, longitude);
     }
 
     public void delete(long id, Long deletedBy) {
