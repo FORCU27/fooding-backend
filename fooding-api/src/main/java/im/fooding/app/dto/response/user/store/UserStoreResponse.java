@@ -70,6 +70,12 @@ public class UserStoreResponse {
     @Schema(description = "경도", example = "127.12345678901234")
     private Double longitude;
 
+    @Schema(description = "영업 종료 여부", example = "false")
+    private Boolean isFinished = false;
+
+    @Schema(description = "관심 여부", example = "false")
+    private Boolean isBookmarked = false;
+
     @Schema(description = "사진")
     private List<UserStoreImageResponse> images;
 
@@ -128,5 +134,13 @@ public class UserStoreResponse {
                 .longitude(store.getLongitude())
                 .images(images)
                 .build();
+    }
+
+    public void setFinished(Boolean finished) {
+        isFinished = finished;
+    }
+
+    public void setBookmarked(Boolean bookmarked) {
+        isBookmarked = bookmarked;
     }
 }
