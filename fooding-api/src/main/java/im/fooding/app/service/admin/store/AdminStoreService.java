@@ -55,7 +55,7 @@ public class AdminStoreService {
         Store store = storeService.create(user, request.getName(), request.getCity(), request.getAddress(), request.getCategory(),
                 request.getDescription(), request.getPriceCategory(), request.getEventDescription(), request.getContactNumber(),
                 request.getDirection(), request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(),
-                request.getIsTakeOut());
+                request.getIsTakeOut(), request.getLatitude(), request.getLongitude());
 
         storeMemberService.create(store, user, StorePosition.OWNER);
 
@@ -66,7 +66,7 @@ public class AdminStoreService {
     public void update(Long id, AdminUpdateStoreRequest request) {
         storeService.update(id, request.getName(), request.getCity(), request.getAddress(), request.getCategory(), request.getDescription(),
                 request.getContactNumber(), request.getPriceCategory(), request.getEventDescription(), request.getDirection(),
-                request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut());
+                request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude());
     }
 
     @Transactional

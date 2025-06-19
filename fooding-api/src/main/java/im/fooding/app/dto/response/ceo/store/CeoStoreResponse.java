@@ -55,6 +55,12 @@ public class CeoStoreResponse {
     @Schema(description = "포장가능여부", example = "true")
     private final boolean isTakeOut;
 
+    @Schema(description = "위도", example = "36.40947226931638")
+    private final Double latitude;
+
+    @Schema(description = "경도", example = "127.12345678901234")
+    private final Double longitude;
+
     public CeoStoreResponse(Store store) {
         this.id = store.getId();
         this.ownerId = store.getOwner() != null ? store.getOwner().getId() : null;
@@ -71,5 +77,7 @@ public class CeoStoreResponse {
         this.isParkingAvailable = store.isParkingAvailable();
         this.isNewOpen = store.isNewOpen();
         this.isTakeOut = store.isTakeOut();
+        this.latitude = store.getLatitude();
+        this.longitude = store.getLongitude();
     }
 }

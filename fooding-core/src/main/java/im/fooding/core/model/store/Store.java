@@ -11,6 +11,7 @@ import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -72,6 +73,10 @@ public class Store extends BaseEntity {
 
     private double averageRating;
 
+    private Double latitude;
+
+    private Double longitude;
+
     @OneToMany(mappedBy = "store")
     @BatchSize(size = 10) // 한 번에 10개씩 배치로 로딩
     private List<StoreImage> images;
@@ -79,7 +84,7 @@ public class Store extends BaseEntity {
     @Builder
     private Store(User owner, String name, String city, String address, String category, String description, String contactNumber,
                   String priceCategory, String eventDescription, String direction, String information, boolean isParkingAvailable,
-                  boolean isNewOpen, boolean isTakeOut) {
+                  boolean isNewOpen, boolean isTakeOut, Double latitude, Double longitude) {
         this.owner = owner;
         this.name = name;
         this.city = city;
@@ -94,11 +99,13 @@ public class Store extends BaseEntity {
         this.isParkingAvailable = isParkingAvailable;
         this.isNewOpen = isNewOpen;
         this.isTakeOut = isTakeOut;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public void update(String name, String city, String address, String category, String description, String contactNumber,
                        String priceCategory, String eventDescription, String direction, String information, boolean isParkingAvailable,
-                       boolean isNewOpen, boolean isTakeOut) {
+                       boolean isNewOpen, boolean isTakeOut, Double latitude, Double longitude) {
         this.name = name;
         this.city = city;
         this.address = address;
@@ -112,6 +119,8 @@ public class Store extends BaseEntity {
         this.isParkingAvailable = isParkingAvailable;
         this.isNewOpen = isNewOpen;
         this.isTakeOut = isTakeOut;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public void increaseVisitCount() {

@@ -64,6 +64,12 @@ public class UserStoreResponse {
     @Schema(description = "해당 가게의 평균 대기 시간 (웨이팅이 비활성화된 가게일 경우, null 반환)", example = "20")
     private Integer estimatedWaitingTimeMinutes;
 
+    @Schema(description = "위도", example = "36.40947226931638")
+    private Double latitude;
+
+    @Schema(description = "경도", example = "127.12345678901234")
+    private Double longitude;
+
     @Schema(description = "사진")
     private List<UserStoreImageResponse> images;
 
@@ -71,7 +77,7 @@ public class UserStoreResponse {
     private UserStoreResponse(Long id, String name, String city, String address, String category, String description,
                               String priceCategory, String eventDescription, String contactNumber, String direction, int visitCount,
                               int reviewCount, double averageRating, Boolean isParkingAvailable, Boolean isNewOpen, Boolean isTakeOut,
-                              Integer estimatedWaitingTimeMinutes, List<UserStoreImageResponse> images) {
+                              Integer estimatedWaitingTimeMinutes, Double latitude, Double longitude, List<UserStoreImageResponse> images) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -89,6 +95,8 @@ public class UserStoreResponse {
         this.isNewOpen = isNewOpen;
         this.isTakeOut = isTakeOut;
         this.estimatedWaitingTimeMinutes = estimatedWaitingTimeMinutes;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.images = images;
     }
 
@@ -116,6 +124,8 @@ public class UserStoreResponse {
                 .isNewOpen(store.isNewOpen())
                 .isTakeOut(store.isTakeOut())
                 .estimatedWaitingTimeMinutes(estimatedWaitingTime)
+                .latitude(store.getLatitude())
+                .longitude(store.getLongitude())
                 .images(images)
                 .build();
     }
