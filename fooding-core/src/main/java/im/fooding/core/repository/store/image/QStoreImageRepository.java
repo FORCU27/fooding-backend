@@ -1,4 +1,4 @@
-package im.fooding.core.repository.store;
+package im.fooding.core.repository.store.image;
 
 import im.fooding.core.model.store.StoreImage;
 import org.springframework.data.domain.Page;

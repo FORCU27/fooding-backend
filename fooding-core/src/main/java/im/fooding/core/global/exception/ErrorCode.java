@@ -41,6 +41,10 @@ public enum ErrorCode {
     STORE_SERVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2100", "등록된 가게 서비스가 없습니다."),
     STORE_POST_NOT_FOUND(HttpStatus.BAD_REQUEST,"2200", "등록된 가게 소식이 없습니다."),
     STORE_MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "2300", "해당 가게의 직원이 아닙니다."),
+    STORE_INFORMATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "2400", "등록된 가게 부가 정보가 없습니다."),
+    STORE_INFORMATION_DUPLICATED(HttpStatus.BAD_REQUEST, "2401", "이미 등록된 가게 부가 정보가 있습니다."),
+    STORE_OPERATING_HOUR_NOT_FOUND(HttpStatus.BAD_REQUEST, "2500", "등록된 가게 운영시간 및 휴일 정보가 없습니다."),
+    STORE_OPERATING_HOUR_DUPLICATED(HttpStatus.BAD_REQUEST, "2501", "이미 등록된 가게 운영시간 및 휴일 정보가 있습니다."),
 
     // 리뷰
     REVIEW_NOT_FOUND( HttpStatus.BAD_REQUEST, "2202", "등록된 리뷰가 없습니다" ),
