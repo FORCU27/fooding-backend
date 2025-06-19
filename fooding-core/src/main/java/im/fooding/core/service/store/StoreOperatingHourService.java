@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +51,10 @@ public class StoreOperatingHourService {
 
     public StoreOperatingHour findByStoreId(long storeId) {
         return repository.findByStoreIdAndDeletedIsFalse(storeId).orElse(null);
+    }
+
+    public List<StoreOperatingHour> findByIdsInOperatingTime(List<Long> storeIds, DayOfWeek week) {
+        return repository.findByIdsInOperatingTime(storeIds, week);
     }
 
     private void checkDuplicate(long storeId) {

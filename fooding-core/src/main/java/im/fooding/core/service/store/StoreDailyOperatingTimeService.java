@@ -38,4 +38,5 @@ public class StoreDailyOperatingTimeService {
     public StoreDailyOperatingTime findById(long id) {
         return repository.findById(id).filter(it -> !it.isDeleted()).orElseThrow(() -> new ApiException(ErrorCode.STORE_OPERATING_HOUR_NOT_FOUND));
     }
+
 }
