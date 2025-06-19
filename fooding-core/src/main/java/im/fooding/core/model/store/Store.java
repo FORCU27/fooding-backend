@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -72,6 +73,7 @@ public class Store extends BaseEntity {
     private double averageRating;
 
     @OneToMany(mappedBy = "store")
+    @BatchSize(size = 10) // 한 번에 10개씩 배치로 로딩
     private List<StoreImage> images;
 
     @Builder

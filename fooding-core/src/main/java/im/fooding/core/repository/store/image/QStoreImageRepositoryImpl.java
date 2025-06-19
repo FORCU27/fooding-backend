@@ -1,4 +1,4 @@
-package im.fooding.core.repository.store;
+package im.fooding.core.repository.store.image;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;

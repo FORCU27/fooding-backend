@@ -11,20 +11,21 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/store-images")
+@RequestMapping("/user/stores")
 @Tag(name = "UserStoreImageController", description = "유저 스토어 사진 컨트롤러")
 public class UserStoreImageController {
     private final UserStoreImageService service;
 
-    @GetMapping
+    @GetMapping("/{storeId}/images")
     @Operation(summary = "사진 리스트 조회")
-    public ApiResult<PageResponse<UserStoreImageResponse>> list(@Valid UserSearchStoreImageRequest search) {
-        return ApiResult.ok(service.list(search));
+    public ApiResult<PageResponse<UserStoreImageResponse>> list(@PathVariable long storeId, @Valid UserSearchStoreImageRequest search) {
+        return ApiResult.ok(service.list(storeId, search));
     }
 }
