@@ -11,10 +11,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CeoSearchStoreImageRequest extends BasicSearch {
-    @NotNull
-    @Schema(description = "가게 id", example = "1")
-    private Long storeId;
-
     @Schema(description = "검색 태그", example = "업체")
     private String searchTag;
 }

@@ -22,26 +22,26 @@ public class CeoStoreInformationController {
 
     @PostMapping("/{storeId}/information")
     @Operation(summary = "부가정보 등록")
-    public ApiResult<Long> create(@PathVariable Long storeId, @Valid @RequestBody CeoCreateStoreInformationRequest request, @AuthenticationPrincipal UserInfo userInfo) {
+    public ApiResult<Long> create(@PathVariable long storeId, @Valid @RequestBody CeoCreateStoreInformationRequest request, @AuthenticationPrincipal UserInfo userInfo) {
         return ApiResult.ok(service.create(storeId, request, userInfo.getId()));
     }
 
     @PutMapping("/{storeId}/information/{id}")
     @Operation(summary = "부가정보 수정")
-    public ApiResult<Long> update(@PathVariable Long storeId, @PathVariable Long id, @Valid @RequestBody CeoUpdateStoreInformationRequest request, @AuthenticationPrincipal UserInfo userInfo) {
+    public ApiResult<Long> update(@PathVariable long storeId, @PathVariable long id, @Valid @RequestBody CeoUpdateStoreInformationRequest request, @AuthenticationPrincipal UserInfo userInfo) {
         service.update(storeId, id, request, userInfo.getId());
         return ApiResult.ok();
     }
 
     @GetMapping("/{storeId}/information")
     @Operation(summary = "부가정보 조회")
-    public ApiResult<CeoStoreInformationResponse> retrieve(@PathVariable Long storeId, @AuthenticationPrincipal UserInfo userInfo) {
+    public ApiResult<CeoStoreInformationResponse> retrieve(@PathVariable long storeId, @AuthenticationPrincipal UserInfo userInfo) {
         return ApiResult.ok(service.retrieve(storeId, userInfo.getId()));
     }
 
     @DeleteMapping("/{storeId}/information/{id}")
     @Operation(summary = "부가정보 삭제")
-    public ApiResult<Void> delete(@PathVariable Long storeId, @PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo) {
+    public ApiResult<Void> delete(@PathVariable long storeId, @PathVariable long id, @AuthenticationPrincipal UserInfo userInfo) {
         service.delete(storeId, id, userInfo.getId());
         return ApiResult.ok();
     }

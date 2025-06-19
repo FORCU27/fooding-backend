@@ -52,7 +52,7 @@ public class CeoStoreOperatingHourService {
     }
 
     @Transactional
-    public void delete(Long storeId, Long id, long userId) {
+    public void delete(long storeId, long id, long userId) {
         checkMember(storeId, userId);
         storeOperatingHourService.delete(id ,userId);
     }

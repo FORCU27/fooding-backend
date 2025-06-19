@@ -34,7 +34,7 @@ public class QStoreRepositoryImpl implements QStoreRepository {
         List<Store> content = query
                 .select(store)
                 .from(store)
-                .leftJoin(store.images, storeImage).fetchJoin()
+                .leftJoin(store.images, storeImage)
                 .where(
                         isStoreDeleted(includeDeleted),
                         storeImageDeletedIfExists()

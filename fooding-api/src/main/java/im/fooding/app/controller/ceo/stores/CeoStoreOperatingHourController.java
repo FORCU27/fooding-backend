@@ -22,14 +22,14 @@ public class CeoStoreOperatingHourController {
 
     @PostMapping("/{storeId}/operating-hour")
     @Operation(summary = "영업시간/휴무일 등록")
-    public ApiResult<Long> create(@PathVariable Long storeId, @Valid @RequestBody CeoCreateStoreOperatingHourRequest request,
+    public ApiResult<Long> create(@PathVariable long storeId, @Valid @RequestBody CeoCreateStoreOperatingHourRequest request,
                                   @AuthenticationPrincipal UserInfo userInfo) {
         return ApiResult.ok(service.create(storeId, request, userInfo.getId()));
     }
 
     @PutMapping("/{storeId}/operating-hour/{id}")
     @Operation(summary = "영업시간/휴무일 등록 수정")
-    public ApiResult<Long> update(@PathVariable Long storeId, @PathVariable Long id, @Valid @RequestBody CeoUpdateStoreOperatingHourRequest request,
+    public ApiResult<Long> update(@PathVariable long storeId, @PathVariable long id, @Valid @RequestBody CeoUpdateStoreOperatingHourRequest request,
                                   @AuthenticationPrincipal UserInfo userInfo) {
         service.update(storeId, id, request, userInfo.getId());
         return ApiResult.ok();
@@ -37,13 +37,13 @@ public class CeoStoreOperatingHourController {
 
     @GetMapping("/{storeId}/operating-hour")
     @Operation(summary = "영업시간/휴무일 조회")
-    public ApiResult<CeoStoreOperatingHourResponse> retrieve(@PathVariable Long storeId, @AuthenticationPrincipal UserInfo userInfo) {
+    public ApiResult<CeoStoreOperatingHourResponse> retrieve(@PathVariable long storeId, @AuthenticationPrincipal UserInfo userInfo) {
         return ApiResult.ok(service.retrieve(storeId, userInfo.getId()));
     }
 
     @DeleteMapping("/{storeId}/operating-hour/{id}")
     @Operation(summary = "영업시간/휴무일 삭제")
-    public ApiResult<Void> delete(@PathVariable Long storeId, @PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo) {
+    public ApiResult<Void> delete(@PathVariable long storeId, @PathVariable long id, @AuthenticationPrincipal UserInfo userInfo) {
         service.delete(storeId, id, userInfo.getId());
         return ApiResult.ok();
     }

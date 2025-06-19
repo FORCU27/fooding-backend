@@ -19,8 +19,8 @@ public class UserStoreImageService {
     private final StoreImageService storeImageService;
 
     @Transactional(readOnly = true)
-    public PageResponse<UserStoreImageResponse> list(UserSearchStoreImageRequest search) {
-        Page<StoreImage> images = storeImageService.list(search.getStoreId(), search.getSearchTag(), search.getPageable());
+    public PageResponse<UserStoreImageResponse> list(long storeId, UserSearchStoreImageRequest search) {
+        Page<StoreImage> images = storeImageService.list(storeId, search.getSearchTag(), search.getPageable());
         return PageResponse.of(images.stream().map(UserStoreImageResponse::of).toList(), PageInfo.of(images));
     }
 }

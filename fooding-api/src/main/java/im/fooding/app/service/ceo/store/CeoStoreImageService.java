@@ -30,8 +30,8 @@ public class CeoStoreImageService {
     private final FileUploadService fileUploadService;
 
     @Transactional
-    public Long create(CeoCreateStoreImageRequest request, long userId) {
-        Store store = storeService.findById(request.getStoreId());
+    public Long create(long storeId, CeoCreateStoreImageRequest request, long userId) {
+        Store store = storeService.findById(storeId);
         checkMember(store.getId(), userId);
 
         File file = fileUploadService.commit(request.getImageId());
@@ -39,16 +39,16 @@ public class CeoStoreImageService {
     }
 
     @Transactional(readOnly = true)
-    public PageResponse<CeoStoreImageResponse> list(CeoSearchStoreImageRequest search, long userId) {
-        checkMember(search.getStoreId(), userId);
-        Page<StoreImage> images = storeImageService.list(search.getStoreId(), search.getSearchTag(), search.getPageable());
+    public PageResponse<CeoStoreImageResponse> list(long storeId, CeoSearchStoreImageRequest search, long userId) {
+        checkMember(storeId, userId);
+        Page<StoreImage> images = storeImageService.list(storeId, search.getSearchTag(), search.getPageable());
         return PageResponse.of(images.stream().map(CeoStoreImageResponse::of).toList(), PageInfo.of(images));
     }
 
     @Transactional
-    public void update(long id, CeoUpdateStoreImageRequest request, long userId) {
+    public void update(long storeId, long id, CeoUpdateStoreImageRequest request, long userId) {
+        checkMember(storeId, userId);
         StoreImage storeImage = storeImageService.findById(id);
-        checkMember(storeImage.getStore().getId(), userId);
 
         String imageUrl = storeImage.getImageUrl();
 
@@ -61,9 +61,9 @@ public class CeoStoreImageService {
     }
 
     @Transactional
-    public void delete(long id, long userId) {
+    public void delete(long storeId, long id, long userId) {
+        checkMember(storeId, userId);
         StoreImage storeImage = storeImageService.findById(id);
-        checkMember(storeImage.getStore().getId(), userId);
         storeImageService.delete(storeImage, userId);
     }
 
