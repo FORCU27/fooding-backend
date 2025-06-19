@@ -25,6 +25,7 @@ public class AdminUserNotificationResponse {
         this.userId = userId;
         this.title = title;
         this.content = content;
+        this.category = category;
         this.sentAt = sentAt;
         this.isRead = isRead;
     }

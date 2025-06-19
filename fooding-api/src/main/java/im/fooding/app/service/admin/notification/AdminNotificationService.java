@@ -69,7 +69,12 @@ public class AdminNotificationService {
             savedNotification.getContent(),
             request.getDestinations(),
             savedNotification.getChannel(),
-            savedNotification.getCategory()));
+            savedNotification.getCategory(),
+            // TODO: 서비스 어떻게 관리하는 것이 좋을까?
+            "user"
+        )
+    );
+
     return savedNotification.getId();
   }
 
