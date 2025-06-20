@@ -44,13 +44,24 @@ public class StoreService {
     }
 
     /**
+     * 가게 아이디로 조회(image 포함)
+     *
+     * @param storeId
+     * @return Store
+     */
+    public Store retrieve(long storeId) {
+        return storeRepository.retrieve(storeId).orElseThrow(() -> new ApiException(ErrorCode.STORE_NOT_FOUND));
+    }
+
+    /**
      * 가게 아이디로 조회
      *
      * @param storeId
-     * @return
+     * @return Store
      */
     public Store findById(long storeId) {
-        return storeRepository.findById(storeId).filter(it -> !it.isDeleted())
+        return storeRepository.findById(storeId)
+                .filter(it -> !it.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_NOT_FOUND));
     }
 
@@ -59,7 +70,7 @@ public class StoreService {
      */
     public Store create(User owner, String name, String city, String address, String category, String description,
                         String priceCategory, String eventDescription, String contactNumber, String direction,
-                        String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut) {
+                        String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut, Double latitude, Double longitude) {
         Store store = Store.builder()
                 .owner(owner)
                 .name(name)
@@ -75,16 +86,18 @@ public class StoreService {
                 .isParkingAvailable(isParkingAvailable)
                 .isNewOpen(isNewOpen)
                 .isTakeOut(isTakeOut)
+                .latitude(latitude)
+                .longitude(longitude)
                 .build();
         return storeRepository.save(store);
     }
 
     public void update(long id, String name, String city, String address, String category, String description,
                        String contactNumber, String priceCategory, String eventDescription, String direction,
-                       String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut) {
+                       String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut, Double latitude, Double longitude) {
         Store store = findById(id);
         store.update(name, city, address, category, description, contactNumber, priceCategory, eventDescription,
-                direction, information, isParkingAvailable, isNewOpen, isTakeOut);
+                direction, information, isParkingAvailable, isNewOpen, isTakeOut, latitude, longitude);
     }
 
     public void delete(long id, Long deletedBy) {

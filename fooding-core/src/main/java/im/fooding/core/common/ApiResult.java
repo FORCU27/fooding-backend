@@ -13,7 +13,6 @@ public class ApiResult<T> {
     private HttpStatus status = HttpStatus.OK;
 
     @Schema(description = "결과데이터")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
     private ApiResult(T data) {

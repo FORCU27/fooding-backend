@@ -16,13 +16,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
 public class StoreImage extends BaseEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,24 +35,25 @@ public class StoreImage extends BaseEntity {
     )
     private Store store;
 
-    @Column(name = "image_url", nullable = false)
+    @Column(nullable = false)
     private String imageUrl;
 
-    @Column(name = "sort_order", nullable = false)
+    @Column(nullable = false)
     private int sortOrder;
 
+    private String tags;
+
     @Builder
-    private StoreImage(Store store, String imageUrl, int sortOrder) {
+    private StoreImage(Store store, String imageUrl, int sortOrder, String tags) {
         this.store = store;
         this.imageUrl = imageUrl;
         this.sortOrder = sortOrder;
+        this.tags = !StringUtils.hasText(tags) ? null : tags;
     }
 
-    public void updateImageUrl(String imageUrl) {
+    public void update(String imageUrl, int sortOrder, String tags) {
         this.imageUrl = imageUrl;
-    }
-
-    public void updateSortOrder(int sortOrder) {
         this.sortOrder = sortOrder;
+        this.tags = !StringUtils.hasText(tags) ? null : tags;;
     }
 }
