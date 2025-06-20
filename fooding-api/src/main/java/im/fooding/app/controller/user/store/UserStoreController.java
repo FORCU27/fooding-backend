@@ -1,5 +1,6 @@
 package im.fooding.app.controller.user.store;
 
+import im.fooding.app.dto.request.user.store.UserImmediateEntryStoreRequest;
 import im.fooding.app.dto.request.user.store.UserSearchStoreRequest;
 import im.fooding.app.dto.response.user.store.UserStoreListResponse;
 import im.fooding.app.dto.response.user.store.UserStoreResponse;
@@ -34,5 +35,13 @@ public class UserStoreController {
     @Operation(summary = "가게 단건조회")
     public ApiResult<UserStoreResponse> retrieve(@PathVariable Long id) {
         return ApiResult.ok(service.retrieve(id));
+    }
+
+    @GetMapping("/immediate-entry")
+    @Operation(summary = "바로 입장 가능한 식당 목록 조회")
+    public ApiResult<PageResponse<UserStoreListResponse>> retrieveImmediateEntry(
+            @Valid UserImmediateEntryStoreRequest request
+    ) {
+        return ApiResult.ok(service.retrieveImmediateEntry(request));
     }
 }
