@@ -68,6 +68,10 @@ public class WaitingService {
         return waiting.getStatus() == WaitingStatus.WAITING_OPEN;
     }
 
+    public Page<Waiting> list(WaitingStatus status, Pageable pageable) {
+        return waitingRepository.findAllByStatusAndDeletedFalse(status, pageable);
+    }
+
     private void validateUniqueStore(Store store) {
         if (waitingRepository.existsByStore(store)) {
             throw new ApiException(ErrorCode.DUPLICATED_STORE_BY_WAITING);
