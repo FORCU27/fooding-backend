@@ -3,6 +3,7 @@ package im.fooding.app.dto.response.user.store;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,70 +14,73 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class UserStoreResponse {
-    @Schema(description = "id", example = "1")
+    @Schema(description = "id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private Long id;
 
-    @Schema(description = "가게명", example = "홍길동 식당")
+    @Schema(description = "가게명", example = "홍길동 식당", requiredMode = RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "가게가 위치한 도시", example = "합정")
+    @Schema(description = "가게가 위치한 도시", example = "합정", requiredMode = RequiredMode.REQUIRED)
     private String city;
 
-    @Schema(description = "주소", example = "서울특별시 마포구")
+    @Schema(description = "주소", example = "서울특별시 마포구", requiredMode = RequiredMode.REQUIRED)
     private String address;
 
-    @Schema(description = "카테고리", example = "한식")
+    @Schema(description = "카테고리", example = "한식", requiredMode = RequiredMode.REQUIRED)
     private String category;
 
-    @Schema(description = "설명", example = "설명설명")
+    @Schema(description = "설명", example = "설명설명", requiredMode = RequiredMode.REQUIRED)
     private String description;
 
-    @Schema(description = "가격대", example = "15000 ~ 30000")
+    @Schema(description = "가격대", example = "15000 ~ 30000", requiredMode = RequiredMode.REQUIRED)
     private String priceCategory;
 
-    @Schema(description = "이벤트설명", example = "이벤트없음")
+    @Schema(description = "이벤트설명", example = "이벤트없음", requiredMode = RequiredMode.NOT_REQUIRED)
     private String eventDescription;
 
-    @Schema(description = "연락처", example = "010-0000-0000")
+    @Schema(description = "연락처", example = "010-0000-0000", requiredMode = RequiredMode.REQUIRED)
     private String contactNumber;
 
-    @Schema(description = "오시는길", example = "홍대입구역 2번출구 앞")
+    @Schema(description = "오시는길", example = "홍대입구역 2번출구 앞", requiredMode = RequiredMode.REQUIRED)
     private String direction;
 
-    @Schema(description = "해당 가게의 총 방문수", example = "1000")
+    @Schema(description = "해당 가게의 총 방문수", example = "1000", requiredMode = RequiredMode.REQUIRED)
     private int visitCount;
 
-    @Schema(description = "해당 가게의 총 리뷰 개수", example = "246")
+    @Schema(description = "해당 가게의 총 리뷰 개수", example = "246", requiredMode = RequiredMode.REQUIRED)
     private int reviewCount;
 
-    @Schema(description = "해당 가게의 총 리뷰 평점", example = "4.5")
+    @Schema(description = "해당 가게의 총 리뷰 평점", example = "4.5", requiredMode = RequiredMode.REQUIRED)
     private double averageRating;
 
-    @Schema(description = "주차가능여부", example = "true")
+    @Schema(description = "주차가능여부", example = "true", requiredMode = RequiredMode.REQUIRED)
     private Boolean isParkingAvailable;
 
-    @Schema(description = "신규오픈여부", example = "true")
+    @Schema(description = "신규오픈여부", example = "true", requiredMode = RequiredMode.REQUIRED)
     private Boolean isNewOpen;
 
-    @Schema(description = "포장가능여부", example = "true")
+    @Schema(description = "포장가능여부", example = "true", requiredMode = RequiredMode.REQUIRED)
     private Boolean isTakeOut;
 
-    @Schema(description = "해당 가게의 평균 대기 시간 (웨이팅이 비활성화된 가게일 경우, null 반환)", example = "20")
+    @Schema(description = "해당 가게의 평균 대기 시간 (웨이팅이 비활성화된 가게일 경우, null 반환)", example = "20", requiredMode = RequiredMode.NOT_REQUIRED)
     private Integer estimatedWaitingTimeMinutes;
 
-    @Schema(description = "위도", example = "36.40947226931638")
+    @Schema(description = "위도", example = "36.40947226931638", requiredMode = RequiredMode.REQUIRED)
     private Double latitude;
 
-    @Schema(description = "경도", example = "127.12345678901234")
+    @Schema(description = "경도", example = "127.12345678901234", requiredMode = RequiredMode.REQUIRED)
     private Double longitude;
 
-    @Schema(description = "영업 종료 여부", example = "false")
+    @Schema(description = "영업 종료 여부", example = "false", requiredMode = RequiredMode.REQUIRED)
     private Boolean isFinished = false;
 
-    @Schema(description = "관심 여부", example = "false")
+    @Schema(description = "관심 여부", example = "false", requiredMode = RequiredMode.REQUIRED)
     private Boolean isBookmarked = false;
 
-    @Schema(description = "사진")
+    @Schema(description = "해당 가게의 총 관심 수", example = "false", requiredMode = RequiredMode.REQUIRED)
+    private int bookmarkCount = 0;
+
+    @Schema(description = "사진", requiredMode = RequiredMode.NOT_REQUIRED)
     private List<UserStoreImageResponse> images;
 
     @Builder

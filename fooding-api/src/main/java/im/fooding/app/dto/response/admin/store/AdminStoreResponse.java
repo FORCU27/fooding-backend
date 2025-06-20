@@ -3,62 +3,63 @@ package im.fooding.app.dto.response.admin.store;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import im.fooding.core.model.store.Store;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Getter;
 
 @Getter
 public class AdminStoreResponse {
-    @Schema(description = "id", example = "1")
+    @Schema(description = "id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private final Long id;
 
-    @Schema(description = "점주 id", example = "1")
+    @Schema(description = "점주 id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private final Long ownerId;
 
-    @Schema(description = "가게명", example = "홍가네")
+    @Schema(description = "가게명", example = "홍가네", requiredMode = RequiredMode.REQUIRED)
     private final String name;
 
-    @Schema(description = "도시", example = "홍대")
+    @Schema(description = "도시", example = "홍대", requiredMode = RequiredMode.REQUIRED)
     private final String city;
 
-    @Schema(description = "주소", example = "서울특별시 마포구")
+    @Schema(description = "주소", example = "서울특별시 마포구", requiredMode = RequiredMode.REQUIRED)
     private final String address;
 
-    @Schema(description = "카테고리", example = "한식")
+    @Schema(description = "카테고리", example = "한식", requiredMode = RequiredMode.REQUIRED)
     private final String category;
 
-    @Schema(description = "설명", example = "설명설명")
+    @Schema(description = "설명", example = "설명설명", requiredMode = RequiredMode.REQUIRED)
     private final String description;
 
-    @Schema(description = "가격대", example = "15000 ~ 30000")
+    @Schema(description = "가격대", example = "15000 ~ 30000", requiredMode = RequiredMode.REQUIRED)
     private final String priceCategory;
 
-    @Schema(description = "이벤트설명", example = "이벤트없음")
+    @Schema(description = "이벤트설명", example = "이벤트없음", requiredMode = RequiredMode.NOT_REQUIRED)
     private final String eventDescription;
 
-    @Schema(description = "연락처", example = "010-0000-0000")
+    @Schema(description = "연락처", example = "010-0000-0000", requiredMode = RequiredMode.REQUIRED)
     private final String contactNumber;
 
-    @Schema(description = "오시는길", example = "홍대입구역 2번출구 앞")
+    @Schema(description = "오시는길", example = "홍대입구역 2번출구 앞", requiredMode = RequiredMode.REQUIRED)
     private final String direction;
 
-    @Schema(description = "영업 정보", example = "오전9시 ~ 오후9시")
+    @Schema(description = "영업 정보", example = "오전9시 ~ 오후9시", requiredMode = RequiredMode.REQUIRED)
     private final String information;
 
     @JsonProperty("isParkingAvailable")
-    @Schema(description = "주차가능여부", example = "true")
+    @Schema(description = "주차가능여부", example = "true", requiredMode = RequiredMode.REQUIRED)
     private final boolean isParkingAvailable;
 
     @JsonProperty("isNewOpen")
-    @Schema(description = "신규오픈여부", example = "true")
+    @Schema(description = "신규오픈여부", example = "true", requiredMode = RequiredMode.REQUIRED)
     private final boolean isNewOpen;
 
     @JsonProperty("isTakeOut")
-    @Schema(description = "포장가능여부", example = "true")
+    @Schema(description = "포장가능여부", example = "true", requiredMode = RequiredMode.REQUIRED)
     private final boolean isTakeOut;
 
-    @Schema(description = "위도", example = "36.40947226931638")
+    @Schema(description = "위도", example = "36.40947226931638", requiredMode = RequiredMode.NOT_REQUIRED)
     private final Double latitude;
 
-    @Schema(description = "경도", example = "127.12345678901234")
+    @Schema(description = "경도", example = "127.12345678901234", requiredMode = RequiredMode.NOT_REQUIRED)
     private final Double longitude;
 
     public AdminStoreResponse(Store store) {

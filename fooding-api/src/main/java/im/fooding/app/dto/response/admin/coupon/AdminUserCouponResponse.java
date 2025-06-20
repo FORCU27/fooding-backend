@@ -4,6 +4,7 @@ import im.fooding.core.model.coupon.BenefitType;
 import im.fooding.core.model.coupon.DiscountType;
 import im.fooding.core.model.coupon.UserCoupon;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,49 +15,49 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class AdminUserCouponResponse {
-    @Schema(description = "id", example = "1")
+    @Schema(description = "id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private Long id;
 
-    @Schema(description = "user id", example = "1")
+    @Schema(description = "user id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private Long userId;
 
-    @Schema(description = "coupon id", example = "1")
+    @Schema(description = "coupon id", example = "1", requiredMode = RequiredMode.NOT_REQUIRED)
     private Long couponId;
 
-    @Schema(description = "store id", example = "1")
+    @Schema(description = "store id", example = "1", requiredMode = RequiredMode.NOT_REQUIRED)
     private Long storeId;
 
-    @Schema(description = "유저 닉네임", example = "김개명")
+    @Schema(description = "유저 닉네임", example = "김개명", requiredMode = RequiredMode.REQUIRED)
     private String nickname;
 
-    @Schema(description = "store 명", example = "김가네")
+    @Schema(description = "store 명", example = "김가네", requiredMode = RequiredMode.NOT_REQUIRED)
     private String storeName;
 
-    @Schema(description = "쿠폰명", example = "2000원 할인쿠폰")
+    @Schema(description = "쿠폰명", example = "2000원 할인쿠폰", requiredMode = RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "사용 조건", example = "메뉴 2개 이상 시킬시 사용 가능합니다.")
+    @Schema(description = "사용 조건", example = "메뉴 2개 이상 시킬시 사용 가능합니다.", requiredMode = RequiredMode.NOT_REQUIRED)
     private String conditions;
 
-    @Schema(description = "혜택 타입", example = "DISCOUNT")
+    @Schema(description = "혜택 타입", example = "DISCOUNT", requiredMode = RequiredMode.REQUIRED)
     private BenefitType benefitType;
 
-    @Schema(description = "할인 타입", example = "FIXED")
+    @Schema(description = "할인 타입", example = "FIXED", requiredMode = RequiredMode.REQUIRED)
     private DiscountType discountType;
 
-    @Schema(description = "할인값(금액, 퍼센트)", example = "2000")
+    @Schema(description = "할인값(금액, 퍼센트)", example = "2000", requiredMode = RequiredMode.REQUIRED)
     private int discountValue;
 
-    @Schema(description = "사용여부", example = "true")
+    @Schema(description = "사용여부", example = "true", requiredMode = RequiredMode.REQUIRED)
     private boolean used;
 
-    @Schema(description = "사용일자", example = "2025-03-16T05:17:04.069")
+    @Schema(description = "사용일자", example = "2025-03-16T05:17:04.069", requiredMode = RequiredMode.NOT_REQUIRED)
     private LocalDateTime usedAt;
 
-    @Schema(description = "만료일자", example = "2025-03-16")
+    @Schema(description = "만료일자", example = "2025-03-16", requiredMode = RequiredMode.NOT_REQUIRED)
     private LocalDate expiredOn;
 
-    @Schema(description = "발급일자", example = "2025-03-16T05:17:04.069")
+    @Schema(description = "발급일자", example = "2025-03-16T05:17:04.069", requiredMode = RequiredMode.REQUIRED)
     private LocalDateTime createdDateAt;
 
     @Builder
