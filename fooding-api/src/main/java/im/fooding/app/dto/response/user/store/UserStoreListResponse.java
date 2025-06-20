@@ -3,6 +3,7 @@ package im.fooding.app.dto.response.user.store;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,34 +11,34 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class UserStoreListResponse {
-    @Schema(description = "id", example = "1")
+    @Schema(description = "id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private Long id;
 
-    @Schema(description = "가게명", example = "홍길동 식당")
+    @Schema(description = "가게명", example = "홍길동 식당", requiredMode = RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "가게 이미지 URL", example = "https://example.com/store.jpg")
+    @Schema(description = "가게 이미지 URL", example = "https://example.com/store.jpg", requiredMode = RequiredMode.NOT_REQUIRED)
     private String mainImage;
 
-    @Schema(description = "가게가 위치한 도시", example = "합정")
+    @Schema(description = "가게가 위치한 도시", example = "합정", requiredMode = RequiredMode.REQUIRED)
     private String city;
 
-    @Schema(description = "해당 가게의 총 방문수", example = "1000")
+    @Schema(description = "해당 가게의 총 방문수", example = "1000", requiredMode = RequiredMode.REQUIRED)
     private int visitCount;
 
-    @Schema(description = "해당 가게의 총 리뷰 개수", example = "246")
+    @Schema(description = "해당 가게의 총 리뷰 개수", example = "246", requiredMode = RequiredMode.REQUIRED)
     private int reviewCount;
 
-    @Schema(description = "해당 가게의 총 리뷰 평점", example = "4.5")
+    @Schema(description = "해당 가게의 총 리뷰 평점", example = "4.5", requiredMode = RequiredMode.REQUIRED)
     private double averageRating;
 
-    @Schema(description = "해당 가게의 평균 대기 시간 (웨이팅이 비활성화된 가게일 경우, null 반환)", example = "20")
+    @Schema(description = "해당 가게의 평균 대기 시간 (웨이팅이 비활성화된 가게일 경우, null 반환)", example = "20", requiredMode = RequiredMode.NOT_REQUIRED)
     private Integer estimatedWaitingTimeMinutes;
 
-    @Schema(description = "영업 종료 여부", example = "false")
+    @Schema(description = "영업 종료 여부", example = "false", requiredMode = RequiredMode.REQUIRED)
     private Boolean isFinished;
 
-    @Schema(description = "관심 여부", example = "false")
+    @Schema(description = "관심 여부", example = "false", requiredMode = RequiredMode.REQUIRED)
     private Boolean isBookmarked;
 
     @Builder

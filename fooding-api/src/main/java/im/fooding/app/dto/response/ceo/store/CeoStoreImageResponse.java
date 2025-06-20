@@ -2,6 +2,7 @@ package im.fooding.app.dto.response.ceo.store;
 
 import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,16 +10,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class CeoStoreImageResponse {
-    @Schema(description = "id", example = "1")
+    @Schema(description = "id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private Long id;
 
-    @Schema(description = "이미지 url", example = "https://..")
+    @Schema(description = "이미지 url", example = "https://..", requiredMode = RequiredMode.REQUIRED)
     private String imageUrl;
 
-    @Schema(description = "정렬순서", example = "1")
+    @Schema(description = "정렬순서", example = "1", requiredMode = RequiredMode.NOT_REQUIRED)
     private int sortOrder;
 
-    @Schema(description = "태그", example = "업체,음식")
+    @Schema(description = "태그", example = "업체,음식", requiredMode = RequiredMode.NOT_REQUIRED)
     private String tags;
 
     @Builder
