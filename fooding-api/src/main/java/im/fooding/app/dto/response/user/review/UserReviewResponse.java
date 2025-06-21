@@ -25,6 +25,9 @@ public class UserReviewResponse {
     private String nickname;
 
     @Schema(description = "리뷰 작성자 프로필 이미지 URL", example = "https://example.com/profile.jpg")
+    private String profileUrl;
+
+    @Schema(description = "리뷰 관련 사진 이미지 URL", example = "https://example.com/image.jpg")
     private List<String> imageUrls;
 
     @Schema(description = "리뷰 내용", example = "정말 맛있어요!")
@@ -39,6 +42,9 @@ public class UserReviewResponse {
     @Schema(description = "리뷰 좋아요 수", example = "10")
     private Long likeCount;
 
+    @Schema(description = "작성자의 총 작성 리뷰 수", example = "100")
+    private int userReviewCount;
+
     @Schema(description = "리뷰 작성일", example = "2023-10-01")
     private LocalDateTime createdAt;
 
@@ -49,16 +55,19 @@ public class UserReviewResponse {
     private UserReviewResponse(
             Long reviewId,
             String nickname,
+            String profileUrl,
             List<String> imageUrls,
             String content,
             ReviewScore score,
             VisitPurposeType purpose,
             Long likeCount,
             LocalDateTime createdAt,
-            LocalDateTime updatedAt
+            LocalDateTime updatedAt,
+            int userReviewCount
     ) {
         this.reviewId = reviewId;
         this.nickname = nickname;
+        this.profileUrl = profileUrl;
         this.imageUrls = imageUrls;
         this.content = content;
         this.score = score;
@@ -66,6 +75,7 @@ public class UserReviewResponse {
         this.likeCount = likeCount;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.userReviewCount = userReviewCount;
     }
 
     public static UserReviewResponse of(
