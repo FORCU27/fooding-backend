@@ -22,21 +22,22 @@ public class QRewardPointRepositoryImpl implements QRewardPointRepository{
     public Page<RewardPoint> list(String searchString, Pageable pageable, Long storeId, String phoneNumber) {
         BooleanBuilder condition = new BooleanBuilder();
         condition.and( rewardPoint.deleted.isFalse() );
-        if( search( searchString ) != null ) condition.and( search( searchString ) );
-        if( storeId != null ) condition.and( rewardPoint.store.id.eq( storeId ) );
-        if( phoneNumber != null ) condition.and( rewardPoint.phoneNumber.eq( phoneNumber ) );
 
         List<RewardPoint> results = query
                 .select( rewardPoint )
                 .from( rewardPoint )
                 .where( condition )
+                .where( rewardPoint.store.id.eq( storeId ) )
+                .where( rewardPoint.phoneNumber.eq( phoneNumber ) )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
         JPAQuery<Long> countQuery = query
                 .select( rewardPoint.count() )
                 .from( rewardPoint )
-                .where( condition );
+                .where( condition )
+                .where( rewardPoint.store.id.eq( storeId ) )
+                .where( rewardPoint.phoneNumber.eq( phoneNumber ) );
         return PageableExecutionUtils.getPage(
                 results, pageable, countQuery::fetchCount
         );
