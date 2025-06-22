@@ -1,8 +1,10 @@
 package im.fooding.app.service.user.store;
 
+import im.fooding.app.dto.request.user.store.UserImmediateEntryStoreRequest;
 import im.fooding.app.dto.request.user.store.UserSearchStoreRequest;
 import im.fooding.app.dto.response.user.store.UserStoreListResponse;
 import im.fooding.app.dto.response.user.store.UserStoreResponse;
+import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.store.Store;
@@ -11,9 +13,11 @@ import im.fooding.core.model.store.information.StoreOperatingHour;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.service.store.StoreOperatingHourService;
 import im.fooding.core.service.store.StoreService;
+import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +35,7 @@ public class UserStoreService {
     private final StoreService storeService;
     private final StoreOperatingHourService storeOperatingHourService;
     private final WaitingSettingService waitingSettingService;
+    private final WaitingService waitingService;
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreListResponse> list(UserSearchStoreRequest request) {
@@ -50,6 +55,18 @@ public class UserStoreService {
         UserStoreResponse userStoreResponse = UserStoreResponse.of(store, null);
         updateOperatingStatus(userStoreResponse);
         return userStoreResponse;
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<UserStoreListResponse> retrieveImmediateEntry(UserImmediateEntryStoreRequest request) {
+        Page<Waiting> waitings = waitingService.list(WaitingStatus.IMMEDIATE_ENTRY, request.getPageable());
+
+        List<UserStoreListResponse> content = waitings.getContent().stream()
+                .map(Waiting::getStore)
+                .map(this::mapStoreToResponse)
+                .toList();
+
+        return PageResponse.of(content, PageInfo.of(waitings));
     }
 
     private Integer getEstimatedWaitingTime(Store store) {

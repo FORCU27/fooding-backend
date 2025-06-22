@@ -31,10 +31,7 @@ public class DeviceService {
      * @return Page<Device>
      */
     public Page<Device> list(String searchString, Long storeId, Long userId, Pageable pageable) {
-        if (userId != null) {
-            return deviceRepository.findAllByUserIdOrStoreId(userId, storeId, pageable);
-        }
-        return deviceRepository.list(searchString, pageable, storeId);
+        return deviceRepository.list(searchString, storeId, userId, pageable);
     }
 
     /**

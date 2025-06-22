@@ -2,10 +2,8 @@ package im.fooding.app.service.app.waiting;
 
 import im.fooding.app.dto.request.app.waiting.AppWaitingListRequest;
 import im.fooding.app.dto.request.app.waiting.AppWaitingRegisterRequest;
-import im.fooding.app.dto.response.app.waiting.AppWaitingOverviewResponse;
-import im.fooding.app.dto.response.app.waiting.AppWaitingRegisterResponse;
+import im.fooding.app.dto.response.app.waiting.*;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
-import im.fooding.app.dto.response.app.waiting.AppWaitingLogResponse;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
@@ -16,13 +14,12 @@ import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingLog;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingUser;
+import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import im.fooding.core.service.waiting.WaitingUserService;
-import im.fooding.app.dto.response.app.waiting.AppStoreWaitingResponse;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import im.fooding.core.common.PageInfo;
@@ -31,6 +28,8 @@ import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.model.waiting.StoreWaitingStatus;
 import java.util.List;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,20 +45,18 @@ public class AppWaitingApplicationService {
     private final WaitingLogService waitingLogService;
     private final UserNotificationApplicationService userNotificationApplicationService;
     private final WaitingSettingService waitingSettingService;
+    private final StoreService storeService;
 
     public AppStoreWaitingResponse details(long id) {
         return AppStoreWaitingResponse.from(storeWaitingService.get(id));
     }
 
-    public PageResponse<AppStoreWaitingResponse> list(long id, AppWaitingListRequest request) {
-
-        Waiting waiting = waitingService.get(id);
-
+    public PageResponse<AppStoreWaitingResponse> list(long storeId, AppWaitingListRequest request) {
         StoreWaitingFilter storeWaitingFilter = StoreWaitingFilter.builder()
-                .storeId(waiting.getStore().getId())
-                .status(StoreWaitingStatus.of(request.status()))
+                .storeId(storeId)
+                .status(StoreWaitingStatus.of(request.getStatus()))
                 .build();
-        Page<StoreWaiting> storeWaitings = storeWaitingService.list(storeWaitingFilter, request.pageable());
+        Page<StoreWaiting> storeWaitings = storeWaitingService.list(storeWaitingFilter, request.getPageable());
 
         List<AppStoreWaitingResponse> list = storeWaitings.getContent()
                 .stream()
@@ -149,14 +146,23 @@ public class AppWaitingApplicationService {
         return PageResponse.of(list, PageInfo.of(logs));
     }
 
-    public AppWaitingOverviewResponse overview(long id) {
-        Waiting waiting = waitingService.get(id);
-        Store store = waiting.getStore();
+    public AppWaitingOverviewResponse overviewRequests(long storeId) {
+        Store store = storeService.findById(storeId);
         WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(store);
 
         int waitingCount = (int) storeWaitingService.getWaitingCount(store);
         int estimatedWaitingTimeMinutes = waitingSetting.getEstimatedWaitingTimeMinutes() * waitingCount;
 
         return new AppWaitingOverviewResponse(waitingCount, estimatedWaitingTimeMinutes);
+    }
+
+    public List<AppWaitingStatusResponse> waitingStatus( long storeId ){
+        StoreWaitingFilter filter = StoreWaitingFilter.builder()
+                .storeId( storeId )
+                .status( StoreWaitingStatus.WAITING )
+                .build();
+        Pageable pageable = PageRequest.of( 0, Integer.MAX_VALUE );
+        Page<StoreWaiting> response = storeWaitingService.list( filter, pageable );
+        return response.map( AppWaitingStatusResponse::of ).stream().toList();
     }
 }
