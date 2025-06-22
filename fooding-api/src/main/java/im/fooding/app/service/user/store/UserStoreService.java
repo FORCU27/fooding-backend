@@ -10,7 +10,9 @@ import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.information.StoreDailyOperatingTime;
 import im.fooding.core.model.store.information.StoreOperatingHour;
+import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingSetting;
+import im.fooding.core.model.waiting.WaitingStatus;
 import im.fooding.core.service.store.StoreOperatingHourService;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.waiting.WaitingService;
@@ -69,6 +71,13 @@ public class UserStoreService {
         return PageResponse.of(content, PageInfo.of(waitings));
     }
 
+    private UserStoreListResponse mapStoreToResponse(Store store) {
+        //TODO: 이미지 추가
+        return UserStoreListResponse.of(
+                store,
+                getEstimatedWaitingTime(store)
+        );
+    }
     private Integer getEstimatedWaitingTime(Store store) {
         //TODO: n + 1 이슈있음 예상 웨이팅 시간 어떻게할지
         return waitingSettingService.findActiveSetting(store)
