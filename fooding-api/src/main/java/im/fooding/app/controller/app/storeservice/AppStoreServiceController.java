@@ -4,6 +4,7 @@ import im.fooding.app.dto.response.admin.service.StoreServiceResponse;
 import im.fooding.app.service.admin.service.StoreServiceApplicationService;
 import im.fooding.app.service.app.store.AppStoreServiceService;
 import im.fooding.core.common.ApiResult;
+import im.fooding.core.global.UserInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +24,9 @@ public class AppStoreServiceController {
     @Operation( summary = "해당 가게에 대한 가입 스토어 서비스 목록 조회" )
     public ApiResult<List<StoreServiceResponse>> getSignedStoreService(
             @PathVariable Long storeId,
-            @AuthenticationPrincipal Long userId
+            @AuthenticationPrincipal UserInfo userInfo
     ){
-        List<StoreServiceResponse> response = service.list( storeId, userId );
+        List<StoreServiceResponse> response = service.list( storeId, userInfo.getId() );
         if( response == null ) return ApiResult.ok();
         return ApiResult.ok( response );
     }
