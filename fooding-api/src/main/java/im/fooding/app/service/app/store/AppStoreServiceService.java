@@ -20,8 +20,8 @@ public class AppStoreServiceService {
     private final StoreServiceService service;
     private final StoreService storeService;
 
-    public List<StoreServiceResponse> list( long storeId, long userId ){
-        if( !isStoreOwner( storeId, userId ) ) return null;
+    public List<StoreServiceResponse> list( long storeId, Long userId ){
+        // if( !isStoreOwner( storeId, userId ) ) return null;
         return service.findByStoreId( storeId ).stream().map(StoreServiceResponse::of).collect(Collectors.toList());
     }
 

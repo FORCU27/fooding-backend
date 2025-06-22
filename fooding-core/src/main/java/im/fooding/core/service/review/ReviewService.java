@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Slf4j
 public class ReviewService {
 
@@ -64,6 +63,14 @@ public class ReviewService {
                 () -> new ApiException(ErrorCode.REVIEW_NOT_FOUND)
         );
         review.delete( deletedBy );
+    }
+
+    /**
+     * * 작성자의 리뷰 수
+     * @param id
+     */
+    public int getReviewCount( Long id ){
+        return 0;
     }
 
 }
