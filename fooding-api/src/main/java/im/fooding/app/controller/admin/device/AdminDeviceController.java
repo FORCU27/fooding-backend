@@ -5,6 +5,7 @@ import im.fooding.app.dto.response.user.device.StoreDeviceResponse;
 import im.fooding.app.service.app.device.AppDeviceService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.global.UserInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -25,15 +26,15 @@ public class AdminDeviceController {
     public ApiResult<PageResponse<StoreDeviceResponse>> list(
             @ModelAttribute RetrieveDeviceRequest request
     ) {
-        return ApiResult.ok(service.list("Admin", request));
+        return ApiResult.ok(service.list(request));
     }
 
     @GetMapping("/all")
     @Operation(summary = "모든 디바이스 조회")
     public ApiResult<PageResponse<StoreDeviceResponse>> listAll(
-            @AuthenticationPrincipal long userId
+            @AuthenticationPrincipal UserInfo userInfo
     ) {
         RetrieveDeviceRequest request = RetrieveDeviceRequest.builder().build();
-        return ApiResult.ok(service.list("Admin", request ));
+        return ApiResult.ok(service.list(request));
     }
 }

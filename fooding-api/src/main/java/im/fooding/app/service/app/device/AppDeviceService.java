@@ -35,8 +35,8 @@ public class AppDeviceService {
      * @return StoreDeviceResponse
      */
     @Transactional(readOnly = true)
-    public PageResponse<StoreDeviceResponse> list(String service, RetrieveDeviceRequest request) {
-        Page<Device> result = deviceService.list(null, request.getStoreId(), null, request.getPageable());
+    public PageResponse<StoreDeviceResponse> list(RetrieveDeviceRequest request) {
+        Page<Device> result = deviceService.list(request.getSearchString(), request.getStoreId(), request.getUserId(), request.getPageable());
         PageInfo pageInfo = PageInfo.of(result);
         return PageResponse.of(result.getContent().stream().map(StoreDeviceResponse::of).collect(Collectors.toList()), pageInfo);
     }
