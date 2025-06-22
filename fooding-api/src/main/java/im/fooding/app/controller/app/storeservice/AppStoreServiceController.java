@@ -26,7 +26,7 @@ public class AppStoreServiceController {
             @PathVariable Long storeId,
             @AuthenticationPrincipal UserInfo userInfo
     ){
-        List<StoreServiceResponse> response = service.list( storeId, userInfo.getId() );
+        List<StoreServiceResponse> response = service.list( storeId, null );
         if( response == null ) return ApiResult.ok();
         return ApiResult.ok( response );
     }
