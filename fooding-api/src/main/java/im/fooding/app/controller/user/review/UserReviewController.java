@@ -34,7 +34,7 @@ public class UserReviewController {
     @PostMapping( "/reviews" )
     @Operation( summary = "리뷰 작성", description = "매장에 대한 리뷰를 작성합니다." )
     public ApiResult<Void> create(
-            @Valid @ModelAttribute CreateReviewRequest request
+            @Valid @RequestBody CreateReviewRequest request
     ){
         userReviewService.create( request );
         return ApiResult.ok();

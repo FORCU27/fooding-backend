@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class UserReviewService {
 
     private final ReviewService reviewService;
@@ -72,22 +71,21 @@ public class UserReviewService {
     }
 
     public void create(CreateReviewRequest request){
-        User writer = userService.findById( request.getUserId() );
+        User user = userService.findById( request.getUserId() );
         Store store = storeService.findById( request.getStoreId() );
-        ReviewScore reviewScore = ReviewScore.builder()
-                .taste( request.getTaste() )
+        ReviewScore score = ReviewScore.builder()
                 .mood( request.getMood() )
                 .service( request.getService() )
+                .taste( request.getTaste() )
                 .total( request.getTotal() )
                 .build();
-
         Review review = Review.builder()
                 .store( store )
-                .writer( writer )
-                .score( reviewScore )
+                .writer( user )
+                .score( score )
                 .content( request.getContent() )
                 .visitPurposeType( request.getVisitPurpose() )
                 .build();
-        reviewService.create(review);
+        reviewService.create( review );
     }
 }
