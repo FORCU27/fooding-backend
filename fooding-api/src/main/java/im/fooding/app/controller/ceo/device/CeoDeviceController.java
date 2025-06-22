@@ -30,7 +30,7 @@ public class CeoDeviceController {
     public ApiResult<PageResponse<StoreDeviceResponse>> retrieve(
             @ModelAttribute RetrieveDeviceRequest request
     ) {
-        return ApiResult.ok(service.list("CEO", request));
+        return ApiResult.ok(service.list( request));
     }
 
     @PostMapping
