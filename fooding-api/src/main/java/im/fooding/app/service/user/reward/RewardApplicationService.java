@@ -57,7 +57,6 @@ public class RewardApplicationService {
      * @return Page<GetRewardPointResponse>
      */
     public Page<GetRewardPointResponse> getRewardPoint(GetRewardPointRequest request){
-        System.out.println( request.getStoreId() + ": " + request.getPhoneNumber() );
         return pointService.list( request.getSearchString(), request.getStoreId(), request.getPhoneNumber(), request.getPageable() ).map( GetRewardPointResponse::of );
     }
 

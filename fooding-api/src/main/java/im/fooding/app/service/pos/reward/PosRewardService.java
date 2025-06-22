@@ -30,7 +30,7 @@ public class PosRewardService {
     }
 
     @Transactional
-    public void cancelReward( Long rewardLogId ){
+    public void cancel( Long rewardLogId ){
         RewardLog log = logService.findById( rewardLogId );
         log.updateStatus( RewardStatus.CANCELED );
         rewardService.usePoint(log.getPhoneNumber(), log.getStore().getId(), log.getPoint());

@@ -32,7 +32,7 @@ public class PosRewardController {
     public ApiResult<Void> cancelReward(
             @PathVariable Long id
     ){
-        service.cancelReward( id );
+        service.cancel( id );
         return ApiResult.ok();
     }
 }
