@@ -61,4 +61,10 @@ public class AdminCreateStoreRequest {
     @NotNull(message = "포장 가능 여부는 필수입니다.")
     @Schema(description = "포장가능여부", example = "true")
     private Boolean isTakeOut;
+
+    @Schema(description = "위도", example = "36.40947226931638")
+    private Double latitude;
+
+    @Schema(description = "경도", example = "127.12345678901234")
+    private Double longitude;
 }

@@ -1,25 +1,26 @@
 package im.fooding.core.repository.store;
 
-import static com.querydsl.core.types.Order.*;
-import static im.fooding.core.model.review.QReview.review;
-import static im.fooding.core.model.store.QStore.store;
-import static im.fooding.core.model.store.QStoreMember.storeMember;
-
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreSortType;
-
-import java.util.List;
-
 import lombok.RequiredArgsConstructor;
 import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
-import com.querydsl.core.BooleanBuilder;
+
+import java.util.List;
+import java.util.Optional;
+
+import static com.querydsl.core.types.Order.ASC;
+import static com.querydsl.core.types.Order.DESC;
+import static im.fooding.core.model.store.QStore.store;
+import static im.fooding.core.model.store.QStoreImage.storeImage;
+import static im.fooding.core.model.store.QStoreMember.storeMember;
 
 @RequiredArgsConstructor
 public class QStoreRepositoryImpl implements QStoreRepository {
@@ -30,16 +31,14 @@ public class QStoreRepositoryImpl implements QStoreRepository {
     public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, boolean includeDeleted) {
         OrderSpecifier<?> orderSpecifier = getOrderSpecifier(sortType, sortDirection);
 
-        BooleanBuilder builder = new BooleanBuilder();
-        if (!includeDeleted) {
-            builder.and(store.deleted.eq(false));
-        }
-
         List<Store> content = query
                 .select(store)
                 .from(store)
-                .where(builder)
-                .groupBy(store.id)
+                .leftJoin(store.images, storeImage)
+                .where(
+                        isStoreDeleted(includeDeleted),
+                        storeImageDeletedIfExists()
+                )
                 .orderBy(orderSpecifier)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -48,7 +47,9 @@ public class QStoreRepositoryImpl implements QStoreRepository {
         JPQLQuery<Long> countQuery = query
                 .select(store.count())
                 .from(store)
-                .where(builder);
+                .where(
+                        isStoreDeleted(includeDeleted)
+                );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
@@ -64,6 +65,20 @@ public class QStoreRepositoryImpl implements QStoreRepository {
                 .fetch();
     }
 
+    @Override
+    public Optional<Store> retrieve(long storeId) {
+        return Optional.ofNullable(query
+                .selectFrom(store)
+                .leftJoin(store.images, storeImage).fetchJoin()
+                .where(
+                        store.id.eq(storeId),
+                        store.deleted.isFalse(),
+                        storeImageDeletedIfExists()
+                )
+                .fetchOne()
+        );
+    }
+
     private OrderSpecifier<?> getOrderSpecifier(StoreSortType sortType, SortDirection direction) {
         Order order = direction == SortDirection.ASCENDING ? ASC : DESC;
 
@@ -73,5 +88,13 @@ public class QStoreRepositoryImpl implements QStoreRepository {
             case AVERAGE_RATING -> new OrderSpecifier<>(order, store.averageRating);
             case VISIT -> new OrderSpecifier<>(order, store.visitCount);
         };
+    }
+
+    private BooleanExpression isStoreDeleted(Boolean includeDeleted) {
+        return null != includeDeleted ? store.deleted.eq(includeDeleted) : store.deleted.isFalse();
+    }
+
+    private BooleanExpression storeImageDeletedIfExists() {
+        return storeImage.id.isNull().or(storeImage.deleted.isFalse());
     }
 }

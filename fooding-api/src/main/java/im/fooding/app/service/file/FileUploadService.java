@@ -35,18 +35,20 @@ public class FileUploadService {
         for (MultipartFile multipartFile : request.getFiles()) {
             validateFile(multipartFile);
             try {
+                log.info("bucketId : {}, accessToken : {}", storageInfo.getBucketId(), storageInfo.getAccessToken());
                 StorageResponse storageResponse = storageClient.upload(storageInfo.getUploadUri(), storageInfo.getAccessToken(), multipartFile);
                 if (storageResponse != null) {
                     fileService.create(storageResponse.getId(), storageResponse.getFileName(), storageResponse.getPublicUrl(), storageResponse.getFileSize());
                     FileResponse fileResponse = FileResponse.builder()
                             .id(storageResponse.getId())
                             .url(storageResponse.getPublicUrl())
-                            .name(storageResponse.getFileName())
+                            .name(multipartFile.getOriginalFilename())
                             .size(storageResponse.getFileSize())
                             .build();
                     files.add(fileResponse);
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new ApiException(ErrorCode.FILE_UPLOAD_FAILED, e.getMessage());
             }
         }
@@ -60,6 +62,7 @@ public class FileUploadService {
                 storageClient.commit(storageInfo.getCommitUri(id), storageInfo.getAccessToken());
                 return file;
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new ApiException(ErrorCode.FILE_UPLOAD_FAILED, e.getMessage());
             }
         } else {

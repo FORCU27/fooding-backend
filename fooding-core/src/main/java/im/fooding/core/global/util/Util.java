@@ -1,11 +1,13 @@
 package im.fooding.core.global.util;
 
 import im.fooding.core.global.UserInfo;
-import im.fooding.core.global.exception.ApiException;
-import im.fooding.core.global.exception.ErrorCode;
-import im.fooding.core.model.user.Role;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Util {
     public static UserInfo getUserInfo() {
@@ -19,10 +21,24 @@ public class Util {
         return null;
     }
 
-    public static void checkPermission(long targetId) {
-        UserInfo userInfo = getUserInfo();
-        if (Role.USER == userInfo.getRole() && targetId != userInfo.getId()) {
-            throw new ApiException(ErrorCode.ACCESS_DENIED_EXCEPTION);
+    public static List<String> generateStringToList(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return Collections.emptyList();
         }
+
+        return Arrays.stream(value.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.toList());
+    }
+
+    public static String generateListToString(List<String> strings) {
+        if (strings == null || strings.isEmpty()) {
+            return "";
+        }
+        return strings.stream()
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.joining(","));
     }
 }
