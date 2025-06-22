@@ -5,6 +5,7 @@ import im.fooding.core.dto.request.waiting.WaitingSettingUpdateRequest;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.repository.waiting.WaitingSettingRepository;
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class WaitingSettingService {
     @Transactional
     public void create(WaitingSettingCreateRequest request) {
         if (request.isActive()) {
-            validateAlreadyActive();
+            validateAlreadyActive(request.waiting());
         }
 
         WaitingSetting waitingSetting = WaitingSetting.builder()
@@ -56,7 +57,7 @@ public class WaitingSettingService {
     public void update(WaitingSettingUpdateRequest request) {
         WaitingSetting waitingSetting = get(request.id());
         if (request.isActive() && !waitingSetting.isActive()) {
-            validateAlreadyActive();
+            validateAlreadyActive(request.waiting());
         }
 
         waitingSetting.update(
@@ -92,8 +93,8 @@ public class WaitingSettingService {
                 .filter(it -> !it.isDeleted());
     }
 
-    private void validateAlreadyActive() {
-        if (waitingSettingRepository.existsByIsActiveTrueAndDeletedFalse()) {
+    private void validateAlreadyActive(Waiting waiting) {
+        if (waitingSettingRepository.existsByWaitingAndIsActiveTrueAndDeletedFalse(waiting)) {
             throw new ApiException(ErrorCode.ALREADY_EXIST_ACTIVE_WAITING_SETTING);
         }
     }
