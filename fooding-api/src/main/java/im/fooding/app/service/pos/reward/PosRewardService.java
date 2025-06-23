@@ -3,6 +3,7 @@ package im.fooding.app.service.pos.reward;
 import im.fooding.app.dto.request.pos.reward.GetRewardRequest;
 import im.fooding.app.dto.response.pos.reward.GetPosRewardResponse;
 import im.fooding.core.model.reward.RewardLog;
+import im.fooding.core.model.reward.RewardStatus;
 import im.fooding.core.service.reward.RewardLogService;
 import im.fooding.core.service.reward.RewardService;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,9 @@ public class PosRewardService {
     }
 
     @Transactional
-    public void cancelReward( Long rewardLogId ){
+    public void cancel( Long rewardLogId ){
         RewardLog log = logService.findById( rewardLogId );
+        log.updateStatus( RewardStatus.CANCELED );
         rewardService.usePoint(log.getPhoneNumber(), log.getStore().getId(), log.getPoint());
     }
 }
