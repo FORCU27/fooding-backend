@@ -62,7 +62,7 @@ public class AuthController {
 
     @PostMapping("/refresh")
     @Operation(summary = "토큰 갱신", description = "accessToken, refreshToken 갱신")
-    public ApiResult<TokenResponse> refreshToken(HttpServletRequest request) {
+    public ApiResult<TokenResponse> refreshToken(@RequestBody @Valid AuthRefreshTokenRequest request) {
         return ApiResult.ok(service.refreshToken(request));
     }
 
