@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -56,6 +57,7 @@ public class AppRewardController {
     public ApiResult<Void> getPoint(
             @RequestBody UpdateRewardPointRequest request
     ) {
+        if( !isNotPhoneNumber( request.getPhoneNumber() ) ) return ApiResult.error(HttpStatus.BAD_REQUEST, null );
         service.earnPoint(request);
         return ApiResult.ok();
     }
@@ -71,5 +73,10 @@ public class AppRewardController {
     public ApiResult<Void> useCoupon(@PathVariable Long id) {
         service.useCoupon(id);
         return ApiResult.ok();
+    }
+
+    private static boolean isNotPhoneNumber( String input ){
+        final String REGEX = "^\\d{11}$";
+        return input != null && input.matches(REGEX);
     }
 }

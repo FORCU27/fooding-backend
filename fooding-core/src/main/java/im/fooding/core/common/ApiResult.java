@@ -2,12 +2,16 @@ package im.fooding.core.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Getter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class ApiResult<T> {
     @Schema(description = "결과", example = "OK")
     private HttpStatus status = HttpStatus.OK;
@@ -25,5 +29,9 @@ public class ApiResult<T> {
 
     public static <T> ApiResult<T> ok(T data) {
         return new ApiResult<>(data);
+    }
+
+    public static <T> ApiResult<T> error(HttpStatus status, T message){
+        return ApiResult.<T>builder().status( status ).data( message ).build();
     }
 }
