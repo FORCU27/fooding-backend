@@ -10,7 +10,6 @@ import im.fooding.core.model.user.AuthProvider;
 import im.fooding.core.model.user.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +33,7 @@ public class AuthController {
     @PutMapping("/me")
     @Operation(summary = "로그인한 유저 정보 수정", description = "로그인된 상태에서 정보 수정")
     public ApiResult<Void> update(@RequestBody @Valid AuthUpdateProfileRequest request,
-                                         @AuthenticationPrincipal UserInfo userInfo) {
+                                  @AuthenticationPrincipal UserInfo userInfo) {
         service.update(userInfo.getId(), request);
         return ApiResult.ok();
     }
