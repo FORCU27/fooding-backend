@@ -64,15 +64,15 @@ public class AppWaitingController {
         return ApiResult.ok(appWaitingApplicationService.listLogs(requestId, search));
     }
 
-    @PostMapping("/{id}/requests")
+    @PostMapping("/stores/{storeId}/requests")
     @Operation(summary = "웨이팅 등록")
     ApiResult<AppWaitingRegisterResponse> register(
-            @Parameter(description = "웨이팅 id", example = "1")
-            @PathVariable long id,
+            @Parameter(description = "가게 id", example = "1")
+            @PathVariable long storeId,
 
             @RequestBody @Valid AppWaitingRegisterRequest request
     ) {
-        return ApiResult.ok(appWaitingApplicationService.register(id, request));
+        return ApiResult.ok(appWaitingApplicationService.register(storeId, request));
     }
 
     @GetMapping("/stores/{storeId}/requests/overview")
