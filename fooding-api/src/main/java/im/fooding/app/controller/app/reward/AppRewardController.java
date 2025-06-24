@@ -55,9 +55,8 @@ public class AppRewardController {
     @PostMapping("/get")
     @Operation(summary = "포인트 적립")
     public ApiResult<Void> getPoint(
-            @RequestBody UpdateRewardPointRequest request
+            @Valid @RequestBody UpdateRewardPointRequest request
     ) {
-        if( !isNotPhoneNumber( request.getPhoneNumber() ) ) return ApiResult.error(HttpStatus.BAD_REQUEST, null );
         service.earnPoint(request);
         return ApiResult.ok();
     }
@@ -73,10 +72,5 @@ public class AppRewardController {
     public ApiResult<Void> useCoupon(@PathVariable Long id) {
         service.useCoupon(id);
         return ApiResult.ok();
-    }
-
-    private static boolean isNotPhoneNumber( String input ){
-        final String REGEX = "^\\d{11}$";
-        return input != null && input.matches(REGEX);
     }
 }
