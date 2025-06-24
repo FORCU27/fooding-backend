@@ -23,6 +23,7 @@ import im.fooding.core.model.file.File;
 import im.fooding.core.model.user.*;
 import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -93,6 +94,11 @@ public class AuthService {
     public void register(AuthCreateRequest request) {
         User user = userService.create(request.getEmail(), request.getNickname(), passwordEncoder.encode(request.getPassword()), null, Gender.NONE);
         userAuthorityService.create(user, request.getRole());
+    }
+
+    @Transactional
+    public TokenResponse refreshToken(HttpServletRequest request) {
+        return jwtService.refreshToken(request);
     }
 
     /**
