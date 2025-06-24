@@ -1,10 +1,7 @@
 package im.fooding.app.service.auth;
 
 import feign.FeignException;
-import im.fooding.app.dto.request.auth.AuthCreateRequest;
-import im.fooding.app.dto.request.auth.AuthLoginRequest;
-import im.fooding.app.dto.request.auth.AuthSocialLoginRequest;
-import im.fooding.app.dto.request.auth.AuthUpdateProfileRequest;
+import im.fooding.app.dto.request.auth.*;
 import im.fooding.app.dto.response.auth.AuthUserResponse;
 import im.fooding.app.service.file.FileUploadService;
 import im.fooding.core.global.exception.ApiException;
@@ -23,7 +20,6 @@ import im.fooding.core.model.file.File;
 import im.fooding.core.model.user.*;
 import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -97,8 +93,8 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenResponse refreshToken(HttpServletRequest request) {
-        return jwtService.refreshToken(request);
+    public TokenResponse refreshToken(AuthRefreshTokenRequest request) {
+        return jwtService.refreshToken(request.getRefreshToken());
     }
 
     /**
