@@ -10,6 +10,7 @@ import im.fooding.core.model.user.AuthProvider;
 import im.fooding.core.model.user.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +58,12 @@ public class AuthController {
     @Operation(summary = "일반 로그인", description = "이메일, 패스워드로 일반 로그인 처리 후 토큰 응답")
     public ApiResult<TokenResponse> login(@RequestBody @Valid AuthLoginRequest request) {
         return ApiResult.ok(service.login(request));
+    }
+
+    @PostMapping("/refresh")
+    @Operation(summary = "토큰 갱신", description = "accessToken, refreshToken 갱신")
+    public ApiResult<TokenResponse> refreshToken(HttpServletRequest request) {
+        return ApiResult.ok(service.refreshToken(request));
     }
 
     @PostMapping("/social-login")
