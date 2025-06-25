@@ -2,10 +2,7 @@ package im.fooding.core.service.coupon;
 
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
-import im.fooding.core.model.coupon.BenefitType;
-import im.fooding.core.model.coupon.Coupon;
-import im.fooding.core.model.coupon.DiscountType;
-import im.fooding.core.model.coupon.UserCoupon;
+import im.fooding.core.model.coupon.*;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.coupon.UserCouponRepository;
@@ -39,8 +36,8 @@ public class UserCouponService {
         repository.save(userCoupon);
     }
 
-    public Page<UserCoupon> list(Long userId, Long storeId, Boolean used, Pageable pageable) {
-        return repository.list(userId, storeId, used, pageable);
+    public Page<UserCoupon> list(Long userId, Long storeId, Boolean used, UserCouponStatus status, Pageable pageable) {
+        return repository.list(userId, storeId, used, status, pageable);
     }
 
     public UserCoupon findById(long id) {
@@ -48,9 +45,14 @@ public class UserCouponService {
                 .orElseThrow(() -> new ApiException(ErrorCode.USER_COUPON_NOT_FOUND));
     }
 
-    public void use(long id) {
+    public void request(long id) {
         UserCoupon userCoupon = findById(id);
-        userCoupon.use();
+        userCoupon.request();
+    }
+
+    public void approve(long id) {
+        UserCoupon userCoupon = findById(id);
+        userCoupon.approve();
     }
 
     public void delete(long id, long deletedBy) {
