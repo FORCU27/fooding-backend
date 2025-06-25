@@ -1,13 +1,13 @@
 package im.fooding.app.controller.app.storeservice;
 
 import im.fooding.app.dto.response.admin.service.StoreServiceResponse;
-import im.fooding.app.service.admin.service.StoreServiceApplicationService;
 import im.fooding.app.service.app.store.AppStoreServiceService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.global.UserInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +26,10 @@ public class AppStoreServiceController {
             @PathVariable Long storeId,
             @AuthenticationPrincipal UserInfo userInfo
     ){
-        List<StoreServiceResponse> response = service.list( storeId, null );
-        if( response == null ) return ApiResult.ok();
+        if( userInfo == null ) return ApiResult.error(HttpStatus.UNAUTHORIZED, null );
+
+        List<StoreServiceResponse> response = service.list( storeId, userInfo.getId() );
+        if( response == null ) return ApiResult.error(HttpStatus.UNAUTHORIZED, null );
         return ApiResult.ok( response );
     }
 }

@@ -6,6 +6,7 @@ import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.store.StoreServiceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,7 @@ public class AppStoreServiceService {
     private final StoreService storeService;
 
     public List<StoreServiceResponse> list( long storeId, Long userId ){
-        // if( !isStoreOwner( storeId, userId ) ) return null;
+        if( !isStoreOwner( storeId, userId ) ) return null;
         return service.findByStoreId( storeId ).stream().map(StoreServiceResponse::of).collect(Collectors.toList());
     }
 
