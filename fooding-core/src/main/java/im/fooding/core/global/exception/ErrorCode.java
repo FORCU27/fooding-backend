@@ -95,6 +95,8 @@ public enum ErrorCode {
     USER_COUPON_NOT_FOUND(HttpStatus.BAD_REQUEST, "8003", "발급 받은 쿠폰이 없습니다."),
     USER_COUPON_EXPIRED(HttpStatus.BAD_REQUEST, "8004", "쿠폰 사용 가능한 일자가 아닙니다."),
     USER_COUPON_ALREADY_USE(HttpStatus.BAD_REQUEST, "8005", "이미 사용된 쿠폰입니다."),
+    USER_COUPON_NOT_REQUEST(HttpStatus.BAD_REQUEST, "8006", "사용 요청한 쿠폰이 아닙니다."),
+    USER_COUPON_ALREADY_ISSUE(HttpStatus.BAD_REQUEST, "8007", "이미 발급 받은 쿠폰입니다."),
 
     // 게시긓
     POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "9000", "등록된 게시글이 없습니다.")

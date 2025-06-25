@@ -1,4 +1,4 @@
-package im.fooding.app.dto.request.admin.coupon;
+package im.fooding.app.dto.request.ceo.coupon;
 
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.model.coupon.UserCouponStatus;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AdminSearchUserCouponRequest extends BasicSearch {
+public class CeoSearchUserCouponRequest extends BasicSearch {
     @Schema(description = "유저 id", example = "1")
     private Long userId;
 

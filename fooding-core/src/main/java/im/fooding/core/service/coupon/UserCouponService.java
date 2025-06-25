@@ -2,10 +2,7 @@ package im.fooding.core.service.coupon;
 
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
-import im.fooding.core.model.coupon.BenefitType;
-import im.fooding.core.model.coupon.Coupon;
-import im.fooding.core.model.coupon.DiscountType;
-import im.fooding.core.model.coupon.UserCoupon;
+import im.fooding.core.model.coupon.*;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.coupon.UserCouponRepository;
@@ -23,8 +20,12 @@ import java.time.LocalDate;
 public class UserCouponService {
     private final UserCouponRepository repository;
 
-    public void create(Coupon coupon, User user, Store store, BenefitType benefitType, DiscountType discountType,
-                       int discountValue, String name, String conditions, LocalDate expiredOn) {
+    public UserCoupon create(Coupon coupon, User user, Store store, BenefitType benefitType, DiscountType discountType,
+                             int discountValue, String name, String conditions, LocalDate expiredOn) {
+        if (null != coupon) {
+            checkExistsCoupon(coupon.getId(), user.getId());
+        }
+
         UserCoupon userCoupon = UserCoupon.builder()
                 .coupon(coupon)
                 .user(user)
@@ -36,11 +37,11 @@ public class UserCouponService {
                 .conditions(conditions)
                 .expiredOn(expiredOn)
                 .build();
-        repository.save(userCoupon);
+        return repository.save(userCoupon);
     }
 
-    public Page<UserCoupon> list(Long userId, Long storeId, Boolean used, Pageable pageable) {
-        return repository.list(userId, storeId, used, pageable);
+    public Page<UserCoupon> list(Long userId, Long storeId, Boolean used, UserCouponStatus status, Pageable pageable) {
+        return repository.list(userId, storeId, used, status, pageable);
     }
 
     public UserCoupon findById(long id) {
@@ -48,13 +49,22 @@ public class UserCouponService {
                 .orElseThrow(() -> new ApiException(ErrorCode.USER_COUPON_NOT_FOUND));
     }
 
-    public void use(long id) {
-        UserCoupon userCoupon = findById(id);
-        userCoupon.use();
+    public void request(UserCoupon userCoupon) {
+        userCoupon.request();
     }
 
-    public void delete(long id, long deletedBy) {
-        UserCoupon userCoupon = findById(id);
+    public void approve(UserCoupon userCoupon) {
+        userCoupon.approve();
+    }
+
+    public void delete(UserCoupon userCoupon, long deletedBy) {
         userCoupon.delete(deletedBy);
+    }
+
+    private void checkExistsCoupon(long couponId, long userId) {
+        boolean exists = repository.existsByCouponIdAndUserIdAndDeletedIsFalse(couponId, userId);
+        if (exists) {
+            throw new ApiException(ErrorCode.USER_COUPON_ALREADY_ISSUE);
+        }
     }
 }

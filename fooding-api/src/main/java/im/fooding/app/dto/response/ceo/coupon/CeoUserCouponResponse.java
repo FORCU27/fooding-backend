@@ -1,4 +1,4 @@
-package im.fooding.app.dto.response.app.coupon;
+package im.fooding.app.dto.response.ceo.coupon;
 
 import im.fooding.core.model.coupon.BenefitType;
 import im.fooding.core.model.coupon.DiscountType;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class AppUserCouponResponse {
+public class CeoUserCouponResponse {
     @Schema(description = "id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private Long id;
 
@@ -25,14 +25,11 @@ public class AppUserCouponResponse {
     @Schema(description = "coupon id", example = "1", requiredMode = RequiredMode.NOT_REQUIRED)
     private Long couponId;
 
-    @Schema(description = "store id", example = "1", requiredMode = RequiredMode.NOT_REQUIRED)
+    @Schema(description = "store id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private Long storeId;
 
     @Schema(description = "유저 닉네임", example = "김개명", requiredMode = RequiredMode.REQUIRED)
     private String nickname;
-
-    @Schema(description = "store 명", example = "김가네", requiredMode = RequiredMode.NOT_REQUIRED)
-    private String storeName;
 
     @Schema(description = "쿠폰명", example = "2000원 할인쿠폰", requiredMode = RequiredMode.REQUIRED)
     private String name;
@@ -62,13 +59,12 @@ public class AppUserCouponResponse {
     private LocalDateTime createdDateAt;
 
     @Builder
-    private AppUserCouponResponse(Long id, Long userId, Long couponId, Long storeId, String nickname, String storeName, String name, String conditions, BenefitType benefitType, DiscountType discountType, int discountValue, UserCouponStatus status, LocalDateTime usedAt, LocalDate expiredOn, LocalDateTime createdDateAt) {
+    private CeoUserCouponResponse(Long id, Long userId, Long couponId, Long storeId, String nickname, String name, String conditions, BenefitType benefitType, DiscountType discountType, int discountValue, UserCouponStatus status, LocalDateTime usedAt, LocalDate expiredOn, LocalDateTime createdDateAt) {
         this.id = id;
         this.userId = userId;
         this.couponId = couponId;
         this.storeId = storeId;
         this.nickname = nickname;
-        this.storeName = storeName;
         this.name = name;
         this.conditions = conditions;
         this.benefitType = benefitType;
@@ -80,14 +76,13 @@ public class AppUserCouponResponse {
         this.createdDateAt = createdDateAt;
     }
 
-    public static AppUserCouponResponse of(UserCoupon userCoupon) {
-        return AppUserCouponResponse.builder()
+    public static CeoUserCouponResponse of(UserCoupon userCoupon) {
+        return CeoUserCouponResponse.builder()
                 .id(userCoupon.getId())
                 .userId(userCoupon.getUser().getId())
                 .couponId(null != userCoupon.getCoupon() ? userCoupon.getCoupon().getId() : null)
                 .storeId(null != userCoupon.getStore() ? userCoupon.getStore().getId() : null)
                 .nickname(userCoupon.getUser().getNickname())
-                .storeName(null != userCoupon.getStore() ? userCoupon.getStore().getName() : null)
                 .name(userCoupon.getName())
                 .conditions(userCoupon.getConditions())
                 .benefitType(userCoupon.getBenefitType())

@@ -1,4 +1,4 @@
-package im.fooding.app.dto.response.admin.coupon;
+package im.fooding.app.dto.response.user.coupon;
 
 import im.fooding.core.model.coupon.*;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,19 +8,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class AdminCouponResponse {
+public class UserStoreCouponResponse {
     @Schema(description = "id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private long id;
 
     @Schema(description = "store id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private Long storeId;
-
-    @Schema(description = "store 이름", example = "김가네", requiredMode = RequiredMode.REQUIRED)
-    private String storeName;
 
     @Schema(description = "혜택 타입", example = "DISCOUNT", requiredMode = RequiredMode.REQUIRED)
     private BenefitType benefitType;
@@ -58,20 +54,10 @@ public class AdminCouponResponse {
     @Schema(description = "사용기한", example = "2025-12-31", requiredMode = RequiredMode.REQUIRED)
     private LocalDate expiredOn;
 
-    @Schema(description = "상태", example = "ACTIVE", requiredMode = RequiredMode.REQUIRED)
-    private CouponStatus status;
-
-    @Schema(description = "등록일", example = "2025-03-16T05:17:04.069", requiredMode = RequiredMode.REQUIRED)
-    private LocalDateTime createdAt;
-
-    @Schema(description = "수정일", example = "2025-03-16T05:17:04.069", requiredMode = RequiredMode.REQUIRED)
-    private LocalDateTime updatedAt;
-
     @Builder
-    private AdminCouponResponse(long id, Long storeId, String storeName, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType, String name, String conditions, Integer totalQuantity, int issuedQuantity, int discountValue, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn, CouponStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private UserStoreCouponResponse(long id, Long storeId, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType, String name, String conditions, Integer totalQuantity, int issuedQuantity, int discountValue, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn) {
         this.id = id;
         this.storeId = storeId;
-        this.storeName = storeName;
         this.benefitType = benefitType;
         this.type = type;
         this.discountType = discountType;
@@ -84,16 +70,12 @@ public class AdminCouponResponse {
         this.issueStartOn = issueStartOn;
         this.issueEndOn = issueEndOn;
         this.expiredOn = expiredOn;
-        this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
-    public static AdminCouponResponse of(Coupon coupon) {
-        return AdminCouponResponse.builder()
+    public static UserStoreCouponResponse of(Coupon coupon) {
+        return UserStoreCouponResponse.builder()
                 .id(coupon.getId())
                 .storeId(null != coupon.getStore() ? coupon.getStore().getId() : null)
-                .storeName(null != coupon.getStore() ? coupon.getStore().getName() : null)
                 .benefitType(coupon.getBenefitType())
                 .type(coupon.getType())
                 .discountType(coupon.getDiscountType())
@@ -106,9 +88,6 @@ public class AdminCouponResponse {
                 .issueStartOn(coupon.getIssueStartOn())
                 .issueEndOn(coupon.getIssueEndOn())
                 .expiredOn(coupon.getExpiredOn())
-                .status(coupon.getStatus())
-                .createdAt(coupon.getCreatedAt())
-                .updatedAt(coupon.getUpdatedAt())
                 .build();
     }
 }

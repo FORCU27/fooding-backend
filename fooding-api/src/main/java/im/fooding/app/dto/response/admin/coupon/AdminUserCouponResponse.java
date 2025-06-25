@@ -3,6 +3,7 @@ package im.fooding.app.dto.response.admin.coupon;
 import im.fooding.core.model.coupon.BenefitType;
 import im.fooding.core.model.coupon.DiscountType;
 import im.fooding.core.model.coupon.UserCoupon;
+import im.fooding.core.model.coupon.UserCouponStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Builder;
@@ -48,8 +49,8 @@ public class AdminUserCouponResponse {
     @Schema(description = "할인값(금액, 퍼센트)", example = "2000", requiredMode = RequiredMode.REQUIRED)
     private int discountValue;
 
-    @Schema(description = "사용여부", example = "true", requiredMode = RequiredMode.REQUIRED)
-    private boolean used;
+    @Schema(description = "쿠폰 상태 (AVAILABLE, REQUESTED, USED)", example = "AVAILABLE", requiredMode = RequiredMode.REQUIRED)
+    private UserCouponStatus status;
 
     @Schema(description = "사용일자", example = "2025-03-16T05:17:04.069", requiredMode = RequiredMode.NOT_REQUIRED)
     private LocalDateTime usedAt;
@@ -61,7 +62,7 @@ public class AdminUserCouponResponse {
     private LocalDateTime createdDateAt;
 
     @Builder
-    private AdminUserCouponResponse(Long id, Long userId, Long couponId, Long storeId, String nickname, String storeName, String name, String conditions, BenefitType benefitType, DiscountType discountType, int discountValue, boolean used, LocalDateTime usedAt, LocalDate expiredOn, LocalDateTime createdDateAt) {
+    private AdminUserCouponResponse(Long id, Long userId, Long couponId, Long storeId, String nickname, String storeName, String name, String conditions, BenefitType benefitType, DiscountType discountType, int discountValue, UserCouponStatus status, LocalDateTime usedAt, LocalDate expiredOn, LocalDateTime createdDateAt) {
         this.id = id;
         this.userId = userId;
         this.couponId = couponId;
@@ -73,7 +74,7 @@ public class AdminUserCouponResponse {
         this.benefitType = benefitType;
         this.discountType = discountType;
         this.discountValue = discountValue;
-        this.used = used;
+        this.status = status;
         this.usedAt = usedAt;
         this.expiredOn = expiredOn;
         this.createdDateAt = createdDateAt;
@@ -92,7 +93,7 @@ public class AdminUserCouponResponse {
                 .benefitType(userCoupon.getBenefitType())
                 .discountType(userCoupon.getDiscountType())
                 .discountValue(userCoupon.getDiscountValue())
-                .used(userCoupon.isUsed())
+                .status(userCoupon.getStatus())
                 .usedAt(userCoupon.getUsedAt())
                 .expiredOn(userCoupon.getExpiredOn())
                 .createdDateAt(userCoupon.getCreatedAt())
