@@ -6,12 +6,14 @@ import im.fooding.core.model.reward.RewardStatus;
 import im.fooding.core.model.reward.RewardType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @Data
 @NoArgsConstructor
 public class UpdateRewardPointRequest {
     @NotNull
+    @Pattern(regexp = "^\\d{11}$")
     @Schema( description = "전화번호", requiredMode = Schema.RequiredMode.REQUIRED )
     private String phoneNumber;
 

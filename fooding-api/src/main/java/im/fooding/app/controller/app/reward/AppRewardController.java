@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -54,7 +55,7 @@ public class AppRewardController {
     @PostMapping("/get")
     @Operation(summary = "포인트 적립")
     public ApiResult<Void> getPoint(
-            @RequestBody UpdateRewardPointRequest request
+            @Valid @RequestBody UpdateRewardPointRequest request
     ) {
         service.earnPoint(request);
         return ApiResult.ok();
