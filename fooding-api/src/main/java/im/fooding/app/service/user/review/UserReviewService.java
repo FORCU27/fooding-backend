@@ -36,6 +36,7 @@ public class UserReviewService {
     private final UserService userService;
     private final StoreService storeService;
 
+    @Transactional( readOnly = true )
     public PageResponse<UserReviewResponse> list(Long storeId, UserRetrieveReviewRequest request) {
         Page<Review> reviewPage = reviewService.list(storeId, request.getPageable());
 

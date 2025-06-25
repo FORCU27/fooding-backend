@@ -85,7 +85,8 @@ public class UserReviewResponse {
     ) {
         return UserReviewResponse.builder()
                 .reviewId(review.getId())
-                //.nickname(review.getWriter().getNickname())
+                .nickname(review.getWriter().getNickname())
+                .profileUrl(review.getWriter().getProfileImage())
                 .imageUrls(images.stream()
                         .map(ReviewImage::getImageUrl)
                         .collect(Collectors.toList()))
