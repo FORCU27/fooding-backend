@@ -19,9 +19,9 @@ import java.time.LocalDate;
 public class CouponService {
     private final CouponRepository repository;
 
-    public void create(Store store, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType,
-                       String name, String conditions, Integer totalQuantity, int discountValue, LocalDate issueStartOn,
-                       LocalDate issueEndOn, LocalDate expiredOn, CouponStatus status) {
+    public Coupon create(Store store, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType,
+                         String name, String conditions, Integer totalQuantity, int discountValue, LocalDate issueStartOn,
+                         LocalDate issueEndOn, LocalDate expiredOn, CouponStatus status) {
         Coupon coupon = Coupon.builder()
                 .store(store)
                 .benefitType(benefitType)
@@ -37,7 +37,7 @@ public class CouponService {
                 .expiredOn(expiredOn)
                 .status(status)
                 .build();
-        repository.save(coupon);
+        return repository.save(coupon);
     }
 
     public void update(long id, Store store, BenefitType benefitType, CouponType couponType, DiscountType discountType,
@@ -53,12 +53,11 @@ public class CouponService {
                 .orElseThrow(() -> new ApiException(ErrorCode.COUPON_NOT_FOUND));
     }
 
-    public Page<Coupon> list(Long storeId, String searchString, Pageable pageable) {
-        return repository.list(storeId, searchString, pageable);
+    public Page<Coupon> list(Long storeId, CouponStatus status, String searchString, Pageable pageable) {
+        return repository.list(storeId, status, searchString, pageable);
     }
 
-    public void delete(long id, Long deletedBy) {
-        Coupon coupon = findById(id);
+    public void delete(Coupon coupon, Long deletedBy) {
         coupon.delete(deletedBy);
     }
 

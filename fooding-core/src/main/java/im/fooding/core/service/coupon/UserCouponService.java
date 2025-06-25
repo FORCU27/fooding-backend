@@ -20,8 +20,8 @@ import java.time.LocalDate;
 public class UserCouponService {
     private final UserCouponRepository repository;
 
-    public void create(Coupon coupon, User user, Store store, BenefitType benefitType, DiscountType discountType,
-                       int discountValue, String name, String conditions, LocalDate expiredOn) {
+    public UserCoupon create(Coupon coupon, User user, Store store, BenefitType benefitType, DiscountType discountType,
+                             int discountValue, String name, String conditions, LocalDate expiredOn) {
         UserCoupon userCoupon = UserCoupon.builder()
                 .coupon(coupon)
                 .user(user)
@@ -33,7 +33,7 @@ public class UserCouponService {
                 .conditions(conditions)
                 .expiredOn(expiredOn)
                 .build();
-        repository.save(userCoupon);
+        return repository.save(userCoupon);
     }
 
     public Page<UserCoupon> list(Long userId, Long storeId, Boolean used, UserCouponStatus status, Pageable pageable) {
@@ -55,8 +55,7 @@ public class UserCouponService {
         userCoupon.approve();
     }
 
-    public void delete(long id, long deletedBy) {
-        UserCoupon userCoupon = findById(id);
+    public void delete(UserCoupon userCoupon, long deletedBy) {
         userCoupon.delete(deletedBy);
     }
 }

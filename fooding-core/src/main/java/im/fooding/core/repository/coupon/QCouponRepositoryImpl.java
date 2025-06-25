@@ -4,6 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.model.coupon.Coupon;
+import im.fooding.core.model.coupon.CouponStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ public class QCouponRepositoryImpl implements QCouponRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<Coupon> list(Long storeId, String searchString, Pageable pageable) {
+    public Page<Coupon> list(Long storeId, CouponStatus status, String searchString, Pageable pageable) {
         List<Coupon> results = query
                 .select(coupon)
                 .from(coupon)
@@ -28,7 +29,8 @@ public class QCouponRepositoryImpl implements QCouponRepository {
                         coupon.deleted.isFalse(),
                         storeDeletedIfStoreExists(),
                         searchStore(storeId),
-                        search(searchString)
+                        search(searchString),
+                        searchStatus(status)
                 )
                 .orderBy(coupon.id.desc())
                 .offset(pageable.getOffset())
@@ -42,7 +44,8 @@ public class QCouponRepositoryImpl implements QCouponRepository {
                         coupon.deleted.isFalse(),
                         storeDeletedIfStoreExists(),
                         searchStore(storeId),
-                        search(searchString)
+                        search(searchString),
+                        searchStatus(status)
                 );
 
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchCount);
@@ -58,5 +61,9 @@ public class QCouponRepositoryImpl implements QCouponRepository {
 
     private BooleanExpression storeDeletedIfStoreExists() {
         return store.id.isNull().or(store.deleted.isFalse());
+    }
+
+    private BooleanExpression searchStatus(CouponStatus status) {
+        return null != status ? coupon.status.eq(status) : null;
     }
 }

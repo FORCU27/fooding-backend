@@ -41,12 +41,13 @@ public class AdminCouponService {
 
     @Transactional
     public void delete(long id, long deletedBy) {
-        couponService.delete(id, deletedBy);
+        Coupon coupon = couponService.findById(id);
+        couponService.delete(coupon, deletedBy);
     }
 
     @Transactional(readOnly = true)
     public PageResponse<AdminCouponResponse> list(AdminSearchCouponRequest search) {
-        Page<Coupon> coupons = couponService.list(search.getStoreId(), search.getSearchString(), search.getPageable());
+        Page<Coupon> coupons = couponService.list(search.getStoreId(), search.getStatus(), search.getSearchString(), search.getPageable());
         List<AdminCouponResponse> list = coupons.getContent().stream().map(AdminCouponResponse::of).toList();
         return PageResponse.of(list, PageInfo.of(coupons));
     }

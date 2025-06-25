@@ -49,7 +49,8 @@ public class AdminUserCouponService {
 
     @Transactional
     public void delete(long id, long deletedBy) {
-        userCouponService.delete(id, deletedBy);
+        UserCoupon userCoupon = userCouponService.findById(id);
+        userCouponService.delete(userCoupon, deletedBy);
     }
 
     @Transactional(readOnly = true)
