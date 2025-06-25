@@ -53,8 +53,8 @@ public class CouponService {
                 .orElseThrow(() -> new ApiException(ErrorCode.COUPON_NOT_FOUND));
     }
 
-    public Page<Coupon> list(Long storeId, CouponStatus status, String searchString, Pageable pageable) {
-        return repository.list(storeId, status, searchString, pageable);
+    public Page<Coupon> list(Long storeId, CouponStatus status, LocalDate now, String searchString, Pageable pageable) {
+        return repository.list(storeId, status, now, searchString, pageable);
     }
 
     public void delete(Coupon coupon, Long deletedBy) {

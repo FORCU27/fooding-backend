@@ -47,7 +47,7 @@ public class AdminCouponService {
 
     @Transactional(readOnly = true)
     public PageResponse<AdminCouponResponse> list(AdminSearchCouponRequest search) {
-        Page<Coupon> coupons = couponService.list(search.getStoreId(), search.getStatus(), search.getSearchString(), search.getPageable());
+        Page<Coupon> coupons = couponService.list(search.getStoreId(), search.getStatus(), null, search.getSearchString(), search.getPageable());
         List<AdminCouponResponse> list = coupons.getContent().stream().map(AdminCouponResponse::of).toList();
         return PageResponse.of(list, PageInfo.of(coupons));
     }

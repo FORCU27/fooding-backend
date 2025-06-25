@@ -82,7 +82,7 @@ public class CeoUserCouponService {
     public void approve(long id, long ceoId) {
         UserCoupon userCoupon = userCouponService.findById(id);
         checkMember(userCoupon.getStore().getId(), ceoId);
-        userCoupon.approve();
+        userCouponService.approve(userCoupon);
     }
 
     private void checkMember(long storeId, long ceoId) {

@@ -66,7 +66,7 @@ public class AppRewardController {
         return ApiResult.ok(service.getRewardCoupons(request));
     }
 
-    @PostMapping("/coupons/{id}")
+    @PostMapping("/coupons/{id}/request")
     @Operation(summary = "쿠폰 사용 요청")
     public ApiResult<Void> requestCoupon(@PathVariable Long id) {
         service.requestCoupon(id);

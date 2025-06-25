@@ -116,6 +116,7 @@ public class RewardApplicationService {
 
     @Transactional
     public void requestCoupon(Long couponId) {
-        userCouponService.request(couponId);
+        UserCoupon userCoupon = userCouponService.findById(couponId);
+        userCouponService.request(userCoupon);
     }
 }

@@ -22,6 +22,10 @@ public class UserCouponService {
 
     public UserCoupon create(Coupon coupon, User user, Store store, BenefitType benefitType, DiscountType discountType,
                              int discountValue, String name, String conditions, LocalDate expiredOn) {
+        if (null != coupon) {
+            checkExistsCoupon(coupon.getId(), user.getId());
+        }
+
         UserCoupon userCoupon = UserCoupon.builder()
                 .coupon(coupon)
                 .user(user)
@@ -45,17 +49,22 @@ public class UserCouponService {
                 .orElseThrow(() -> new ApiException(ErrorCode.USER_COUPON_NOT_FOUND));
     }
 
-    public void request(long id) {
-        UserCoupon userCoupon = findById(id);
+    public void request(UserCoupon userCoupon) {
         userCoupon.request();
     }
 
-    public void approve(long id) {
-        UserCoupon userCoupon = findById(id);
+    public void approve(UserCoupon userCoupon) {
         userCoupon.approve();
     }
 
     public void delete(UserCoupon userCoupon, long deletedBy) {
         userCoupon.delete(deletedBy);
+    }
+
+    private void checkExistsCoupon(long couponId, long userId) {
+        boolean exists = repository.existsByCouponIdAndUserIdAndDeletedIsFalse(couponId, userId);
+        if (exists) {
+            throw new ApiException(ErrorCode.USER_COUPON_ALREADY_ISSUE);
+        }
     }
 }

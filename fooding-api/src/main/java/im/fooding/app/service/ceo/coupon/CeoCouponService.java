@@ -59,7 +59,7 @@ public class CeoCouponService {
     @Transactional(readOnly = true)
     public PageResponse<CeoCouponResponse> list(CeoSearchCouponRequest search, long userId) {
         checkMember(search.getStoreId(), userId);
-        Page<Coupon> coupons = couponService.list(search.getStoreId(), search.getStatus(), search.getSearchString(), search.getPageable());
+        Page<Coupon> coupons = couponService.list(search.getStoreId(), search.getStatus(), null, search.getSearchString(), search.getPageable());
         List<CeoCouponResponse> list = coupons.getContent().stream().map(CeoCouponResponse::of).toList();
         return PageResponse.of(list, PageInfo.of(coupons));
     }
