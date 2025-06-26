@@ -41,13 +41,13 @@ public class SecurityConfig {
                 .sessionManagement((sess) -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers((this.getPermitUrls())).permitAll()
-                        // todo: 인증기능 추가 후 주석 해제
-//                        .requestMatchers("/user/**").hasAnyRole("USER")
-//                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-//                        .requestMatchers("/ceo/**").hasAnyRole("CEO")
-//                        .requestMatchers(HttpMethod.POST, "/file-upload").hasAnyRole("USER", "ADMIN", "CEO")
-//                        .requestMatchers("/app/**").hasAnyRole("CEO")
-//                        .requestMatchers("/pos/**").hasAnyRole("CEO")
+                        .requestMatchers(HttpMethod.GET, "/user/store-coupons").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/user/stores/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/user/store-posts/**").permitAll()
+                        .requestMatchers("/user/**").hasAnyRole("USER")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/ceo/**", "/app/**", "/pos/**").hasAnyRole("CEO")
+                        .requestMatchers(HttpMethod.POST, "/file-upload").hasAnyRole("USER", "ADMIN", "CEO")
                         .anyRequest().permitAll());
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
