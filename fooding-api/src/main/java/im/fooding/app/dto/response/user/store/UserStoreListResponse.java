@@ -36,10 +36,10 @@ public class UserStoreListResponse {
     private Integer estimatedWaitingTimeMinutes;
 
     @Schema(description = "영업 종료 여부", example = "false", requiredMode = RequiredMode.REQUIRED)
-    private Boolean isFinished;
+    private Boolean isFinished = true;
 
     @Schema(description = "관심 여부", example = "false", requiredMode = RequiredMode.REQUIRED)
-    private Boolean isBookmarked;
+    private Boolean isBookmarked = false;
 
     @Builder
     private UserStoreListResponse(Long id, String name, String image, String city, double averageRating, int visitCount,
