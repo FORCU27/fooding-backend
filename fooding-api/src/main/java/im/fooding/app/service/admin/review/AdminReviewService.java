@@ -8,6 +8,7 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.review.Review;
 import im.fooding.core.model.review.ReviewScore;
+import im.fooding.core.model.store.Store;
 import im.fooding.core.service.review.ReviewService;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.user.UserService;
@@ -61,10 +62,19 @@ public class AdminReviewService {
                 .visitPurposeType( request.getVisitPurposeType() )
                 .build();
         reviewService.create( review );
+
+        // 리뷰 카운트 추가
+        Store store = storeService.findById( request.getStoreId() );
+        storeService.increaseReviewCount( store );
     }
 
     @Transactional
     public void delete(Long id, Long deletedBy){
+        Review review = reviewService.findById( id );
+        // 리뷰 카운트 감소
+        Store store = storeService.findById( review.getStore().getId() );
+        storeService.decreaseReviewCount( store );
+        // 리뷰 삭제
         reviewService.delete( id, deletedBy );
     }
 }

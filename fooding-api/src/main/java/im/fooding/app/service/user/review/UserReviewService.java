@@ -88,5 +88,8 @@ public class UserReviewService {
                 .visitPurposeType( request.getVisitPurpose() )
                 .build();
         reviewService.create( review );
+
+        // 리뷰 수 추가
+        storeService.increaseReviewCount( store );
     }
 }
