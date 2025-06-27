@@ -67,16 +67,16 @@ public class AppWaitingApplicationService {
     }
 
     @Transactional
-    public AppWaitingRegisterResponse register(long id, AppWaitingRegisterRequest request) {
+    public AppWaitingRegisterResponse register(long storeId, AppWaitingRegisterRequest request) {
         String phoneNumber = request.phoneNumber();
 
-        Waiting waiting = waitingService.get(id);
+        Store store = storeService.findById(storeId);
+        WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(store);
+        Waiting waiting = waitingSetting.getWaiting();
         storeWaitingService.validate(waiting);
 
         WaitingUser waitingUser = getOrRegisterUser(request, phoneNumber, waiting);
         StoreWaiting storeWaiting = registerStoreWaiting(request, waiting, waitingUser);
-        Store store = storeWaiting.getStore();
-        WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(store);
 
         waitingLogService.logRegister(storeWaiting);
 
