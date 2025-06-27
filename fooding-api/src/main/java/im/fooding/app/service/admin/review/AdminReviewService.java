@@ -24,6 +24,7 @@ public class AdminReviewService {
     private final UserService userService;
 
     public PageResponse<AdminReviewResponse> list( AdminReviewRequest request ){
+        System.out.println( "ID: " + request.getStoreId() );
         Page<Review> result = reviewService.list( request.getStoreId(), request.getPageable() );
         return PageResponse.of( result.map(AdminReviewResponse::of).stream().toList(), PageInfo.of( result ) );
     }
