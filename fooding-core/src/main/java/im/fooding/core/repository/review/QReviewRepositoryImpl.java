@@ -2,6 +2,7 @@ package im.fooding.core.repository.review;
 
 import static im.fooding.core.model.review.QReview.review;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.model.review.Review;
@@ -21,19 +22,21 @@ public class QReviewRepositoryImpl implements QReviewRepository {
             Long storeId,
             Pageable pageable
     ) {
+        BooleanBuilder whereClause = new BooleanBuilder();
+        whereClause.and( review.deleted.isFalse() );
+        if( storeId != null ) whereClause.and( review.store.id.eq( storeId ) );
         List<Review> results = query
                 .select(review)
                 .from(review)
-                .where(review.store.id.eq(storeId))
-                .where(review.deleted.isFalse())
+                .where( whereClause )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         JPQLQuery<Long> countQuery = query
                 .select(review.count())
-                .where(review.store.id.eq(storeId))
-                .from(review);
+                .from(review)
+                .where(whereClause);
 
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchOne);
     }
