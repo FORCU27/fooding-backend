@@ -33,7 +33,7 @@ public class AuthController {
     @PutMapping("/me")
     @Operation(summary = "로그인한 유저 정보 수정", description = "로그인된 상태에서 정보 수정")
     public ApiResult<Void> update(@RequestBody @Valid AuthUpdateProfileRequest request,
-                                         @AuthenticationPrincipal UserInfo userInfo) {
+                                  @AuthenticationPrincipal UserInfo userInfo) {
         service.update(userInfo.getId(), request);
         return ApiResult.ok();
     }
@@ -57,6 +57,12 @@ public class AuthController {
     @Operation(summary = "일반 로그인", description = "이메일, 패스워드로 일반 로그인 처리 후 토큰 응답")
     public ApiResult<TokenResponse> login(@RequestBody @Valid AuthLoginRequest request) {
         return ApiResult.ok(service.login(request));
+    }
+
+    @PostMapping("/refresh")
+    @Operation(summary = "토큰 갱신", description = "accessToken, refreshToken 갱신")
+    public ApiResult<TokenResponse> refreshToken(@RequestBody @Valid AuthRefreshTokenRequest request) {
+        return ApiResult.ok(service.refreshToken(request));
     }
 
     @PostMapping("/social-login")

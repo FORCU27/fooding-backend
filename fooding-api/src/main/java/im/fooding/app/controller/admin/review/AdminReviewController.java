@@ -9,6 +9,7 @@ import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class AdminReviewController {
     @PostMapping()
     @Operation( summary = "리뷰 생성" )
     public ApiResult<Void> create(
-            @ModelAttribute AdminCreateReviewRequest request
+            @RequestBody AdminCreateReviewRequest request
     ){
         service.create( request );
         return ApiResult.ok();
@@ -49,7 +50,7 @@ public class AdminReviewController {
     @PatchMapping("/{id}")
     @Operation( summary = "리뷰 수정" )
     public ApiResult<Void> update(
-            @ModelAttribute AdminUpdateReviewRequest request,
+            @Valid @RequestBody AdminUpdateReviewRequest request,
             @PathVariable Long id
     ){
         service.update( id, request );

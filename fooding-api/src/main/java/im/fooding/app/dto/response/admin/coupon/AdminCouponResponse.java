@@ -43,6 +43,9 @@ public class AdminCouponResponse {
     @Schema(description = "총 발급수량", example = "50", requiredMode = RequiredMode.NOT_REQUIRED)
     private Integer totalQuantity;
 
+    @Schema(description = "발급된 수량", example = "1", requiredMode = RequiredMode.REQUIRED)
+    private int issuedQuantity;
+
     @Schema(description = "할인값(금액, 퍼센트)", example = "2000", requiredMode = RequiredMode.REQUIRED)
     private int discountValue;
 
@@ -58,14 +61,14 @@ public class AdminCouponResponse {
     @Schema(description = "상태", example = "ACTIVE", requiredMode = RequiredMode.REQUIRED)
     private CouponStatus status;
 
-    @Schema(description = "상태", example = "2025-03-16T05:17:04.069", requiredMode = RequiredMode.REQUIRED)
+    @Schema(description = "등록일", example = "2025-03-16T05:17:04.069", requiredMode = RequiredMode.REQUIRED)
     private LocalDateTime createdAt;
 
-    @Schema(description = "상태", example = "2025-03-16T05:17:04.069", requiredMode = RequiredMode.REQUIRED)
+    @Schema(description = "수정일", example = "2025-03-16T05:17:04.069", requiredMode = RequiredMode.REQUIRED)
     private LocalDateTime updatedAt;
 
     @Builder
-    private AdminCouponResponse(long id, Long storeId, String storeName, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType, String name, String conditions, Integer totalQuantity, int discountValue, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn, CouponStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private AdminCouponResponse(long id, Long storeId, String storeName, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType, String name, String conditions, Integer totalQuantity, int issuedQuantity, int discountValue, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn, CouponStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.storeId = storeId;
         this.storeName = storeName;
@@ -76,6 +79,7 @@ public class AdminCouponResponse {
         this.name = name;
         this.conditions = conditions;
         this.totalQuantity = totalQuantity;
+        this.issuedQuantity = issuedQuantity;
         this.discountValue = discountValue;
         this.issueStartOn = issueStartOn;
         this.issueEndOn = issueEndOn;
@@ -97,6 +101,7 @@ public class AdminCouponResponse {
                 .name(coupon.getName())
                 .conditions(coupon.getConditions())
                 .totalQuantity(coupon.getTotalQuantity())
+                .issuedQuantity(coupon.getIssuedQuantity())
                 .discountValue(coupon.getDiscountValue())
                 .issueStartOn(coupon.getIssueStartOn())
                 .issueEndOn(coupon.getIssueEndOn())

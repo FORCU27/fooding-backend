@@ -33,6 +33,7 @@ public enum ErrorCode {
     UNSUPPORTED_SOCIAL(HttpStatus.BAD_REQUEST, "1005", "지원하지 않는 소셜로그인 입니다."),
     EMAIL_CONSENT_REQUIRED(HttpStatus.BAD_REQUEST, "1006", "이메일 제공 동의가 필요합니다."),
     SOCIAL_LOGIN_ONLY(HttpStatus.BAD_REQUEST, "1007", "유저는 소셜로그인으로만 가입 가능합니다."),
+    NICKNAME_GENERATE_FAILED(HttpStatus.BAD_REQUEST, "1008", "닉네임 자동 생성에 실패하셨습니다."),
 
     // 가게
     STORE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2000", "등록된 가게 정보가 없습니다."),
@@ -95,6 +96,8 @@ public enum ErrorCode {
     USER_COUPON_NOT_FOUND(HttpStatus.BAD_REQUEST, "8003", "발급 받은 쿠폰이 없습니다."),
     USER_COUPON_EXPIRED(HttpStatus.BAD_REQUEST, "8004", "쿠폰 사용 가능한 일자가 아닙니다."),
     USER_COUPON_ALREADY_USE(HttpStatus.BAD_REQUEST, "8005", "이미 사용된 쿠폰입니다."),
+    USER_COUPON_NOT_REQUEST(HttpStatus.BAD_REQUEST, "8006", "사용 요청한 쿠폰이 아닙니다."),
+    USER_COUPON_ALREADY_ISSUE(HttpStatus.BAD_REQUEST, "8007", "이미 발급 받은 쿠폰입니다."),
 
     // 게시긓
     POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "9000", "등록된 게시글이 없습니다."),

@@ -3,7 +3,9 @@ package im.fooding.core.repository.coupon;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import im.fooding.core.model.coupon.CouponStatus;
 import im.fooding.core.model.coupon.UserCoupon;
+import im.fooding.core.model.coupon.UserCouponStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +23,7 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<UserCoupon> list(Long userId, Long storeId, Boolean used, Pageable pageable) {
+    public Page<UserCoupon> list(Long userId, Long storeId, Boolean used, UserCouponStatus status, Pageable pageable) {
         List<UserCoupon> results = query
                 .select(userCoupon)
                 .from(userCoupon)
@@ -35,7 +37,8 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
                         storeDeletedIfStoreExists(),
                         searchUser(userId),
                         searchStore(storeId),
-                        searchUsed(used)
+                        searchUsed(used),
+                        searchStatus(status)
                 )
                 .orderBy(userCoupon.id.desc())
                 .offset(pageable.getOffset())
@@ -52,7 +55,8 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
                         storeDeletedIfStoreExists(),
                         searchUser(userId),
                         searchStore(storeId),
-                        searchUsed(used)
+                        searchUsed(used),
+                        searchStatus(status)
                 );
 
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchCount);
@@ -75,6 +79,18 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
     }
 
     private BooleanExpression searchUsed(Boolean used) {
-        return null != used ? userCoupon.used.eq(used) : null;
+        if (null == used) {
+            return null;
+        }
+
+        if (used) {
+            return userCoupon.status.in(List.of(UserCouponStatus.REQUESTED, UserCouponStatus.USED));
+        } else {
+            return userCoupon.status.eq(UserCouponStatus.AVAILABLE);
+        }
+    }
+
+    private BooleanExpression searchStatus(UserCouponStatus status) {
+        return null != status ? userCoupon.status.eq(status) : null;
     }
 }

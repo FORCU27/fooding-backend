@@ -10,4 +10,6 @@ public interface UserCouponRepository extends JpaRepository<UserCoupon, Long>, Q
     @Override
     @EntityGraph(attributePaths = {"coupon", "user", "store"})
     Optional<UserCoupon> findById(Long id);
+
+    boolean existsByCouponIdAndUserIdAndDeletedIsFalse(Long couponId, Long userId);
 }

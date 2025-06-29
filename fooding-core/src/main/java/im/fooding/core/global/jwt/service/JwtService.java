@@ -77,12 +77,6 @@ public class JwtService {
                 .build();
     }
 
-    public Optional<String> extractRefreshToken(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader(refreshHeader))
-                .filter(refreshToken -> refreshToken.startsWith(BEARER))
-                .map(refreshToken -> refreshToken.replace(BEARER, ""));
-    }
-
     public Optional<String> extractAccessToken(HttpServletRequest request) {
         return Optional.ofNullable(request.getHeader(accessHeader))
                 .filter(refreshToken -> refreshToken.startsWith(BEARER))
@@ -120,18 +114,14 @@ public class JwtService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    public TokenResponse refreshToken(HttpServletRequest request) {
-        String refreshToken = extractRefreshToken(request)
-                .filter(this::isTokenValid)
-                .orElse(null);
-        if (refreshToken != null) {
-            User user = userRepository.findByRefreshToken(refreshToken).orElseThrow(() -> new ApiException(ErrorCode.REFRESH_TOKEN_INVALID));
-            TokenResponse tokenResponse = issueJwtToken(user.getId());
-            user.updatedRefreshToken(tokenResponse.getRefreshToken());
-            return tokenResponse;
-        } else {
-            throw new ApiException(ErrorCode.REFRESH_TOKEN_FAILED);
+    public TokenResponse refreshToken(String refreshToken) {
+        if (!isTokenValid(refreshToken)) {
+            throw new ApiException(ErrorCode.REFRESH_TOKEN_INVALID);
         }
+        User user = userRepository.findByRefreshToken(refreshToken).orElseThrow(() -> new ApiException(ErrorCode.REFRESH_TOKEN_INVALID));
+        TokenResponse tokenResponse = issueJwtToken(user.getId());
+        user.updatedRefreshToken(tokenResponse.getRefreshToken());
+        return tokenResponse;
     }
 
     private Date generateExpiresAt(long tokenExpirationPeriod) {

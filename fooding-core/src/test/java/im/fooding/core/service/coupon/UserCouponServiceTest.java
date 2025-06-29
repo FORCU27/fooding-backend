@@ -78,7 +78,7 @@ class UserCouponServiceTest extends TestConfig {
         BasicSearch search = new BasicSearch();
 
         // when
-        Page<UserCoupon> userCoupons = userCouponService.list(null, null, null, search.getPageable());
+        Page<UserCoupon> userCoupons = userCouponService.list(null, null, null, null, search.getPageable());
 
         // then
         assertThat(userCoupons.getContent()).hasSize(2)
@@ -119,10 +119,10 @@ class UserCouponServiceTest extends TestConfig {
         UserCoupon savedUserCoupon = saveUserCoupon(savedCoupon, user);
 
         // when
-        userCouponService.use(savedUserCoupon.getId());
+        userCouponService.request(savedUserCoupon);
 
         // then
-        assertTrue(savedUserCoupon.isUsed());
+        assertEquals(UserCouponStatus.REQUESTED, savedUserCoupon.getStatus());
     }
 
     @Test
@@ -134,12 +134,12 @@ class UserCouponServiceTest extends TestConfig {
         Coupon savedCoupon = saveCoupon(name, totalQuantity, LocalDate.now(), LocalDate.now().plusMonths(4), LocalDate.now().plusMonths(5));
         User user = saveUser();
         UserCoupon savedUserCoupon = saveUserCoupon(savedCoupon, user);
-        userCouponService.use(savedUserCoupon.getId());
+        userCouponService.request(savedUserCoupon);
 
         // when && then
         ApiException apiException =
                 assertThrows(ApiException.class, () -> {
-                    userCouponService.use(savedUserCoupon.getId());
+                    userCouponService.request(savedUserCoupon);
                 });
         assertEquals(ErrorCode.USER_COUPON_ALREADY_USE, apiException.getErrorCode());
     }
@@ -157,7 +157,7 @@ class UserCouponServiceTest extends TestConfig {
         // when && then
         ApiException apiException =
                 assertThrows(ApiException.class, () -> {
-                    userCouponService.use(savedUserCoupon.getId());
+                    userCouponService.request(savedUserCoupon);
                 });
         assertEquals(ErrorCode.USER_COUPON_EXPIRED, apiException.getErrorCode());
     }
@@ -173,7 +173,7 @@ class UserCouponServiceTest extends TestConfig {
         UserCoupon savedUserCoupon = saveUserCoupon(savedCoupon, user);
 
         // when
-        userCouponService.delete(savedUserCoupon.getId(), 1L);
+        userCouponService.delete(savedUserCoupon, 1L);
 
         // then
         ApiException apiException =

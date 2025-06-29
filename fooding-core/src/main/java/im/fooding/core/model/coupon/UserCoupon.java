@@ -52,7 +52,8 @@ public class UserCoupon extends BaseEntity {
 
     private String conditions;
 
-    private boolean used;
+    @Enumerated(EnumType.STRING)
+    private UserCouponStatus status;
 
     private LocalDateTime usedAt;
 
@@ -69,16 +70,27 @@ public class UserCoupon extends BaseEntity {
         this.name = name;
         this.conditions = conditions;
         this.expiredOn = expiredOn;
+        this.status = UserCouponStatus.AVAILABLE;
     }
 
-    public void use() {
+    public void request() {
         if (!availableExpiredOn()) {
             throw new ApiException(ErrorCode.USER_COUPON_EXPIRED);
         }
-        if (this.used) {
+        if (UserCouponStatus.AVAILABLE != this.status) {
             throw new ApiException(ErrorCode.USER_COUPON_ALREADY_USE);
         }
-        this.used = true;
+        this.status = UserCouponStatus.REQUESTED;
+    }
+
+    public void approve() {
+        if (!availableExpiredOn()) {
+            throw new ApiException(ErrorCode.USER_COUPON_EXPIRED);
+        }
+        if (UserCouponStatus.REQUESTED != this.status) {
+            throw new ApiException(ErrorCode.USER_COUPON_NOT_REQUEST);
+        }
+        this.status = UserCouponStatus.USED;
         this.usedAt = LocalDateTime.now();
     }
 
