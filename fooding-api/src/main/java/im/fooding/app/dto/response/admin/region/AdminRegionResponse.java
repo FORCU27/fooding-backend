@@ -1,4 +1,4 @@
-package im.fooding.app.dto.request.admin.region;
+package im.fooding.app.dto.response.admin.region;
 
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.NOT_REQUIRED;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;

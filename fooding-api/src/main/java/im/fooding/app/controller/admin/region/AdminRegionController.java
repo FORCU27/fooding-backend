@@ -2,7 +2,7 @@ package im.fooding.app.controller.admin.region;
 
 import im.fooding.app.dto.request.admin.region.AdminRegionCreateRequest;
 import im.fooding.app.dto.request.admin.region.AdminRegionListRequest;
-import im.fooding.app.dto.request.admin.region.AdminRegionResponse;
+import im.fooding.app.dto.response.admin.region.AdminRegionResponse;
 import im.fooding.app.dto.request.admin.region.AdminRegionUpdateRequest;
 import im.fooding.app.service.admin.region.AdminRegionService;
 import im.fooding.core.common.ApiResult;
