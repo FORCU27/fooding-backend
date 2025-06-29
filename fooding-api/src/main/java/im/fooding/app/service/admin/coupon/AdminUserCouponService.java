@@ -1,7 +1,8 @@
 package im.fooding.app.service.admin.coupon;
 
-import im.fooding.app.dto.request.admin.coupon.*;
-import im.fooding.app.dto.response.admin.coupon.AdminCouponResponse;
+import im.fooding.app.dto.request.admin.coupon.AdminGiftCouponRequest;
+import im.fooding.app.dto.request.admin.coupon.AdminIssueCouponRequest;
+import im.fooding.app.dto.request.admin.coupon.AdminSearchUserCouponRequest;
 import im.fooding.app.dto.response.admin.coupon.AdminUserCouponResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
@@ -36,24 +37,25 @@ public class AdminUserCouponService {
         User user = userService.findById(request.getUserId());
         couponService.issue(coupon);
         userCouponService.create(coupon, user, coupon.getStore(), coupon.getBenefitType(), coupon.getDiscountType(),
-            coupon.getDiscountValue(), coupon.getName(), coupon.getConditions(), coupon.getExpiredOn());
+                coupon.getDiscountValue(), coupon.getName(), coupon.getConditions(), coupon.getExpiredOn());
     }
 
     @Transactional
     public void issueByGift(AdminGiftCouponRequest request) {
         User user = userService.findById(request.getUserId());
         userCouponService.create(null, user, getStore(request.getStoreId()), request.getBenefitType(),
-            request.getDiscountType(), request.getDiscountValue(), request.getName(), request.getConditions(), request.getExpiredOn());
+                request.getDiscountType(), request.getDiscountValue(), request.getName(), request.getConditions(), request.getExpiredOn());
     }
 
     @Transactional
     public void delete(long id, long deletedBy) {
-        userCouponService.delete(id, deletedBy);
+        UserCoupon userCoupon = userCouponService.findById(id);
+        userCouponService.delete(userCoupon, deletedBy);
     }
 
     @Transactional(readOnly = true)
     public PageResponse<AdminUserCouponResponse> list(AdminSearchUserCouponRequest search) {
-        Page<UserCoupon> userCoupons = userCouponService.list(search.getUserId(), search.getStoreId(), search.getUsed(), search.getPageable());
+        Page<UserCoupon> userCoupons = userCouponService.list(search.getUserId(), search.getStoreId(), null, search.getStatus(), search.getPageable());
         List<AdminUserCouponResponse> list = userCoupons.getContent().stream().map(AdminUserCouponResponse::of).toList();
         return PageResponse.of(list, PageInfo.of(userCoupons));
     }

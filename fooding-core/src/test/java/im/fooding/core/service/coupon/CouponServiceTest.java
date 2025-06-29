@@ -111,7 +111,7 @@ class CouponServiceTest extends TestConfig {
         Coupon coupon2 = saveCoupon(name2, totalQuantity2, issueStartOn2, LocalDate.now().plusMonths(4), LocalDate.now().plusMonths(5));
 
         // when
-        Page<Coupon> coupons = couponService.list(null, search.getSearchString(), search.getPageable());
+        Page<Coupon> coupons = couponService.list(null, null, null, search.getSearchString(), search.getPageable());
 
         // then
         assertThat(coupons.getContent()).hasSize(2)
@@ -131,7 +131,7 @@ class CouponServiceTest extends TestConfig {
         Coupon coupon = saveCoupon(name, totalQuantity, LocalDate.now(), LocalDate.now().plusMonths(4), LocalDate.now().plusMonths(5));
 
         // when
-        couponService.delete(coupon.getId(), 1L);
+        couponService.delete(coupon, 1L);
 
         // then
         ApiException apiException =

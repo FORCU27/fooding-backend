@@ -1,4 +1,4 @@
-package im.fooding.app.dto.response.admin.coupon;
+package im.fooding.app.dto.response.ceo.coupon;
 
 import im.fooding.core.model.coupon.*;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,15 +12,12 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class AdminCouponResponse {
+public class CeoCouponResponse {
     @Schema(description = "id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private long id;
 
     @Schema(description = "store id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private Long storeId;
-
-    @Schema(description = "store 이름", example = "김가네", requiredMode = RequiredMode.REQUIRED)
-    private String storeName;
 
     @Schema(description = "혜택 타입", example = "DISCOUNT", requiredMode = RequiredMode.REQUIRED)
     private BenefitType benefitType;
@@ -68,10 +65,9 @@ public class AdminCouponResponse {
     private LocalDateTime updatedAt;
 
     @Builder
-    private AdminCouponResponse(long id, Long storeId, String storeName, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType, String name, String conditions, Integer totalQuantity, int issuedQuantity, int discountValue, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn, CouponStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private CeoCouponResponse(long id, Long storeId, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType, String name, String conditions, Integer totalQuantity, int issuedQuantity, int discountValue, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn, CouponStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.storeId = storeId;
-        this.storeName = storeName;
         this.benefitType = benefitType;
         this.type = type;
         this.discountType = discountType;
@@ -89,11 +85,10 @@ public class AdminCouponResponse {
         this.updatedAt = updatedAt;
     }
 
-    public static AdminCouponResponse of(Coupon coupon) {
-        return AdminCouponResponse.builder()
+    public static CeoCouponResponse of(Coupon coupon) {
+        return CeoCouponResponse.builder()
                 .id(coupon.getId())
                 .storeId(null != coupon.getStore() ? coupon.getStore().getId() : null)
-                .storeName(null != coupon.getStore() ? coupon.getStore().getName() : null)
                 .benefitType(coupon.getBenefitType())
                 .type(coupon.getType())
                 .discountType(coupon.getDiscountType())
