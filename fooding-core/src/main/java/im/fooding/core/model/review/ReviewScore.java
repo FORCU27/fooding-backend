@@ -5,6 +5,7 @@ import jakarta.persistence.Embeddable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Embeddable
 @Getter
@@ -31,6 +32,7 @@ public class ReviewScore {
         this.service = service;
     }
 
+    @Transactional
     public void update( float total, float taste, float mood, float service ){
         this.total = total;
         this.taste = taste;
