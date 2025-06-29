@@ -2,6 +2,7 @@ package im.fooding.core.service.user;
 
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.global.util.NicknameGenerator;
 import im.fooding.core.model.user.AuthProvider;
 import im.fooding.core.model.user.Gender;
 import im.fooding.core.model.user.Role;
@@ -34,6 +35,10 @@ public class UserService {
         if (checkDuplicatedNickname(nickname)) {
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
         }
+        if(StringUtils.hasText(phoneNumber)) {
+            checkDuplicatePhoneNumber(phoneNumber);
+        }
+
         User user = User.builder()
                 .email(email)
                 .nickname(nickname)
@@ -52,9 +57,21 @@ public class UserService {
      * @param provider
      */
     public User createSocialUser(String email, AuthProvider provider) {
+        String nickname = NicknameGenerator.generateNickname();
+        int attempts = 0;
+
+        while (checkDuplicatedNickname(nickname)) {
+            nickname = NicknameGenerator.generateNickname();
+            attempts++;
+            if (attempts > 100) {
+                throw new ApiException(ErrorCode.NICKNAME_GENERATE_FAILED);
+            }
+        }
+
         User user = User.builder()
                 .email(email)
                 .provider(provider)
+                .nickname(nickname)
                 .gender(Gender.NONE)
                 .build();
 
