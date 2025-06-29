@@ -1,10 +1,7 @@
 package im.fooding.app.service.auth;
 
 import feign.FeignException;
-import im.fooding.app.dto.request.auth.AuthCreateRequest;
-import im.fooding.app.dto.request.auth.AuthLoginRequest;
-import im.fooding.app.dto.request.auth.AuthSocialLoginRequest;
-import im.fooding.app.dto.request.auth.AuthUpdateProfileRequest;
+import im.fooding.app.dto.request.auth.*;
 import im.fooding.app.dto.response.auth.AuthUserResponse;
 import im.fooding.app.service.file.FileUploadService;
 import im.fooding.core.global.exception.ApiException;
@@ -93,6 +90,11 @@ public class AuthService {
     public void register(AuthCreateRequest request) {
         User user = userService.create(request.getEmail(), request.getNickname(), passwordEncoder.encode(request.getPassword()), null, Gender.NONE);
         userAuthorityService.create(user, request.getRole());
+    }
+
+    @Transactional
+    public TokenResponse refreshToken(AuthRefreshTokenRequest request) {
+        return jwtService.refreshToken(request.getRefreshToken());
     }
 
     /**
