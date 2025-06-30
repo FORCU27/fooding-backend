@@ -34,6 +34,7 @@ public class RegionService {
         return regionRepository.findAllByDeletedFalse(pageable);
     }
 
+    @Transactional
     public void update(RegionUpdateRequest request) {
         Region region = get(request.id());
         region.update(
