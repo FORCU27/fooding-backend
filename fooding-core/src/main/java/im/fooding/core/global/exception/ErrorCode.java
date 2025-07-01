@@ -100,7 +100,10 @@ public enum ErrorCode {
     USER_COUPON_ALREADY_ISSUE(HttpStatus.BAD_REQUEST, "8007", "이미 발급 받은 쿠폰입니다."),
 
     // 게시긓
-    POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "9000", "등록된 게시글이 없습니다.")
+    POST_NOT_FOUND(HttpStatus.BAD_REQUEST, "9000", "등록된 게시글이 없습니다."),
+
+    // 지역
+    REGION_NOT_FOUND(HttpStatus.BAD_REQUEST, "10000", "등록된 지역이 없습니다."),
     ;
 
     private final HttpStatus status;
