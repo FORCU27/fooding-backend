@@ -135,7 +135,7 @@ public class UserStoreService {
         }
 
         // 영업시간 여부
-        boolean isOpen = time.getOpenTime() != null && !now.isBefore(time.getOpenTime()) && now.isBefore(time.getCloseTime());
+        boolean isOpen = !now.isBefore(time.getOpenTime()) && now.isBefore(time.getCloseTime());
 
         // 브레이크타임 여부
         boolean inBreak = time.getBreakStartTime() != null && time.getBreakEndTime() != null &&
