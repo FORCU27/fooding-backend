@@ -129,6 +129,11 @@ public class UserStoreService {
         StoreDailyOperatingTime time = operatingHour.getDailyOperatingTimes().get(0);
         LocalTime now = LocalTime.now();
 
+        // 오픈 마감 시간 없으면 휴무
+        if (time.getOpenTime() == null && time.getCloseTime() == null) {
+            return false;
+        }
+
         // 영업시간 여부
         boolean isOpen = !now.isBefore(time.getOpenTime()) && now.isBefore(time.getCloseTime());
 
