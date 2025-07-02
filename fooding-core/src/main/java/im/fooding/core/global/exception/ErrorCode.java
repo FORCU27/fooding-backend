@@ -46,6 +46,8 @@ public enum ErrorCode {
     STORE_INFORMATION_DUPLICATED(HttpStatus.BAD_REQUEST, "2401", "이미 등록된 가게 부가 정보가 있습니다."),
     STORE_OPERATING_HOUR_NOT_FOUND(HttpStatus.BAD_REQUEST, "2500", "등록된 가게 운영시간 및 휴일 정보가 없습니다."),
     STORE_OPERATING_HOUR_DUPLICATED(HttpStatus.BAD_REQUEST, "2501", "이미 등록된 가게 운영시간 및 휴일 정보가 있습니다."),
+    STORE_BOOKMARK_NOT_FOUND(HttpStatus.BAD_REQUEST, "2601", "단골이 아닙니다."),
+    STORE_BOOKMARK_EXIST(HttpStatus.BAD_REQUEST, "2602", "이미 단골입니다."),
 
     // 리뷰
     REVIEW_NOT_FOUND( HttpStatus.BAD_REQUEST, "2300", "등록된 리뷰가 없습니다" ),

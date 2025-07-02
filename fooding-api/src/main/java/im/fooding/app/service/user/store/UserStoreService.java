@@ -4,30 +4,30 @@ import im.fooding.app.dto.request.user.store.UserImmediateEntryStoreRequest;
 import im.fooding.app.dto.request.user.store.UserSearchStoreRequest;
 import im.fooding.app.dto.response.user.store.UserStoreListResponse;
 import im.fooding.app.dto.response.user.store.UserStoreResponse;
-import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.global.UserInfo;
+import im.fooding.core.global.util.Util;
+import im.fooding.core.model.bookmark.Bookmark;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.information.StoreDailyOperatingTime;
 import im.fooding.core.model.store.information.StoreOperatingHour;
 import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingStatus;
+import im.fooding.core.service.bookmark.BookmarkService;
 import im.fooding.core.service.store.StoreOperatingHourService;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -38,24 +38,38 @@ public class UserStoreService {
     private final StoreOperatingHourService storeOperatingHourService;
     private final WaitingSettingService waitingSettingService;
     private final WaitingService waitingService;
+    private final BookmarkService bookmarkService;
 
     @Transactional(readOnly = true)
-    public PageResponse<UserStoreListResponse> list(UserSearchStoreRequest request) {
+    public PageResponse<UserStoreListResponse> list(UserSearchStoreRequest request, UserInfo userInfo) {
         Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), false);
         List<UserStoreListResponse> list = stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList();
-        updateOperatingStatus(list);
-        return PageResponse.of(
-                list,
-                PageInfo.of(stores)
-        );
+
+        // 영업상태 세팅
+        setOperatingStatus(list);
+
+        // 북마크 여부 세팅
+        if (userInfo != null) {
+            setBookmarked(list, userInfo.getId());
+        }
+
+        return PageResponse.of(list, PageInfo.of(stores));
     }
 
     @Transactional
-    public UserStoreResponse retrieve(Long id) {
+    public UserStoreResponse retrieve(Long id, UserInfo userInfo) {
         Store store = storeService.retrieve(id);
         storeService.increaseVisitCount(store);
         UserStoreResponse userStoreResponse = UserStoreResponse.of(store, null);
-        updateOperatingStatus(userStoreResponse);
+
+        // 영업상태 세팅
+        setOperatingStatus(userStoreResponse);
+
+        // 북마크 여부 세팅
+        if (userInfo != null) {
+            setBookmarked(userStoreResponse, userInfo.getId());
+        }
+
         return userStoreResponse;
     }
 
@@ -78,6 +92,7 @@ public class UserStoreService {
                 getEstimatedWaitingTime(store)
         );
     }
+
     private Integer getEstimatedWaitingTime(Store store) {
         //TODO: n + 1 이슈있음 예상 웨이팅 시간 어떻게할지
         return waitingSettingService.findActiveSetting(store)
@@ -85,28 +100,25 @@ public class UserStoreService {
                 .orElse(null);
     }
 
-    private void updateOperatingStatus(UserStoreResponse userStoreResponse) {
-        DayOfWeek today = LocalDate.now().getDayOfWeek();
-
+    private void setOperatingStatus(UserStoreResponse userStoreResponse) {
         StoreOperatingHour operatingHour = storeOperatingHourService
-                .findByIdsInOperatingTime(List.of(userStoreResponse.getId()), today)
+                .findByIdsInOperatingTime(List.of(userStoreResponse.getId()), Util.getDayOfWeek())
                 .stream()
                 .findFirst()
                 .orElse(null);
-
-        boolean isOperating = isOperatingNow(operatingHour);
-        userStoreResponse.setFinished(!isOperating);
+        if (operatingHour != null && !operatingHour.getDailyOperatingTimes().isEmpty()) {
+            StoreDailyOperatingTime time = operatingHour.getDailyOperatingTimes().get(0);
+            userStoreResponse.setFinished(!time.isOperatingNow());
+        }
     }
 
-    private void updateOperatingStatus(List<UserStoreListResponse> list) {
-        DayOfWeek today = LocalDate.now().getDayOfWeek();
-
+    private void setOperatingStatus(List<UserStoreListResponse> list) {
         List<Long> storeIds = list.stream()
                 .map(UserStoreListResponse::getId)
                 .toList();
 
         Map<Long, StoreOperatingHour> operatingHourMap = storeOperatingHourService
-                .findByIdsInOperatingTime(storeIds, today)
+                .findByIdsInOperatingTime(storeIds, Util.getDayOfWeek())
                 .stream()
                 .collect(Collectors.toMap(
                         it -> it.getStore().getId(),
@@ -115,32 +127,23 @@ public class UserStoreService {
 
         for (UserStoreListResponse store : list) {
             StoreOperatingHour operatingHour = operatingHourMap.get(store.getId());
-            boolean isOperating = isOperatingNow(operatingHour);
-            store.setFinished(!isOperating);
+            if (operatingHour != null && !operatingHour.getDailyOperatingTimes().isEmpty()) {
+                StoreDailyOperatingTime time = operatingHour.getDailyOperatingTimes().get(0);
+                store.setFinished(!time.isOperatingNow());
+            }
         }
     }
 
-    private boolean isOperatingNow(StoreOperatingHour operatingHour) {
-        if (operatingHour == null || operatingHour.getDailyOperatingTimes().isEmpty()) {
-            return false;
-        }
+    private void setBookmarked(List<UserStoreListResponse> list, Long userId) {
+        if (userId == null) return;
+        List<Bookmark> userBookmarks = bookmarkService.findAllByUserId(userId);
+        Set<Long> bookmarkedStoreIds = userBookmarks.stream().map(bookmark -> bookmark.getStore().getId()).collect(Collectors.toSet());
+        list.forEach(response -> response.setBookmarked(bookmarkedStoreIds.contains(response.getId())));
+    }
 
-        // 금일 영업시간 정보 조회
-        StoreDailyOperatingTime time = operatingHour.getDailyOperatingTimes().get(0);
-        LocalTime now = LocalTime.now();
-
-        // 오픈 마감 시간 없으면 휴무
-        if (time.getOpenTime() == null && time.getCloseTime() == null) {
-            return false;
-        }
-
-        // 영업시간 여부
-        boolean isOpen = !now.isBefore(time.getOpenTime()) && now.isBefore(time.getCloseTime());
-
-        // 브레이크타임 여부
-        boolean inBreak = time.getBreakStartTime() != null && time.getBreakEndTime() != null &&
-                !now.isBefore(time.getBreakStartTime()) && now.isBefore(time.getBreakEndTime());
-
-        return isOpen && !inBreak;
+    private void setBookmarked(UserStoreResponse userStoreResponse, Long userId) {
+        List<Bookmark> userBookmarks = bookmarkService.findAllByUserId(userId);
+        Set<Long> bookmarkedStoreIds = userBookmarks.stream().map(bookmark -> bookmark.getStore().getId()).collect(Collectors.toSet());
+        userStoreResponse.setBookmarked(bookmarkedStoreIds.contains(userId));
     }
 }
