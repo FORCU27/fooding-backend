@@ -45,8 +45,9 @@ public class UserBookmarkService {
     @Transactional
     public void delete(long storeId, long userId) {
         Store store = storeService.findById(storeId);
+        Bookmark bookmark = bookmarkService.findByStoreIdAndUserId(storeId, userId);
         storeService.decreaseBookmarkCount(store);
-        bookmarkService.delete(store.getId(), userId);
+        bookmarkService.delete(bookmark, userId);
     }
 
     @Transactional(readOnly = true)

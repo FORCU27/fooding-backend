@@ -27,9 +27,15 @@ public class Bookmark extends BaseEntity {
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 
+    private int verifiedCount;
+
     @Builder
     public Bookmark(Store store, User user) {
         this.store = store;
         this.user = user;
+    }
+
+    public void increaseVerifiedCount() {
+        this.verifiedCount++;
     }
 }

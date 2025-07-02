@@ -33,10 +33,8 @@ public class BookmarkService {
         return repository.save(bookmark);
     }
 
-    public void delete(long storeId, long userId) {
-        Bookmark bookmark = repository.findByStoreIdAndUserIdAndDeletedIsFalse(storeId, userId)
-                .orElseThrow(() -> new ApiException(ErrorCode.STORE_BOOKMARK_NOT_FOUND));
-        bookmark.delete(userId);
+    public void delete(Bookmark bookmark, long deletedBy) {
+        bookmark.delete(deletedBy);
     }
 
     public Page<Bookmark> list(Long storeId, Long userId, String searchString, Pageable pageable) {
@@ -45,5 +43,19 @@ public class BookmarkService {
 
     public List<Bookmark> findAllByUserId(Long userId) {
         return repository.findAllByUserIdAndDeletedIsFalse(userId);
+    }
+
+    public void increaseVerifiedCount(Bookmark bookmark) {
+        bookmark.increaseVerifiedCount();
+    }
+
+    public Bookmark findById(long id) {
+        return repository.findById(id).filter(it -> !it.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.STORE_BOOKMARK_NOT_FOUND));
+    }
+
+    public Bookmark findByStoreIdAndUserId(Long storeId, Long userId) {
+        return repository.findByStoreIdAndUserIdAndDeletedIsFalse(storeId, userId)
+                .orElseThrow(() -> new ApiException(ErrorCode.STORE_BOOKMARK_NOT_FOUND));
     }
 }
