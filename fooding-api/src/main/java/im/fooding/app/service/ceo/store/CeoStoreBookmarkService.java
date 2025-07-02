@@ -5,8 +5,10 @@ import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.bookmark.Bookmark;
+import im.fooding.core.model.store.Store;
 import im.fooding.core.service.bookmark.BookmarkService;
 import im.fooding.core.service.store.StoreMemberService;
+import im.fooding.core.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CeoStoreBookmarkService {
     private final BookmarkService bookmarkService;
     private final StoreMemberService storeMemberService;
+    private final StoreService storeService;
 
     @Transactional(readOnly = true)
     public PageResponse<CeoStoreBookmarkResponse> list(Long storeId, BasicSearch search, long ceoId) {
@@ -29,7 +32,10 @@ public class CeoStoreBookmarkService {
 
     @Transactional
     public void delete(long storeId, long id, long ceoId) {
-        storeMemberService.checkMember(storeId, ceoId);
+        Store store = storeService.findById(storeId);
+        storeMemberService.checkMember(store.getId(), ceoId);
+        storeService.decreaseBookmarkCount(store);
+
         Bookmark bookmark = bookmarkService.findById(id);
         bookmarkService.delete(bookmark, ceoId);
     }
