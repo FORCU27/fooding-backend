@@ -4,6 +4,8 @@ import im.fooding.core.global.UserInfo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -40,5 +42,9 @@ public class Util {
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
                 .collect(Collectors.joining(","));
+    }
+
+    public static DayOfWeek getDayOfWeek() {
+        return LocalDate.now().getDayOfWeek();
     }
 }

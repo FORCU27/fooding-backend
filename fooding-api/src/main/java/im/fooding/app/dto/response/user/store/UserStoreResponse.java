@@ -50,6 +50,9 @@ public class UserStoreResponse {
     @Schema(description = "해당 가게의 총 리뷰 개수", example = "246", requiredMode = RequiredMode.REQUIRED)
     private int reviewCount;
 
+    @Schema(description = "해당 가게의 총 관심 수", example = "100", requiredMode = RequiredMode.REQUIRED)
+    private int bookmarkCount;
+
     @Schema(description = "해당 가게의 총 리뷰 평점", example = "4.5", requiredMode = RequiredMode.REQUIRED)
     private double averageRating;
 
@@ -77,16 +80,13 @@ public class UserStoreResponse {
     @Schema(description = "관심 여부", example = "false", requiredMode = RequiredMode.REQUIRED)
     private Boolean isBookmarked = false;
 
-    @Schema(description = "해당 가게의 총 관심 수", example = "false", requiredMode = RequiredMode.REQUIRED)
-    private int bookmarkCount = 0;
-
     @Schema(description = "사진", requiredMode = RequiredMode.NOT_REQUIRED)
     private List<UserStoreImageResponse> images;
 
     @Builder
     private UserStoreResponse(Long id, String name, String city, String address, String category, String description,
                               String priceCategory, String eventDescription, String contactNumber, String direction, int visitCount,
-                              int reviewCount, double averageRating, Boolean isParkingAvailable, Boolean isNewOpen, Boolean isTakeOut,
+                              int reviewCount, int bookmarkCount, double averageRating, Boolean isParkingAvailable, Boolean isNewOpen, Boolean isTakeOut,
                               Integer estimatedWaitingTimeMinutes, Double latitude, Double longitude, List<UserStoreImageResponse> images) {
         this.id = id;
         this.name = name;
@@ -100,6 +100,7 @@ public class UserStoreResponse {
         this.direction = direction;
         this.visitCount = visitCount;
         this.reviewCount = reviewCount;
+        this.bookmarkCount = bookmarkCount;
         this.averageRating = averageRating;
         this.isParkingAvailable = isParkingAvailable;
         this.isNewOpen = isNewOpen;
@@ -129,6 +130,7 @@ public class UserStoreResponse {
                 .direction(store.getDirection())
                 .visitCount(store.getVisitCount())
                 .reviewCount(store.getReviewCount())
+                .bookmarkCount(store.getBookmarkCount())
                 .averageRating(store.getAverageRating())
                 .isParkingAvailable(store.isParkingAvailable())
                 .isNewOpen(store.isNewOpen())

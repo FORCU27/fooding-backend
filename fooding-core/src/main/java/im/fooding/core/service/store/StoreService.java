@@ -124,4 +124,12 @@ public class StoreService {
     public void updateAverageRating(Store store, double averageRating) {
         store.updateAverageRating(averageRating);
     }
+
+    public void increaseBookmarkCount(Store store) {
+        store.increaseBookmarkCount();
+    }
+
+    public void decreaseBookmarkCount(Store store) {
+        store.decreaseBookmarkCount();
+    }
 }
