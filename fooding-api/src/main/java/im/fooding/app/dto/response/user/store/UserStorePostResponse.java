@@ -1,60 +1,52 @@
 package im.fooding.app.dto.response.user.store;
 
 import im.fooding.core.model.store.StorePost;
+import im.fooding.core.model.store.StorePostImage;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Value;
 
-@Getter
-@NoArgsConstructor
+@Value
+@Builder(access = AccessLevel.PRIVATE)
 public class UserStorePostResponse {
     @Schema(description = "유저 소식 ID", example = "1")
-    private long id;
+    long id;
 
     @Schema(description = "소식 제목", example = "점심시간 예약 관련 공지")
-    private String title;
+    String title;
 
     @Schema(description = "소식 내용", example = "점심시간에는 예약 없이 방문 시 대기시간이 길어질 수 있습니다.")
-    private String content;
+    String content;
+
+    @Schema(description = "이미지 Url")
+    List<String> imageUrls;
 
     @Schema(description = "태그 목록", example = "[\"대표\", \"소식\"]")
-    private List<String> tags;
+    List<String> tags;
 
     @Schema(description = "상단 고정 여부", example = "true")
-    private boolean isFixed;
+    boolean isFixed;
 
     @Schema(description = "등록 일자", example = "2025-04-25 12:00:00")
-    private LocalDateTime createdAt;
+    LocalDateTime createdAt;
 
-    @Builder
-    private UserStorePostResponse(
-            long id,
-            String title,
-            String content,
-            List<String> tags,
-            boolean isFixed,
-            LocalDateTime createdAt
-    ) {
-      this.id = id;
-      this.title = title;
-      this.content = content;
-      this.tags = tags;
-      this.isFixed = isFixed;
-      this.createdAt = createdAt;
-    }
+    public static UserStorePostResponse from(StorePost storePost, List<StorePostImage> storePostImages) {
+        List<String> images = storePostImages.stream()
+                .map(StorePostImage::getImageUrl)
+                .toList();
 
-    public static UserStorePostResponse from(StorePost storePost) {
-      return new UserStorePostResponse(
-              storePost.getId(),
-              storePost.getTitle(),
-              storePost.getContent(),
-              storePost.getTags(),
-              storePost.isFixed(),
-              storePost.getCreatedAt()
-      );
+        return UserStorePostResponse.builder()
+                .id(storePost.getId())
+                .title(storePost.getTitle())
+                .content(storePost.getContent())
+                .imageUrls(images)
+                .tags(storePost.getTags())
+                .isFixed(storePost.isFixed())
+                .createdAt(storePost.getCreatedAt())
+                .build();
     }
 }

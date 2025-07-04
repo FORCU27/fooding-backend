@@ -2,6 +2,8 @@ package im.fooding.app.service.user.store;
 
 import im.fooding.app.dto.response.user.store.UserStorePostResponse;
 import im.fooding.core.model.store.StorePost;
+import im.fooding.core.model.store.StorePostImage;
+import im.fooding.core.service.store.StorePostImageService;
 import im.fooding.core.service.store.StorePostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,15 +19,21 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserStorePostService {
     private final StorePostService storePostService;
+    private final StorePostImageService storePostImageService;
 
     public List<UserStorePostResponse> list(Long storeId) {
-      return storePostService.list(storeId).stream()
-              .map(UserStorePostResponse::from)
-              .collect(Collectors.toList());
+
+        return storePostService.list(storeId).stream()
+                .map(storePost -> {
+                    List<StorePostImage> storePostsImages = storePostImageService.list(storePost.getId());
+                    return UserStorePostResponse.from(storePost, storePostsImages);
+                })
+                .collect(Collectors.toList());
     }
 
     public UserStorePostResponse retrieve(Long storePostId) {
       StorePost storePost = storePostService.findById(storePostId);
-      return UserStorePostResponse.from(storePost);
+      List<StorePostImage> storePostsImages = storePostImageService.list(storePostId);
+      return UserStorePostResponse.from(storePost, storePostsImages);
     }
 }
