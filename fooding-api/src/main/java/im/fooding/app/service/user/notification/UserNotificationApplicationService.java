@@ -2,6 +2,7 @@ package im.fooding.app.service.user.notification;
 
 import im.fooding.app.dto.response.user.notification.UserNotificationResponse;
 import im.fooding.core.global.infra.slack.SlackClient;
+import im.fooding.core.global.util.RewardMessageBuilder;
 import im.fooding.core.global.util.WaitingMessageBuilder;
 import im.fooding.core.model.notification.UserNotification;
 import im.fooding.core.service.notification.UserNotificationService;
@@ -76,5 +77,12 @@ public class UserNotificationApplicationService {
 
     public UserNotificationResponse retrieve(Long userId, Long notificationId) {
         return UserNotificationResponse.from(userNotificationService.getNotification(userId, notificationId));
+    }
+
+    public void sendRewardRegisterMessage( String storeName, int point ) {
+        String message = RewardMessageBuilder.buildRegisterMessage(
+                storeName,
+                point );
+        slackClient.sendNotificationMessage(message);
     }
 }

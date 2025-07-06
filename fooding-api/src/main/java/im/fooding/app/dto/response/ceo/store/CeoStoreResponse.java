@@ -62,6 +62,15 @@ public class CeoStoreResponse {
     @Schema(description = "경도", example = "127.12345678901234", requiredMode = RequiredMode.REQUIRED)
     private final Double longitude;
 
+    @Schema(description = "해당 가게의 총 방문수", example = "1000", requiredMode = RequiredMode.REQUIRED)
+    private final int visitCount;
+
+    @Schema(description = "해당 가게의 총 리뷰 개수", example = "246", requiredMode = RequiredMode.REQUIRED)
+    private final int reviewCount;
+
+    @Schema(description = "해당 가게의 총 관심 수", example = "100", requiredMode = RequiredMode.REQUIRED)
+    private final int bookmarkCount;
+
     public CeoStoreResponse(Store store) {
         this.id = store.getId();
         this.ownerId = store.getOwner() != null ? store.getOwner().getId() : null;
@@ -80,5 +89,8 @@ public class CeoStoreResponse {
         this.isTakeOut = store.isTakeOut();
         this.latitude = store.getLatitude();
         this.longitude = store.getLongitude();
+        this.visitCount = store.getVisitCount();
+        this.reviewCount = store.getReviewCount();
+        this.bookmarkCount = store.getBookmarkCount();
     }
 }

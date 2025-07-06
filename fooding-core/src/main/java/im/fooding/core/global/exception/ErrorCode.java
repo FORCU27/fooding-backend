@@ -48,10 +48,10 @@ public enum ErrorCode {
     STORE_OPERATING_HOUR_DUPLICATED(HttpStatus.BAD_REQUEST, "2501", "이미 등록된 가게 운영시간 및 휴일 정보가 있습니다."),
     STORE_BOOKMARK_NOT_FOUND(HttpStatus.BAD_REQUEST, "2601", "단골이 아닙니다."),
     STORE_BOOKMARK_EXIST(HttpStatus.BAD_REQUEST, "2602", "이미 단골입니다."),
-    STORE_POST_IMAGE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2001", "등록된 가게 소식 이미지가 없습니다."),
+    STORE_POST_IMAGE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2701", "등록된 가게 소식 이미지가 없습니다."),
 
     // 리뷰
-    REVIEW_NOT_FOUND( HttpStatus.BAD_REQUEST, "2300", "등록된 리뷰가 없습니다" ),
+    REVIEW_NOT_FOUND( HttpStatus.BAD_REQUEST, "2202", "등록된 리뷰가 없습니다" ),
 
     // 웨이팅
     WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3000", "등록된 웨이팅 정보가 없습니다."),
