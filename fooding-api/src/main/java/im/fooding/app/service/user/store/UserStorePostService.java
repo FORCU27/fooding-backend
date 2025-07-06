@@ -24,16 +24,12 @@ public class UserStorePostService {
     public List<UserStorePostResponse> list(Long storeId) {
 
         return storePostService.list(storeId).stream()
-                .map(storePost -> {
-                    List<StorePostImage> storePostsImages = storePostImageService.list(storePost.getId());
-                    return UserStorePostResponse.from(storePost, storePostsImages);
-                })
+                .map(UserStorePostResponse::from)
                 .collect(Collectors.toList());
     }
 
     public UserStorePostResponse retrieve(Long storePostId) {
       StorePost storePost = storePostService.findById(storePostId);
-      List<StorePostImage> storePostsImages = storePostImageService.list(storePostId);
-      return UserStorePostResponse.from(storePost, storePostsImages);
+      return UserStorePostResponse.from(storePost);
     }
 }
