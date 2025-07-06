@@ -8,6 +8,7 @@ import im.fooding.app.dto.request.user.reward.UpdateRewardPointRequest;
 import im.fooding.app.dto.response.app.coupon.AppUserCouponResponse;
 import im.fooding.app.dto.response.user.reward.GetRewardLogResponse;
 import im.fooding.app.dto.response.user.reward.GetRewardPointResponse;
+import im.fooding.app.service.user.notification.UserNotificationApplicationService;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.event.coupon.RequestCouponEvent;
@@ -15,6 +16,7 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.coupon.UserCoupon;
 import im.fooding.core.model.notification.NotificationChannel;
+import im.fooding.core.model.reward.RewardLog;
 import im.fooding.core.model.reward.RewardPoint;
 import im.fooding.core.model.reward.RewardStatus;
 import im.fooding.core.model.user.User;
@@ -44,6 +46,7 @@ public class RewardApplicationService {
     private final UserService userService;
     private final UserCouponService userCouponService;
     private final ApplicationEventPublisher publisher;
+    private final UserNotificationApplicationService notificationService;
 
     @Value("${message.sender}")
     private String SENDER;
@@ -73,12 +76,12 @@ public class RewardApplicationService {
      *
      * @param request
      */
+    @Transactional
     public void earnPoint(UpdateRewardPointRequest request){
         Pageable pageable = PageRequest.of(0, 5);
         List<GetRewardPointResponse> result = pointService.list( null, request.getStoreId(), request.getPhoneNumber(), pageable ).map(GetRewardPointResponse::of).stream().collect(Collectors.toList());
         if( result.size() == 0 ) pointService.create(storeService.findById( request.getStoreId() ), request.getPhoneNumber(), request.getPoint(), null);
         else pointService.addPoint(request.getPhoneNumber(), request.getStoreId(), request.getPoint());
-        // 로그 추가
         logService.create(
                 storeService.findById(request.getStoreId()),
                 request.getPhoneNumber(),
@@ -87,6 +90,7 @@ public class RewardApplicationService {
                 request.getType(),
                 request.getChannel()
         );
+        sendNotification( request.getStoreId(), request.getPoint() );
     }
 
     /**
@@ -127,5 +131,10 @@ public class RewardApplicationService {
         UserCoupon userCoupon = userCouponService.findById(couponId);
         userCouponService.request(userCoupon);
         publisher.publishEvent(new RequestCouponEvent(userCoupon.getName(), userCoupon.getUser().getPhoneNumber(), SENDER, NotificationChannel.SMS));
+    }
+
+    private void sendNotification(long storeId, int point) {
+        String storeName = storeService.findById( storeId ).getName();
+        notificationService.sendRewardRegisterMessage( storeName, point );
     }
 }
