@@ -77,6 +77,8 @@ public class Store extends BaseEntity {
 
     private Double longitude;
 
+    private int bookmarkCount;
+
     @OneToMany(mappedBy = "store")
     @BatchSize(size = 10) // 한 번에 10개씩 배치로 로딩
     private List<StoreImage> images;
@@ -137,5 +139,13 @@ public class Store extends BaseEntity {
 
     public void updateAverageRating(double averageRating) {
         this.averageRating = averageRating;
+    }
+
+    public void increaseBookmarkCount() {
+        this.bookmarkCount++;
+    }
+
+    public void decreaseBookmarkCount() {
+        this.bookmarkCount--;
     }
 }

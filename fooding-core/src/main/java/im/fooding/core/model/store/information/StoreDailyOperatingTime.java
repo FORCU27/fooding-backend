@@ -53,4 +53,22 @@ public class StoreDailyOperatingTime extends BaseEntity {
         this.breakStartTime = breakStartTime;
         this.breakEndTime = breakEndTime;
     }
+
+    public boolean isOperatingNow() {
+        LocalTime now = LocalTime.now();
+
+        // 오픈 마감 시간 없으면 휴무
+        if (openTime == null && closeTime == null) {
+            return false;
+        }
+
+        // 영업시간 여부
+        boolean isOpen = !now.isBefore(openTime) && now.isBefore(closeTime);
+
+        // 브레이크타임 여부
+        boolean inBreak = breakStartTime != null && breakEndTime != null &&
+                !now.isBefore(breakStartTime) && now.isBefore(breakEndTime);
+
+        return isOpen && !inBreak;
+    }
 }

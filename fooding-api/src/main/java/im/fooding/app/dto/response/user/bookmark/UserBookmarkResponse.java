@@ -1,5 +1,7 @@
-package im.fooding.app.dto.response.user.store;
+package im.fooding.app.dto.response.user.bookmark;
 
+import im.fooding.app.dto.response.user.store.UserStoreImageResponse;
+import im.fooding.core.model.bookmark.Bookmark;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,17 +10,20 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Comparator;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
-public class UserStoreListResponse {
+public class UserBookmarkResponse {
     @Schema(description = "id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private Long id;
 
+    @Schema(description = "가게 id", example = "1", requiredMode = RequiredMode.REQUIRED)
+    private Long storeId;
+
     @Schema(description = "가게명", example = "홍길동 식당", requiredMode = RequiredMode.REQUIRED)
     private String name;
-
-    @Schema(description = "가게 이미지 URL", example = "https://example.com/store.jpg", requiredMode = RequiredMode.NOT_REQUIRED)
-    private String mainImage;
 
     @Schema(description = "가게가 위치한 도시", example = "합정", requiredMode = RequiredMode.REQUIRED)
     private String city;
@@ -41,35 +46,41 @@ public class UserStoreListResponse {
     @Schema(description = "영업 종료 여부", example = "false", requiredMode = RequiredMode.REQUIRED)
     private Boolean isFinished = true;
 
-    @Schema(description = "관심 여부", example = "false", requiredMode = RequiredMode.REQUIRED)
-    private Boolean isBookmarked = false;
+    @Schema(description = "사진", requiredMode = RequiredMode.NOT_REQUIRED)
+    private List<UserStoreImageResponse> images;
 
     @Builder
-    private UserStoreListResponse(Long id, String name, String image, String city, double averageRating, int visitCount,
-                                  int reviewCount, int bookmarkCount, Integer estimatedWaitingTimeMinutes) {
+    private UserBookmarkResponse(Long id, Long storeId, String name, String city, int visitCount, int reviewCount, int bookmarkCount, double averageRating, Integer estimatedWaitingTimeMinutes, List<UserStoreImageResponse> images) {
         this.id = id;
+        this.storeId = storeId;
         this.name = name;
-        this.mainImage = image;
         this.city = city;
         this.visitCount = visitCount;
         this.reviewCount = reviewCount;
         this.bookmarkCount = bookmarkCount;
         this.averageRating = averageRating;
         this.estimatedWaitingTimeMinutes = estimatedWaitingTimeMinutes;
+        this.images = images;
     }
 
-    public static UserStoreListResponse of(Store store, Integer estimatedWaitingTime) {
-        String imageUrl = store.getImages() != null ? store.getImages().stream().findFirst().map(StoreImage::getImageUrl).orElse(null) : null;
-        return UserStoreListResponse.builder()
+    public static UserBookmarkResponse of(Bookmark bookmark, Integer estimatedWaitingTime) {
+        Store store = bookmark.getStore();
+        List<UserStoreImageResponse> images = store.getImages() != null ? store.getImages().stream()
+                .sorted(Comparator.comparing(StoreImage::getSortOrder).thenComparing(Comparator.comparing(StoreImage::getId).reversed()))
+                .map(UserStoreImageResponse::of)
+                .toList() : null;
+
+        return UserBookmarkResponse.builder()
                 .id(store.getId())
+                .storeId(store.getId())
                 .name(store.getName())
-                .image(imageUrl)
                 .city(store.getCity())
                 .visitCount(store.getVisitCount())
                 .reviewCount(store.getReviewCount())
                 .bookmarkCount(store.getBookmarkCount())
                 .averageRating(store.getAverageRating())
                 .estimatedWaitingTimeMinutes(estimatedWaitingTime)
+                .images(images)
                 .build();
     }
 
@@ -77,7 +88,4 @@ public class UserStoreListResponse {
         isFinished = finished;
     }
 
-    public void setBookmarked(Boolean bookmarked) {
-        isBookmarked = bookmarked;
-    }
 }
