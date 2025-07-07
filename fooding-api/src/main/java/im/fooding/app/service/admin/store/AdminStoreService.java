@@ -6,10 +6,12 @@ import im.fooding.app.dto.request.admin.store.AdminUpdateStoreRequest;
 import im.fooding.app.dto.response.admin.store.AdminStoreResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePosition;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
+import im.fooding.core.service.region.RegionService;
 import im.fooding.core.service.store.StoreMemberService;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.user.UserAuthorityService;
@@ -30,6 +32,7 @@ public class AdminStoreService {
     private final StoreMemberService storeMemberService;
     private final UserService userService;
     private final UserAuthorityService userAuthorityService;
+    private final RegionService regionService;
 
     @Transactional(readOnly = true)
     public PageResponse<AdminStoreResponse> list(AdminSearchStoreRequest request) {
@@ -49,10 +52,11 @@ public class AdminStoreService {
     @Transactional
     public Long create(AdminCreateStoreRequest request) {
         User user = userService.findById(request.getOwnerId());
+        Region region = regionService.get(request.getRegionId());
 
         userAuthorityService.checkPermission(user.getAuthorities(), Role.CEO);
 
-        Store store = storeService.create(user, request.getName(), request.getCity(), request.getAddress(), request.getCategory(),
+        Store store = storeService.create(user, request.getName(), region, request.getCity(), request.getAddress(), request.getCategory(),
                 request.getDescription(), request.getPriceCategory(), request.getEventDescription(), request.getContactNumber(),
                 request.getDirection(), request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(),
                 request.getIsTakeOut(), request.getLatitude(), request.getLongitude());
@@ -64,7 +68,9 @@ public class AdminStoreService {
 
     @Transactional
     public void update(Long id, AdminUpdateStoreRequest request) {
-        storeService.update(id, request.getName(), request.getCity(), request.getAddress(), request.getCategory(), request.getDescription(),
+        Region region = regionService.get(request.getRegionId());
+
+        storeService.update(id, request.getName(), region, request.getCity(), request.getAddress(), request.getCategory(), request.getDescription(),
                 request.getContactNumber(), request.getPriceCategory(), request.getEventDescription(), request.getDirection(),
                 request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude());
     }
