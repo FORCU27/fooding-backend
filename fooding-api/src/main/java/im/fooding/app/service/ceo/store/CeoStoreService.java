@@ -1,6 +1,7 @@
 package im.fooding.app.service.ceo.store;
 
 import im.fooding.app.dto.request.ceo.store.CeoCreateStoreRequest;
+import im.fooding.app.dto.request.ceo.store.CeoSearchStoreRequest;
 import im.fooding.app.dto.request.ceo.store.CeoUpdateStoreRequest;
 import im.fooding.app.dto.response.ceo.store.CeoStoreResponse;
 import im.fooding.core.model.region.Region;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +29,10 @@ public class CeoStoreService {
     private final RegionService regionService;
 
     @Transactional(readOnly = true)
-    public List<CeoStoreResponse> list(long userId) {
-        return storeService.list(userId).stream().map(CeoStoreResponse::new).collect(Collectors.toList());
+    public List<CeoStoreResponse> list(long userId, CeoSearchStoreRequest search) {
+        return storeService.list(userId, search.toStoreFilter()).stream()
+                .map(CeoStoreResponse::new)
+                .toList();
     }
 
     @Transactional(readOnly = true)

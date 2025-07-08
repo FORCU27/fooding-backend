@@ -1,6 +1,7 @@
 package im.fooding.app.controller.ceo.stores;
 
 import im.fooding.app.dto.request.ceo.store.CeoCreateStoreRequest;
+import im.fooding.app.dto.request.ceo.store.CeoSearchStoreRequest;
 import im.fooding.app.dto.request.ceo.store.CeoUpdateStoreRequest;
 import im.fooding.app.dto.response.ceo.store.CeoStoreResponse;
 import im.fooding.app.service.ceo.store.CeoStoreService;
@@ -24,8 +25,11 @@ public class CeoStoreController {
 
     @GetMapping
     @Operation(summary = "가게 전체 조회")
-    public ApiResult<List<CeoStoreResponse>> list(@AuthenticationPrincipal UserInfo userInfo) {
-        return ApiResult.ok(service.list(userInfo.getId()));
+    public ApiResult<List<CeoStoreResponse>> list(
+            @AuthenticationPrincipal UserInfo userInfo,
+            CeoSearchStoreRequest search
+    ) {
+        return ApiResult.ok(service.list(userInfo.getId(), search));
     }
 
     @GetMapping("/{id}")

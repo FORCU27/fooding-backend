@@ -1,5 +1,6 @@
 package im.fooding.core.service.store;
 
+import im.fooding.core.dto.request.store.StoreFilter;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.region.Region;
@@ -40,8 +41,8 @@ public class StoreService {
      * @param userId
      * @return List<Store>
      */
-    public List<Store> list(long userId) {
-        return storeRepository.listByUserId(userId);
+    public List<Store> list(long userId, StoreFilter filter) {
+        return storeRepository.listByUserId(userId, filter);
     }
 
     /**
