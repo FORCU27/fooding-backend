@@ -6,12 +6,15 @@ import im.fooding.core.TestConfig;
 import im.fooding.core.dto.request.waiting.WaitingSettingCreateRequest;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingSetting;
+import im.fooding.core.repository.region.RegionRepository;
 import im.fooding.core.repository.store.StoreRepository;
 import im.fooding.core.repository.waiting.WaitingRepository;
 import im.fooding.core.repository.waiting.WaitingSettingRepository;
+import im.fooding.core.support.dummy.RegionDummy;
 import im.fooding.core.support.dummy.StoreDummy;
 import im.fooding.core.support.dummy.WaitingDummy;
 import im.fooding.core.support.dummy.WaitingSettingDummy;
@@ -30,19 +33,22 @@ class WaitingSettingServiceTest extends TestConfig {
     private final WaitingSettingRepository waitingSettingRepository;
     private final WaitingRepository waitingRepository;
     private final StoreRepository storeRepository;
+    private final RegionRepository regionRepository;
 
     @AfterEach
     void tearDown() {
         waitingSettingRepository.deleteAll();
         waitingRepository.deleteAll();
         storeRepository.deleteAll();
+        regionRepository.deleteAll();
     }
 
     @Test
     @DisplayName("활성화된 웨이팅 세팅을 조회할 수 있다.")
     public void testGetActive() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         Waiting waiting = waitingRepository.save(WaitingDummy.create(store));
         waitingSettingRepository.save(WaitingSettingDummy.create(waiting, true));
 
@@ -58,7 +64,8 @@ class WaitingSettingServiceTest extends TestConfig {
     @DisplayName("활성화된 웨이팅 세팅이 존재하지 않는 경우 활성 웨이팅 세팅을 조회할 수 없다.")
     public void testGetActive_fail_whenNotFoundActiveSetting() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         Waiting waiting = waitingRepository.save(WaitingDummy.create(store));
         waitingSettingRepository.save(WaitingSettingDummy.create(waiting, false));
 
@@ -72,7 +79,8 @@ class WaitingSettingServiceTest extends TestConfig {
     @DisplayName("웨이팅 세팅을 생성할 수 있다.")
     public void testCreate() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         Waiting waiting = waitingRepository.save(WaitingDummy.create(store));
         WaitingSettingCreateRequest request = WaitingSettingCreateRequest.builder()
                 .waiting(waiting)
@@ -93,7 +101,8 @@ class WaitingSettingServiceTest extends TestConfig {
     @DisplayName("이미 활성화된 웨이팅 세팅이 존재하는 경우 활성 웨이팅 세팅을 생성할 수 없다.")
     public void testCreate_fail_whenAlreadyExistActiveWaitingSetting() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         Waiting waiting = waitingRepository.save(WaitingDummy.create(store));
         WaitingSettingCreateRequest request = WaitingSettingCreateRequest.builder()
                 .waiting(waiting)
