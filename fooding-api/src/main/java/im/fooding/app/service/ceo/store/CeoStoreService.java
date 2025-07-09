@@ -40,10 +40,10 @@ public class CeoStoreService {
     public Long create(CeoCreateStoreRequest request, long userId) {
         User user = userService.findById(userId);
 
-        Store store = storeService.create(user, request.getName(), request.getCity(), request.getAddress(), request.getCategory(),
-                request.getDescription(), request.getPriceCategory(), request.getEventDescription(), request.getContactNumber(),
-                request.getDirection(), request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(),
-                request.getIsTakeOut(), request.getLatitude(), request.getLongitude());
+        Store store = storeService.create(user, request.getName(), "", "", "",
+                "", "", "", "",
+                "", "", true, true,
+                true, null, null);
 
         storeMemberService.create(store, user, StorePosition.OWNER);
 
