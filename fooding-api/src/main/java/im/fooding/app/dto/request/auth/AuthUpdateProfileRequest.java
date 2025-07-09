@@ -28,12 +28,16 @@ public class AuthUpdateProfileRequest {
     @Schema(description = "마케팅 수신 동의 여부", example = "true")
     private boolean marketingConsent;
 
+    @Schema(description = "자기소개", example="안녕하세요")
+    private String description;
+
     @Builder
-    public AuthUpdateProfileRequest(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent) {
+    public AuthUpdateProfileRequest(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description) {
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
         this.referralCode = referralCode;
         this.marketingConsent = marketingConsent;
+        this.description = description;
     }
 }

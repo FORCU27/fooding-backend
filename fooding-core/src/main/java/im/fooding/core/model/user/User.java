@@ -2,6 +2,7 @@ package im.fooding.core.model.user;
 
 import im.fooding.core.model.BaseEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,10 +36,19 @@ public class User extends BaseEntity {
     @Column(length = 20)
     private String nickname;
 
+    @Column(length = 11)
     private String phoneNumber;
 
     @Column(length = 20)
     private String referralCode;
+
+    @Size( max = 150, message = "소개는 최대 150자까지 가능합니다." )
+    @Column( length = 150 )
+    private String description;
+
+    private String recommender;
+
+    private String name;
 
     private String profileImage;
 
@@ -80,7 +90,10 @@ public class User extends BaseEntity {
     List<UserAuthority> authorities;
 
     @Builder
-    public User(String email, String password, AuthProvider provider, String nickname, String phoneNumber, String referralCode, String profileImage, boolean termsAgreed, boolean privacyPolicyAgreed, boolean marketingConsent, Gender gender) {
+    public User(String email, String password, AuthProvider provider, String nickname, String phoneNumber,
+                String referralCode, String profileImage, boolean termsAgreed, boolean privacyPolicyAgreed,
+                boolean marketingConsent, Gender gender, String name, String description, String recommender
+    ) {
         this.email = email;
         this.password = password;
         this.provider = provider;
@@ -92,6 +105,9 @@ public class User extends BaseEntity {
         this.privacyPolicyAgreed = privacyPolicyAgreed;
         this.marketingConsent = marketingConsent;
         this.gender = gender;
+        this.name = name;
+        this.description = description;
+        this.recommender =  recommender;
     }
 
     public void updatedRefreshToken(String updatedRefreshToken) {
@@ -113,6 +129,8 @@ public class User extends BaseEntity {
             this.marketingConsentAt = null;
         }
     }
+
+    public void updateDescription( String description ){ this.description = description; }
 
     public void updatePassword(String password) {
         this.password = password;

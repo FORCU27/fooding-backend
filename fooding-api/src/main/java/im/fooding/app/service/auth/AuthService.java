@@ -61,7 +61,7 @@ public class AuthService {
      */
     @Transactional
     public void update(long id, AuthUpdateProfileRequest request) {
-        userService.update(id, request.getNickname(), request.getPhoneNumber(), request.getGender(), request.getReferralCode(), request.isMarketingConsent());
+        userService.update(id, request.getNickname(), request.getPhoneNumber(), request.getGender(), request.getReferralCode(), request.isMarketingConsent(), request.getDescription());
     }
 
     /**
@@ -88,7 +88,8 @@ public class AuthService {
      */
     @Transactional
     public void register(AuthCreateRequest request) {
-        User user = userService.create(request.getEmail(), request.getNickname(), passwordEncoder.encode(request.getPassword()), null, Gender.NONE);
+        User user = userService.create(request.getEmail(), request.getNickname(),
+                passwordEncoder.encode(request.getPassword()), null, Gender.NONE, request.getName(), request.getDescription(), request.getRecommender());
         userAuthorityService.create(user, request.getRole());
     }
 

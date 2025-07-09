@@ -30,7 +30,7 @@ public class UserService {
      * @param phoneNumber
      * @param gender
      */
-    public User create(String email, String nickname, String password, String phoneNumber, Gender gender) {
+    public User create(String email, String nickname, String password, String phoneNumber, Gender gender, String name, String description, String recommender) {
         checkDuplicateEmail(email, AuthProvider.FOODING);
         if (checkDuplicatedNickname(nickname)) {
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
@@ -46,6 +46,9 @@ public class UserService {
                 .phoneNumber(phoneNumber)
                 .provider(AuthProvider.FOODING)
                 .gender(gender)
+                .name( name )
+                .description( description )
+                .recommender( recommender )
                 .build();
         return userRepository.save(user);
     }
@@ -111,7 +114,7 @@ public class UserService {
      * @param referralCode
      * @param marketingConsent
      */
-    public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent) {
+    public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description) {
         User user = findById(id);
         if (!nickname.equals(user.getNickname()) && checkDuplicatedNickname(nickname)) {
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
@@ -119,6 +122,7 @@ public class UserService {
         if (StringUtils.hasText(phoneNumber) && !phoneNumber.equals(user.getPhoneNumber())) {
             checkDuplicatePhoneNumber(phoneNumber);
         }
+        if (StringUtils.hasText(description)) user.updateDescription( description );
 
         user.update(nickname, phoneNumber, gender, referralCode, marketingConsent);
     }
