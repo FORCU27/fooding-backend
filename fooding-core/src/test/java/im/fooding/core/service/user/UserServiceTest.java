@@ -118,7 +118,7 @@ class UserServiceTest extends TestConfig {
         String newNickname = "관리자2";
 
         //when
-        userService.update(savedUser.getId(), newNickname, "010-1234-5678", Gender.MALE, null, true);
+        userService.update(savedUser.getId(), newNickname, "010-1234-5678", Gender.MALE, null, true, false);
 
         //then
         assertEquals(newNickname, savedUser.getNickname());
