@@ -30,9 +30,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
     protected ResponseEntity<ErrorResponse> handleCustomException(final ApiException e, HttpServletRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(e.getErrorCode(), request.getRequestURI(), request.getMethod());
+        String url = getRequestFullUrl(request);
+        ErrorResponse errorResponse = new ErrorResponse(e.getErrorCode(), url, request.getMethod());
         if (e.isNotifyTarget()) {
-            sendError(errorResponse, e.getDetailMessage());
+            sendError(errorResponse, e.getMessage(), url);
         }
         return ResponseEntity
                 .status(e.getErrorCode().getStatus().value())
@@ -41,7 +42,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     protected ResponseEntity<ErrorResponse> HttpRequestMethodNotSupportedException(final HttpRequestMethodNotSupportedException e, HttpServletRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.METHOD_NOT_ALLOWED, request.getRequestURI(), request.getMethod());
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.METHOD_NOT_ALLOWED, getRequestFullUrl(request), request.getMethod());
         return ResponseEntity
                 .status(ErrorCode.METHOD_NOT_ALLOWED.getStatus().value())
                 .body(errorResponse);
@@ -49,7 +50,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoHandlerFoundException.class)
     protected ResponseEntity<ErrorResponse> NoHandlerFoundException(final NoHandlerFoundException e, HttpServletRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.NOT_FOUND, request.getRequestURI(), request.getMethod());
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.NOT_FOUND, getRequestFullUrl(request), request.getMethod());
         return ResponseEntity
                 .status(ErrorCode.NOT_FOUND.getStatus().value())
                 .body(errorResponse);
@@ -57,7 +58,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     protected ResponseEntity<ErrorResponse> AccessDeniedException(final AccessDeniedException e, HttpServletRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.ACCESS_DENIED_EXCEPTION, request.getRequestURI(), request.getMethod());
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.ACCESS_DENIED_EXCEPTION, getRequestFullUrl(request), request.getMethod());
         return ResponseEntity
                 .status(ErrorCode.ACCESS_DENIED_EXCEPTION.getStatus())
                 .body(errorResponse);
@@ -65,7 +66,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse> MethodArgumentNotValidException(final MethodArgumentNotValidException e, HttpServletRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.METHOD_ARGUMENT_NOT_VALID, request.getRequestURI(), request.getMethod());
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.METHOD_ARGUMENT_NOT_VALID, getRequestFullUrl(request), request.getMethod());
         errorResponse.setDetailedErrors(new ArrayList<>());
         errorResponse.getDetailedErrors().addAll(
                 e.getBindingResult().getFieldErrors()
@@ -82,7 +83,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     protected ResponseEntity<ErrorResponse> HttpMessageNotReadableException(final HttpMessageNotReadableException e, HttpServletRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.NOT_READABLE, request.getRequestURI(), request.getMethod());
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.NOT_READABLE, getRequestFullUrl(request), request.getMethod());
         return ResponseEntity
                 .status(ErrorCode.NOT_READABLE.getStatus().value())
                 .body(errorResponse);
@@ -90,7 +91,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     protected ResponseEntity<ErrorResponse> MissingServletRequestParameterException(final MissingServletRequestParameterException e, HttpServletRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.MISSING_REQUEST_PARAMETER, request.getRequestURI(), request.getMethod());
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.MISSING_REQUEST_PARAMETER, getRequestFullUrl(request), request.getMethod());
         return ResponseEntity
                 .status(ErrorCode.MISSING_REQUEST_PARAMETER.getStatus().value())
                 .body(errorResponse);
@@ -98,7 +99,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageConversionException.class)
     protected ResponseEntity<ErrorResponse> HttpMessageConversionException(final HttpMessageConversionException e, HttpServletRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.NOT_READABLE, request.getRequestURI(), request.getMethod());
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.NOT_READABLE, getRequestFullUrl(request), request.getMethod());
         return ResponseEntity
                 .status(ErrorCode.NOT_READABLE.getStatus().value())
                 .body(errorResponse);
@@ -110,8 +111,9 @@ public class GlobalExceptionHandler {
             DataIntegrityViolationException.class
     })
     protected ResponseEntity<ErrorResponse> DatabaseException(final Exception e, HttpServletRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.DATABASE_EXCEPTION, request.getRequestURI(), request.getMethod());
-        sendError(errorResponse, e.getMessage());
+        String url = getRequestFullUrl(request);
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.DATABASE_EXCEPTION, url, request.getMethod());
+        sendError(errorResponse, e.getMessage(), url);
         return ResponseEntity
                 .status(ErrorCode.DATABASE_EXCEPTION.getStatus().value())
                 .body(errorResponse);
@@ -119,15 +121,25 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> Exception(final Exception e, HttpServletRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR, request.getRequestURI(), request.getMethod());
+        String url = getRequestFullUrl(request);
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR, url, request.getMethod());
         e.printStackTrace();
-        sendError(errorResponse, e.getMessage());
+        sendError(errorResponse, e.getMessage(), url);
         return ResponseEntity
                 .status(ErrorCode.INTERNAL_SERVER_ERROR.getStatus().value())
                 .body(errorResponse);
     }
 
-    private void sendError(ErrorResponse errorResponse, String message) {
-        slackClient.sendErrorMessage(errorResponse, message);
+    private void sendError(ErrorResponse errorResponse, String message, String url) {
+        slackClient.sendErrorMessage(errorResponse, message, url);
+    }
+
+    private String getRequestFullUrl(HttpServletRequest request) {
+        String url = request.getRequestURL().toString();
+        String queryString = request.getQueryString();
+        if (queryString != null) {
+            url += "?" + queryString;
+        }
+        return url;
     }
 }

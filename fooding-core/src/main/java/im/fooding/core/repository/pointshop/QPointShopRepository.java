@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 
 public interface QPointShopRepository {
-    Page<PointShop> list(Long storeId, LocalDate now, String searchString, Pageable pageable);
+    Page<PointShop> list(Long storeId, boolean isActive, LocalDate now, String searchString, Pageable pageable);
 }

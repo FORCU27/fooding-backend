@@ -20,7 +20,7 @@ import java.time.LocalDate;
 public class PointShopService {
     private final PointShopRepository repository;
 
-    public PointShop create(Store store, String name, int point, ProvideType provideType, String conditions, Integer totalQuantity, boolean isActive, LocalDate issueStartOn, LocalDate issueEndOn) {
+    public PointShop create(Store store, String name, int point, ProvideType provideType, String conditions, Integer totalQuantity, LocalDate issueStartOn, LocalDate issueEndOn) {
         PointShop pointShop = PointShop.builder()
                 .store(store)
                 .name(name)
@@ -28,16 +28,15 @@ public class PointShopService {
                 .provideType(provideType)
                 .conditions(conditions)
                 .totalQuantity(totalQuantity)
-                .isActive(isActive)
                 .issueStartOn(issueStartOn)
                 .issueEndOn(issueEndOn)
                 .build();
         return repository.save(pointShop);
     }
 
-    public void update(long id, String name, int point, ProvideType provideType, String conditions, Integer totalQuantity, boolean isActive, LocalDate issueStartOn, LocalDate issueEndOn) {
+    public void update(long id, String name, int point, ProvideType provideType, String conditions, Integer totalQuantity, LocalDate issueStartOn, LocalDate issueEndOn) {
         PointShop pointShop = findById(id);
-        pointShop.update(name, point, provideType, conditions, totalQuantity, isActive, issueStartOn, issueEndOn);
+        pointShop.update(name, point, provideType, conditions, totalQuantity, issueStartOn, issueEndOn);
     }
 
     public PointShop findById(long id) {
@@ -46,16 +45,27 @@ public class PointShopService {
                 .orElseThrow(() -> new ApiException(ErrorCode.POINT_SHOP_NOT_FOUND));
     }
 
-    public Page<PointShop> list(Long storeId, LocalDate now, String searchString, Pageable pageable) {
-        return repository.list(storeId, now, searchString, pageable);
+    public Page<PointShop> list(Long storeId, boolean isActive, LocalDate now, String searchString, Pageable pageable) {
+        return repository.list(storeId, isActive, now, searchString, pageable);
     }
 
-    public void issue(PointShop pointShop) {
+    public void issue(long id) {
+        PointShop pointShop = findById(id);
         pointShop.issue();
     }
 
     public void delete(long id, long deletedBy) {
         PointShop pointShop = findById(id);
         pointShop.delete(deletedBy);
+    }
+
+    public void active(long id) {
+        PointShop pointShop = findById(id);
+        pointShop.active();
+    }
+
+    public void inactive(long id) {
+        PointShop pointShop = findById(id);
+        pointShop.inactive();
     }
 }

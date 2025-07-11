@@ -20,13 +20,14 @@ public class QPointShopRepositoryImpl implements QPointShopRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<PointShop> list(Long storeId, LocalDate now, String searchString, Pageable pageable) {
+    public Page<PointShop> list(Long storeId, boolean isActive, LocalDate now, String searchString, Pageable pageable) {
         List<PointShop> results = query
                 .select(pointShop)
                 .from(pointShop)
                 .leftJoin(pointShop.store, store).fetchJoin()
                 .where(
                         pointShop.deleted.isFalse(),
+                        pointShop.isActive.eq(isActive),
                         storeDeletedIfStoreExists(),
                         searchStore(storeId),
                         search(searchString),
@@ -42,6 +43,7 @@ public class QPointShopRepositoryImpl implements QPointShopRepository {
                 .from(pointShop)
                 .where(
                         pointShop.deleted.isFalse(),
+                        pointShop.isActive.eq(isActive),
                         storeDeletedIfStoreExists(),
                         searchStore(storeId),
                         search(searchString),

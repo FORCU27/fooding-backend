@@ -47,25 +47,24 @@ public class PointShop extends BaseEntity {
     private LocalDate issueEndOn;
 
     @Builder
-    public PointShop(Store store, String name, int point, ProvideType provideType, String conditions, Integer totalQuantity, boolean isActive, LocalDate issueStartOn, LocalDate issueEndOn) {
+    public PointShop(Store store, String name, int point, ProvideType provideType, String conditions, Integer totalQuantity, LocalDate issueStartOn, LocalDate issueEndOn) {
         this.store = store;
         this.name = name;
         this.point = point;
         this.provideType = provideType;
         this.conditions = conditions;
         this.totalQuantity = totalQuantity;
-        this.isActive = isActive;
+        this.isActive = true;
         this.issueStartOn = issueStartOn;
         this.issueEndOn = issueEndOn;
     }
 
-    public void update(String name, int point, ProvideType provideType, String conditions, Integer totalQuantity, boolean isActive, LocalDate issueStartOn, LocalDate issueEndOn) {
+    public void update(String name, int point, ProvideType provideType, String conditions, Integer totalQuantity, LocalDate issueStartOn, LocalDate issueEndOn) {
         this.name = name;
         this.point = point;
         this.provideType = provideType;
         this.conditions = conditions;
         this.totalQuantity = totalQuantity;
-        this.isActive = isActive;
         this.issueStartOn = issueStartOn;
         this.issueEndOn = issueEndOn;
     }
@@ -92,5 +91,13 @@ public class PointShop extends BaseEntity {
         boolean started = !today.isBefore(this.issueStartOn);
         boolean notEnded = (this.issueEndOn == null || !today.isAfter(this.issueEndOn));
         return started && notEnded;
+    }
+
+    public void active() {
+        this.isActive = true;
+    }
+
+    public void inactive() {
+        this.isActive = false;
     }
 }
