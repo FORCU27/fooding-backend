@@ -1,5 +1,6 @@
 package im.fooding.core.repository.store;
 
+import im.fooding.core.dto.request.store.StoreFilter;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreSortType;
 import org.hibernate.query.SortDirection;
@@ -18,7 +19,7 @@ public interface QStoreRepository {
             boolean includeDeleted
     );
 
-    List<Store> listByUserId(long userId);
+    List<Store> listByUserId(long userId, StoreFilter filter);
 
     Optional<Store> retrieve(long storeId);
 }

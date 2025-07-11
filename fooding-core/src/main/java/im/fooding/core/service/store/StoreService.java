@@ -1,7 +1,9 @@
 package im.fooding.core.service.store;
 
+import im.fooding.core.dto.request.store.StoreFilter;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.user.User;
@@ -39,8 +41,8 @@ public class StoreService {
      * @param userId
      * @return List<Store>
      */
-    public List<Store> list(long userId) {
-        return storeRepository.listByUserId(userId);
+    public List<Store> list(long userId, StoreFilter filter) {
+        return storeRepository.listByUserId(userId, filter);
     }
 
     /**
@@ -68,12 +70,29 @@ public class StoreService {
     /**
      * 가게 생성
      */
-    public Store create(User owner, String name, String city, String address, String category, String description,
-                        String priceCategory, String eventDescription, String contactNumber, String direction,
-                        String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut, Double latitude, Double longitude) {
+    public Store create(
+            User owner,
+            String name,
+            Region region,
+            String city,
+            String address,
+            String category,
+            String description,
+            String priceCategory,
+            String eventDescription,
+            String contactNumber,
+            String direction,
+            String information,
+            boolean isParkingAvailable,
+            boolean isNewOpen,
+            boolean isTakeOut,
+            Double latitude,
+            Double longitude
+    ) {
         Store store = Store.builder()
                 .owner(owner)
                 .name(name)
+                .region(region)
                 .city(city)
                 .address(address)
                 .category(category)
@@ -92,11 +111,27 @@ public class StoreService {
         return storeRepository.save(store);
     }
 
-    public void update(long id, String name, String city, String address, String category, String description,
-                       String contactNumber, String priceCategory, String eventDescription, String direction,
-                       String information, boolean isParkingAvailable, boolean isNewOpen, boolean isTakeOut, Double latitude, Double longitude) {
+    public void update(
+            long id,
+            String name,
+            Region region,
+            String city,
+            String address,
+            String category,
+            String description,
+            String contactNumber,
+            String priceCategory,
+            String eventDescription,
+            String direction,
+            String information,
+            boolean isParkingAvailable,
+            boolean isNewOpen,
+            boolean isTakeOut,
+            Double latitude,
+            Double longitude
+    ) {
         Store store = findById(id);
-        store.update(name, city, address, category, description, contactNumber, priceCategory, eventDescription,
+        store.update(name, region, city, address, category, description, contactNumber, priceCategory, eventDescription,
                 direction, information, isParkingAvailable, isNewOpen, isTakeOut, latitude, longitude);
     }
 
