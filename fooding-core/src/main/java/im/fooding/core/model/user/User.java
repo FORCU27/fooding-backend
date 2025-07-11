@@ -72,6 +72,12 @@ public class User extends BaseEntity {
 
     private LocalDateTime marketingConsentAt;
 
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private boolean pushAgreed;
+
+    private LocalDateTime pushAgreedAt;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Gender gender;
@@ -80,7 +86,7 @@ public class User extends BaseEntity {
     List<UserAuthority> authorities;
 
     @Builder
-    public User(String email, String password, AuthProvider provider, String nickname, String phoneNumber, String referralCode, String profileImage, boolean termsAgreed, boolean privacyPolicyAgreed, boolean marketingConsent, Gender gender) {
+    public User(String email, String password, AuthProvider provider, String nickname, String phoneNumber, String referralCode, String profileImage, Gender gender) {
         this.email = email;
         this.password = password;
         this.provider = provider;
@@ -88,10 +94,18 @@ public class User extends BaseEntity {
         this.referralCode = referralCode;
         this.profileImage = profileImage;
         this.phoneNumber = phoneNumber;
-        this.termsAgreed = termsAgreed;
-        this.privacyPolicyAgreed = privacyPolicyAgreed;
-        this.marketingConsent = marketingConsent;
         this.gender = gender;
+        //필수
+        this.termsAgreed = true;
+        this.termsAgreedAt = LocalDateTime.now();
+        this.privacyPolicyAgreed = true;
+        this.privacyPolicyAgreedAt = LocalDateTime.now();
+
+        //선택
+        this.marketingConsent = false;
+        this.marketingConsentAt = this.marketingConsentAt == null ? LocalDateTime.now() : this.marketingConsentAt;
+        this.pushAgreed = false;
+        this.pushAgreedAt = this.pushAgreedAt == null ? LocalDateTime.now() : this.pushAgreedAt;
     }
 
     public void updatedRefreshToken(String updatedRefreshToken) {
@@ -100,7 +114,7 @@ public class User extends BaseEntity {
         this.lastLoggedInAt = LocalDateTime.now();
     }
 
-    public void update(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent) {
+    public void update(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, boolean pushAgreed) {
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
@@ -111,6 +125,14 @@ public class User extends BaseEntity {
         } else {
             this.marketingConsent = false;
             this.marketingConsentAt = null;
+        }
+
+        if(pushAgreed) {
+            this.pushAgreed = true;
+            this.pushAgreedAt = this.pushAgreedAt == null ? LocalDateTime.now() : this.pushAgreedAt;
+        } else {
+            this.pushAgreed = false;
+            this.pushAgreedAt = null;
         }
     }
 
