@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -31,6 +32,10 @@ public class StorePost extends BaseEntity {
     @Lob
     @Column(nullable = false)
     private String content;
+
+    @OneToMany(mappedBy = "storePost")
+    @BatchSize(size = 10)
+    private List<StorePostImage> images;
 
     @Convert(converter = StringListConverter.class)
     @Column(name = "tags")
