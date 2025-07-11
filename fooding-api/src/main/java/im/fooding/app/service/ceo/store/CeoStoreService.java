@@ -44,9 +44,8 @@ public class CeoStoreService {
     @Transactional
     public Long create(CeoCreateStoreRequest request, long userId) {
         User user = userService.findById(userId);
-        Region region = regionService.get(request.getRegionId());
 
-        Store store = storeService.create(user, request.getName(), region, "", "", "",
+        Store store = storeService.create(user, request.getName(), null, "", "", "",
                 "", "", "", "", "", "", true, true, true, null, null);
 
         storeMemberService.create(store, user, StorePosition.OWNER);
