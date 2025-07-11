@@ -3,15 +3,18 @@ package im.fooding.core.service.waiting;
 import static org.junit.jupiter.api.Assertions.*;
 
 import im.fooding.core.TestConfig;
+import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.WaitingLog;
 import im.fooding.core.model.waiting.WaitingLogType;
 import im.fooding.core.model.waiting.WaitingUser;
+import im.fooding.core.repository.region.RegionRepository;
 import im.fooding.core.repository.store.StoreRepository;
 import im.fooding.core.repository.waiting.StoreWaitingRepository;
 import im.fooding.core.repository.waiting.WaitingLogRepository;
 import im.fooding.core.repository.waiting.WaitingUserRepository;
+import im.fooding.core.support.dummy.RegionDummy;
 import im.fooding.core.support.dummy.StoreDummy;
 import im.fooding.core.support.dummy.StoreWaitingDummy;
 import im.fooding.core.support.dummy.WaitingUserDummy;
@@ -34,6 +37,7 @@ class WaitingLogServiceTest extends TestConfig {
     private final WaitingUserRepository waitingUserRepository;
     private final StoreRepository storeRepository;
     private final StoreWaitingRepository storeWaitingRepository;
+    private final RegionRepository regionRepository;
 
     @AfterEach
     void tearDown() {
@@ -41,13 +45,15 @@ class WaitingLogServiceTest extends TestConfig {
         waitingUserRepository.deleteAll();
         storeRepository.deleteAll();
         storeWaitingRepository.deleteAll();
+        regionRepository.deleteAll();
     }
 
     @Test
     @DisplayName("register 로그를 남기면 WAITING_REGISTRATION 으로 로그가 남아야 한다.")
     public void save_WAITING_REGISTRATION_when_log_register() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         WaitingUser user = waitingUserRepository.save(WaitingUserDummy.createWithPhoneNumber(store, "01012345678"));
         StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
 
@@ -67,7 +73,8 @@ class WaitingLogServiceTest extends TestConfig {
     @DisplayName("특정 가게 웨이팅과 관련된 로그를 모두 조회할 수 있다.")
     public void testList() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         WaitingUser user = waitingUserRepository.save(WaitingUserDummy.createWithPhoneNumber(store, "01012345678"));
         StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
         List<WaitingLog> waitingLogs = List.of(

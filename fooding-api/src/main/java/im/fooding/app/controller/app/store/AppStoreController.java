@@ -1,5 +1,6 @@
 package im.fooding.app.controller.app.store;
 
+import im.fooding.app.dto.request.app.store.AppSearchStoreRequest;
 import im.fooding.app.dto.response.app.store.AppStoreResponse;
 import im.fooding.app.service.app.store.AppStoreService;
 import im.fooding.core.common.ApiResult;
@@ -24,8 +25,11 @@ public class AppStoreController {
 
     @GetMapping
     @Operation(summary = "가게 리스트 조회")
-    public ApiResult<List<AppStoreResponse>> list(@AuthenticationPrincipal UserInfo userInfo) {
-        return ApiResult.ok(service.list(userInfo.getId()));
+    public ApiResult<List<AppStoreResponse>> list(
+            @AuthenticationPrincipal UserInfo userInfo,
+            AppSearchStoreRequest search
+    ) {
+        return ApiResult.ok(service.list(userInfo.getId(), search));
     }
 
     @GetMapping("/{id}")
