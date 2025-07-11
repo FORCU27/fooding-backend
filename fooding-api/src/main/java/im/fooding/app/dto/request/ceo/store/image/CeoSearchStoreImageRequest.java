@@ -1,8 +1,7 @@
-package im.fooding.app.dto.request.ceo.store;
+package im.fooding.app.dto.request.ceo.store.image;
 
 import im.fooding.core.common.BasicSearch;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
