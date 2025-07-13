@@ -18,7 +18,7 @@ public class AdminCreateUserRequest {
 
     @NotBlank
     @Size(min = 2, max = 50)
-    @Schema(description = "닉네임", example = "홍길동")
+    @Schema(description = "닉네임", example = "재빠른 홍길동")
     private String nickname;
 
     @NotBlank
@@ -36,6 +36,9 @@ public class AdminCreateUserRequest {
     @NotNull
     @Schema(description = "권한(CEO, ADMIN)", example = "ADMIN")
     private Role role;
+    
+    @Schema(description = "이름", example = "홍길동")
+    private String name;
 
     public AdminCreateUserRequest(String email, String nickname, String password, String phoneNumber, Gender gender, Role role) {
         this.email = email;

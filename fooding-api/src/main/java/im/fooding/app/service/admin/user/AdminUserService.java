@@ -47,14 +47,15 @@ public class AdminUserService {
         if (Role.USER == role) {
             throw new ApiException(ErrorCode.SOCIAL_LOGIN_ONLY);
         }
-        User user = userService.create(request.getEmail(), request.getNickname(), passwordEncoder.encode(request.getPassword()), request.getPhoneNumber(), request.getGender());
+        User user = userService.create(request.getEmail(), request.getNickname(),
+                passwordEncoder.encode(request.getPassword()), request.getPhoneNumber(), request.getGender(), request.getName(), "", "");
         userAuthorityService.create(user, request.getRole());
         return user.getId();
     }
 
     @Transactional
     public void update(long id, AdminUpdateUserRequest request) {
-        userService.update(id, request.getNickname(), request.getPhoneNumber(), request.getGender(), null, false);
+        userService.update(id, request.getNickname(), request.getPhoneNumber(), request.getGender(), null, false, "");
     }
 
     @Transactional
