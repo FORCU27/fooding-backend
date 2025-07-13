@@ -10,12 +10,14 @@ import im.fooding.core.TestConfig;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
 import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingStatus;
 import im.fooding.core.model.waiting.WaitingUser;
+import im.fooding.core.repository.region.RegionRepository;
 import im.fooding.core.repository.store.StoreRepository;
 import im.fooding.core.repository.waiting.StoreWaitingRepository;
 import im.fooding.core.repository.waiting.WaitingRepository;
@@ -23,6 +25,7 @@ import im.fooding.core.common.BasicSearch;
 import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.model.waiting.StoreWaitingStatus;
 import im.fooding.core.repository.waiting.WaitingUserRepository;
+import im.fooding.core.support.dummy.RegionDummy;
 import im.fooding.core.support.dummy.StoreDummy;
 import im.fooding.core.support.dummy.StoreWaitingDummy;
 import im.fooding.core.support.dummy.WaitingUserDummy;
@@ -44,6 +47,7 @@ class StoreWaitingServiceTest extends TestConfig {
     private final StoreRepository storeRepository;
     private final WaitingUserRepository waitingUserRepository;
     private final WaitingRepository waitingRepository;
+    private final RegionRepository regionRepository;
 
     @AfterEach
     void tearDown() {
@@ -51,13 +55,15 @@ class StoreWaitingServiceTest extends TestConfig {
         storeRepository.deleteAll();
         waitingUserRepository.deleteAll();
         waitingRepository.deleteAll();
+        regionRepository.deleteAll();
     }
 
     @Test
     @DisplayName("가게 id로 특정 상태의 가게의 웨이팅을 모두 가져올 수 있다.")
     void  get_all_store_waiting_with_specific_status() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         WaitingUser waitingUser = waitingUserRepository.save(WaitingUserDummy.create(store));
 
         StoreWaiting storeWaiting = StoreWaiting.builder()
@@ -132,7 +138,8 @@ class StoreWaitingServiceTest extends TestConfig {
     @DisplayName("웨이팅을 조회할 수 있다.")
     public void testGetStoreWaiting() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
         StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
 
@@ -157,7 +164,8 @@ class StoreWaitingServiceTest extends TestConfig {
     @DisplayName("웨이팅 등록시 가게의 현재 웨이팅 개수 + 1의 호출 번호로 등록된다.")
     public void callNumber_is_current_waiting_count_plus_1_when_register() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         WaitingUser user1 = waitingUserRepository.save(WaitingUserDummy.createWithPhoneNumber(store, "01012345678"));
         WaitingUser user2 = waitingUserRepository.save(WaitingUserDummy.createWithPhoneNumber(store, "01023456789"));
 
@@ -194,7 +202,8 @@ class StoreWaitingServiceTest extends TestConfig {
     @DisplayName("웨이팅이 오픈 상태인 경우를 검증에 성공한다.")
     public void validate_when_opened() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         Waiting waiting = waitingRepository.save(new Waiting(store, WaitingStatus.WAITING_OPEN));
 
         // when & then
@@ -206,7 +215,8 @@ class StoreWaitingServiceTest extends TestConfig {
     @DisplayName("웨이팅이 오픈 상태가 아닌 경우를 검증에 실패한다.")
     public void validate_when_not_opened() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         Waiting waiting = waitingRepository.save(new Waiting(store, WaitingStatus.PAUSED));
 
         // when & then
@@ -223,7 +233,8 @@ class StoreWaitingServiceTest extends TestConfig {
     @DisplayName("웨이팅을 취소할 수 있다.")
     public void testCancel() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
         StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
 
@@ -239,7 +250,8 @@ class StoreWaitingServiceTest extends TestConfig {
     @DisplayName("가게 웨이팅을 착석 처리할 수 있다.")
     public void testSeat() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
         StoreWaiting storeWaiting = storeWaitingRepository.save(spy(StoreWaitingDummy.create(user, store)));
 
@@ -254,7 +266,8 @@ class StoreWaitingServiceTest extends TestConfig {
     @DisplayName("호출시 호출 횟수를 증가한다.")
     public void testCall() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         WaitingUser user = waitingUserRepository.save(WaitingUserDummy.create(store));
         StoreWaiting storeWaiting = storeWaitingRepository.save(StoreWaitingDummy.create(user, store));
 

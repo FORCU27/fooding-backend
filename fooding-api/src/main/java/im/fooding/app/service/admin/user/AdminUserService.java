@@ -54,7 +54,7 @@ public class AdminUserService {
 
     @Transactional
     public void update(long id, AdminUpdateUserRequest request) {
-        userService.update(id, request.getNickname(), request.getPhoneNumber(), request.getGender(), null, false);
+        userService.update(id, request.getNickname(), request.getPhoneNumber(), request.getGender(), null, false, false);
     }
 
     @Transactional

@@ -7,11 +7,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import im.fooding.core.TestConfig;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingStatus;
+import im.fooding.core.repository.region.RegionRepository;
 import im.fooding.core.repository.store.StoreRepository;
 import im.fooding.core.repository.waiting.WaitingRepository;
+import im.fooding.core.support.dummy.RegionDummy;
 import im.fooding.core.support.dummy.StoreDummy;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
@@ -26,18 +29,21 @@ class WaitingServiceTest extends TestConfig {
     private final WaitingService waitingService;
     private final WaitingRepository waitingRepository;
     private final StoreRepository storeRepository;
+    private final RegionRepository regionRepository;
 
     @AfterEach
     void tearDown() {
         waitingRepository.deleteAll();
         storeRepository.deleteAll();
+        regionRepository.deleteAll();
     }
 
     @Test
     @DisplayName("id를 통해 웨이팅을 조회할 수 있다.")
     public void get_waiting_by_id() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         Waiting waiting = waitingRepository.save(new Waiting(store, WaitingStatus.WAITING_OPEN));
 
         // when & then
