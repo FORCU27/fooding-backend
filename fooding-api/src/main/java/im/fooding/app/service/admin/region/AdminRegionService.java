@@ -13,10 +13,6 @@ import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.service.region.RegionService;
 import jakarta.validation.Valid;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -73,20 +69,22 @@ public class AdminRegionService {
             throw new ApiException(ErrorCode.REGION_OVER_BATCH_INSERT_LIMIT);
         }
 
-        List<String> parentIds = request.getData().stream()
-                .map(AdminRegionCreateRequest::getParentRegionId)
-                .toList();
+        request.getData()
+                .forEach(adminRegionCreateRequest -> {
+                    Region parentRegion = getParentRegion(adminRegionCreateRequest);
+                    RegionCreateRequest regionCreateRequest = adminRegionCreateRequest.toRegionCreateRequest(parentRegion);
+                    regionService.create(regionCreateRequest);
+                });
+    }
 
-        Map<String, Region> parentRegions = regionService.listById(parentIds)
-                .stream()
-                .collect(Collectors.toMap(Region::getId, Function.identity()));
+    private Region getParentRegion(AdminRegionCreateRequest adminRegionCreateRequest) {
+        String parentRegionId = adminRegionCreateRequest.getParentRegionId();
 
-        List<RegionCreateRequest> regionCreateRequests = request.getData().stream()
-                .map(data ->
-                        data.toRegionCreateRequest(parentRegions.get(data.getParentRegionId()))
-                )
-                .toList();
+        // hack: KR-36110(세종특별자치시)
+        if (parentRegionId == null || parentRegionId.equals("KR-36")) {
+            return null;
+        }
 
-        regionService.batchCreate(regionCreateRequests);
+        return regionService.get(parentRegionId);
     }
 }
