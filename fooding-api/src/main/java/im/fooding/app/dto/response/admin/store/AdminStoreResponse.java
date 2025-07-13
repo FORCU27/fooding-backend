@@ -17,6 +17,9 @@ public class AdminStoreResponse {
     @Schema(description = "가게명", example = "홍가네", requiredMode = RequiredMode.REQUIRED)
     private final String name;
 
+    @Schema(description = "지역 ID", example = "KR-11", requiredMode = RequiredMode.REQUIRED)
+    private final String regionId;
+
     @Schema(description = "도시", example = "홍대", requiredMode = RequiredMode.REQUIRED)
     private final String city;
 
@@ -66,6 +69,7 @@ public class AdminStoreResponse {
         this.id = store.getId();
         this.ownerId = store.getOwner() != null ? store.getOwner().getId() : null;
         this.name = store.getName();
+        this.regionId = store.getRegion().getId();
         this.city = store.getCity();
         this.address = store.getAddress();
         this.category = store.getCategory();

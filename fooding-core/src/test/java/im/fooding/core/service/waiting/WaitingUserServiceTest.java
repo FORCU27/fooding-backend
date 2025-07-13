@@ -2,10 +2,13 @@ package im.fooding.core.service.waiting;
 
 import im.fooding.core.TestConfig;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
+import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.WaitingUser;
+import im.fooding.core.repository.region.RegionRepository;
 import im.fooding.core.repository.store.StoreRepository;
 import im.fooding.core.repository.waiting.WaitingUserRepository;
+import im.fooding.core.support.dummy.RegionDummy;
 import im.fooding.core.support.dummy.StoreDummy;
 import im.fooding.core.support.dummy.WaitingUserDummy;
 import lombok.RequiredArgsConstructor;
@@ -22,18 +25,21 @@ class WaitingUserServiceTest extends TestConfig {
     private final WaitingUserService waitingUserService;
     private final WaitingUserRepository waitingUserRepository;
     private final StoreRepository storeRepository;
+    private final RegionRepository regionRepository;
 
     @AfterEach
     void tearDown() {
         waitingUserRepository.deleteAll();
         storeRepository.deleteAll();
+        regionRepository.deleteAll();
     }
 
     @Test
     @DisplayName("웨이팅 유저가 없는 경우 새로 등록한다.")
     void register_when_not_exist_waiting_user() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
 
         WaitingUserRegisterRequest request = WaitingUserRegisterRequest.builder()
                 .store(store)
@@ -56,7 +62,8 @@ class WaitingUserServiceTest extends TestConfig {
     @DisplayName("웨이팅 유저가 있다면 존재하는 유저를 가져온다.")
     void get_when_exist_waiting_user() {
         // given
-        Store store = storeRepository.save(StoreDummy.create());
+        Region region = regionRepository.save(RegionDummy.create());
+        Store store = storeRepository.save(StoreDummy.create(region));
         WaitingUser waitingUser = waitingUserRepository.save(WaitingUserDummy.createWithPhoneNumber(store, "01012345678"));
 
         WaitingUserRegisterRequest request = WaitingUserRegisterRequest.builder()

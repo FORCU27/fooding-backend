@@ -5,10 +5,12 @@ import im.fooding.core.common.BasicSearch;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.coupon.*;
+import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.*;
 import im.fooding.core.repository.coupon.CouponRepository;
 import im.fooding.core.repository.coupon.UserCouponRepository;
+import im.fooding.core.repository.region.RegionRepository;
 import im.fooding.core.repository.store.StoreRepository;
 import im.fooding.core.repository.user.UserAuthorityRepository;
 import im.fooding.core.repository.user.UserRepository;
@@ -43,6 +45,9 @@ class UserCouponServiceTest extends TestConfig {
 
     @Autowired
     UserAuthorityRepository userAuthorityRepository;
+
+    @Autowired
+    RegionRepository regionRepository;
 
     @Test
     @DisplayName("유저에게 쿠폰을 성공적으로 발급한다.")
@@ -206,6 +211,7 @@ class UserCouponServiceTest extends TestConfig {
     private Store saveStore() {
         Store store = Store.builder()
                 .name("테스트가게")
+                .region(saveRegion())
                 .city("테스트")
                 .address("테스트")
                 .category("테스트")
@@ -250,4 +256,17 @@ class UserCouponServiceTest extends TestConfig {
         return userCouponRepository.save(userCoupon);
     }
 
+    private Region saveRegion() {
+        Region region = Region.builder()
+                .id("테스트")
+                .parentRegion(null)
+                .name("테스트")
+                .timezone("테스트")
+                .countryCode("테스트")
+                .legalCode("테스트")
+                .currency("테스트")
+                .level(1)
+                .build();
+        return regionRepository.save(region);
+    }
 }

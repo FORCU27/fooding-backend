@@ -1,8 +1,8 @@
 package im.fooding.app.service.ceo.store;
 
-import im.fooding.app.dto.request.ceo.store.CeoCreateStoreImageRequest;
-import im.fooding.app.dto.request.ceo.store.CeoSearchStoreImageRequest;
-import im.fooding.app.dto.request.ceo.store.CeoUpdateStoreImageRequest;
+import im.fooding.app.dto.request.ceo.store.image.CeoCreateStoreImageRequest;
+import im.fooding.app.dto.request.ceo.store.image.CeoSearchStoreImageRequest;
+import im.fooding.app.dto.request.ceo.store.image.CeoUpdateStoreImageRequest;
 import im.fooding.app.dto.response.ceo.store.CeoStoreImageResponse;
 import im.fooding.app.service.file.FileUploadService;
 import im.fooding.core.common.PageInfo;

@@ -9,6 +9,7 @@ public final class SlackConstant {
         public static final String MESSAGE = "Error Message";
         public static final String STACK_TRACE = "Stack Trace";
         public static final String TIME = "Timestamp";
+        public static final String URL = "URL";
     }
 
     public static class NOTIFICATION {

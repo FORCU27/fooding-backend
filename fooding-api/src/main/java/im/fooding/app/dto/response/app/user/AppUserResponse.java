@@ -19,7 +19,7 @@ public record AppUserResponse(
         @Schema(description = "소셜 로그인 제공자", requiredMode = RequiredMode.REQUIRED, example = "FOODING")
         AuthProvider provider,
 
-        @Schema(description = "닉네임", requiredMode = RequiredMode.NOT_REQUIRED, example = "usernickname")
+        @Schema(description = "닉네임", requiredMode = RequiredMode.REQUIRED, example = "usernickname")
         String nickname,
 
         @Schema(description = "전화번호", requiredMode = RequiredMode.NOT_REQUIRED, example = "010-1234-5678")
@@ -37,7 +37,7 @@ public record AppUserResponse(
         @Schema(description = "마지막 로그인 일시", requiredMode = RequiredMode.NOT_REQUIRED, example = "2024-01-01T09:00:00")
         LocalDateTime lastLoggedInAt,
 
-        @Schema(description = "이용약관 동의 여부", requiredMode = RequiredMode.NOT_REQUIRED, example = "false")
+        @Schema(description = "이용약관 동의 여부", requiredMode = RequiredMode.REQUIRED, example = "false")
         boolean termsAgreed,
 
         @Schema(description = "이용약관 동의 일시", requiredMode = RequiredMode.REQUIRED, example = "2024-01-01T09:00:00")
@@ -54,6 +54,12 @@ public record AppUserResponse(
 
         @Schema(description = "마케팅 수신 동의 일시", requiredMode = RequiredMode.NOT_REQUIRED, example = "2024-01-01T09:00:00")
         LocalDateTime marketingConsentAt,
+
+        @Schema(description = "서비스 앱 푸쉬 동의 일시", requiredMode = RequiredMode.REQUIRED, example = "true")
+        boolean pushAgreed,
+
+        @Schema(description = "서비스 앱 푸쉬 동의 일시", requiredMode = RequiredMode.NOT_REQUIRED, example = "2024-01-01T09:00:00")
+        LocalDateTime pushAgreedAt,
 
         @Schema(description = "성별", requiredMode = RequiredMode.REQUIRED, example = "MALE")
         Gender gender
@@ -76,6 +82,8 @@ public record AppUserResponse(
                     user.getPrivacyPolicyAgreedAt(),
                     user.isMarketingConsent(),
                     user.getMarketingConsentAt(),
+                    user.isPushAgreed(),
+                    user.getPushAgreedAt(),
                     user.getGender()
             );
     }
