@@ -36,7 +36,7 @@ class UserServiceTest extends TestConfig {
         String email = "admin@gmail.com";
         String nickname = "관리자";
         String password = "1234";
-        String phoneNumber = "010-0000-0000";
+        String phoneNumber = "01000000000";
         String name = "홍길동";
         String recommender = "김철수";
         String description = "반갑습니다 1년차 CEO입니다";
@@ -55,7 +55,7 @@ class UserServiceTest extends TestConfig {
         String email = "admin@gmail.com";
         String nickname = "관리자";
         String password = "1234";
-        String phoneNumber = "010-0000-0000";
+        String phoneNumber = "01000000000";
         String name = "홍길동";
         String recommender = "김철수";
         String description = "반갑습니다 1년차 CEO입니다";
@@ -79,7 +79,7 @@ class UserServiceTest extends TestConfig {
         String email = "admin@gmail.com";
         String nickname = "관리자";
         String password = "1234";
-        String phoneNumber = "010-0000-0000";
+        String phoneNumber = "01000000000";
         Role role = Role.ADMIN;
         saveUser(email, nickname, role);
         String name = "홍길동";
