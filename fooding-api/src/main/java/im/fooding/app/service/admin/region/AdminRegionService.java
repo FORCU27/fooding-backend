@@ -70,13 +70,21 @@ public class AdminRegionService {
         }
 
         request.getData()
-                .forEach(data -> {
-                    Region parentRegion = null;
-                    if (data.getParentRegionId() != null) {
-                        parentRegion = regionService.get(data.getParentRegionId());
-                    }
-                    RegionCreateRequest regionCreateRequest = data.toRegionCreateRequest(parentRegion);
+                .forEach(adminRegionCreateRequest -> {
+                    Region parentRegion = getParentRegion(adminRegionCreateRequest);
+                    RegionCreateRequest regionCreateRequest = adminRegionCreateRequest.toRegionCreateRequest(parentRegion);
                     regionService.create(regionCreateRequest);
                 });
+    }
+
+    private Region getParentRegion(AdminRegionCreateRequest adminRegionCreateRequest) {
+        String parentRegionId = adminRegionCreateRequest.getParentRegionId();
+
+        // hack: KR-36110(세종특별자치시)
+        if (parentRegionId == null || parentRegionId.equals("KR-36")) {
+            return null;
+        }
+
+        return regionService.get(parentRegionId);
     }
 }
