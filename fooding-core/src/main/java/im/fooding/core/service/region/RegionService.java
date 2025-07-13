@@ -6,7 +6,6 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.repository.region.RegionRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,10 +34,6 @@ public class RegionService {
         return regionRepository.findAllByDeletedFalse(pageable);
     }
 
-    public List<Region> listById(List<String> ids) {
-        return regionRepository.findAllById(ids);
-    }
-
     @Transactional
     public void update(RegionUpdateRequest request) {
         Region region = get(request.id());
@@ -57,14 +52,5 @@ public class RegionService {
     public void delete(Long userId, String regionId) {
         Region region = get(regionId);
         region.delete(userId);
-    }
-
-    @Transactional
-    public void batchCreate(List<RegionCreateRequest> data) {
-        List<Region> regions = data.stream()
-                .map(RegionCreateRequest::toRegion)
-                .toList();
-
-        regionRepository.saveAll(regions);
     }
 }
