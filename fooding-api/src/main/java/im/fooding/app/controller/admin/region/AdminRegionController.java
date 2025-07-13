@@ -1,5 +1,6 @@
 package im.fooding.app.controller.admin.region;
 
+import im.fooding.app.dto.request.admin.region.AdminRegionBatchCreateRequest;
 import im.fooding.app.dto.request.admin.region.AdminRegionCreateRequest;
 import im.fooding.app.dto.request.admin.region.AdminRegionListRequest;
 import im.fooding.app.dto.response.admin.region.AdminRegionResponse;
@@ -75,6 +76,15 @@ public class AdminRegionController {
             @PathVariable String id
     ) {
         adminRegionService.delete(id, userInfo.getId());
+        return ApiResult.ok();
+    }
+
+    @PostMapping("/batch")
+    @Operation(summary = "지역 생성 (batch)")
+    public ApiResult<Void> batchCreate(
+            @RequestBody @Valid AdminRegionBatchCreateRequest request
+    ) {
+        adminRegionService.batchCreate(request);
         return ApiResult.ok();
     }
 }

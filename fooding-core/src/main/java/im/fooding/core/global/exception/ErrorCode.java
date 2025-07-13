@@ -107,6 +107,7 @@ public enum ErrorCode {
 
     // 지역
     REGION_NOT_FOUND(HttpStatus.BAD_REQUEST, "10000", "등록된 지역이 없습니다."),
+    REGION_OVER_BATCH_INSERT_LIMIT(HttpStatus.BAD_REQUEST, "10001", "지역 batch insert는 한번에 100개까지 가능합니다."),
 
     // 포인트샵
     POINT_SHOP_NOT_FOUND(HttpStatus.BAD_REQUEST, "11000", "등록된 포인트샵 상품이 아닙니다."),

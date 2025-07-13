@@ -1,11 +1,15 @@
 package im.fooding.app.service.admin.region;
 
+import im.fooding.app.dto.request.admin.region.AdminRegionBatchCreateRequest;
 import im.fooding.app.dto.request.admin.region.AdminRegionCreateRequest;
 import im.fooding.app.dto.request.admin.region.AdminRegionListRequest;
 import im.fooding.app.dto.response.admin.region.AdminRegionResponse;
 import im.fooding.app.dto.request.admin.region.AdminRegionUpdateRequest;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.dto.request.region.RegionCreateRequest;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.service.region.RegionService;
 import jakarta.validation.Valid;
@@ -18,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AdminRegionService {
+
+    private static final int REGION_BATCH_INSERT_LIMIT = 100;
 
     private final RegionService regionService;
 
@@ -55,5 +61,30 @@ public class AdminRegionService {
 
     public void delete(String id, long deletedBy) {
         regionService.delete(deletedBy, id);
+    }
+
+    @Transactional
+    public void batchCreate(AdminRegionBatchCreateRequest request) {
+        if (request.getData().size() > REGION_BATCH_INSERT_LIMIT) {
+            throw new ApiException(ErrorCode.REGION_OVER_BATCH_INSERT_LIMIT);
+        }
+
+        request.getData()
+                .forEach(adminRegionCreateRequest -> {
+                    Region parentRegion = getParentRegion(adminRegionCreateRequest);
+                    RegionCreateRequest regionCreateRequest = adminRegionCreateRequest.toRegionCreateRequest(parentRegion);
+                    regionService.create(regionCreateRequest);
+                });
+    }
+
+    private Region getParentRegion(AdminRegionCreateRequest adminRegionCreateRequest) {
+        String parentRegionId = adminRegionCreateRequest.getParentRegionId();
+
+        // hack: KR-36110(세종특별자치시)
+        if (parentRegionId == null || parentRegionId.equals("KR-36")) {
+            return null;
+        }
+
+        return regionService.get(parentRegionId);
     }
 }
