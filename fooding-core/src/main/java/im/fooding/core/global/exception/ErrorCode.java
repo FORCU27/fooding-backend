@@ -107,6 +107,11 @@ public enum ErrorCode {
 
     // 지역
     REGION_NOT_FOUND(HttpStatus.BAD_REQUEST, "10000", "등록된 지역이 없습니다."),
+
+    // 포인트샵
+    POINT_SHOP_NOT_FOUND(HttpStatus.BAD_REQUEST, "11000", "등록된 포인트샵 상품이 아닙니다."),
+    POINT_SHOP_ISSUE_QUANTITY_INVALID(HttpStatus.BAD_REQUEST, "11001", "포인트샵 상품을 교환 가능한 수량을 초과합니다"),
+    POINT_SHOP_ISSUE_DATE_INVALID(HttpStatus.BAD_REQUEST, "11002", "포인트샵 상품을 교환 가능한 일자가 아닙니다."),
     ;
 
     private final HttpStatus status;
