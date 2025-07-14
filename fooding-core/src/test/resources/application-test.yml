@@ -39,3 +39,20 @@ webhook:
 
 message:
   sender: __MESSAGE_SENDER__
+
+notification:
+  api:
+    url: __NOTIFICATION_API_URL__
+  service:
+    user:
+      id: __NOTIFICATION_SERVICE_USER_ID__
+      token: __NOTIFICATION_SERVICE_USER_TOKEN__
+    ceo:
+      id: __NOTIFICATION_SERVICE_CEO_ID__
+      token: __NOTIFICATION_SERVICE_CEO_TOKEN__
+    pos:
+      id: __NOTIFICATION_SERVICE_POS_ID__
+      token: __NOTIFICATION_SERVICE_POS_TOKEN__
+    app:
+      id: __NOTIFICATION_SERVICE_APP_ID__
+      token: __NOTIFICATION_SERVICE_APP_TOKEN__

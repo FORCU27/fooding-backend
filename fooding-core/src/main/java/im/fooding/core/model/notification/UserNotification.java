@@ -32,6 +32,7 @@ public class UserNotification extends BaseEntity {
   @Column(nullable = false, columnDefinition = "LONGTEXT")
   private String content;
 
+  // EVENT
   @Column(nullable = false)
   private String category;
 

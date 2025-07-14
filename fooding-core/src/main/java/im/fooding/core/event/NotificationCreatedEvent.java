@@ -11,14 +11,16 @@ public class NotificationCreatedEvent {
     private final List<String> destinations;
     private final NotificationChannel channel;
     private final NotificationCategory category;
+    private final String service;
 
   public NotificationCreatedEvent(String title, String content, List<String> destinations,
-                                  NotificationChannel channel, NotificationCategory category){
+                                  NotificationChannel channel, NotificationCategory category, String service){
       this.title = title;
       this.content = content;
       this.destinations = destinations;
       this.channel = channel;
       this.category = category;
+      this.service = service;
     }
 
     public String getTitle() { return title; }
@@ -26,4 +28,5 @@ public class NotificationCreatedEvent {
     public List<String> getDestinations() { return destinations; }
     public NotificationChannel getChannel() { return channel; }
     public NotificationCategory getCategory() { return category; }
+    public String getService() { return service; }
 }
