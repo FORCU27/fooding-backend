@@ -46,8 +46,6 @@ public class User extends BaseEntity {
     @Column( length = 150 )
     private String description;
 
-    private String recommender;
-
     private String name;
 
     private String profileImage;
@@ -92,7 +90,7 @@ public class User extends BaseEntity {
     @Builder
     public User(String email, String password, AuthProvider provider, String nickname, String phoneNumber,
                 String referralCode, String profileImage, boolean termsAgreed, boolean privacyPolicyAgreed,
-                boolean marketingConsent, Gender gender, String name, String description, String recommender
+                boolean marketingConsent, Gender gender, String name, String description
     ) {
         this.email = email;
         this.password = password;
@@ -107,7 +105,6 @@ public class User extends BaseEntity {
         this.gender = gender;
         this.name = name;
         this.description = description;
-        this.recommender =  recommender;
     }
 
     public void updatedRefreshToken(String updatedRefreshToken) {

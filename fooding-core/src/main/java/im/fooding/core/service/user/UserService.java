@@ -30,7 +30,7 @@ public class UserService {
      * @param phoneNumber
      * @param gender
      */
-    public User create(String email, String nickname, String password, String phoneNumber, Gender gender, String name, String description, String recommender) {
+    public User create(String email, String nickname, String password, String phoneNumber, Gender gender, String name, String description) {
         checkDuplicateEmail(email, AuthProvider.FOODING);
         if (checkDuplicatedNickname(nickname)) {
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
@@ -48,7 +48,6 @@ public class UserService {
                 .gender(gender)
                 .name( name )
                 .description( description )
-                .recommender( recommender )
                 .build();
         return userRepository.save(user);
     }

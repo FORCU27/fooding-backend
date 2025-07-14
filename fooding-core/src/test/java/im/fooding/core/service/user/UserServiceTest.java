@@ -38,11 +38,10 @@ class UserServiceTest extends TestConfig {
         String password = "1234";
         String phoneNumber = "01000000000";
         String name = "홍길동";
-        String recommender = "김철수";
         String description = "반갑습니다 1년차 CEO입니다";
 
         //when
-        userService.create(email, nickname, password, phoneNumber, Gender.NONE, name, description, recommender);
+        userService.create(email, nickname, password, phoneNumber, Gender.NONE, name, description);
 
         //then
         assertTrue(userRepository.findByEmailAndProvider(email, AuthProvider.FOODING).isPresent());
@@ -57,7 +56,6 @@ class UserServiceTest extends TestConfig {
         String password = "1234";
         String phoneNumber = "01000000000";
         String name = "홍길동";
-        String recommender = "김철수";
         String description = "반갑습니다 1년차 CEO입니다";
         Role role = Role.ADMIN;
         saveUser(email, nickname, role);
@@ -67,7 +65,7 @@ class UserServiceTest extends TestConfig {
         // when && then
         ApiException apiException =
                 assertThrows(ApiException.class, () -> {
-                    userService.create(email, nickname2, password, phoneNumber, Gender.NONE, name, description, recommender );
+                    userService.create(email, nickname2, password, phoneNumber, Gender.NONE, name, description );
                 });
         assertEquals(ErrorCode.DUPLICATED_REGISTER_EMAIL, apiException.getErrorCode());
     }
@@ -83,7 +81,6 @@ class UserServiceTest extends TestConfig {
         Role role = Role.ADMIN;
         saveUser(email, nickname, role);
         String name = "홍길동";
-        String recommender = "김철수";
         String description = "반갑습니다 1년차 CEO입니다";
 
         String email2 = "admin2@gmail.com";
@@ -91,7 +88,7 @@ class UserServiceTest extends TestConfig {
         // when && then
         ApiException apiException =
                 assertThrows(ApiException.class, () -> {
-                    userService.create(email2, nickname, password, phoneNumber, Gender.NONE, name, description, recommender);
+                    userService.create(email2, nickname, password, phoneNumber, Gender.NONE, name, description);
                 });
         assertEquals(ErrorCode.DUPLICATED_NICKNAME, apiException.getErrorCode());
     }

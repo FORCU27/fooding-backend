@@ -89,7 +89,7 @@ public class AuthService {
     @Transactional
     public void register(AuthCreateRequest request) {
         User user = userService.create(request.getEmail(), request.getNickname(),
-                passwordEncoder.encode(request.getPassword()), null, Gender.NONE, request.getName(), request.getDescription(), request.getRecommender());
+                passwordEncoder.encode(request.getPassword()), null, Gender.NONE, request.getName(), request.getDescription());
         userAuthorityService.create(user, request.getRole());
     }
 

@@ -41,17 +41,13 @@ public class AuthCreateRequest {
     @Size(max = 150, message = "자기소개는 최대 150자까지 가능합니다.")
     private String description;
 
-    @Schema(description = "추천인 코드")
-    private String recommender;
-
     @Builder
-    public AuthCreateRequest(String email, String nickname, String password, Role role, String name, String description, String recommender) {
+    public AuthCreateRequest(String email, String nickname, String password, Role role, String name, String description) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.role = role;
         this.name = name;
         this.description = description;
-        this.recommender = recommender;
     }
 }
