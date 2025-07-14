@@ -48,6 +48,7 @@ public enum ErrorCode {
     STORE_OPERATING_HOUR_DUPLICATED(HttpStatus.BAD_REQUEST, "2501", "이미 등록된 가게 운영시간 및 휴일 정보가 있습니다."),
     STORE_BOOKMARK_NOT_FOUND(HttpStatus.BAD_REQUEST, "2601", "단골이 아닙니다."),
     STORE_BOOKMARK_EXIST(HttpStatus.BAD_REQUEST, "2602", "이미 단골입니다."),
+    STORE_POST_IMAGE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2701", "등록된 가게 소식 이미지가 없습니다."),
 
     // 리뷰
     REVIEW_NOT_FOUND( HttpStatus.BAD_REQUEST, "2202", "등록된 리뷰가 없습니다" ),
@@ -106,6 +107,11 @@ public enum ErrorCode {
 
     // 지역
     REGION_NOT_FOUND(HttpStatus.BAD_REQUEST, "10000", "등록된 지역이 없습니다."),
+
+    // 포인트샵
+    POINT_SHOP_NOT_FOUND(HttpStatus.BAD_REQUEST, "11000", "등록된 포인트샵 상품이 아닙니다."),
+    POINT_SHOP_ISSUE_QUANTITY_INVALID(HttpStatus.BAD_REQUEST, "11001", "포인트샵 상품을 교환 가능한 수량을 초과합니다"),
+    POINT_SHOP_ISSUE_DATE_INVALID(HttpStatus.BAD_REQUEST, "11002", "포인트샵 상품을 교환 가능한 일자가 아닙니다."),
     ;
 
     private final HttpStatus status;

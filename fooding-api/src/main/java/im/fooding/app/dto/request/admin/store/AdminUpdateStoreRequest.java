@@ -11,6 +11,10 @@ public class AdminUpdateStoreRequest {
     @Schema(description = "가게명", example = "홍가네")
     private String name;
 
+    @NotNull(message = "가게 지역은 필수입니다.")
+    @Schema(description = "가게 지역 ID", example = "KR-11")
+    private String regionId;
+
     @NotBlank(message = "도시는 필수입니다.")
     @Schema(description = "도시", example = "홍대")
     private String city;

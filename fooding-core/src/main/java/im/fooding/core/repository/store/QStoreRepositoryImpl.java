@@ -5,6 +5,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import im.fooding.core.dto.request.store.StoreFilter;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreSortType;
 import lombok.RequiredArgsConstructor;
@@ -55,12 +56,16 @@ public class QStoreRepositoryImpl implements QStoreRepository {
     }
 
     @Override
-    public List<Store> listByUserId(long userId) {
+    public List<Store> listByUserId(long userId, StoreFilter filter) {
         return query
                 .select(store)
                 .from(store)
                 .innerJoin(storeMember).on(store.id.eq(storeMember.store.id))
-                .where(storeMember.user.id.eq(userId), store.deleted.isFalse())
+                .where(
+                        storeMember.user.id.eq(userId),
+                        regionIdEq(filter.getRegionId()),
+                        store.deleted.isFalse()
+                )
                 .orderBy(store.id.desc())
                 .fetch();
     }
@@ -96,5 +101,9 @@ public class QStoreRepositoryImpl implements QStoreRepository {
 
     private BooleanExpression storeImageDeletedIfExists() {
         return storeImage.id.isNull().or(storeImage.deleted.isFalse());
+    }
+
+    private BooleanExpression regionIdEq(String regionId) {
+        return regionId != null ? store.region.id.eq(regionId) : null;
     }
 }

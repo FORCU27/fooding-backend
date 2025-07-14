@@ -1,8 +1,20 @@
 package im.fooding.core.model.store;
 
 import im.fooding.core.model.BaseEntity;
+import im.fooding.core.model.region.Region;
 import im.fooding.core.model.user.User;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.ConstraintMode;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,9 +22,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 @Entity
 @Getter
@@ -29,6 +38,10 @@ public class Store extends BaseEntity {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Region region;
 
     @Column(name = "city", nullable = false)
     private String city;
@@ -84,11 +97,28 @@ public class Store extends BaseEntity {
     private List<StoreImage> images;
 
     @Builder
-    private Store(User owner, String name, String city, String address, String category, String description, String contactNumber,
-                  String priceCategory, String eventDescription, String direction, String information, boolean isParkingAvailable,
-                  boolean isNewOpen, boolean isTakeOut, Double latitude, Double longitude) {
+    private Store(
+            User owner,
+            String name,
+            Region region,
+            String city,
+            String address,
+            String category,
+            String description,
+            String contactNumber,
+            String priceCategory,
+            String eventDescription,
+            String direction,
+            String information,
+            boolean isParkingAvailable,
+            boolean isNewOpen,
+            boolean isTakeOut,
+            Double latitude,
+            Double longitude
+    ) {
         this.owner = owner;
         this.name = name;
+        this.region = region;
         this.city = city;
         this.address = address;
         this.category = category;
@@ -105,10 +135,26 @@ public class Store extends BaseEntity {
         this.longitude = longitude;
     }
 
-    public void update(String name, String city, String address, String category, String description, String contactNumber,
-                       String priceCategory, String eventDescription, String direction, String information, boolean isParkingAvailable,
-                       boolean isNewOpen, boolean isTakeOut, Double latitude, Double longitude) {
+    public void update(
+            String name,
+            Region region,
+            String city,
+            String address,
+            String category,
+            String description,
+            String contactNumber,
+            String priceCategory,
+            String eventDescription,
+            String direction,
+            String information,
+            boolean isParkingAvailable,
+            boolean isNewOpen,
+            boolean isTakeOut,
+            Double latitude,
+            Double longitude
+    ) {
         this.name = name;
+        this.region = region;
         this.city = city;
         this.address = address;
         this.category = category;

@@ -112,8 +112,10 @@ public class UserService {
      * @param gender
      * @param referralCode
      * @param marketingConsent
+     * @param pushAgreed
      */
-    public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description) {
+
+    public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description, boolean pushAgreed) {
         User user = findById(id);
         if (!nickname.equals(user.getNickname()) && checkDuplicatedNickname(nickname)) {
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
@@ -123,7 +125,7 @@ public class UserService {
         }
         if (StringUtils.hasText(description)) user.updateDescription( description );
 
-        user.update(nickname, phoneNumber, gender, referralCode, marketingConsent);
+        user.update(nickname, phoneNumber, gender, referralCode, marketingConsent, pushAgreed);
     }
 
     /**
