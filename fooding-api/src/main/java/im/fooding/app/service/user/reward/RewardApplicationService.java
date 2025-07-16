@@ -129,7 +129,7 @@ public class RewardApplicationService {
     @Transactional
     public void requestCoupon(Long couponId) {
         UserCoupon userCoupon = userCouponService.findById(couponId);
-        userCouponService.request(userCoupon);
+        userCouponService.request(userCoupon, null);
         publisher.publishEvent(new RequestCouponEvent(userCoupon.getName(), userCoupon.getUser().getPhoneNumber(), SENDER, NotificationChannel.SMS));
     }
 

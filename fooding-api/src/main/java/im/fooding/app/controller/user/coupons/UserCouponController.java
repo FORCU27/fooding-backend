@@ -1,8 +1,8 @@
 package im.fooding.app.controller.user.coupons;
 
+import im.fooding.app.dto.request.user.coupon.UserUseCouponRequest;
 import im.fooding.app.dto.request.user.coupon.UserSearchUserCouponRequest;
 import im.fooding.app.dto.response.user.coupon.UserCouponResponse;
-import im.fooding.app.dto.response.user.coupon.UserStoreCouponResponse;
 import im.fooding.app.service.user.coupon.UserCouponAppService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
@@ -31,8 +31,8 @@ public class UserCouponController {
 
     @PostMapping("/{id}/request")
     @Operation(summary = "보유한 쿠폰 사용")
-    public ApiResult<Long> request(@PathVariable long id, @AuthenticationPrincipal UserInfo userInfo) {
-        service.request(id, userInfo.getId());
+    public ApiResult<Long> request(@PathVariable long id, @AuthenticationPrincipal UserInfo userInfo, @Valid @RequestBody UserUseCouponRequest request) {
+        service.request(id, userInfo.getId(), request);
         return ApiResult.ok();
     }
 }

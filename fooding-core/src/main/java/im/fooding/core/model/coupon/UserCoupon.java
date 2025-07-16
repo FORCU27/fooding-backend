@@ -59,8 +59,13 @@ public class UserCoupon extends BaseEntity {
 
     private LocalDate expiredOn;
 
+    private String tableNumber;
+
+    private Integer point;
+
     @Builder
-    public UserCoupon(Coupon coupon, User user, Store store, BenefitType benefitType, DiscountType discountType, int discountValue, String name, String conditions, LocalDate expiredOn) {
+    public UserCoupon(Coupon coupon, User user, Store store, BenefitType benefitType, DiscountType discountType, int discountValue,
+                      String name, String conditions, LocalDate expiredOn, String tableNumber, Integer point) {
         this.coupon = coupon;
         this.user = user;
         this.store = store;
@@ -71,9 +76,11 @@ public class UserCoupon extends BaseEntity {
         this.conditions = conditions;
         this.expiredOn = expiredOn;
         this.status = UserCouponStatus.AVAILABLE;
+        this.tableNumber = tableNumber;
+        this.point = point;
     }
 
-    public void request() {
+    public void request(String tableNumber) {
         if (!availableExpiredOn()) {
             throw new ApiException(ErrorCode.USER_COUPON_EXPIRED);
         }
@@ -81,6 +88,7 @@ public class UserCoupon extends BaseEntity {
             throw new ApiException(ErrorCode.USER_COUPON_ALREADY_USE);
         }
         this.status = UserCouponStatus.REQUESTED;
+        this.tableNumber = tableNumber;
     }
 
     public void approve() {

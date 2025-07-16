@@ -49,8 +49,8 @@ public class UserCouponService {
                 .orElseThrow(() -> new ApiException(ErrorCode.USER_COUPON_NOT_FOUND));
     }
 
-    public void request(UserCoupon userCoupon) {
-        userCoupon.request();
+    public void request(UserCoupon userCoupon, String tableNumber) {
+        userCoupon.request(tableNumber);
     }
 
     public void approve(UserCoupon userCoupon) {
