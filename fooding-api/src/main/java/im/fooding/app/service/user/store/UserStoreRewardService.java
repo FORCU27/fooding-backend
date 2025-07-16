@@ -4,11 +4,12 @@ import im.fooding.app.dto.response.user.reward.UserStoreRewardResponse;
 import im.fooding.core.model.coupon.BenefitType;
 import im.fooding.core.model.coupon.DiscountType;
 import im.fooding.core.model.pointshop.PointShop;
-import im.fooding.core.model.reward.RewardPoint;
+import im.fooding.core.model.reward.*;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.coupon.UserCouponService;
 import im.fooding.core.service.pointshop.PointShopService;
+import im.fooding.core.service.reward.RewardLogService;
 import im.fooding.core.service.reward.RewardService;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.user.UserService;
@@ -29,6 +30,7 @@ public class UserStoreRewardService {
     private final UserCouponService userCouponService;
     private final UserService userService;
     private final StoreService storeService;
+    private final RewardLogService rewardLogService;
 
     @Transactional(readOnly = true)
     public UserStoreRewardResponse list(long storeId, long userId) {
@@ -50,6 +52,9 @@ public class UserStoreRewardService {
         pointShopService.issue(id);
         rewardPoint.usePoint(pointShop.getPoint());
 
+        //리워드 사용 내역 추가
+        rewardLogService.create(store, rewardPoint.getPhoneNumber(), pointShop.getPoint(), RewardStatus.USED, RewardType.VISIT, RewardChannel.STORE);
+        
         //쿠폰생성
         userCouponService.create(null, user, store, BenefitType.GIFT, DiscountType.FIXED, 0, pointShop.getName(),
                 pointShop.getConditions(), null, pointShop.getPoint());
