@@ -21,7 +21,7 @@ public class UserCouponService {
     private final UserCouponRepository repository;
 
     public UserCoupon create(Coupon coupon, User user, Store store, BenefitType benefitType, DiscountType discountType,
-                             int discountValue, String name, String conditions, LocalDate expiredOn) {
+                             int discountValue, String name, String conditions, LocalDate expiredOn, Integer point) {
         if (null != coupon) {
             checkExistsCoupon(coupon.getId(), user.getId());
         }
@@ -36,6 +36,7 @@ public class UserCouponService {
                 .name(name)
                 .conditions(conditions)
                 .expiredOn(expiredOn)
+                .point(point)
                 .build();
         return repository.save(userCoupon);
     }
