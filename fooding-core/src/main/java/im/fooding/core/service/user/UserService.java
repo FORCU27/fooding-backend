@@ -123,8 +123,7 @@ public class UserService {
         if (StringUtils.hasText(phoneNumber) && !phoneNumber.equals(user.getPhoneNumber())) {
             checkDuplicatePhoneNumber(phoneNumber);
         }
-        if (StringUtils.hasText(description)) user.updateDescription( description );
-
+        user.updateDescription( description );
         user.update(nickname, phoneNumber, gender, referralCode, marketingConsent, pushAgreed);
     }
 
