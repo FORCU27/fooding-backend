@@ -117,11 +117,15 @@ public class UserService {
 
     public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description, boolean pushAgreed) {
         User user = findById(id);
-        if (!nickname.equals(user.getNickname()) && checkDuplicatedNickname(nickname)) {
-            throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
+        if( nickname != null ){
+            if (!nickname.equals(user.getNickname()) && checkDuplicatedNickname(nickname)) {
+                throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
+            }
         }
-        if (StringUtils.hasText(phoneNumber) && !phoneNumber.equals(user.getPhoneNumber())) {
-            checkDuplicatePhoneNumber(phoneNumber);
+        if( phoneNumber != null ){
+            if (StringUtils.hasText(phoneNumber) && !phoneNumber.equals(user.getPhoneNumber())) {
+                checkDuplicatePhoneNumber(phoneNumber);
+            }
         }
         user.updateDescription( description );
         user.update(nickname, phoneNumber, gender, referralCode, marketingConsent, pushAgreed);
