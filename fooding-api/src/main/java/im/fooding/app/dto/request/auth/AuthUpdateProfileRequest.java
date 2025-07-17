@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class AuthUpdateProfileRequest {
-    @NotBlank
     @Size(max = 50)
     @Schema(description = "닉네임", example = "홍길동")
     private String nickname;
@@ -20,7 +19,6 @@ public class AuthUpdateProfileRequest {
     @Schema(description = "핸드폰번호", example = "010-1234-5678")
     private String phoneNumber;
 
-    @NotNull
     @Schema(description = "성별(MALE, FEMALE, OTHER, NONE)", example = "MALE")
     private Gender gender;
 
