@@ -100,4 +100,8 @@ public class RewardService {
     public RewardPoint findByUserIdAndStoreId(long userId, long storeId) {
         return repository.findByUserIdAndStoreIdAndDeletedIsFalse(userId, storeId);
     }
+
+    public void usePoint(RewardPoint rewardPoint, int point) {
+        rewardPoint.usePoint(point);
+    }
 }

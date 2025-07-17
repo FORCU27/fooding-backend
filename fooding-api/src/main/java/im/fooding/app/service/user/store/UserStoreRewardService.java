@@ -48,14 +48,14 @@ public class UserStoreRewardService {
         //보유 포인트 조회
         RewardPoint rewardPoint = rewardService.findByUserIdAndStoreId(user.getId(), store.getId());
 
-        //구매 처리
+        //구매 처리 및 포인트 사용
         pointShopService.issue(id);
-        rewardPoint.usePoint(pointShop.getPoint());
+        rewardService.usePoint(rewardPoint, pointShop.getPoint());
 
-        //리워드 사용 내역 추가
+        //리워드 포인트 사용 내역 추가
         rewardLogService.create(store, rewardPoint.getPhoneNumber(), pointShop.getPoint(), RewardStatus.USED, RewardType.VISIT, RewardChannel.STORE);
         
-        //쿠폰생성
+        //쿠폰지급
         userCouponService.create(null, user, store, BenefitType.GIFT, DiscountType.FIXED, 0, pointShop.getName(),
                 pointShop.getConditions(), null, pointShop.getPoint());
     }
