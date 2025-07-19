@@ -21,7 +21,7 @@ public class AuthCreateRequest {
 
     @NotBlank
     @Size(max = 50)
-    @Schema(description = "닉네임", example = "홍길동")
+    @Schema(description = "닉네임", example = "재빠른 홍길동")
     private String nickname;
 
     @NotBlank
@@ -33,11 +33,21 @@ public class AuthCreateRequest {
     @Schema(description = "권한(CEO, ADMIN)", example = "ADMIN")
     private Role role;
 
+    @NotNull
+    @Schema(description = "이름", example="홍길동")
+    private String name;
+
+    @Schema(description = "자기소개", example = "안녕하세요")
+    @Size(max = 150, message = "자기소개는 최대 150자까지 가능합니다.")
+    private String description;
+
     @Builder
-    public AuthCreateRequest(String email, String nickname, String password, Role role) {
+    public AuthCreateRequest(String email, String nickname, String password, Role role, String name, String description) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.role = role;
+        this.name = name;
+        this.description = description;
     }
 }

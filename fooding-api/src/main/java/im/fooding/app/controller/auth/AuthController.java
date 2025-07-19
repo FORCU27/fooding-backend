@@ -30,7 +30,7 @@ public class AuthController {
         return ApiResult.ok(service.retrieve(userInfo.getId()));
     }
 
-    @PutMapping("/me")
+    @PatchMapping("/me")
     @Operation(summary = "로그인한 유저 정보 수정", description = "로그인된 상태에서 정보 수정")
     public ApiResult<Void> update(@RequestBody @Valid AuthUpdateProfileRequest request,
                                   @AuthenticationPrincipal UserInfo userInfo) {
