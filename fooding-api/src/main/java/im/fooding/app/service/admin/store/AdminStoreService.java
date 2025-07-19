@@ -9,11 +9,13 @@ import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePosition;
+import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.region.RegionService;
 import im.fooding.core.service.store.StoreMemberService;
 import im.fooding.core.service.store.StoreService;
+import im.fooding.core.service.store.subway.SubwayStationService;
 import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -33,6 +36,7 @@ public class AdminStoreService {
     private final UserService userService;
     private final UserAuthorityService userAuthorityService;
     private final RegionService regionService;
+    private final SubwayStationService subwayStationService;
 
     @Transactional(readOnly = true)
     public PageResponse<AdminStoreResponse> list(AdminSearchStoreRequest request) {
@@ -70,9 +74,11 @@ public class AdminStoreService {
     public void update(Long id, AdminUpdateStoreRequest request) {
         Region region = regionService.get(request.getRegionId());
 
+        List<SubwayStation> nearStations = subwayStationService.getNearStations( request.getLatitude(), request.getLongitude() );
+
         storeService.update(id, request.getName(), region, request.getCity(), request.getAddress(), request.getCategory(), request.getDescription(),
                 request.getContactNumber(), request.getPriceCategory(), request.getEventDescription(), request.getDirection(),
-                request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude());
+                request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude(), nearStations);
     }
 
     @Transactional

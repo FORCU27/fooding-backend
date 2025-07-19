@@ -7,16 +7,19 @@ import im.fooding.app.dto.response.ceo.store.CeoStoreResponse;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePosition;
+import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.region.RegionService;
 import im.fooding.core.service.store.StoreMemberService;
 import im.fooding.core.service.store.StoreService;
+import im.fooding.core.service.store.subway.SubwayStationService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,6 +30,7 @@ public class CeoStoreService {
     private final StoreMemberService storeMemberService;
     private final UserService userService;
     private final RegionService regionService;
+    private final SubwayStationService subwayStationService;
 
     @Transactional(readOnly = true)
     public List<CeoStoreResponse> list(long userId, CeoSearchStoreRequest search) {
@@ -58,11 +62,13 @@ public class CeoStoreService {
         storeMemberService.checkMember(id, userId);
         Region region = regionService.get(request.getRegionId());
 
+        // 주소를 통해 인근 지하철역 조회 ( 1km 반경 내 )
+        List<SubwayStation> nearStations = subwayStationService.getNearStations( request.getLatitude(), request.getLongitude() );
+
         storeService.update(id, request.getName(), region, request.getCity(), request.getAddress(), request.getCategory(), request.getDescription(),
                 request.getContactNumber(), request.getPriceCategory(), request.getEventDescription(), request.getDirection(),
-                request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude());
+                request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude(), nearStations);
     }
-
     @Transactional
     public void delete(Long id, long deletedBy) {
         storeMemberService.checkMember(id, deletedBy);
