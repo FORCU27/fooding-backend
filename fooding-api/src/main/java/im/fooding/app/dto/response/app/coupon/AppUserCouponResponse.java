@@ -61,8 +61,16 @@ public class AppUserCouponResponse {
     @Schema(description = "발급일자", example = "2025-03-16T05:17:04.069", requiredMode = RequiredMode.REQUIRED)
     private LocalDateTime createdDateAt;
 
+    @Schema(description = "테이블 번호", example = "1", requiredMode = RequiredMode.NOT_REQUIRED)
+    private String tableNumber;
+
+    @Schema(description = "사용 포인트", example = "20", requiredMode = RequiredMode.NOT_REQUIRED)
+    private Integer point;
+
     @Builder
-    private AppUserCouponResponse(Long id, Long userId, Long couponId, Long storeId, String nickname, String storeName, String name, String conditions, BenefitType benefitType, DiscountType discountType, int discountValue, UserCouponStatus status, LocalDateTime usedAt, LocalDate expiredOn, LocalDateTime createdDateAt) {
+    private AppUserCouponResponse(Long id, Long userId, Long couponId, Long storeId, String nickname, String storeName, String name,
+                                  String conditions, BenefitType benefitType, DiscountType discountType, int discountValue, UserCouponStatus status,
+                                  LocalDateTime usedAt, LocalDate expiredOn, LocalDateTime createdDateAt, String tableNumber, Integer point) {
         this.id = id;
         this.userId = userId;
         this.couponId = couponId;
@@ -78,6 +86,8 @@ public class AppUserCouponResponse {
         this.usedAt = usedAt;
         this.expiredOn = expiredOn;
         this.createdDateAt = createdDateAt;
+        this.tableNumber = tableNumber;
+        this.point = point;
     }
 
     public static AppUserCouponResponse of(UserCoupon userCoupon) {
@@ -97,6 +107,8 @@ public class AppUserCouponResponse {
                 .usedAt(userCoupon.getUsedAt())
                 .expiredOn(userCoupon.getExpiredOn())
                 .createdDateAt(userCoupon.getCreatedAt())
+                .tableNumber(userCoupon.getTableNumber())
+                .point(userCoupon.getPoint())
                 .build();
     }
 }

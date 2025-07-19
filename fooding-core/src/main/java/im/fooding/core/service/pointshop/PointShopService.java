@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +48,10 @@ public class PointShopService {
 
     public Page<PointShop> list(Long storeId, boolean isActive, LocalDate now, String searchString, Pageable pageable) {
         return repository.list(storeId, isActive, now, searchString, pageable);
+    }
+
+    public List<PointShop> list(Long storeId, boolean isActive, LocalDate now) {
+        return repository.list(storeId, isActive, now);
     }
 
     public void issue(long id) {

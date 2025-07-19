@@ -53,6 +53,23 @@ public class QPointShopRepositoryImpl implements QPointShopRepository {
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchCount);
     }
 
+    @Override
+    public List<PointShop> list(Long storeId, boolean isActive, LocalDate now) {
+        return query
+                .select(pointShop)
+                .from(pointShop)
+                .leftJoin(pointShop.store, store).fetchJoin()
+                .where(
+                        pointShop.deleted.isFalse(),
+                        pointShop.isActive.eq(isActive),
+                        storeDeletedIfStoreExists(),
+                        searchStore(storeId),
+                        isIssuableAt(now)
+                )
+                .orderBy(pointShop.id.desc())
+                .fetch();
+    }
+
     private BooleanExpression searchStore(Long storeId) {
         return null != storeId ? pointShop.store.id.eq(storeId) : null;
     }

@@ -42,7 +42,7 @@ public class CeoUserCouponService {
 
         couponService.issue(coupon);
         return userCouponService.create(coupon, user, coupon.getStore(), coupon.getBenefitType(), coupon.getDiscountType(),
-                coupon.getDiscountValue(), coupon.getName(), coupon.getConditions(), coupon.getExpiredOn()).getId();
+                coupon.getDiscountValue(), coupon.getName(), coupon.getConditions(), coupon.getExpiredOn(), null).getId();
     }
 
     @Transactional
@@ -53,7 +53,7 @@ public class CeoUserCouponService {
         checkMember(store.getId(), ceoId);
 
         return userCouponService.create(null, user, store, request.getBenefitType(),
-                request.getDiscountType(), request.getDiscountValue(), request.getName(), request.getConditions(), request.getExpiredOn()).getId();
+                request.getDiscountType(), request.getDiscountValue(), request.getName(), request.getConditions(), request.getExpiredOn(), null).getId();
     }
 
     @Transactional

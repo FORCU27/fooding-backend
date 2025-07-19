@@ -60,7 +60,7 @@ class UserCouponServiceTest extends TestConfig {
         User user = saveUser();
 
         // when
-        userCouponService.create(savedCoupon, user, savedCoupon.getStore(), savedCoupon.getBenefitType(), savedCoupon.getDiscountType(), savedCoupon.getDiscountValue(), savedCoupon.getName(), savedCoupon.getConditions(), savedCoupon.getExpiredOn());
+        userCouponService.create(savedCoupon, user, savedCoupon.getStore(), savedCoupon.getBenefitType(), savedCoupon.getDiscountType(), savedCoupon.getDiscountValue(), savedCoupon.getName(), savedCoupon.getConditions(), savedCoupon.getExpiredOn(), null);
 
         // then
         assertTrue(userCouponRepository.findById(id).isPresent());
@@ -124,7 +124,7 @@ class UserCouponServiceTest extends TestConfig {
         UserCoupon savedUserCoupon = saveUserCoupon(savedCoupon, user);
 
         // when
-        userCouponService.request(savedUserCoupon);
+        userCouponService.request(savedUserCoupon, null);
 
         // then
         assertEquals(UserCouponStatus.REQUESTED, savedUserCoupon.getStatus());
@@ -139,12 +139,12 @@ class UserCouponServiceTest extends TestConfig {
         Coupon savedCoupon = saveCoupon(name, totalQuantity, LocalDate.now(), LocalDate.now().plusMonths(4), LocalDate.now().plusMonths(5));
         User user = saveUser();
         UserCoupon savedUserCoupon = saveUserCoupon(savedCoupon, user);
-        userCouponService.request(savedUserCoupon);
+        userCouponService.request(savedUserCoupon, null);
 
         // when && then
         ApiException apiException =
                 assertThrows(ApiException.class, () -> {
-                    userCouponService.request(savedUserCoupon);
+                    userCouponService.request(savedUserCoupon, null);
                 });
         assertEquals(ErrorCode.USER_COUPON_ALREADY_USE, apiException.getErrorCode());
     }
@@ -162,7 +162,7 @@ class UserCouponServiceTest extends TestConfig {
         // when && then
         ApiException apiException =
                 assertThrows(ApiException.class, () -> {
-                    userCouponService.request(savedUserCoupon);
+                    userCouponService.request(savedUserCoupon, null);
                 });
         assertEquals(ErrorCode.USER_COUPON_EXPIRED, apiException.getErrorCode());
     }
