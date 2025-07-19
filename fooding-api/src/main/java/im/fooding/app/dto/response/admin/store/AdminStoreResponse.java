@@ -2,11 +2,16 @@ package im.fooding.app.dto.response.admin.store;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.subway.SubwayStation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
 
 @Getter
+@Setter
 public class AdminStoreResponse {
     @Schema(description = "id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private final Long id;
@@ -65,6 +70,9 @@ public class AdminStoreResponse {
     @Schema(description = "경도", example = "127.12345678901234", requiredMode = RequiredMode.NOT_REQUIRED)
     private final Double longitude;
 
+    @Schema(description = "인근 지하철역")
+    private List<SubwayStation> stations;
+
     public AdminStoreResponse(Store store) {
         this.id = store.getId();
         this.ownerId = store.getOwner() != null ? store.getOwner().getId() : null;
@@ -84,5 +92,6 @@ public class AdminStoreResponse {
         this.isTakeOut = store.isTakeOut();
         this.latitude = store.getLatitude();
         this.longitude = store.getLongitude();
+        this.stations = store.getSubwayStations();
     }
 }
