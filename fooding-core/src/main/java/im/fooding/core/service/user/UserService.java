@@ -30,7 +30,7 @@ public class UserService {
      * @param phoneNumber
      * @param gender
      */
-    public User create(String email, String nickname, String password, String phoneNumber, Gender gender) {
+    public User create(String email, String nickname, String password, String phoneNumber, Gender gender, String name, String description) {
         checkDuplicateEmail(email, AuthProvider.FOODING);
         if (checkDuplicatedNickname(nickname)) {
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
@@ -46,6 +46,8 @@ public class UserService {
                 .phoneNumber(phoneNumber)
                 .provider(AuthProvider.FOODING)
                 .gender(gender)
+                .name( name )
+                .description( description )
                 .build();
         return userRepository.save(user);
     }
@@ -112,15 +114,20 @@ public class UserService {
      * @param marketingConsent
      * @param pushAgreed
      */
-    public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, boolean pushAgreed) {
-        User user = findById(id);
-        if (!nickname.equals(user.getNickname()) && checkDuplicatedNickname(nickname)) {
-            throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
-        }
-        if (StringUtils.hasText(phoneNumber) && !phoneNumber.equals(user.getPhoneNumber())) {
-            checkDuplicatePhoneNumber(phoneNumber);
-        }
 
+    public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description, boolean pushAgreed) {
+        User user = findById(id);
+        if( nickname != null ){
+            if (!nickname.equals(user.getNickname()) && checkDuplicatedNickname(nickname)) {
+                throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
+            }
+        }
+        if( phoneNumber != null ){
+            if (StringUtils.hasText(phoneNumber) && !phoneNumber.equals(user.getPhoneNumber())) {
+                checkDuplicatePhoneNumber(phoneNumber);
+            }
+        }
+        user.updateDescription( description );
         user.update(nickname, phoneNumber, gender, referralCode, marketingConsent, pushAgreed);
     }
 
