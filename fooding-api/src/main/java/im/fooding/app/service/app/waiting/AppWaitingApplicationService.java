@@ -2,9 +2,11 @@ package im.fooding.app.service.app.waiting;
 
 import im.fooding.app.dto.request.app.waiting.AppWaitingListRequest;
 import im.fooding.app.dto.request.app.waiting.AppWaitingRegisterRequest;
+import im.fooding.app.dto.request.app.waiting.AppWaitingReservationRequest;
 import im.fooding.app.dto.response.app.waiting.*;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
 import im.fooding.core.common.BasicSearch;
+import im.fooding.core.dto.request.store.StoreFilter;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
 import im.fooding.core.model.store.Store;
@@ -20,6 +22,11 @@ import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import im.fooding.core.service.waiting.WaitingUserService;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import im.fooding.core.common.PageInfo;
@@ -28,8 +35,10 @@ import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.model.waiting.StoreWaitingStatus;
 import java.util.List;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -164,5 +173,54 @@ public class AppWaitingApplicationService {
         Pageable pageable = PageRequest.of( 0, Integer.MAX_VALUE );
         Page<StoreWaiting> response = storeWaitingService.list( filter, pageable );
         return response.map( AppWaitingStatusResponse::of ).stream().toList();
+    }
+
+    public PageResponse<AppWaitingReservationResponse> getReservations(AppWaitingReservationRequest request, Long ceoId) {
+        Pageable pageable = request.getPageable();
+
+        List<Store> stores = storeService.list(ceoId, new StoreFilter(null));
+
+        List<Object> merged = new ArrayList<>();
+        stores.forEach(store -> {
+            StoreWaitingFilter filter = StoreWaitingFilter.builder()
+                    .storeId(store.getId())
+                    .build();
+            Page<StoreWaiting> storeWaitings = storeWaitingService.list(filter, pageable);
+            merged.addAll(storeWaitings.getContent());
+        });
+
+        Page<AppWaitingReservationResponse> appWaitingReservationResponsePage = toAppWaitingReservationResponsePage(
+                merged, pageable
+        );
+
+        return PageResponse.of(
+                appWaitingReservationResponsePage.toList(),
+                PageInfo.of(appWaitingReservationResponsePage)
+        );
+    }
+
+    private Page<AppWaitingReservationResponse> toAppWaitingReservationResponsePage(
+            List<Object> merged, Pageable pageable
+    ) {
+        List<AppWaitingReservationResponse> mappedList = merged.stream()
+                .map(obj -> {
+                    if (obj instanceof StoreWaiting sw) {
+                        return AppWaitingReservationResponse.from(sw);
+                    } else {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .toList();
+
+        // 정렬
+
+        // 페이징 처리
+        int start = pageable.getPageNumber() * pageable.getPageSize();
+        int end = Math.min(start + pageable.getPageSize(), mappedList.size());
+        List<AppWaitingReservationResponse> pageContent =
+                start > mappedList.size() ? Collections.emptyList() : mappedList.subList(start, end);
+
+        return new PageImpl<>(pageContent, pageable, mappedList.size());
     }
 }

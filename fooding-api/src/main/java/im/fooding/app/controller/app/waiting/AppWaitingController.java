@@ -2,6 +2,7 @@ package im.fooding.app.controller.app.waiting;
 
 import im.fooding.app.dto.request.app.waiting.AppWaitingListRequest;
 import im.fooding.app.dto.request.app.waiting.AppWaitingRegisterRequest;
+import im.fooding.app.dto.request.app.waiting.AppWaitingReservationRequest;
 import im.fooding.app.dto.response.app.waiting.*;
 import im.fooding.app.service.app.waiting.AppWaitingApplicationService;
 import im.fooding.core.common.ApiResult;
@@ -89,5 +90,14 @@ public class AppWaitingController {
         @PathVariable long storeId
     ){
         return ApiResult.ok( appWaitingApplicationService.waitingStatus( storeId ) );
+    }
+
+    @GetMapping("/reservations")
+    @Operation(summary = "예약/웨이팅 목록 조회")
+    ApiResult<PageResponse<AppWaitingReservationResponse>> getReservations(
+            @AuthenticationPrincipal UserInfo userInfo,
+            @ModelAttribute AppWaitingReservationRequest request
+    ) {
+        return ApiResult.ok(appWaitingApplicationService.getReservations(request, userInfo.getId()));
     }
 }
