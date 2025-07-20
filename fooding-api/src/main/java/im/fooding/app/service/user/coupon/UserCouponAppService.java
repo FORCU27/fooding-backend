@@ -1,6 +1,7 @@
 package im.fooding.app.service.user.coupon;
 
 import im.fooding.app.dto.request.user.coupon.UserSearchUserCouponRequest;
+import im.fooding.app.dto.request.user.coupon.UserUseCouponRequest;
 import im.fooding.app.dto.response.user.coupon.UserCouponResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
@@ -35,12 +36,12 @@ public class UserCouponAppService {
     }
 
     @Transactional
-    public void request(long id, Long userId) {
+    public void request(long id, Long userId, UserUseCouponRequest request) {
         UserCoupon userCoupon = userCouponService.findById(id);
         if (!userId.equals(userCoupon.getUser().getId())) {
             throw new ApiException(ErrorCode.USER_COUPON_NOT_FOUND);
         }
-        userCouponService.request(userCoupon);
+        userCouponService.request(userCoupon, request.getTableNumber());
         publisher.publishEvent(new RequestCouponEvent(userCoupon.getName(), userCoupon.getUser().getPhoneNumber(), SENDER, NotificationChannel.SMS));
     }
 }
