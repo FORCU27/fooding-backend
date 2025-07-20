@@ -133,10 +133,10 @@ public class User extends BaseEntity {
     }
 
     public void update(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, boolean pushAgreed) {
-        this.nickname = nickname;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
-        this.referralCode = referralCode;
+        if( nickname != null ) this.nickname = nickname;
+        if( phoneNumber != null ) this.phoneNumber = phoneNumber;
+        if( gender != null ) this.gender = gender;
+        if( referralCode != null ) this.referralCode = referralCode;
         if (marketingConsent) {
             this.marketingConsent = true;
             this.marketingConsentAt = this.marketingConsentAt == null ? LocalDateTime.now() : this.marketingConsentAt;
@@ -144,7 +144,6 @@ public class User extends BaseEntity {
             this.marketingConsent = false;
             this.marketingConsentAt = null;
         }
-
         if(pushAgreed) {
             this.pushAgreed = true;
             this.pushAgreedAt = this.pushAgreedAt == null ? LocalDateTime.now() : this.pushAgreedAt;
