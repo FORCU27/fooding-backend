@@ -6,6 +6,7 @@ import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreSortType;
+import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.store.StoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -128,11 +129,13 @@ public class StoreService {
             boolean isNewOpen,
             boolean isTakeOut,
             Double latitude,
-            Double longitude
+            Double longitude,
+            List<SubwayStation> stations
     ) {
         Store store = findById(id);
         store.update(name, region, city, address, category, description, contactNumber, priceCategory, eventDescription,
                 direction, information, isParkingAvailable, isNewOpen, isTakeOut, latitude, longitude);
+        store.setNearSubwayStations( stations );
     }
 
     public void delete(long id, Long deletedBy) {

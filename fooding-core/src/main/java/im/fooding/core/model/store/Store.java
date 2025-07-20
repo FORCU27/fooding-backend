@@ -2,18 +2,10 @@ package im.fooding.core.model.store;
 
 import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.region.Region;
+import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.ConstraintMode;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -86,6 +78,10 @@ public class Store extends BaseEntity {
 
     private double averageRating;
 
+    @Column(nullable = false)
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<SubwayStation> subwayStations;
+
     private Double latitude;
 
     private Double longitude;
@@ -133,6 +129,7 @@ public class Store extends BaseEntity {
         this.isTakeOut = isTakeOut;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.subwayStations = null;
     }
 
     public void update(
@@ -193,5 +190,9 @@ public class Store extends BaseEntity {
 
     public void decreaseBookmarkCount() {
         this.bookmarkCount--;
+    }
+
+    public void setNearSubwayStations(List<SubwayStation> stations){
+        this.subwayStations = stations;
     }
 }
