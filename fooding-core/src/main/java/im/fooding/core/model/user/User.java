@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -133,10 +134,10 @@ public class User extends BaseEntity {
     }
 
     public void update(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, boolean pushAgreed) {
-        if( nickname != null ) this.nickname = nickname;
-        if( phoneNumber != null ) this.phoneNumber = phoneNumber;
+        if( StringUtils.hasText(nickname) ) this.nickname = nickname;
+        if( StringUtils.hasText(phoneNumber) ) this.phoneNumber = phoneNumber;
         if( gender != null ) this.gender = gender;
-        if( referralCode != null ) this.referralCode = referralCode;
+        if( StringUtils.hasText(referralCode) ) this.referralCode = referralCode;
         if (marketingConsent) {
             this.marketingConsent = true;
             this.marketingConsentAt = this.marketingConsentAt == null ? LocalDateTime.now() : this.marketingConsentAt;
