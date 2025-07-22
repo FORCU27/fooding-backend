@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -67,5 +68,9 @@ public class UserCouponService {
         if (exists) {
             throw new ApiException(ErrorCode.USER_COUPON_ALREADY_ISSUE);
         }
+    }
+
+    public List<UserCoupon> findByUserIdAndCouponIds(Long userId, List<Long> couponIds) {
+        return repository.findByUserIdAndCouponIdIn(userId, couponIds);
     }
 }
