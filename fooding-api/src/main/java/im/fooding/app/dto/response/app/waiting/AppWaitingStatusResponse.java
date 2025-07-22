@@ -25,8 +25,8 @@ public class AppWaitingStatusResponse {
 
     public static AppWaitingStatusResponse of(StoreWaiting storeWaiting){
         return AppWaitingStatusResponse.builder()
-                .phoneNumber( storeWaiting.getUser().getPhoneNumber() )
-                .name( storeWaiting.getUser().getName() )
+                .phoneNumber( storeWaiting.getWaitingUser().getPhoneNumber() )
+                .name( storeWaiting.getWaitingUser().getName() )
                 .createdAt( storeWaiting.getCreatedAt() )
                 .build();
     }

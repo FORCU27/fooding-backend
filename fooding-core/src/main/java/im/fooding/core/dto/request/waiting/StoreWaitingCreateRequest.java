@@ -20,7 +20,7 @@ public record StoreWaitingCreateRequest(
 ) {
     public StoreWaiting toStoreWaiting(Integer callNumber) {
         return StoreWaiting.builder()
-                .user(user)
+                .waitingUser(user)
                 .store(store)
                 .callNumber(callNumber)
                 .status(StoreWaitingStatus.of(status))

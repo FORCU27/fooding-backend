@@ -4,6 +4,7 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -45,7 +46,11 @@ public class StoreWaiting extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "waiting_user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private WaitingUser user;
+    private WaitingUser waitingUser;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private User user;
 
     @Column(name = "call_number", nullable = false)
     private int callNumber;
@@ -75,7 +80,7 @@ public class StoreWaiting extends BaseEntity {
 
     @Builder
     public StoreWaiting(
-            WaitingUser user,
+            WaitingUser waitingUser,
             Store store,
             int callNumber,
             StoreWaitingStatus status,
@@ -85,7 +90,7 @@ public class StoreWaiting extends BaseEntity {
             int adultCount,
             String memo
     ) {
-        this.user = user;
+        this.waitingUser = waitingUser;
         this.store = store;
         this.callNumber = callNumber;
         this.callCount = 0;
@@ -147,12 +152,12 @@ public class StoreWaiting extends BaseEntity {
         callCount++;
     }
 
-    public void injectUser(WaitingUser user) {
-        this.user = user;
+    public void injectUser(WaitingUser waitingUser) {
+        this.waitingUser = waitingUser;
     }
 
     public void update(
-            WaitingUser user,
+            WaitingUser waitingUser,
             Store store,
             StoreWaitingStatus status,
             StoreWaitingChannel channel,
@@ -161,7 +166,7 @@ public class StoreWaiting extends BaseEntity {
             Integer adultCount,
             String memo
     ) {
-        this.user = user;
+        this.waitingUser = waitingUser;
         this.store = store;
         this.status = status;
         this.channel = channel;

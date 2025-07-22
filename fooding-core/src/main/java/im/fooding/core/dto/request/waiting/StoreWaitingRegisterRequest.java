@@ -6,7 +6,7 @@ import lombok.Builder;
 
 @Builder
 public record StoreWaitingRegisterRequest(
-        WaitingUser user,
+        WaitingUser waitingUser,
         Store store,
         String channel,
         int infantChairCount,

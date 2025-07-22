@@ -2,8 +2,6 @@ package im.fooding.app.dto.response.admin.waiting;
 
 import im.fooding.core.model.waiting.StoreWaiting;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public record AdminStoreWaitingResponse(
         @Schema(description = "웨이팅 유저 id", example = "1")
@@ -30,8 +28,8 @@ public record AdminStoreWaitingResponse(
 
     public static AdminStoreWaitingResponse from(StoreWaiting waiting) {
             Long userId = null;
-            if (waiting.getUser() != null) {
-                    userId = waiting.getUser().getId();
+            if (waiting.getWaitingUser() != null) {
+                    userId = waiting.getWaitingUser().getId();
             }
             return new AdminStoreWaitingResponse(
                     userId,
