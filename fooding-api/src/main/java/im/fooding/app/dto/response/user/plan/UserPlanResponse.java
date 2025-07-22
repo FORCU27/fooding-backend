@@ -1,6 +1,5 @@
-package im.fooding.app.dto.response.app.waiting;
+package im.fooding.app.dto.response.user.plan;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
 import im.fooding.core.model.waiting.StoreWaitingStatus;
@@ -14,7 +13,7 @@ import lombok.Value;
 
 @Value
 @Builder(access = AccessLevel.PRIVATE)
-public class AppWaitingReservationResponse {
+public class UserPlanResponse {
 
     @Schema(description = "ID", requiredMode = RequiredMode.REQUIRED, example = "ID")
     long id;
@@ -50,14 +49,14 @@ public class AppWaitingReservationResponse {
         ;
     }
 
-    public static AppWaitingReservationResponse from(StoreWaiting storeWaiting) {
+    public static UserPlanResponse from(StoreWaiting storeWaiting) {
         ReservationType type = storeWaiting.getChannel() == StoreWaitingChannel.ONLINE
                 ? ReservationType.ONLINE_WAITING
                 : ReservationType.ON_SITE_WAITING;
         VisitStatus visitStatus = toVisitStatus(storeWaiting.getStatus());
         int numberOfPeople = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
 
-        return AppWaitingReservationResponse.builder()
+        return UserPlanResponse.builder()
                 .id(storeWaiting.getId())
                 .type(type)
                 .storeName(storeWaiting.getStoreName())
