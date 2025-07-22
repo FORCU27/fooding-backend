@@ -43,7 +43,7 @@ public class AdminUserCouponService {
 
         //단골 확인
         if (ProvideType.REGULAR_CUSTOMER == coupon.getProvideType()) {
-            boolean exist = bookmarkService.existsByStoreIdAndUserId(user.getId(), coupon.getStore().getId());
+            boolean exist = bookmarkService.existsByStoreIdAndUserId(coupon.getStore().getId(), user.getId());
             if (!exist) {
                 throw new ApiException(ErrorCode.STORE_BOOKMARK_NOT_FOUND);
             }

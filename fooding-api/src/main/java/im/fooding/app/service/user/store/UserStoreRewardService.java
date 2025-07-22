@@ -55,7 +55,7 @@ public class UserStoreRewardService {
 
         //단골 확인
         if (ProvideType.REGULAR_CUSTOMER == pointShop.getProvideType()) {
-            boolean exist = bookmarkService.existsByStoreIdAndUserId(user.getId(), pointShop.getStore().getId());
+            boolean exist = bookmarkService.existsByStoreIdAndUserId(pointShop.getStore().getId(), user.getId());
             if (!exist) {
                 throw new ApiException(ErrorCode.STORE_BOOKMARK_NOT_FOUND);
             }
