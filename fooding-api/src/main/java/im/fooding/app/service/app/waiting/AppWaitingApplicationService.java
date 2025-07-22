@@ -111,7 +111,7 @@ public class AppWaitingApplicationService {
 
     private StoreWaiting registerStoreWaiting(AppWaitingRegisterRequest request, Waiting waiting, WaitingUser waitingUser) {
         StoreWaitingRegisterRequest storeWaitingRegisterRequest = StoreWaitingRegisterRequest.builder()
-                .user(waitingUser)
+                .waitingUser(waitingUser)
                 .store(waiting.getStore())
                 .channel(StoreWaitingChannel.IN_PERSON.getValue())
                 .infantChairCount(request.infantChairCount())

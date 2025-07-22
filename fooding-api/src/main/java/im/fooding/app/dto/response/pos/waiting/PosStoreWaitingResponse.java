@@ -36,7 +36,7 @@ public record PosStoreWaitingResponse(
         return new PosStoreWaitingResponse(
                 storeWaiting.getId(),
                 storeWaiting.getStoreId(),
-                PosWaitingUserResponse.from(storeWaiting.getUser()),
+                PosWaitingUserResponse.from(storeWaiting.getWaitingUser()),
                 storeWaiting.getCallNumber(),
                 storeWaiting.getChannelValue(),
                 storeWaiting.getInfantChairCount(),

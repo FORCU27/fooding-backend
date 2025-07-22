@@ -67,7 +67,7 @@ class StoreWaitingServiceTest extends TestConfig {
         WaitingUser waitingUser = waitingUserRepository.save(WaitingUserDummy.create(store));
 
         StoreWaiting storeWaiting = StoreWaiting.builder()
-                .user(waitingUser)
+                .waitingUser(waitingUser)
                 .store(store)
                 .callNumber(1)
                 .status(StoreWaitingStatus.WAITING)
@@ -79,7 +79,7 @@ class StoreWaitingServiceTest extends TestConfig {
                 .build();
 
         StoreWaiting cancledStoreWaiting = StoreWaiting.builder()
-                .user(waitingUser)
+                .waitingUser(waitingUser)
                 .store(store)
                 .callNumber(2)
                 .status(StoreWaitingStatus.WAITING)
@@ -166,11 +166,11 @@ class StoreWaitingServiceTest extends TestConfig {
         // given
         Region region = regionRepository.save(RegionDummy.create());
         Store store = storeRepository.save(StoreDummy.create(region));
-        WaitingUser user1 = waitingUserRepository.save(WaitingUserDummy.createWithPhoneNumber(store, "01012345678"));
-        WaitingUser user2 = waitingUserRepository.save(WaitingUserDummy.createWithPhoneNumber(store, "01023456789"));
+        WaitingUser waitingUser1 = waitingUserRepository.save(WaitingUserDummy.createWithPhoneNumber(store, "01012345678"));
+        WaitingUser waitingUser2 = waitingUserRepository.save(WaitingUserDummy.createWithPhoneNumber(store, "01023456789"));
 
         StoreWaitingRegisterRequest user1Request = StoreWaitingRegisterRequest.builder()
-                .user(user1)
+                .waitingUser(waitingUser1)
                 .store(store)
                 .channel(StoreWaitingChannel.IN_PERSON.getValue())
                 .infantChairCount(1)
@@ -179,7 +179,7 @@ class StoreWaitingServiceTest extends TestConfig {
                 .build();
 
         StoreWaitingRegisterRequest user2Request = StoreWaitingRegisterRequest.builder()
-                .user(user2)
+                .waitingUser(waitingUser2)
                 .store(store)
                 .channel(StoreWaitingChannel.IN_PERSON.getValue())
                 .infantChairCount(1)

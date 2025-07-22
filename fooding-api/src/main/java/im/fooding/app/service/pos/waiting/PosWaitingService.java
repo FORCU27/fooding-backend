@@ -97,7 +97,7 @@ public class PosWaitingService {
     public void updateContactInfo(long requestId, PosUpdateWaitingContactInfoRequest request) {
         StoreWaiting storeWaiting = storeWaitingService.get(requestId);
 
-        WaitingUser user = storeWaiting.getUser();
+        WaitingUser user = storeWaiting.getWaitingUser();
         if (user != null) {
             user.updateName(request.name());
             user.updatePhoneNumber(request.phoneNumber());
@@ -154,7 +154,7 @@ public class PosWaitingService {
 
     private StoreWaiting registerStoreWaiting(PosWaitingRegisterRequest request, Waiting waiting, WaitingUser waitingUser) {
         StoreWaitingRegisterRequest storeWaitingRegisterRequest = StoreWaitingRegisterRequest.builder()
-                .user(waitingUser)
+                .waitingUser(waitingUser)
                 .store(waiting.getStore())
                 .channel(StoreWaitingChannel.IN_PERSON.getValue())
                 .infantChairCount(request.infantChairCount())

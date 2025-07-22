@@ -34,7 +34,7 @@ public record AppStoreWaitingResponse(
 ) {
 
     public static AppStoreWaitingResponse from(StoreWaiting storeWaiting) {
-        AppWaitingUserResponse userResponse = Optional.ofNullable(storeWaiting.getUser())
+        AppWaitingUserResponse userResponse = Optional.ofNullable(storeWaiting.getWaitingUser())
                 .map(AppWaitingUserResponse::from)
                 .orElse(null);
 
