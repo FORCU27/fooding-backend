@@ -71,6 +71,10 @@ public class StoreWaitingService {
         return storeWaitingRepository.findAllWithFilterAndDeletedFalse(filter, pageable);
     }
 
+    public Page<StoreWaiting> listByUserId(long userId, Pageable pageable) {
+        return storeWaitingRepository.findAllByUserId(userId, pageable);
+    }
+
     @Transactional
     public StoreWaiting call(long id) {
         StoreWaiting storeWaiting = get(id);
@@ -87,7 +91,7 @@ public class StoreWaitingService {
         int callNumber = generateCallNumber();
 
         StoreWaiting storeWaiting = StoreWaiting.builder()
-                .user(request.user())
+                .waitingUser(request.waitingUser())
                 .store(request.store())
                 .status(StoreWaitingStatus.WAITING)
                 .callNumber(callNumber)
