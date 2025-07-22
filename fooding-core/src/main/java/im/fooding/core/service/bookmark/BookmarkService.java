@@ -58,4 +58,8 @@ public class BookmarkService {
         return repository.findByStoreIdAndUserIdAndDeletedIsFalse(storeId, userId)
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_BOOKMARK_NOT_FOUND));
     }
+
+    public boolean existsByStoreIdAndUserId(Long storeId, Long userId) {
+        return repository.existsByStoreIdAndUserIdAndDeletedIsFalse(storeId, userId);
+    }
 }

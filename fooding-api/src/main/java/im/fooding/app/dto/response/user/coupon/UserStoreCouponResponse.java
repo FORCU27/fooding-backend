@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UserStoreCouponResponse {
     @Schema(description = "id", example = "1", requiredMode = RequiredMode.REQUIRED)
-    private long id;
+    private Long id;
 
     @Schema(description = "store id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private Long storeId;
@@ -54,8 +54,11 @@ public class UserStoreCouponResponse {
     @Schema(description = "사용기한", example = "2025-12-31", requiredMode = RequiredMode.REQUIRED)
     private LocalDate expiredOn;
 
+    @Schema(description = "쿠폰 발급 여부", example = "true", requiredMode = RequiredMode.REQUIRED)
+    private Boolean isCouponIssued = false;
+
     @Builder
-    private UserStoreCouponResponse(long id, Long storeId, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType, String name, String conditions, Integer totalQuantity, int issuedQuantity, int discountValue, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn) {
+    private UserStoreCouponResponse(Long id, Long storeId, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType, String name, String conditions, Integer totalQuantity, int issuedQuantity, int discountValue, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn) {
         this.id = id;
         this.storeId = storeId;
         this.benefitType = benefitType;
@@ -89,5 +92,9 @@ public class UserStoreCouponResponse {
                 .issueEndOn(coupon.getIssueEndOn())
                 .expiredOn(coupon.getExpiredOn())
                 .build();
+    }
+
+    public void setIsCouponIssued() {
+        this.isCouponIssued = true;
     }
 }

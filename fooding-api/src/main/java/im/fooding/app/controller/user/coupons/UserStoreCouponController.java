@@ -27,8 +27,8 @@ public class UserStoreCouponController {
 
     @GetMapping
     @Operation(summary = "가게의 쿠폰 목록 조회")
-    public ApiResult<PageResponse<UserStoreCouponResponse>> list(@Valid UserSearchStoreCouponRequest search) {
-        return ApiResult.ok(service.list(search));
+    public ApiResult<PageResponse<UserStoreCouponResponse>> list(@Valid UserSearchStoreCouponRequest search, @AuthenticationPrincipal UserInfo userInfo) {
+        return ApiResult.ok(service.list(search, userInfo));
     }
 
     @PostMapping("/{id}/issue")
