@@ -8,9 +8,9 @@ import im.fooding.core.model.waiting.WaitingUser;
 
 public class StoreWaitingDummy {
 
-    public static StoreWaiting create(WaitingUser user, Store store) {
+    public static StoreWaiting create(WaitingUser waitingUser, Store store) {
         return StoreWaiting.builder()
-                .user(user)
+                .waitingUser(waitingUser)
                 .store(store)
                 .callNumber(1)
                 .status(StoreWaitingStatus.WAITING)
