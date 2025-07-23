@@ -94,3 +94,18 @@ storage:
   api:
     bucket-id: ${STORAGE_API_BUCKET_ID:}
     token: ${STORAGE_API_TOKEN:}
+
+# Prometheus 설정 (스테이징 환경)
+management:
+  server:
+    port: 8081
+    address: 0.0.0.0
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
