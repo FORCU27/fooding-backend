@@ -119,3 +119,15 @@ notification:
 #    key-store: classpath:/keystore/keystore.p12
 #    key-store-password: password
 #    key-store-type: PKCS12
+
+# Prometheus 설정 (로컬 환경)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
