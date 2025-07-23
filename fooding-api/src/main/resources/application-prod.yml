@@ -94,3 +94,16 @@ storage:
   api:
     bucket-id: ${STORAGE_API_BUCKET_ID:}
     token: ${STORAGE_API_TOKEN:}
+
+# Prometheus 설정 (프로덕션 환경)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info
+  endpoint:
+    health:
+      # show-details: when-authorized  # 프로덕션에서는 보안상 제한
+      show-details: always
+    prometheus:
+      enabled: true
