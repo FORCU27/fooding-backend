@@ -114,6 +114,9 @@ storage:
 
 # Prometheus 설정 (스테이징 환경)
 management:
+  server:
+    port: 8081
+    address: 0.0.0.0
   endpoints:
     web:
       exposure:
