@@ -8,7 +8,7 @@ spring:
       add-mappings: false
 
   datasource:
-    url: jdbc:mysql://localhost:3308/fooding?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3309/fooding?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
     username: root
     password: 1234
 
@@ -25,6 +25,13 @@ spring:
     multipart:
       max-file-size: 1000MB
       max-request-size: 1000MB
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 1234
+      database: 0
 
 jwt:
   secret-key: KECHLtOh6ohqn1ucwQF0g9Ih1wbOjfJQ7EKMmfwZ1BmGtahQeeUOUA1JyZykdonF
@@ -95,6 +102,11 @@ storage:
   api:
     bucket-id: ${STORAGE_API_BUCKET_ID:}
     token: ${STORAGE_API_TOKEN:}
+
+address:
+  kakaomap:
+    api-key: b3ad5d14b4171350a56dac59bf037bd7
+    url: https://dapi.kakao.com/v2/local
 
 #server:
 #  port: 8080

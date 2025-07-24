@@ -1,6 +1,8 @@
 package im.fooding.app.dto.response.admin.store;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import im.fooding.core.dto.request.store.SubwayStationDto;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.subway.SubwayStation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,7 +10,10 @@ import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -71,8 +76,9 @@ public class AdminStoreResponse {
     private final Double longitude;
 
     @Schema(description = "인근 지하철역")
-    private List<SubwayStation> stations;
+    private List<SubwayStationDto> stations;
 
+    @JsonCreator
     public AdminStoreResponse(Store store) {
         this.id = store.getId();
         this.ownerId = store.getOwner() != null ? store.getOwner().getId() : null;
@@ -92,6 +98,11 @@ public class AdminStoreResponse {
         this.isTakeOut = store.isTakeOut();
         this.latitude = store.getLatitude();
         this.longitude = store.getLongitude();
-        this.stations = store.getSubwayStations();
+        this.stations = store.getSubwayStations() != null ?
+                store.getSubwayStations().stream()
+                        .filter(Objects::nonNull)
+                        .map(SubwayStationDto::of)
+                        .collect(Collectors.toList()) :
+                new ArrayList<>();
     }
 }

@@ -20,6 +20,9 @@ import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +51,7 @@ public class AdminStoreService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable( value="Stores", key="#id", cacheManager="contentCacheManager")
     public AdminStoreResponse retrieve(Long id) {
         Store store = storeService.findById(id);
         return new AdminStoreResponse(store);
@@ -71,6 +75,7 @@ public class AdminStoreService {
     }
 
     @Transactional
+    @CachePut( value="Stores", key="#id", cacheManager="contentCacheManger" )
     public void update(Long id, AdminUpdateStoreRequest request) {
         Region region = regionService.get(request.getRegionId());
 
@@ -82,6 +87,7 @@ public class AdminStoreService {
     }
 
     @Transactional
+    @CacheEvict( value="Stores", key="#id", cacheManager="contentCacheManger")
     public void delete(Long id, Long deletedBy) {
         storeService.delete(id, deletedBy);
     }
