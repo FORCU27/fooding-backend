@@ -65,6 +65,23 @@ webhook:
 message:
   sender: ${MESSAGE_SENDER:02-1234-5678}
 
+notification:
+  api:
+    url: ${NOTIFICATION_API_URL:}
+  service:
+    user:
+      id: ${NOTIFICATION_SERVICE_USER_ID}
+      token: ${NOTIFICATION_SERVICE_USER_TOKEN}
+    ceo:
+      id: ${NOTIFICATION_SERVICE_CEO_ID}
+      token: ${NOTIFICATION_SERVICE_CEO_TOKEN}
+    pos:
+      id: ${NOTIFICATION_SERVICE_POS_ID}
+      token: ${NOTIFICATION_SERVICE_POS_TOKEN}
+    app:
+      id: ${NOTIFICATION_SERVICE_APP_ID}
+      token: ${NOTIFICATION_SERVICE_APP_TOKEN}
+
 auth:
   google:
     client-id: ${GOOGLE_CLIENT_ID:88628206428-0m206hm81hfff14e5v6d5tgsmbnrbo9g.apps.googleusercontent.com}

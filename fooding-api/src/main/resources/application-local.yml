@@ -96,6 +96,23 @@ storage:
     bucket-id: ${STORAGE_API_BUCKET_ID:}
     token: ${STORAGE_API_TOKEN:}
 
+notification:
+  api:
+    url: ${NOTIFICATION_API_URL:}
+  service:
+    user:
+      id: ${NOTIFICATION_SERVICE_USER_ID:}
+      token: ${NOTIFICATION_SERVICE_USER_TOKEN:}
+    ceo:
+      id: ${NOTIFICATION_SERVICE_CEO_ID:}
+      token: ${NOTIFICATION_SERVICE_CEO_TOKEN:}
+    pos:
+      id: ${NOTIFICATION_SERVICE_POS_ID:}
+      token: ${NOTIFICATION_SERVICE_POS_TOKEN:}
+    app:
+      id: ${NOTIFICATION_SERVICE_APP_ID:}
+      token: ${NOTIFICATION_SERVICE_APP_TOKEN:}
+
 #server:
 #  port: 8080
 #  ssl:
