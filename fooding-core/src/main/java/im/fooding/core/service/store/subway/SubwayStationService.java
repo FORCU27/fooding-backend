@@ -6,7 +6,9 @@ import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.repository.store.subway.SubwayStationRepository;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,15 +21,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 @Getter
+@RequiredArgsConstructor
 @Slf4j
 public class SubwayStationService {
     private final SubwayStationRepository repository;
 
     // 추후 환경 변수로 등록
-    private final String KAKAO_MAP_API_BASE_URL = "https://dapi.kakao.com/v2/local";
-    private final String KAKAO_API_KEY = "b3ad5d14b4171350a56dac59bf037bd7";
+    @Value("${address.kakaomap.url}")
+    private String KAKAO_MAP_API_BASE_URL;
+
+    @Value("${address.kakaomap.api-key}")
+    private String KAKAO_API_KEY;
+
     private final RestTemplate restTemplate = new RestTemplate();
     private final int FIND_COUNTS = 3;
     private final int FIND_RANGE = 1000;    // m 단위
