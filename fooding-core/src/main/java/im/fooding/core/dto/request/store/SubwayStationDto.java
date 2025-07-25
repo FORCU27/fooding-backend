@@ -1,5 +1,6 @@
 package im.fooding.core.dto.request.store;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import im.fooding.core.model.store.subway.SubwayStation;
 import lombok.*;
 
@@ -7,6 +8,7 @@ import lombok.*;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class SubwayStationDto {
     private long id;
     private String name;

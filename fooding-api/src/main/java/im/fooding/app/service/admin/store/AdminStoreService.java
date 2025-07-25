@@ -50,8 +50,8 @@ public class AdminStoreService {
                 pageInfo);
     }
 
+    @Cacheable( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
     @Transactional(readOnly = true)
-    @Cacheable( value="Stores", key="#id", cacheManager="contentCacheManager")
     public AdminStoreResponse retrieve(Long id) {
         Store store = storeService.findById(id);
         return new AdminStoreResponse(store);
@@ -75,7 +75,7 @@ public class AdminStoreService {
     }
 
     @Transactional
-    @CachePut( value="Stores", key="#id", cacheManager="contentCacheManger" )
+    @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
     public void update(Long id, AdminUpdateStoreRequest request) {
         Region region = regionService.get(request.getRegionId());
 
@@ -87,7 +87,7 @@ public class AdminStoreService {
     }
 
     @Transactional
-    @CacheEvict( value="Stores", key="#id", cacheManager="contentCacheManger")
+    @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
     public void delete(Long id, Long deletedBy) {
         storeService.delete(id, deletedBy);
     }
