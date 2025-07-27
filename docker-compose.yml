@@ -26,3 +26,7 @@ services:
       - TZ=Asia/Seoul
     volumes:
       - ./mongo/init:/docker-entrypoint-initdb.d
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
