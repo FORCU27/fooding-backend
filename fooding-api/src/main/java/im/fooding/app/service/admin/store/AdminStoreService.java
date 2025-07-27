@@ -9,12 +9,14 @@ import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePosition;
+import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.region.RegionService;
 import im.fooding.core.service.store.StoreMemberService;
 import im.fooding.core.service.store.StoreService;
+import im.fooding.core.service.store.document.StoreDocumentService;
 import im.fooding.core.service.store.subway.SubwayStationService;
 import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
@@ -37,6 +39,7 @@ public class AdminStoreService {
     private final UserAuthorityService userAuthorityService;
     private final RegionService regionService;
     private final SubwayStationService subwayStationService;
+    private final StoreDocumentService storeDocumentService;
 
     @Transactional(readOnly = true)
     public PageResponse<AdminStoreResponse> list(AdminSearchStoreRequest request) {
@@ -67,6 +70,8 @@ public class AdminStoreService {
 
         storeMemberService.create(store, user, StorePosition.OWNER);
 
+        storeDocumentService.save(StoreDocument.from(store));
+
         return store.getId();
     }
 
@@ -74,15 +79,18 @@ public class AdminStoreService {
     public void update(Long id, AdminUpdateStoreRequest request) {
         Region region = regionService.get(request.getRegionId());
 
-        List<SubwayStation> nearStations = subwayStationService.getNearStations( request.getLatitude(), request.getLongitude() );
+        List<SubwayStation> nearStations = subwayStationService.getNearStations(request.getLatitude(), request.getLongitude());
 
-        storeService.update(id, request.getName(), region, request.getCity(), request.getAddress(), request.getCategory(), request.getDescription(),
+        Store store = storeService.update(id, request.getName(), region, request.getCity(), request.getAddress(), request.getCategory(), request.getDescription(),
                 request.getContactNumber(), request.getPriceCategory(), request.getEventDescription(), request.getDirection(),
                 request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude(), nearStations);
+
+        storeDocumentService.save(StoreDocument.from(store));
     }
 
     @Transactional
     public void delete(Long id, Long deletedBy) {
         storeService.delete(id, deletedBy);
+        storeDocumentService.delete(String.valueOf(id));
     }
 }

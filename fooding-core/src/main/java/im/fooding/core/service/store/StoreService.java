@@ -36,6 +36,10 @@ public class StoreService {
         return storeRepository.list(pageable, sortType, sortDirection, includeDeleted);
     }
 
+    public List<Store> list(List<Long> ids) {
+        return storeRepository.list(ids);
+    }
+
     /**
      * userId로 가게 목록 조회
      *
@@ -112,7 +116,7 @@ public class StoreService {
         return storeRepository.save(store);
     }
 
-    public void update(
+    public Store update(
             long id,
             String name,
             Region region,
@@ -136,6 +140,7 @@ public class StoreService {
         store.update(name, region, city, address, category, description, contactNumber, priceCategory, eventDescription,
                 direction, information, isParkingAvailable, isNewOpen, isTakeOut, latitude, longitude);
         store.setNearSubwayStations( stations );
+        return store;
     }
 
     public void delete(long id, Long deletedBy) {
