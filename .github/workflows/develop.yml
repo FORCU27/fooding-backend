@@ -56,6 +56,9 @@ jobs:
             STORAGE_API_TOKEN=${{ secrets.STAGE_STORAGE_API_TOKEN  }}
             STORAGE_API_BUCKET_ID=${{ secrets.STAGE_STORAGE_API_BUCKET_ID  }}
             JPA_DDL_AUTO=${{ secrets.STAGE_JPA_DDL_AUTO  }}
+            ELASTIC_SEARCH_URIS=${{ secrets.STAGE_ELASTIC_SEARCH_URIS}}
+            ELASTIC_SEARCH_USERNAME=${{ secrets.STAGE_ELASTIC_SEARCH_USERNAME }}
+            ELASTIC_SEARCH_PASSWORD=${{ secrets.STAGE_ELASTIC_SEARCH_PASSWORD }}
       - name: Deployment
         uses: appleboy/ssh-action@master
         with:
