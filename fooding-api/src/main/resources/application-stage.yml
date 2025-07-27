@@ -102,8 +102,8 @@ storage:
     bucket-id: ${STORAGE_API_BUCKET_ID:}
     token: ${STORAGE_API_TOKEN:}
 
-address:
-  kakaomap:
+map:
+  kakao:
     api-key: ${KAKAO_MAP_API_KEY:b3ad5d14b4171350a56dac59bf037bd7}
     url: ${KAKAO_MAP_API_URL:https://dapi.kakao.com/v2/local}
 
