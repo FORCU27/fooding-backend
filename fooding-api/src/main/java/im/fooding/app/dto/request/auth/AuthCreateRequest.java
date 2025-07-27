@@ -2,11 +2,7 @@ package im.fooding.app.dto.request.auth;
 
 import im.fooding.core.model.user.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Builder;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,20 +30,21 @@ public class AuthCreateRequest {
     private Role role;
 
     @NotNull
-    @Schema(description = "이름", example="홍길동")
+    @Schema(description = "이름", example = "홍길동")
     private String name;
 
-    @Schema(description = "자기소개", example = "안녕하세요")
     @Size(max = 150, message = "자기소개는 최대 150자까지 가능합니다.")
+    @Schema(description = "자기소개", example = "안녕하세요")
     private String description;
 
-    @Builder
-    public AuthCreateRequest(String email, String nickname, String password, Role role, String name, String description) {
-        this.email = email;
-        this.nickname = nickname;
-        this.password = password;
-        this.role = role;
-        this.name = name;
-        this.description = description;
-    }
+    @NotBlank
+    @Pattern(regexp = "^\\d{11}$")
+    @Schema(description = "전화번호", example = "01000000000")
+    private String phoneNumber;
+
+    @Schema(description = "추천인코드", example = "123213")
+    private String referralCode;
+
+    @Schema(description = "마케팅 수신 동의 여부", example = "false")
+    private boolean marketingConsent;
 }

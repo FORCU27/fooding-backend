@@ -74,6 +74,22 @@ public class SwaggerConfig {
     }
 
     @Bean
+    public GroupedOpenApi authApi() {
+        return GroupedOpenApi.builder()
+                .group("Auth API")
+                .packagesToScan("im.fooding.app.controller.auth")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi fileApi() {
+        return GroupedOpenApi.builder()
+                .group("File API")
+                .packagesToScan("im.fooding.app.controller.file")
+                .build();
+    }
+
+    @Bean
     public GroupedOpenApi api() {
         return GroupedOpenApi.builder()
                 .group("API")
