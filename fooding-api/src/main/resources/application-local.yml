@@ -7,6 +7,10 @@ spring:
     resources:
       add-mappings: false
 
+  data:
+    mongodb:
+      uri: mongodb://root:1234@localhost:27017/fooding?authSource=admin
+
   datasource:
     url: jdbc:mysql://localhost:3308/fooding?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
     username: root
