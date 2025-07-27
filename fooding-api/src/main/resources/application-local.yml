@@ -30,6 +30,13 @@ spring:
       max-file-size: 1000MB
       max-request-size: 1000MB
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: 1234
+      database: 0
+
 jwt:
   secret-key: KECHLtOh6ohqn1ucwQF0g9Ih1wbOjfJQ7EKMmfwZ1BmGtahQeeUOUA1JyZykdonF
   access:
@@ -116,6 +123,10 @@ notification:
     app:
       id: ${NOTIFICATION_SERVICE_APP_ID:}
       token: ${NOTIFICATION_SERVICE_APP_TOKEN:}
+address:
+  kakaomap:
+    api-key: b3ad5d14b4171350a56dac59bf037bd7
+    url: https://dapi.kakao.com/v2/local
 
 #server:
 #  port: 8080

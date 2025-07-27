@@ -30,6 +30,13 @@ spring:
       max-file-size: ${MAX_FILE_SIZE:1000MB}
       max-request-size: ${MAX_REQUEST_SIZE:1000MB}
 
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:1234}
+      database: ${REDIS_DATABASE:0}
+
 jwt:
   secret-key: ${JWT_SECRET_KEY:KECHLtOh6ohqn1ucwQF0g9Ih1wbOjfJQ7EKMmfwZ1BmGtahQeeUOUA1JyZykdonF}
   access:
@@ -115,6 +122,11 @@ storage:
   api:
     bucket-id: ${STORAGE_API_BUCKET_ID:}
     token: ${STORAGE_API_TOKEN:}
+
+address:
+  kakaomap:
+    api-key: ${KAKAO_MAP_API_KEY:b3ad5d14b4171350a56dac59bf037bd7}
+    url: ${KAKAO_MAP_API_URL:https://dapi.kakao.com/v2/local}
 
 # Prometheus 설정 (스테이징 환경)
 management:

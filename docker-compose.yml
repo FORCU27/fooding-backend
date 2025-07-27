@@ -26,3 +26,16 @@ services:
       - TZ=Asia/Seoul
     volumes:
       - ./mongo/init:/docker-entrypoint-initdb.d
+  redis:
+    image: redis:7-alpine
+    container_name: fooding-redis
+    restart: always
+    ports:
+      - 6379:6379
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --requirepass 1234
+volumes:
+  redis_data:
