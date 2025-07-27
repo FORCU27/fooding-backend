@@ -52,10 +52,11 @@ jobs:
             MAIL_SEND_FROM_ADDRESS=${{ secrets.MAIL_SEND_FROM_ADDRESS }}
             SPRING_PROFILES_ACTIVE=${{ secrets.SPRING_PROFILES_ACTIVE }}
             UPLOAD_PATH=${{ secrets.UPLOAD_PATH }}
-            STORAGE_API_URL=${{ secrets.STORAGE_API_URL  }}
-            STORAGE_API_TOKEN=${{ secrets.STORAGE_API_TOKEN  }}
-            STORAGE_API_BUCKET_ID=${{ secrets.STORAGE_API_BUCKET_ID  }}
-            JPA_DDL_AUTO=${{ secrets.JPA_DDL_AUTO  }}
+            STORAGE_API_URL=${{ secrets.STORAGE_API_URL }}
+            STORAGE_API_TOKEN=${{ secrets.STORAGE_API_TOKEN }}
+            STORAGE_API_BUCKET_ID=${{ secrets.STORAGE_API_BUCKET_ID }}
+            JPA_DDL_AUTO=${{ secrets.JPA_DDL_AUTO }}
+            MONGODB_URI=${{ secrets.MONGODB_URI }}
       - name: Deployment
         uses: appleboy/ssh-action@master
         with:
