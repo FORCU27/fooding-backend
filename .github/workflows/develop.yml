@@ -65,6 +65,7 @@ jobs:
             NOTIFICATION_SERVICE_POS_TOKEN=${{ secrets.STAGE_NOTIFICATION_SERVICE_POS_TOKEN  }}
             NOTIFICATION_SERVICE_APP_ID=${{ secrets.STAGE_NOTIFICATION_SERVICE_APP_ID  }}
             NOTIFICATION_SERVICE_APP_TOKEN=${{ secrets.STAGE_NOTIFICATION_SERVICE_APP_TOKEN  }}
+            MONGODB_URI=${{ secrets.STAGE_MONGODB_URI  }}
       - name: Deployment
         uses: appleboy/ssh-action@master
         with:

@@ -65,6 +65,11 @@ jobs:
             NOTIFICATION_SERVICE_POS_TOKEN=${{ secrets.NOTIFICATION_SERVICE_POS_TOKEN  }}
             NOTIFICATION_SERVICE_APP_ID=${{ secrets.NOTIFICATION_SERVICE_APP_ID  }}
             NOTIFICATION_SERVICE_APP_TOKEN=${{ secrets.NOTIFICATION_SERVICE_APP_TOKEN  }}
+            STORAGE_API_URL=${{ secrets.STORAGE_API_URL }}
+            STORAGE_API_TOKEN=${{ secrets.STORAGE_API_TOKEN }}
+            STORAGE_API_BUCKET_ID=${{ secrets.STORAGE_API_BUCKET_ID }}
+            JPA_DDL_AUTO=${{ secrets.JPA_DDL_AUTO }}
+            MONGODB_URI=${{ secrets.MONGODB_URI }}
       - name: Deployment
         uses: appleboy/ssh-action@master
         with:
