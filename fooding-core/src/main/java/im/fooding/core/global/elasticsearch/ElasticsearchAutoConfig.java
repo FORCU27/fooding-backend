@@ -4,8 +4,10 @@ import im.fooding.core.global.elasticsearch.setup.StoreIndexSetup;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
+@Profile("!test")
 public class ElasticsearchAutoConfig {
     private final StoreIndexSetup storeIndexSetup;
 
