@@ -10,6 +10,11 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI}
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:1234}
+      database: ${REDIS_DATABASE:0}
 
   datasource:
     url: ${DB_URL}
@@ -29,13 +34,6 @@ spring:
     multipart:
       max-file-size: ${MAX_FILE_SIZE:1000MB}
       max-request-size: ${MAX_REQUEST_SIZE:1000MB}
-
-  data:
-    redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:1234}
-      database: ${REDIS_DATABASE:0}
 
 jwt:
   secret-key: ${JWT_SECRET_KEY:KECHLtOh6ohqn1ucwQF0g9Ih1wbOjfJQ7EKMmfwZ1BmGtahQeeUOUA1JyZykdonF}
