@@ -92,6 +92,7 @@ public enum ErrorCode {
     // 메뉴
     MENUCATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "6000", "등록된 메뉴 카테고리가 없습니다."),
     MENU_NOT_FOUND(HttpStatus.BAD_REQUEST, "6001", "등록된 메뉴가 없습니다."),
+    MENU_BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST, "6002", "등록된 메뉴판이 없습니다."),
 
     // 쿠폰
     COUPON_NOT_FOUND(HttpStatus.BAD_REQUEST, "8000", "등록된 쿠폰이 없습니다."),
