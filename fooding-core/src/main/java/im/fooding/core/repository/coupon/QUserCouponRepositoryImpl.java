@@ -16,6 +16,7 @@ import java.util.List;
 import static im.fooding.core.model.coupon.QCoupon.coupon;
 import static im.fooding.core.model.coupon.QUserCoupon.userCoupon;
 import static im.fooding.core.model.store.QStore.store;
+import static im.fooding.core.model.store.QStoreImage.storeImage;
 import static im.fooding.core.model.user.QUser.user;
 
 @RequiredArgsConstructor
@@ -30,11 +31,13 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
                 .join(userCoupon.user, user).fetchJoin()
                 .leftJoin(userCoupon.coupon, coupon).fetchJoin()
                 .leftJoin(userCoupon.store, store).fetchJoin()
+                .leftJoin(store.images, storeImage)
                 .where(
                         userCoupon.deleted.isFalse(),
                         user.deleted.isFalse(),
                         couponDeletedIfStoreExists(),
                         storeDeletedIfStoreExists(),
+                        storeImageDeletedIfStoreImageExists(),
                         searchUser(userId),
                         searchStore(storeId),
                         searchUsed(used),
@@ -48,6 +51,9 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
         JPAQuery<UserCoupon> countQuery = query
                 .select(userCoupon)
                 .from(userCoupon)
+                .join(userCoupon.user, user).fetchJoin()
+                .leftJoin(userCoupon.coupon, coupon).fetchJoin()
+                .leftJoin(userCoupon.store, store).fetchJoin()
                 .where(
                         userCoupon.deleted.isFalse(),
                         user.deleted.isFalse(),
@@ -76,6 +82,10 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
 
     private BooleanExpression couponDeletedIfStoreExists() {
         return coupon.id.isNull().or(coupon.deleted.isFalse());
+    }
+
+    private BooleanExpression storeImageDeletedIfStoreImageExists() {
+        return storeImage.id.isNull().or(storeImage.deleted.isFalse());
     }
 
     private BooleanExpression searchUsed(Boolean used) {
