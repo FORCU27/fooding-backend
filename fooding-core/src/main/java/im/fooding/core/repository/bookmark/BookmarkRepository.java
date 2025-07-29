@@ -12,4 +12,6 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long>, QBook
 
     @EntityGraph(attributePaths = {"store", "user"})
     List<Bookmark> findAllByUserIdAndDeletedIsFalse(long userId);
+
+    boolean existsByStoreIdAndUserIdAndDeletedIsFalse(Long storeId, Long userId);
 }
