@@ -2,6 +2,7 @@ package im.fooding.app.dto.request.auth;
 
 import im.fooding.core.model.user.Role;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -13,8 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthLoginRequest {
     @NotBlank
+    @Email
     @Size(max = 50)
-    @Schema(description = "아이디", example = "admin")
+    @Schema(description = "이메일", example = "admin@gmail.com")
     private String email;
 
     @NotBlank

@@ -96,7 +96,7 @@ public class User extends BaseEntity {
 
     @Builder
     public User(String email, String password, AuthProvider provider, String nickname, String phoneNumber,
-                String referralCode, String profileImage, Gender gender, String name, String description
+                String referralCode, String profileImage, Gender gender, String name, String description, boolean marketingConsent
     ) {
         this.email = email;
         this.password = password;
@@ -108,11 +108,6 @@ public class User extends BaseEntity {
         this.gender = gender;
         this.name = name;
         this.description = description;
-        this.termsAgreed = true;
-        this.termsAgreedAt = LocalDateTime.now();
-        this.privacyPolicyAgreed = true;
-        this.privacyPolicyAgreedAt = LocalDateTime.now();
-
         //필수
         this.termsAgreed = true;
         this.termsAgreedAt = LocalDateTime.now();
@@ -120,11 +115,8 @@ public class User extends BaseEntity {
         this.privacyPolicyAgreedAt = LocalDateTime.now();
 
         //선택
-        this.marketingConsent = false;
-        this.marketingConsentAt = this.marketingConsentAt == null ? LocalDateTime.now() : this.marketingConsentAt;
-        this.pushAgreed = false;
-        this.pushAgreedAt = this.pushAgreedAt == null ? LocalDateTime.now() : this.pushAgreedAt;
-
+        this.marketingConsent = marketingConsent;
+        this.marketingConsentAt = marketingConsent ? LocalDateTime.now() : null;
     }
 
     public void updatedRefreshToken(String updatedRefreshToken) {

@@ -4,6 +4,7 @@ import im.fooding.core.model.user.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +17,8 @@ public class AuthUpdateProfileRequest {
     @Schema(description = "닉네임", example = "홍길동")
     private String nickname;
 
-    @Schema(description = "핸드폰번호", example = "010-1234-5678")
+    @Pattern(regexp = "^\\d{11}$")
+    @Schema(description = "핸드폰번호", example = "01012345678")
     private String phoneNumber;
 
     @Schema(description = "성별(MALE, FEMALE, OTHER, NONE)", example = "MALE")
