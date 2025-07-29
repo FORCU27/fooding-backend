@@ -26,7 +26,7 @@ public enum ErrorCode {
 
     // 회원
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "1000", "가입된 정보가 없습니다."),
-    LOGIN_FAILED(HttpStatus.BAD_REQUEST, "1001", "로그인에 실패하셨습니다."),
+    LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "1001", "해당 권한이 없습니다."),
     DUPLICATED_REGISTER_EMAIL(HttpStatus.BAD_REQUEST, "1002", "이미 가입된 이메일입니다."),
     DUPLICATED_NICKNAME(HttpStatus.BAD_REQUEST, "1003", "이미 가입된 닉네임입니다."),
     DUPLICATED_PHONE_NUMBER(HttpStatus.BAD_REQUEST, "1004", "이미 가입된 전화번호입니다."),
@@ -34,6 +34,7 @@ public enum ErrorCode {
     EMAIL_CONSENT_REQUIRED(HttpStatus.BAD_REQUEST, "1006", "이메일 제공 동의가 필요합니다."),
     SOCIAL_LOGIN_ONLY(HttpStatus.BAD_REQUEST, "1007", "유저는 소셜로그인으로만 가입 가능합니다."),
     NICKNAME_GENERATE_FAILED(HttpStatus.BAD_REQUEST, "1008", "닉네임 자동 생성에 실패하셨습니다."),
+    LOGIN_PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "1009", "비밀번호가 틀렸습니다."),
 
     // 가게
     STORE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2000", "등록된 가게 정보가 없습니다."),
@@ -91,6 +92,7 @@ public enum ErrorCode {
     // 메뉴
     MENUCATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "6000", "등록된 메뉴 카테고리가 없습니다."),
     MENU_NOT_FOUND(HttpStatus.BAD_REQUEST, "6001", "등록된 메뉴가 없습니다."),
+    MENU_BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST, "6002", "등록된 메뉴판이 없습니다."),
 
     // 쿠폰
     COUPON_NOT_FOUND(HttpStatus.BAD_REQUEST, "8000", "등록된 쿠폰이 없습니다."),

@@ -89,8 +89,8 @@ public class AuthService {
      */
     @Transactional
     public void register(AuthCreateRequest request) {
-        User user = userService.create(request.getEmail(), request.getNickname(),
-                passwordEncoder.encode(request.getPassword()), null, Gender.NONE, request.getName(), request.getDescription());
+        User user = userService.create(request.getEmail(), request.getNickname(), passwordEncoder.encode(request.getPassword()),
+                request.getPhoneNumber(), Gender.NONE, request.getName(), request.getDescription(), request.getReferralCode(), request.isMarketingConsent());
         userAuthorityService.create(user, request.getRole());
     }
 
@@ -109,6 +109,10 @@ public class AuthService {
     public TokenResponse login(AuthLoginRequest request) {
         User user = userService.findByEmailAndProvider(request.getEmail(), AuthProvider.FOODING);
 
+        if (user == null) {
+            throw new ApiException(ErrorCode.USER_NOT_FOUND);
+        }
+
         List<Role> roles = user.getAuthorities().stream()
                 .map(UserAuthority::getRole)
                 .toList();
@@ -118,7 +122,7 @@ public class AuthService {
         }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new ApiException(ErrorCode.LOGIN_FAILED);
+            throw new ApiException(ErrorCode.LOGIN_PASSWORD_MISMATCH);
         }
 
         TokenResponse tokenResponse = jwtService.issueJwtToken(user.getId());

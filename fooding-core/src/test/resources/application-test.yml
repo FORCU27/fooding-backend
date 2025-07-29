@@ -40,3 +40,8 @@ webhook:
 
 message:
   sender: __MESSAGE_SENDER__
+
+map:
+  kakao:
+    api-key: b3ad5d14b4171350a56dac59bf037bd7
+    url: https://dapi.kakao.com/v2/local

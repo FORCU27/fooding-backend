@@ -55,10 +55,17 @@ jobs:
             STORAGE_API_URL=${{ secrets.STORAGE_API_URL  }}
             STORAGE_API_TOKEN=${{ secrets.STORAGE_API_TOKEN  }}
             STORAGE_API_BUCKET_ID=${{ secrets.STORAGE_API_BUCKET_ID  }}
+            REDIS_HOST=${{ secrets.REDIS_HOST  }}
+            REDIS_PORT=${{ secrets.REDIS_PORT  }}
+            REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD  }}
+            REDIS_DATABASE=${{ secrets.REDIS_DATABASE  }}
+            KAKAO_MAP_API_KEY=${{ secrets.KAKAO_MAP_API_KEY  }}
+            KAKAO_MAP_API_URL=${{ secrets.KAKAO_MAP_API_URL  }}
             JPA_DDL_AUTO=${{ secrets.JPA_DDL_AUTO  }}
             ELASTIC_SEARCH_URIS=${{ secrets.ELASTIC_SEARCH_URIS}}
             ELASTIC_SEARCH_USERNAME=${{ secrets.ELASTIC_SEARCH_USERNAME }}
             ELASTIC_SEARCH_PASSWORD=${{ secrets.ELASTIC_SEARCH_PASSWORD }}
+            MONGODB_URI=${{ secrets.MONGODB_URI }}
       - name: Deployment
         uses: appleboy/ssh-action@master
         with:

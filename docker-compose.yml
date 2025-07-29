@@ -42,9 +42,36 @@ services:
       - elasticsearch
     networks:
       - elk
-
+      
+  redis:
+    image: redis:7-alpine
+    container_name: fooding-redis
+    restart: always
+    ports:
+      - 6379:6379
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --requirepass 1234
+    
+  mongodb:
+    image: mongo:6
+    container_name: fooding-mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=1234
+      - TZ=Asia/Seoul
+    volumes:
+      - ./mongo/init:/docker-entrypoint-initdb.d
+      - mongo_data:/data/db
+      
 volumes:
   esdata: {}
-
+  mongo_data:
+  redis_data:
 networks:
   elk: {}

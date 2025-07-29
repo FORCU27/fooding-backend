@@ -53,4 +53,16 @@ public class MenuBoard extends BaseEntity {
         this.title = title;
         this.imageUrl = imageUrl;
     }
+
+    public void updateStore(Store store) {
+        this.store = store;
+    }
+
+    public void updateTitle(String title) {
+        this.title = title;
+    }
+
+    public void updateImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
