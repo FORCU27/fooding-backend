@@ -10,6 +10,11 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI}
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:1234}
+      database: ${REDIS_DATABASE:0}
 
   datasource:
     url: ${DB_URL}
@@ -99,6 +104,10 @@ storage:
     bucket-id: ${STORAGE_API_BUCKET_ID:}
     token: ${STORAGE_API_TOKEN:}
 
+map:
+  kakao:
+    api-key: ${KAKAO_MAP_API_KEY:b3ad5d14b4171350a56dac59bf037bd7}
+    url: ${KAKAO_MAP_API_URL:https://dapi.kakao.com/v2/local}
 # Prometheus 설정 (프로덕션 환경)
 management:
   server:
