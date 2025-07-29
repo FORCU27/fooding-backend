@@ -24,9 +24,6 @@ services:
     volumes:
       - redis_data:/data
     command: redis-server --appendonly yes --requirepass 1234
-volumes:
-  redis_data:
-
   mongodb:
     image: mongo:6
     container_name: fooding-mongodb
@@ -43,3 +40,5 @@ volumes:
 
 volumes:
   mongo_data:
+  redis_data:
+
