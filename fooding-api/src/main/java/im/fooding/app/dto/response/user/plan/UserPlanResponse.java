@@ -32,6 +32,9 @@ public class UserPlanResponse {
     @Schema(description = "예약 일시", requiredMode = RequiredMode.REQUIRED, example = "2025-07-30T06:01:16.711Z")
     LocalDateTime reservationTime;
 
+    @Schema(description = "생성 일시", requiredMode = RequiredMode.REQUIRED, example = "2025-07-30T06:01:16.711Z")
+    LocalDateTime createdAt;
+
     @Schema(description = "예약한 유아용 의자 수", requiredMode = RequiredMode.REQUIRED, example = "3")
     int infantChairCount;
 
@@ -49,6 +52,7 @@ public class UserPlanResponse {
                 plan.getStoreId(),
                 plan.getVisitStatus(),
                 plan.getReservationTime(),
+                plan.getCreatedAt(),
                 plan.getInfantChairCount(),
                 plan.getInfantCount(),
                 plan.getAdultCount()
