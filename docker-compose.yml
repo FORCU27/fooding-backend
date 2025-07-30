@@ -13,6 +13,36 @@ services:
       - TZ=Asia/Seoul
     volumes:
       - ./mysql/init:/docker-entrypoint-initdb.d
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=false
+      - ELASTIC_PASSWORD=1234   # elastic 유저 기본 비밀번호
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ports:
+      - 9200:9200
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - elk
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.13.4
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_SERVICEACCOUNTTOKEN=${ELASTICSEARCH_SERVICE_ACCOUNT_TOKEN}
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk
+      
   redis:
     image: redis:7-alpine
     container_name: fooding-redis
@@ -24,6 +54,7 @@ services:
     volumes:
       - redis_data:/data
     command: redis-server --appendonly yes --requirepass 1234
+    
   mongodb:
     image: mongo:6
     container_name: fooding-mongodb
@@ -37,8 +68,10 @@ services:
     volumes:
       - ./mongo/init:/docker-entrypoint-initdb.d
       - mongo_data:/data/db
-
+      
 volumes:
+  esdata: {}
   mongo_data:
   redis_data:
-
+networks:
+  elk: {}

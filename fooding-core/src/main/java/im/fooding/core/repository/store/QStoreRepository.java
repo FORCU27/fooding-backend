@@ -22,4 +22,6 @@ public interface QStoreRepository {
     List<Store> listByUserId(long userId, StoreFilter filter);
 
     Optional<Store> retrieve(long storeId);
+
+    List<Store> list(List<Long> ids);
 }

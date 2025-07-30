@@ -5,7 +5,8 @@ spring:
   h2:
     console:
       enabled: true
-
+  elasticsearch:
+    uris: http://dummy-local:9200
   jpa:
     database: h2
     generate-ddl: off
