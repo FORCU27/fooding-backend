@@ -23,17 +23,17 @@ public class ElasticsearchConfig {
     private final String id;
     private final String key;
 
-    public ElasticsearchConfig(@Value("${spring.elasticsearch.uris}") String host) {
+    public ElasticsearchConfig(@Value("${spring.elasticsearch.uris}") String host,
+                               @Value("${spring.elasticsearch.id}") String id,
+                               @Value("${spring.elasticsearch.key}") String key) {
         this.host = host;
-        this.id = "OFRFYZgB4JuBJTPrdSsm";
-        this.key = "IUXxoX2hT4i2X1qqiaIopA";
+        this.id = id;
+        this.key = key;
     }
 
     @Bean
     public RestClient restClient() {
-        String apiKey = "%s:%s".formatted(id, key);
-        String encodedApiKey = Base64.getEncoder().encodeToString(apiKey.getBytes(StandardCharsets.UTF_8));
-        Header apiKeyHeader = new BasicHeader("Authorization", "ApiKey " + encodedApiKey);
+        Header apiKeyHeader = new BasicHeader("Authorization", "ApiKey " + getApiKey());
         return RestClient.builder(HttpHost.create(host))
                 .setDefaultHeaders(new Header[]{apiKeyHeader})
                 .build();
@@ -45,5 +45,10 @@ public class ElasticsearchConfig {
         mapper.registerModule(new JavaTimeModule());
         ElasticsearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper(mapper));
         return new ElasticsearchClient(transport);
+    }
+
+    private String getApiKey() {
+        String apiKey = "%s:%s".formatted(id, key);
+        return Base64.getEncoder().encodeToString(apiKey.getBytes(StandardCharsets.UTF_8));
     }
 }
