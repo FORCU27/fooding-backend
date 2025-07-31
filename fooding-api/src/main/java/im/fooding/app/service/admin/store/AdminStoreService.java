@@ -6,6 +6,8 @@ import im.fooding.app.dto.request.admin.store.AdminUpdateStoreRequest;
 import im.fooding.app.dto.response.admin.store.AdminStoreResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePosition;
@@ -29,6 +31,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,8 +77,11 @@ public class AdminStoreService {
 
         storeMemberService.create(store, user, StorePosition.OWNER);
 
-        storeDocumentService.save(StoreDocument.from(store));
-
+        try {
+            storeDocumentService.save(StoreDocument.from(store));
+        } catch (IOException e) {
+            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
+        }
         return store.getId();
     }
 
