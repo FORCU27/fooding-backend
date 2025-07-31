@@ -4,6 +4,8 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
@@ -12,25 +14,36 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
 @Configuration
 public class ElasticsearchConfig {
-    @Value("${elasticsearch.host}")
-    private String elasticsearchHost;
+    private final String host;
+    private final String id;
+    private final String key;
 
-    @Value("${elasticsearch.api-key}")
-    private String elasticsearchApiKey;
+    public ElasticsearchConfig(@Value("${spring.elasticsearch.uris}") String host) {
+        this.host = host;
+        this.id = "OFRFYZgB4JuBJTPrdSsm";
+        this.key = "IUXxoX2hT4i2X1qqiaIopA";
+    }
 
     @Bean
     public RestClient restClient() {
-        Header apiKeyHeader = new BasicHeader("Authorization", "ApiKey " + elasticsearchApiKey);
-        return RestClient.builder(HttpHost.create(elasticsearchHost))
+        String apiKey = "%s:%s".formatted(id, key);
+        String encodedApiKey = Base64.getEncoder().encodeToString(apiKey.getBytes(StandardCharsets.UTF_8));
+        Header apiKeyHeader = new BasicHeader("Authorization", "ApiKey " + encodedApiKey);
+        return RestClient.builder(HttpHost.create(host))
                 .setDefaultHeaders(new Header[]{apiKeyHeader})
                 .build();
     }
 
     @Bean
     public ElasticsearchClient elasticsearchClient(RestClient restClient) {
-        ElasticsearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        ElasticsearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper(mapper));
         return new ElasticsearchClient(transport);
     }
 }

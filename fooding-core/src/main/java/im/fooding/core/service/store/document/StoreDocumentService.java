@@ -2,11 +2,14 @@ package im.fooding.core.service.store.document;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOrder;
-import co.elastic.clients.elasticsearch._types.query_dsl.*;
+import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.TextQueryType;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
-import im.fooding.core.global.util.ElasticsearchUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.store.document.StoreDocument;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,19 +31,24 @@ import java.util.stream.Collectors;
 @Slf4j
 public class StoreDocumentService {
     private final ElasticsearchClient client;
+    private final ObjectMapper objectMapper;
 
     public void save(StoreDocument storeDocument) throws IOException {
         client.index(i -> i
-                .index(ElasticsearchUtil.getIndexName(storeDocument.getClass()))       // 인덱스 이름
-                .id(String.valueOf(storeDocument.getId()))      // 도큐먼트 ID (선택 사항, 없으면 자동 생성)
-                .document(storeDocument)        // 저장할 객체
+                .index(storeDocument.getIndex())
+                .id(storeDocument.getId().toString())
+                .document(storeDocument)
         );
     }
 
-    public void delete(StoreDocument storeDocument) throws IOException {
+    public void delete(Long id) throws IOException {
+        StoreDocument storeDocument = StoreDocument.builder()
+                .id(id)
+                .build();
+
         client.delete(d -> d
-                .index(ElasticsearchUtil.getIndexName(storeDocument.getClass())) // 인덱스 이름
-                .id(String.valueOf(storeDocument.getId())) // 삭제할 문서의 ID
+                .index(storeDocument.getIndex())
+                .id(storeDocument.getId().toString())
         );
     }
 
@@ -80,14 +89,14 @@ public class StoreDocumentService {
                 .size(pageable.getPageSize())
         );
 
-        SearchResponse<StoreDocument> response = client.search(request, StoreDocument.class);
-
-        List<StoreDocument> content = response.hits().hits().stream()
+        SearchResponse<Map> response = client.search(request, Map.class);
+        List<StoreDocument> contents = response.hits().hits().stream()
                 .map(Hit::source)
+                .map(sourceMap -> objectMapper.convertValue(sourceMap, StoreDocument.class))
                 .collect(Collectors.toList());
 
         long totalHits = response.hits().total() != null ? response.hits().total().value() : 0;
 
-        return new PageImpl<>(content, pageable, totalHits);
+        return new PageImpl<>(contents, pageable, totalHits);
     }
 }

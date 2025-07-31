@@ -96,13 +96,21 @@ public class AdminStoreService {
                 request.getContactNumber(), request.getPriceCategory(), request.getEventDescription(), request.getDirection(),
                 request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude(), nearStations);
 
-        storeDocumentService.save(StoreDocument.from(store));
+        try {
+            storeDocumentService.save(StoreDocument.from(store));
+        } catch (IOException e) {
+            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
+        }
     }
 
     @Transactional
     @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
     public void delete(Long id, Long deletedBy) {
         storeService.delete(id, deletedBy);
-        storeDocumentService.delete(String.valueOf(id));
+        try {
+            storeDocumentService.delete(id);
+        } catch (IOException e) {
+            throw new ApiException(ErrorCode.ELASTICSEARCH_DELETE_FAILED);
+        }
     }
 }

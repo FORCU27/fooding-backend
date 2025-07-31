@@ -10,8 +10,6 @@ spring:
 
   elasticsearch:
     uris: http://localhost:9200
-    username: elastic
-    password: 1234
 
   data:
     mongodb:
@@ -137,3 +135,6 @@ management:
       show-details: always
     prometheus:
       enabled: true
+  health:
+    elasticsearch:
+      enabled: false
