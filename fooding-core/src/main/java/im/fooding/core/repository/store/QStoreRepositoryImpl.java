@@ -3,6 +3,7 @@ package im.fooding.core.repository.store;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.dto.request.store.StoreFilter;
@@ -14,8 +15,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.querydsl.core.types.Order.ASC;
 import static com.querydsl.core.types.Order.DESC;
@@ -82,6 +85,33 @@ public class QStoreRepositoryImpl implements QStoreRepository {
                 )
                 .fetchOne()
         );
+    }
+
+    @Override
+    public List<Store> list(List<Long> ids) {
+        if (ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // FIELD() 함수용 문자열 생성
+        String joinedIds = ids.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(", "));
+
+        OrderSpecifier<String> orderSpecifier =
+                Expressions.stringTemplate("FIELD({0}, " + joinedIds + ")", store.id).asc();
+
+        return query
+                .select(store)
+                .from(store)
+                .leftJoin(store.images, storeImage)
+                .where(
+                        isStoreDeleted(false),
+                        storeImageDeletedIfExists(),
+                        store.id.in(ids)
+                )
+                .orderBy(orderSpecifier)
+                .fetch();
     }
 
     private OrderSpecifier<?> getOrderSpecifier(StoreSortType sortType, SortDirection direction) {

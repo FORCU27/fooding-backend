@@ -5,7 +5,8 @@ spring:
   h2:
     console:
       enabled: true
-
+  elasticsearch:
+    uris: http://dummy-local:9200
   jpa:
     database: h2
     generate-ddl: off
@@ -56,3 +57,8 @@ notification:
     app:
       id: __NOTIFICATION_SERVICE_APP_ID__
       token: __NOTIFICATION_SERVICE_APP_TOKEN__
+
+map:
+  kakao:
+    api-key: b3ad5d14b4171350a56dac59bf037bd7
+    url: https://dapi.kakao.com/v2/local

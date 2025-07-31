@@ -37,6 +37,9 @@ public class AuthUserResponse {
     @Schema(description = "성별", example = "NONE", requiredMode = RequiredMode.REQUIRED)
     private Gender gender;
 
+    @Schema(description = "설명", example = "안녕하세요.", requiredMode = RequiredMode.NOT_REQUIRED)
+    private String description;
+
     @Schema(description = "이용약관 동의 여부", example = "true", requiredMode = RequiredMode.REQUIRED)
     private boolean termsAgreed;
 
@@ -59,7 +62,11 @@ public class AuthUserResponse {
     private LocalDateTime updatedAt;
 
     @Builder
-    private AuthUserResponse(long id, String email, String nickname, String phoneNumber, String referralCode, String profileImage, int loginCount, Gender gender, boolean termsAgreed, boolean privacyPolicyAgreed, boolean marketingConsent, boolean pushAgreed, LocalDateTime lastLoggedInAt, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private AuthUserResponse(
+            long id, String email, String nickname, String phoneNumber, String referralCode, String profileImage, int loginCount,
+            Gender gender, String description, boolean termsAgreed, boolean privacyPolicyAgreed, boolean marketingConsent, boolean pushAgreed,
+            LocalDateTime lastLoggedInAt, LocalDateTime createdAt, LocalDateTime updatedAt
+    ) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
@@ -68,6 +75,7 @@ public class AuthUserResponse {
         this.profileImage = profileImage;
         this.loginCount = loginCount;
         this.gender = gender;
+        this.description = description;
         this.termsAgreed = termsAgreed;
         this.privacyPolicyAgreed = privacyPolicyAgreed;
         this.marketingConsent = marketingConsent;
@@ -87,6 +95,7 @@ public class AuthUserResponse {
                 .profileImage(user.getProfileImage())
                 .loginCount(user.getLoginCount())
                 .gender(user.getGender())
+                .description(user.getDescription())
                 .termsAgreed(user.isTermsAgreed())
                 .privacyPolicyAgreed(user.isPrivacyPolicyAgreed())
                 .marketingConsent(user.isMarketingConsent())

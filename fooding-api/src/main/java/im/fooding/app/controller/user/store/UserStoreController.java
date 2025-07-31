@@ -33,6 +33,12 @@ public class UserStoreController {
         return ApiResult.ok(service.list(request, userInfo));
     }
 
+    @GetMapping("/elastic-search")
+    @Operation(summary = "가게 목록 조회")
+    public ApiResult<PageResponse<UserStoreListResponse>> list_v2(@Valid UserSearchStoreRequest request, @AuthenticationPrincipal UserInfo userInfo) {
+        return ApiResult.ok(service.list_v2(request, userInfo));
+    }
+
     @GetMapping("/{id}")
     @Operation(summary = "가게 단건조회")
     public ApiResult<UserStoreResponse> retrieve(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo) {

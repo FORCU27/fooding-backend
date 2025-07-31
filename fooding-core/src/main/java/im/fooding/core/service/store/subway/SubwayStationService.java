@@ -27,16 +27,15 @@ import java.util.List;
 public class SubwayStationService {
     private final SubwayStationRepository repository;
 
-    // 추후 환경 변수로 등록
-    @Value("${address.kakaomap.url}")
+    @Value("${map.kakao.url}")
     private String KAKAO_MAP_API_BASE_URL;
 
-    @Value("${address.kakaomap.api-key}")
+    @Value("${map.kakao.api-key}")
     private String KAKAO_API_KEY;
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final int FIND_COUNTS = 3;
-    private final int FIND_RANGE = 1000;    // m 단위
+    private final int FIND_RANGE = 1000;
 
     private SubwayStation create( String name, String line, String address ){
         SubwayStation station = SubwayStation.builder()

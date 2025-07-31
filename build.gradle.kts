@@ -38,9 +38,9 @@ subprojects {
         //db
         runtimeOnly("com.h2database:h2")
         runtimeOnly("com.mysql:mysql-connector-j")
-        implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
         implementation("org.springframework.boot:spring-boot-starter-data-redis")
         implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5")
+        implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 
         //lombok
         compileOnly("org.projectlombok:lombok")

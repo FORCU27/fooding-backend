@@ -7,6 +7,12 @@ spring:
     resources:
       add-mappings: false
 
+
+  elasticsearch:
+    uris: http://localhost:9200
+    username: elastic
+    password: 1234
+
   data:
     mongodb:
       uri: mongodb://root:1234@localhost:27017/fooding?authSource=admin
@@ -121,8 +127,9 @@ notification:
     app:
       id: ${NOTIFICATION_SERVICE_APP_ID:}
       token: ${NOTIFICATION_SERVICE_APP_TOKEN:}
-address:
-  kakaomap:
+
+map:
+  kakao:
     api-key: b3ad5d14b4171350a56dac59bf037bd7
     url: https://dapi.kakao.com/v2/local
 
