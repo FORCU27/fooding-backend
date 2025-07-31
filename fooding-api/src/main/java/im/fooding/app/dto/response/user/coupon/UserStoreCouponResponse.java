@@ -1,6 +1,8 @@
 package im.fooding.app.dto.response.user.coupon;
 
 import im.fooding.core.model.coupon.*;
+import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Builder;
@@ -8,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -57,8 +60,13 @@ public class UserStoreCouponResponse {
     @Schema(description = "쿠폰 발급 여부", example = "true", requiredMode = RequiredMode.REQUIRED)
     private Boolean isCouponIssued = false;
 
+    @Schema(description = "가게 이미지 URL", example = "https://example.com/store.jpg", requiredMode = RequiredMode.NOT_REQUIRED)
+    private String mainImage;
+
     @Builder
-    private UserStoreCouponResponse(Long id, Long storeId, BenefitType benefitType, CouponType type, DiscountType discountType, ProvideType provideType, String name, String conditions, Integer totalQuantity, int issuedQuantity, int discountValue, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn) {
+    private UserStoreCouponResponse(Long id, Long storeId, BenefitType benefitType, CouponType type, DiscountType discountType,
+                                    ProvideType provideType, String name, String conditions, Integer totalQuantity, int issuedQuantity,
+                                    int discountValue, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn, String mainImage) {
         this.id = id;
         this.storeId = storeId;
         this.benefitType = benefitType;
@@ -73,12 +81,20 @@ public class UserStoreCouponResponse {
         this.issueStartOn = issueStartOn;
         this.issueEndOn = issueEndOn;
         this.expiredOn = expiredOn;
+        this.mainImage = mainImage;
     }
 
     public static UserStoreCouponResponse of(Coupon coupon) {
+        Store store = coupon.getStore();
+        Long storeId = store != null ? store.getId() : null;
+
+        List<StoreImage> images =  store != null ? store.getImages() : null;
+        String mainImage = images != null ? images.stream().findFirst().map(StoreImage::getImageUrl).orElse(null) : null;
+
+
         return UserStoreCouponResponse.builder()
                 .id(coupon.getId())
-                .storeId(null != coupon.getStore() ? coupon.getStore().getId() : null)
+                .storeId(storeId)
                 .benefitType(coupon.getBenefitType())
                 .type(coupon.getType())
                 .discountType(coupon.getDiscountType())
@@ -91,6 +107,7 @@ public class UserStoreCouponResponse {
                 .issueStartOn(coupon.getIssueStartOn())
                 .issueEndOn(coupon.getIssueEndOn())
                 .expiredOn(coupon.getExpiredOn())
+                .mainImage(mainImage)
                 .build();
     }
 
