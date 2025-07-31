@@ -8,6 +8,7 @@ import im.fooding.core.model.user.Gender;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.user.UserRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -202,5 +203,10 @@ public class UserService {
         return userRepository.findByPhoneNumber(phoneNumber)
                 .filter(it -> !it.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    public Optional<User> findOptionalByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber)
+                .filter(it -> !it.isDeleted());
     }
 }

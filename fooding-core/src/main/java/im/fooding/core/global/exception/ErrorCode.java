@@ -115,6 +115,9 @@ public enum ErrorCode {
     POINT_SHOP_NOT_FOUND(HttpStatus.BAD_REQUEST, "11000", "등록된 포인트샵 상품이 아닙니다."),
     POINT_SHOP_ISSUE_QUANTITY_INVALID(HttpStatus.BAD_REQUEST, "11001", "포인트샵 상품을 교환 가능한 수량을 초과합니다"),
     POINT_SHOP_ISSUE_DATE_INVALID(HttpStatus.BAD_REQUEST, "11002", "포인트샵 상품을 교환 가능한 일자가 아닙니다."),
+
+    // 예약/웨이팅
+    PLAN_NOT_FOUND(HttpStatus.BAD_REQUEST, "12000", "등록된 예약/웨이팅이 없습니다."),
     ;
 
     private final HttpStatus status;

@@ -80,6 +80,7 @@ public class StoreWaiting extends BaseEntity {
 
     @Builder
     public StoreWaiting(
+            User user,
             WaitingUser waitingUser,
             Store store,
             int callNumber,
@@ -90,6 +91,7 @@ public class StoreWaiting extends BaseEntity {
             int adultCount,
             String memo
     ) {
+        this.user = user;
         this.waitingUser = waitingUser;
         this.store = store;
         this.callNumber = callNumber;
