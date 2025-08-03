@@ -91,6 +91,7 @@ public class StoreWaitingService {
         int callNumber = generateCallNumber();
 
         StoreWaiting storeWaiting = StoreWaiting.builder()
+                .user(request.user())
                 .waitingUser(request.waitingUser())
                 .store(request.store())
                 .status(StoreWaitingStatus.WAITING)
