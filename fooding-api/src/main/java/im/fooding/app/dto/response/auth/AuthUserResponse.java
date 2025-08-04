@@ -19,6 +19,9 @@ public class AuthUserResponse {
     @Schema(description = "이메일", example = "admin@gmail.com", requiredMode = RequiredMode.REQUIRED)
     private String email;
 
+    @Schema(description = "이름", example = "홍길동", requiredMode = RequiredMode.NOT_REQUIRED)
+    private String name;
+
     @Schema(description = "닉네임", example = "홍길동", requiredMode = RequiredMode.REQUIRED)
     private String nickname;
 
@@ -63,12 +66,13 @@ public class AuthUserResponse {
 
     @Builder
     private AuthUserResponse(
-            long id, String email, String nickname, String phoneNumber, String referralCode, String profileImage, int loginCount,
+            long id, String email, String name, String nickname, String phoneNumber, String referralCode, String profileImage, int loginCount,
             Gender gender, String description, boolean termsAgreed, boolean privacyPolicyAgreed, boolean marketingConsent, boolean pushAgreed,
             LocalDateTime lastLoggedInAt, LocalDateTime createdAt, LocalDateTime updatedAt
     ) {
         this.id = id;
         this.email = email;
+        this.name = name;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
         this.referralCode = referralCode;
@@ -89,6 +93,7 @@ public class AuthUserResponse {
         return AuthUserResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
+                .name(user.getName())
                 .nickname(user.getNickname())
                 .phoneNumber(user.getPhoneNumber())
                 .referralCode(user.getReferralCode())
