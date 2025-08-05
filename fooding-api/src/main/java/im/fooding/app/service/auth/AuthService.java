@@ -63,7 +63,7 @@ public class AuthService {
     @Transactional
     public void update(long id, AuthUpdateProfileRequest request) {
         userService.update(id, request.getNickname(), request.getPhoneNumber(), request.getGender(), request.getReferralCode(),
-                request.isMarketingConsent(), request.getDescription(), request.isPushAgreed());
+                request.isMarketingConsent(), request.getDescription(), request.isPushAgreed(), request.getName());
     }
 
     /**
