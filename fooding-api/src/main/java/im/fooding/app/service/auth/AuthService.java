@@ -2,6 +2,7 @@ package im.fooding.app.service.auth;
 
 import feign.FeignException;
 import im.fooding.app.dto.request.auth.*;
+import im.fooding.app.dto.response.auth.AuthCheckNicknameResponse;
 import im.fooding.app.dto.response.auth.AuthUserResponse;
 import im.fooding.app.service.file.FileUploadService;
 import im.fooding.core.global.exception.ApiException;
@@ -80,6 +81,11 @@ public class AuthService {
             profileImageUrl = file.getUrl();
         }
         userService.updateProfileImage(user, profileImageUrl);
+    }
+
+    @Transactional(readOnly = true)
+    public AuthCheckNicknameResponse checkDuplicatedNickname(AuthCheckNicknameRequest request) {
+        return new AuthCheckNicknameResponse(userService.checkDuplicatedNickname(request.getNickname()));
     }
 
     /**
