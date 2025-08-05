@@ -66,7 +66,8 @@ public class SecurityConfig {
                 "/auth/google/token",
                 "/auth/kakao/token",
                 "/auth/naver/token",
-                "/auth/apple/token"
+                "/auth/apple/token",
+                "/auth/nickname/check"
         };
     }
 
