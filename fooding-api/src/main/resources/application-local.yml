@@ -41,6 +41,16 @@ spring:
       max-file-size: 1000MB
       max-request-size: 1000MB
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 jwt:
   secret-key: KECHLtOh6ohqn1ucwQF0g9Ih1wbOjfJQ7EKMmfwZ1BmGtahQeeUOUA1JyZykdonF
   access:
@@ -73,6 +83,9 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
+    org.apache.kafka: INFO
+    org.apache.kafka.clients.producer.ProducerConfig: WARN
+    org.apache.kafka.clients.consumer.ConsumerConfig: WARN
 
 webhook:
   slack:
