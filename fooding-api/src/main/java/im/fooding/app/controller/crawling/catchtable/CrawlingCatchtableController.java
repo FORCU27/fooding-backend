@@ -1,6 +1,7 @@
 package im.fooding.app.controller.crawling.catchtable;
 
-import im.fooding.app.dto.response.admin.store.AdminStoreResponse;
+import im.fooding.app.dto.response.crawling.GetStoreDocumentRequest;
+import im.fooding.app.dto.response.crawling.GetStoreDocumentResponse;
 import im.fooding.app.service.crawling.catchtable.CrawlingCatchtableService;
 import im.fooding.core.common.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,13 +22,24 @@ public class CrawlingCatchtableController {
     @PostMapping("/shops")
     @Operation( description = "스토어 정보 크롤링" )
     public ApiResult<Void> storeCrawling() {
-
+        service.saveDocuments();
+        return ApiResult.ok();
     }
 
     @GetMapping( "/shops" )
     @Operation( description = "크롤링 목록 확인" )
-    public ApiResult<Page<AdminStoreResponse>> showCrawlingStores() {
+    public ApiResult<Page<GetStoreDocumentResponse>> showCrawlingStores(
+            @RequestBody GetStoreDocumentRequest request
+    ) {
+        return ApiResult.ok( service.getDocuments( request.getPageable() ) );
+    }
 
+    @GetMapping( "/shops/{id}" )
+    @Operation( description = "특정 ID의 도큐먼트 확인" )
+    public ApiResult<GetStoreDocumentResponse> getDocumentById(
+            @PathVariable long id
+    ){
+        return ApiResult.ok( service.findDocumentById( id ) );
     }
 
     @PostMapping( "/shops/{:id}/upload" )
@@ -35,6 +47,7 @@ public class CrawlingCatchtableController {
     public ApiResult<Void> saveCrawlingStores(
             @PathVariable long id
     ) {
-
+        service.create( id );
+        return ApiResult.ok();
     }
 }

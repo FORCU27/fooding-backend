@@ -1,10 +1,7 @@
 package im.fooding.core.service.store.document;
 
 import co.elastic.clients.elasticsearch._types.SortOrder;
-import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Operator;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.repository.elasticsearch.store.StoreDocumentRepository;
@@ -36,6 +33,22 @@ public class StoreDocumentService {
 
     public void delete(String id) {
         repository.deleteById(id);
+    }
+
+    public StoreDocument findById( long id ){
+        Query query = MatchQuery.of( m -> m
+                .field("id")
+                .query( id )
+        )._toQuery();
+
+        NativeQuery nativeQuery = NativeQuery.builder()
+                .withQuery( query )
+                .build();
+        SearchHits<StoreDocument> searchHits = elasticsearchOperations.search( nativeQuery, StoreDocument.class );
+        if( searchHits.hasSearchHits() ){
+            return searchHits.getSearchHit(0).getContent();
+        }
+        return null;
     }
 
     public Page<StoreDocument> fullTextSearch(String searchString, StoreSortType sortType, SortDirection direction, Pageable pageable) {
