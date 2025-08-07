@@ -118,7 +118,7 @@ public class UserService {
      * @param pushAgreed
      */
 
-    public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description, boolean pushAgreed) {
+    public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description, boolean pushAgreed, String name) {
         User user = findById(id);
         if( nickname != null ){
             if (!nickname.equals(user.getNickname()) && checkDuplicatedNickname(nickname)) {
@@ -131,7 +131,7 @@ public class UserService {
             }
         }
         user.updateDescription( description );
-        user.update(nickname, phoneNumber, gender, referralCode, marketingConsent, pushAgreed);
+        user.update(nickname, phoneNumber, gender, referralCode, marketingConsent, pushAgreed, name);
     }
 
     /**

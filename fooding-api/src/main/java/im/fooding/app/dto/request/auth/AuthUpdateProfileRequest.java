@@ -36,8 +36,12 @@ public class AuthUpdateProfileRequest {
     @Schema(description = "서비스 푸쉬 동의 여부", example = "true")
     private boolean pushAgreed;
 
+    @Size(max = 50)
+    @Schema(description = "이름", example = "홍길동")
+    private String name;
+
     @Builder
-    public AuthUpdateProfileRequest(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description, boolean pushAgreed) {
+    public AuthUpdateProfileRequest(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description, boolean pushAgreed, String name) {
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
@@ -45,5 +49,6 @@ public class AuthUpdateProfileRequest {
         this.marketingConsent = marketingConsent;
         this.description = description;
         this.pushAgreed = pushAgreed;
+        this.name = name;
     }
 }
