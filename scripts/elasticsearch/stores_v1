@@ -1,0 +1,62 @@
+PUT /stores_v1
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "max_ngram_diff": 18,
+      "analysis": {
+        "filter": {
+          "ngram_filter": {
+            "type": "ngram",
+            "min_gram": 2,
+            "max_gram": 20
+          }
+        },
+        "analyzer": {
+          "ngram_index_analyzer": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": ["lowercase", "ngram_filter"]
+          },
+          "ngram_search_analyzer": {
+            "type": "custom",
+            "tokenizer": "standard",
+            "filter": ["lowercase"]
+          }
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "long"
+      },
+      "name": {
+        "type": "text",
+        "analyzer": "ngram_index_analyzer",
+        "search_analyzer": "ngram_search_analyzer"
+      },
+      "category": {
+        "type": "keyword"
+      },
+      "address": {
+        "type": "text"
+      },
+      "reviewCount": {
+        "type": "integer"
+      },
+      "averageRating": {
+        "type": "double"
+      },
+      "visitCount": {
+        "type": "integer"
+      },
+      "createdAt": {
+        "type": "date",
+        "format": "yyyy-MM-dd'T'HH:mm:ss.SSS||epoch_millis"
+      }
+    }
+  }
+}

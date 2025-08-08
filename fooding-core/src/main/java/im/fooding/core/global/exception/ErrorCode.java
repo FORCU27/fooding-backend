@@ -23,6 +23,9 @@ public enum ErrorCode {
     FILE_NOT_FOUND(HttpStatus.BAD_REQUEST, "0015", "파일의 정보가 없습니다."),
     FILE_SIZE_INVALID(HttpStatus.BAD_REQUEST, "0016", "파일 크기가 허용된 최대 크기를 초과했습니다."),
     FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "0017", "파일 업로드에 실패했습니다."),
+    ELASTICSEARCH_SAVE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "0018", "Elasticsearch 저장에 실패했습니다."),
+    ELASTICSEARCH_SEARCH_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "0019", "Elasticsearch 조회에 실패했습니다."),
+    ELASTICSEARCH_DELETE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "0020", "Elasticsearch 삭제에 실패했습니다."),
 
     // 회원
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST, "1000", "가입된 정보가 없습니다."),

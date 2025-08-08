@@ -7,6 +7,8 @@ import im.fooding.app.dto.response.user.store.UserStoreResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.UserInfo;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.global.util.Util;
 import im.fooding.core.model.bookmark.Bookmark;
 import im.fooding.core.model.store.Store;
@@ -28,6 +30,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -64,24 +67,31 @@ public class UserStoreService {
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreListResponse> list_v2(UserSearchStoreRequest request, UserInfo userInfo) {
-        Page<StoreDocument> stores = storeDocumentService.fullTextSearch(request.getSearchString(), request.getSortType(), request.getSortDirection(), request.getPageable());
-        List<Long> ids = stores.getContent().stream().map(StoreDocument::getId).toList();
+        try {
+            Page<StoreDocument> stores = storeDocumentService.fullTextSearch(request.getSearchString(), request.getSortType(), request.getSortDirection(), request.getPageable());
 
-        List<UserStoreListResponse> list = storeService.list(ids).stream()
-                .map(store -> UserStoreListResponse.of(store, null))
-                .toList();
+            List<Long> ids = stores.getContent().stream().map(StoreDocument::getId).toList();
 
-        if (list != null && !list.isEmpty()) {
-            // 영업상태 세팅
-            setOperatingStatus(list);
+            List<UserStoreListResponse> list = storeService.list(ids).stream()
+                    .map(store -> UserStoreListResponse.of(store, null))
+                    .toList();
 
-            // 북마크 여부 세팅
-            if (userInfo != null) {
-                setBookmarked(list, userInfo.getId());
+            if (list != null && !list.isEmpty()) {
+                // 영업상태 세팅
+                setOperatingStatus(list);
+
+                // 북마크 여부 세팅
+                if (userInfo != null) {
+                    setBookmarked(list, userInfo.getId());
+                }
             }
-        }
 
-        return PageResponse.of(list, PageInfo.of(stores));
+            return PageResponse.of(list, PageInfo.of(stores));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ApiException(ErrorCode.ELASTICSEARCH_SEARCH_FAILED);
+        }
     }
 
     @Transactional

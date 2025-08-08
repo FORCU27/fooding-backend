@@ -4,6 +4,8 @@ import im.fooding.app.dto.request.ceo.store.CeoCreateStoreRequest;
 import im.fooding.app.dto.request.ceo.store.CeoSearchStoreRequest;
 import im.fooding.app.dto.request.ceo.store.CeoUpdateStoreRequest;
 import im.fooding.app.dto.response.ceo.store.CeoStoreResponse;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePosition;
@@ -21,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -57,7 +60,12 @@ public class CeoStoreService {
         storeMemberService.create(store, user, StorePosition.OWNER);
 
         // elasticSearch document 생성
-        storeDocumentService.save(StoreDocument.from(store));
+        try {
+            storeDocumentService.save(StoreDocument.from(store));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
+        }
 
         return store.getId();
     }
@@ -75,13 +83,22 @@ public class CeoStoreService {
                 request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude(), nearStations);
 
         // elasticSearch document 수정
-        storeDocumentService.save(StoreDocument.from(store));
+        try {
+            storeDocumentService.save(StoreDocument.from(store));
+        } catch (IOException e) {
+            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
+        }
     }
 
     @Transactional
     public void delete(Long id, long deletedBy) {
         storeMemberService.checkMember(id, deletedBy);
         storeService.delete(id, deletedBy);
-        storeDocumentService.delete(String.valueOf(id));
+        // elasticSearch document 삭제
+        try {
+            storeDocumentService.delete(id);
+        } catch (IOException e) {
+            throw new ApiException(ErrorCode.ELASTICSEARCH_DELETE_FAILED);
+        }
     }
 }
