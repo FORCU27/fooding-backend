@@ -7,6 +7,8 @@ spring:
       enabled: true
   elasticsearch:
     uris: http://dummy-local:9200
+    id: __id__
+    key: __key__
   jpa:
     database: h2
     generate-ddl: off

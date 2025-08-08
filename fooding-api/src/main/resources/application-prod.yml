@@ -9,8 +9,8 @@ spring:
 
   elasticsearch:
     uris: ${ELASTIC_SEARCH_URIS}
-    username: ${ELASTIC_SEARCH_USERNAME}
-    password: ${ELASTIC_SEARCH_PASSWORD}
+    id: ${ELASTIC_SEARCH_ID}
+    key: ${ELASTIC_SEARCH_KEY}
 
   data:
     mongodb:

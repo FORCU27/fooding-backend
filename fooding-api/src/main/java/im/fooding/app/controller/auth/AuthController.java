@@ -1,6 +1,7 @@
 package im.fooding.app.controller.auth;
 
 import im.fooding.app.dto.request.auth.*;
+import im.fooding.app.dto.response.auth.AuthCheckNicknameResponse;
 import im.fooding.app.dto.response.auth.AuthUserResponse;
 import im.fooding.app.service.auth.AuthService;
 import im.fooding.core.common.ApiResult;
@@ -44,6 +45,12 @@ public class AuthController {
                                               @AuthenticationPrincipal UserInfo userInfo) {
         service.updateProfileImage(userInfo.getId(), request.getImageId());
         return ApiResult.ok();
+    }
+
+    @GetMapping("/nickname/check")
+    @Operation(summary = "닉네임 중복체크", description = "닉네임 중복체크 - nickname 필요")
+    public ApiResult<AuthCheckNicknameResponse> checkDuplicatedNickname(@Valid AuthCheckNicknameRequest request) {
+        return ApiResult.ok(service.checkDuplicatedNickname(request));
     }
 
     @PostMapping("/register")
