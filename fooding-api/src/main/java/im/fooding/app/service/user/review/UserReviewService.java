@@ -21,8 +21,6 @@ import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,6 +69,7 @@ public class UserReviewService {
         return reviewLikeService.list(reviewIds);
     }
 
+    @Transactional
     public void create(CreateReviewRequest request){
         User user = userService.findById( request.getUserId() );
         Store store = storeService.findById( request.getStoreId() );
@@ -91,7 +90,6 @@ public class UserReviewService {
         Review result = reviewService.create( review );
         // 리뷰 이미지 추가
         reviewImageService.create( result, request.getImageUrls() );
-
         // 리뷰 수 추가
         storeService.increaseReviewCount( store );
     }
