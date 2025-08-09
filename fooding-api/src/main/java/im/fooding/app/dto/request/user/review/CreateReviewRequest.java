@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 public class CreateReviewRequest {
@@ -19,6 +21,8 @@ public class CreateReviewRequest {
 
     @NotNull
     private VisitPurposeType visitPurpose;
+
+    private List<String> imageUrls;
 
     // ReviewScore를 위한 값
     @NotNull

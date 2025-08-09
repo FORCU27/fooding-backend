@@ -49,8 +49,8 @@ public class ReviewService {
      * * 리뷰 생성
      * @param review
      */
-    public void create(Review review) {
-        reviewRepository.save(review);
+    public Review create(Review review) {
+        return reviewRepository.save(review);
     }
 
     /**
