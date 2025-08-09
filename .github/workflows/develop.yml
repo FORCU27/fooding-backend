@@ -75,6 +75,7 @@ jobs:
             ELASTIC_SEARCH_USERNAME=${{ secrets.STAGE_ELASTIC_SEARCH_USERNAME }}
             ELASTIC_SEARCH_PASSWORD=${{ secrets.STAGE_ELASTIC_SEARCH_PASSWORD }}
             MONGODB_URI=${{ secrets.STAGE_MONGODB_URI  }}
+            KAFKA_BOOTSTRAP_SERVERS=${{ secrets.STAGE_KAFKA_BOOTSTRAP_SERVERS}}
       - name: Deployment
         uses: appleboy/ssh-action@master
         with:

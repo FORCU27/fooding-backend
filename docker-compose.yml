@@ -69,9 +69,52 @@ services:
       - ./mongo/init:/docker-entrypoint-initdb.d
       - mongo_data:/data/db
 
+  kafka:
+    image: bitnami/kafka:4.0.0
+    container_name: fooding-kafka
+    environment:
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@fooding-kafka:9093
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092,INTERNAL://0.0.0.0:29092,CONTROLLER://0.0.0.0:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092,INTERNAL://fooding-kafka:29092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    volumes:
+      - kafka_data:/bitnami/kafka
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - kafka-net
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: fooding-kafka-ui
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=fooding-kafka
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=fooding-kafka:29092
+    ports:
+      - "9090:8080"
+    depends_on:
+      - kafka
+    networks:
+      - kafka-net
+
 volumes:
   esdata: {}
   mongo_data:
   redis_data:
+  kafka_data:
+
 networks:
   elk: {}
+  kafka-net:
+    driver: bridge

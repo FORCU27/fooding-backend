@@ -31,6 +31,9 @@ dependencies {
     //elasticsearch
     implementation("co.elastic.clients:elasticsearch-java:8.13.4")
 
+    //kafka
+    implementation("org.springframework.kafka:spring-kafka")
+
     //querydsl
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
     annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
