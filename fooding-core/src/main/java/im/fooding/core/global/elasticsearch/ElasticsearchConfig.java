@@ -48,7 +48,8 @@ public class ElasticsearchConfig {
     }
 
     private String getApiKey() {
-        String apiKey = "%s:%s".formatted(id, key);
-        return Base64.getEncoder().encodeToString(apiKey.getBytes(StandardCharsets.UTF_8));
+        // String apiKey = "%s:%s".formatted(id, key);
+        // return Base64.getEncoder().encodeToString(apiKey.getBytes(StandardCharsets.UTF_8));
+        return key;
     }
 }
