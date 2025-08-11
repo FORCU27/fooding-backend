@@ -8,6 +8,7 @@ import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.review.Review;
 import im.fooding.core.model.review.ReviewImage;
 import im.fooding.core.model.review.ReviewScore;
+import im.fooding.core.model.review.ReviewSortType;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.review.ReviewImageService;
@@ -20,9 +21,11 @@ import java.util.stream.Collectors;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +41,17 @@ public class UserReviewService {
 
     @Transactional( readOnly = true )
     public PageResponse<UserReviewResponse> list(Long storeId, UserRetrieveReviewRequest request) {
-        Page<Review> reviewPage = reviewService.list(storeId, request.getPageable());
+        Sort sortInformation = null;
+        if( request.getSortType() == ReviewSortType.RECENT ) {
+            Sort.Direction direction = this.getDirection( request.getSortDirection() );
+            System.out.println( direction );
+            sortInformation = Sort.by( direction, "createdAt" );
+        }
+        Pageable pageable;
+        if( sortInformation != null )pageable = PageRequest.of( request.getPageNum() - 1, request.getPageSize(), sortInformation );
+        else pageable = PageRequest.of(request.getPageNum() - 1, request.getPageSize() );
+
+        Page<Review> reviewPage = reviewService.list(storeId, pageable );
 
         List<Long> reviewIds = getReviewIds(reviewPage.getContent());
 
@@ -54,6 +67,11 @@ public class UserReviewService {
                 .toList();
 
         return PageResponse.of(content, PageInfo.of(reviewPage));
+    }
+    private Sort.Direction getDirection(SortDirection direction){
+        if( direction == SortDirection.ASCENDING ) return Sort.Direction.ASC;
+        else if( direction == SortDirection.DESCENDING ) return Sort.Direction.DESC;
+        else return null;
     }
 
     private List<Long> getReviewIds(List<Review> reviews) {
