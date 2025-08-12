@@ -1,9 +1,12 @@
 package im.fooding.core.service.naverplace;
 
+import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.naverplace.NaverPlace;
 import im.fooding.core.repository.naverplace.NaverPlaceRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,5 +35,9 @@ public class NaverPlaceService {
 
         return naverPlaceRepository.save(naverPlace)
                 .getId();
+    }
+
+    public Page<NaverPlace> getNaverPlaces(Pageable pageable) {
+        return naverPlaceRepository.findAll(pageable);
     }
 }
