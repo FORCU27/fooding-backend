@@ -1,0 +1,6379 @@
+{
+  "success": true,
+  "restaurants": [
+    {
+      "index": 0,
+      "name": "자연산 해담일식 대게마을",
+      "category": "일식당",
+      "address": "서울 강남구 언주로93길 12 1층 해담일식",
+      "contact": "0507-1397-3305",
+      "menus": [
+        {
+          "name": "점심세트 정식1인",
+          "price": 50000,
+          "price_text": "50,000"
+        },
+        {
+          "name": "점심세트 특정식1인",
+          "price": 80000,
+          "price_text": "80,000"
+        },
+        {
+          "name": "대게A코스1인",
+          "price": 130000,
+          "price_text": "130,000"
+        },
+        {
+          "name": "하나1인",
+          "price": 160000,
+          "price_text": "160,000"
+        },
+        {
+          "name": "점심세트 해담정식1인",
+          "price": 100000,
+          "price_text": "100,000"
+        },
+        {
+          "name": "점심세트 대게정식1인",
+          "price": 130000,
+          "price_text": "130,000"
+        },
+        {
+          "name": "유끼1인",
+          "price": 210000,
+          "price_text": "210,000"
+        },
+        {
+          "name": "킹크랩S코스1인",
+          "price": 240000,
+          "price_text": "240,000"
+        },
+        {
+          "name": "혼마구로사시미(대게포함)1인",
+          "price": 260000,
+          "price_text": "260,000"
+        },
+        {
+          "name": "오마카세(대게포함)1인",
+          "price": 310000,
+          "price_text": "310,000"
+        },
+        {
+          "name": "주말저녁코스사시미정식1인",
+          "price": 100000,
+          "price_text": "100,000"
+        },
+        {
+          "name": "주말저녁코스대게정식1인",
+          "price": 130000,
+          "price_text": "130,000"
+        },
+        {
+          "name": "랍스타코스1인",
+          "price": 250000,
+          "price_text": "250,000"
+        },
+        {
+          "name": "해담VIP1인",
+          "price": 400000,
+          "price_text": "400,000"
+        },
+        {
+          "name": "독도새우(꽃 새우)",
+          "price": 100000,
+          "price_text": "100,000"
+        },
+        {
+          "name": "장어정식1인 *출시(자연산갯장어)",
+          "price": 70000,
+          "price_text": "70,000"
+        },
+        {
+          "name": "장어 하모샤브샤브1인*출시(자연산)",
+          "price": 100000,
+          "price_text": "100,000"
+        },
+        {
+          "name": "초밥코스 해담초밥1인",
+          "price": 60000,
+          "price_text": "60,000"
+        },
+        {
+          "name": "초밥코스 해담 특초밥1인",
+          "price": 80000,
+          "price_text": "80,000"
+        },
+        {
+          "name": "스페셜초밥",
+          "price": 100000,
+          "price_text": "100,000"
+        },
+        {
+          "name": "초밥코스 해담 특특초밥1인",
+          "price": 160000,
+          "price_text": "160,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:47:18.595128",
+      "success": true,
+      "page_number": 1,
+      "position_in_page": 1
+    },
+    {
+      "index": 1,
+      "name": "강삼가든",
+      "category": "육류,고기요리",
+      "address": "서울 강남구 강남대로102길 20 1층 강삼가든",
+      "contact": "0507-1346-2406",
+      "menus": [
+        {
+          "name": "강삼겹살",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "목살",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "새우 항정살",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "가브리살",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "갈매기살",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "뼈삼겹",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "숄더렉",
+          "price": 38000,
+          "price_text": "38,000"
+        },
+        {
+          "name": "흑돼지 삼겹살",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "흑돼지 목살",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "숯불 돼지갈비",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "1++ 숙성 한우 채끝 등심",
+          "price": 48000,
+          "price_text": "48,000"
+        },
+        {
+          "name": "1++ 한우생등심",
+          "price": 39000,
+          "price_text": "39,000"
+        },
+        {
+          "name": "양갈비 프렌치랙",
+          "price": 36000,
+          "price_text": "36,000"
+        },
+        {
+          "name": "1++ 한우육회",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "강삼가든 프리미엄",
+          "price": 93000,
+          "price_text": "93,000"
+        },
+        {
+          "name": "강삼가든 블랙 프리미엄",
+          "price": 93000,
+          "price_text": "93,000"
+        },
+        {
+          "name": "강삼가든 시그니처",
+          "price": 72000,
+          "price_text": "72,000"
+        },
+        {
+          "name": "강삼가든 콜라보",
+          "price": 58000,
+          "price_text": "58,000"
+        },
+        {
+          "name": "강삼가든 VIP",
+          "price": 193000,
+          "price_text": "193,000"
+        },
+        {
+          "name": "김치찌개",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "된장찌개",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "물냉면",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "비빔냉면",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "차돌비빔국수",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "김치어묵국수",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "1++ 한우 육회비빔밥",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "우거지 된장술밥",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "계란찜",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "강삼 두루치기",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "제육쌈밥",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "돼지불백",
+          "price": 12000,
+          "price_text": "12,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:47:33.368069",
+      "success": true,
+      "page_number": 1,
+      "position_in_page": 2
+    },
+    {
+      "index": 2,
+      "name": "멕시타이거",
+      "category": "요리주점",
+      "address": "서울 강남구 테헤란로1길 42 B1층 1호",
+      "contact": "0507-1425-9866",
+      "menus": [
+        {
+          "name": "지미추리 화덕치킨",
+          "price": 21900,
+          "price_text": "21,900"
+        },
+        {
+          "name": "하바네로 화덕치킨",
+          "price": 21900,
+          "price_text": "21,900"
+        },
+        {
+          "name": "타이거새우 버터몰레",
+          "price": 25900,
+          "price_text": "25,900"
+        },
+        {
+          "name": "버터몰레 플레이트",
+          "price": 13900,
+          "price_text": "13,900"
+        },
+        {
+          "name": "비리얌 라멘",
+          "price": 13900,
+          "price_text": "13,900"
+        },
+        {
+          "name": "치폴레 퀘사디아",
+          "price": 19900,
+          "price_text": "19,900"
+        },
+        {
+          "name": "망고 세비체",
+          "price": 7900,
+          "price_text": "7,900"
+        },
+        {
+          "name": "지미추리 치킨몰레",
+          "price": 55700,
+          "price_text": "55,700"
+        },
+        {
+          "name": "하바네로 치킨몰레",
+          "price": 55700,
+          "price_text": "55,700"
+        },
+        {
+          "name": "빠빠스",
+          "price": 13900,
+          "price_text": "13,900"
+        },
+        {
+          "name": "치폴레몰레 플레이트",
+          "price": 13900,
+          "price_text": "13,900"
+        },
+        {
+          "name": "피쉬 타코",
+          "price": 18900,
+          "price_text": "18,900"
+        },
+        {
+          "name": "호세 데낄라 하이볼",
+          "price": 7900,
+          "price_text": "7,900"
+        },
+        {
+          "name": "라구몰레 나초플래터",
+          "price": 15900,
+          "price_text": "15,900"
+        },
+        {
+          "name": "라임 데낄라 하이볼",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "당근 데낄라 세트",
+          "price": 18900,
+          "price_text": "18,900"
+        },
+        {
+          "name": "멕시타이거 하우스 데낄라",
+          "price": 33000,
+          "price_text": "33,000"
+        },
+        {
+          "name": "데낄라 썬라이즈",
+          "price": 7900,
+          "price_text": "7,900"
+        },
+        {
+          "name": "데낄라 라임 하이볼",
+          "price": 7900,
+          "price_text": "7,900"
+        },
+        {
+          "name": "블루 마가리따",
+          "price": 9900,
+          "price_text": "9,900"
+        },
+        {
+          "name": "슬래머 세트",
+          "price": 17400,
+          "price_text": "17,400"
+        },
+        {
+          "name": "핑크 슬래머 세트",
+          "price": 17400,
+          "price_text": "17,400"
+        },
+        {
+          "name": "갈릭 퀘사디야",
+          "price": 19900,
+          "price_text": "19,900"
+        },
+        {
+          "name": "치즈 퀘사디아",
+          "price": 19900,
+          "price_text": "19,900"
+        },
+        {
+          "name": "치즈몰레 나초플래터",
+          "price": 15900,
+          "price_text": "15,900"
+        },
+        {
+          "name": "과카몰레 나초플래터",
+          "price": 15900,
+          "price_text": "15,900"
+        },
+        {
+          "name": "멕시칸 칠리크랩",
+          "price": 20900,
+          "price_text": "20,900"
+        },
+        {
+          "name": "멕시칸 콘립",
+          "price": 11900,
+          "price_text": "11,900"
+        },
+        {
+          "name": "치폴레 고추튀김",
+          "price": 13900,
+          "price_text": "13,900"
+        },
+        {
+          "name": "깐풍가지",
+          "price": 12900,
+          "price_text": "12,900"
+        },
+        {
+          "name": "홍유 물만두",
+          "price": 13900,
+          "price_text": "13,900"
+        },
+        {
+          "name": "트러플 버터오징어",
+          "price": 16900,
+          "price_text": "16,900"
+        },
+        {
+          "name": "토마토 홍합스튜",
+          "price": 16900,
+          "price_text": "16,900"
+        },
+        {
+          "name": "새우 세비체",
+          "price": 9900,
+          "price_text": "9,900"
+        },
+        {
+          "name": "망고 젤라또",
+          "price": 7900,
+          "price_text": "7,900"
+        },
+        {
+          "name": "트러플바닐라 젤라또",
+          "price": 8900,
+          "price_text": "8,900"
+        },
+        {
+          "name": "데낄라 샷세트",
+          "price": 17400,
+          "price_text": "17,400"
+        },
+        {
+          "name": "멕시타이거 라거",
+          "price": 5900,
+          "price_text": "5,900"
+        },
+        {
+          "name": "페일에일",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "IPA",
+          "price": 7900,
+          "price_text": "7,900"
+        },
+        {
+          "name": "임페리얼 스타우트",
+          "price": 9900,
+          "price_text": "9,900"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:47:48.323750",
+      "success": true,
+      "page_number": 1,
+      "position_in_page": 3
+    },
+    {
+      "index": 3,
+      "name": "쿄코코 신논현점",
+      "category": "일식당",
+      "address": "서울 강남구 강남대로106길 23 지하1층",
+      "contact": "0507-1474-2254",
+      "menus": [
+        {
+          "name": "푸와푸와 라이스",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "(이가 시리는)냉소바",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "시오토리 라멘",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "명란마제소바",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "(현지보다 맛있는)아부라소바",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "(초초강력추천!)숯불함바그",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "푸와푸와 - 오야꼬동",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "시오토리 국밥",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "(사르르 녹는)버터진갈비",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "(초강력추천)부타동",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "푸와푸와 - 규동",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "(숯향 가득)야키토리동",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "(나는 대식가!!)대왕야키토리동",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "명란 계란말이",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "(미니)명란동",
+          "price": 4000,
+          "price_text": "4,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:47:58.770262",
+      "success": true,
+      "page_number": 1,
+      "position_in_page": 4
+    },
+    {
+      "index": 4,
+      "name": "장인닭갈비 강남점",
+      "category": "닭갈비",
+      "address": "서울 강남구 테헤란로1길 19",
+      "contact": "0507-1418-3471",
+      "menus": [
+        {
+          "name": "장인 닭갈비",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "치즈 닭갈비",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "장인볶음밥(김치+날치알)",
+          "price": 3000,
+          "price_text": "3,000"
+        },
+        {
+          "name": "럭키봉봉",
+          "price": 3000,
+          "price_text": "3,000"
+        },
+        {
+          "name": "날치알볶음밥",
+          "price": 2500,
+          "price_text": "2,500"
+        },
+        {
+          "name": "김치볶음밥",
+          "price": 2500,
+          "price_text": "2,500"
+        },
+        {
+          "name": "점심세트A",
+          "price": 24000,
+          "price_text": "24,000"
+        },
+        {
+          "name": "점심세트B",
+          "price": 36000,
+          "price_text": "36,000"
+        },
+        {
+          "name": "점심세트C",
+          "price": 48000,
+          "price_text": "48,000"
+        },
+        {
+          "name": "모듬사리(치즈+떡+당면or라면 택1)",
+          "price": 7500,
+          "price_text": "7,500"
+        },
+        {
+          "name": "모듬사리(치즈+떡+당면or라면 택1)",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "모듬사리(치즈+떡+당면or라면 택1)",
+          "price": 9500,
+          "price_text": "9,500"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:48:09.108675",
+      "success": true,
+      "page_number": 1,
+      "position_in_page": 5
+    },
+    {
+      "index": 5,
+      "name": "빨간의자집 강남역점",
+      "category": "육류,고기요리",
+      "address": "서울 강남구 테헤란로1길 28-13 1층 빨간의자집 강남역점",
+      "contact": "0507-1376-5351",
+      "menus": [
+        {
+          "name": "통 삼겹살 바베큐 1판 (2인)",
+          "price": 34000,
+          "price_text": "34,000"
+        },
+        {
+          "name": "통 삼겹살 바베큐 1.5판세트(3인)",
+          "price": 51000,
+          "price_text": "51,000"
+        },
+        {
+          "name": "통 삼겹살 바베큐 2판세트(4인)",
+          "price": 68000,
+          "price_text": "68,000"
+        },
+        {
+          "name": "[점심특선] 쌈밥 - 직화 석쇠불고기",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "[점심특선] 쌈밥 - 김장 보쌈",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "[점심특선] 쌈밥 - 제육 두루치기",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "김치볶음밥",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "매콤비빔국수",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "바베큐 고기 추가(300g)",
+          "price": 30000,
+          "price_text": "30,000"
+        },
+        {
+          "name": "바베큐 소세지",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "열무냉국수",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "시원 칼칼 청국된장찌개",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "생맥주(오리온,아사히,스텔라,호가든)",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "국산 생맥주(테라,카스)",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "하이볼",
+          "price": 8000,
+          "price_text": "8,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:48:19.637284",
+      "success": true,
+      "page_number": 1,
+      "position_in_page": 6
+    },
+    {
+      "index": 6,
+      "name": "소보키 강남점",
+      "category": "요리주점",
+      "address": "서울 강남구 봉은사로18길 80 1층",
+      "contact": "0507-1353-0094",
+      "menus": [
+        {
+          "name": "미나리 누룽지 닭전골",
+          "price": 31000,
+          "price_text": "31,000"
+        },
+        {
+          "name": "차돌 마라전골",
+          "price": 31000,
+          "price_text": "31,000"
+        },
+        {
+          "name": "치즈 베이컨 감자채전",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "고추장 등갈비구이",
+          "price": 35000,
+          "price_text": "35,000"
+        },
+        {
+          "name": "차돌 떡볶이",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "만월 하이볼",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "선비진 하이볼",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "칼집 돼지갈비",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "미나리 육전",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "치즈 김치전",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "로제 누들 닭갈비",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "찹쌀 부각 육회",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "닭목살무침",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "낙지 카펠리니",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "명란 닭튀김",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "곱창 전골",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "명란 어묵탕",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "한돈 대파크림 떡갈비",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "소보키 명란밥",
+          "price": 3500,
+          "price_text": "3,500"
+        },
+        {
+          "name": "에그타르트 아이스크림",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "그릭 홍시",
+          "price": 7500,
+          "price_text": "7,500"
+        },
+        {
+          "name": "아이스 약과",
+          "price": 7500,
+          "price_text": "7,500"
+        },
+        {
+          "name": "(탁주)복순도가손막걸리",
+          "price": 35000,
+          "price_text": "35,000"
+        },
+        {
+          "name": "일품/화요 술상 SET",
+          "price": 39000,
+          "price_text": "39,000"
+        },
+        {
+          "name": "문경바람 술상 SET",
+          "price": 49000,
+          "price_text": "49,000"
+        },
+        {
+          "name": "선비진 술상 SET",
+          "price": 69000,
+          "price_text": "69,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:48:32.188539",
+      "success": true,
+      "page_number": 1,
+      "position_in_page": 7
+    },
+    {
+      "index": 7,
+      "name": "모아 강남",
+      "category": "한식",
+      "address": "서울 강남구 테헤란로5길 31 지상1층",
+      "contact": "0507-1399-2028",
+      "menus": [
+        {
+          "name": "곤드레크림수제비",
+          "price": 14800,
+          "price_text": "14,800"
+        },
+        {
+          "name": "봉골레칼국수",
+          "price": 14800,
+          "price_text": "14,800"
+        },
+        {
+          "name": "보리강된장 아란치니",
+          "price": 15800,
+          "price_text": "15,800"
+        },
+        {
+          "name": "들기름젓갈파스타",
+          "price": 15800,
+          "price_text": "15,800"
+        },
+        {
+          "name": "매콤토마토 한우떡갈비",
+          "price": 19900,
+          "price_text": "19,900"
+        },
+        {
+          "name": "고사리크림 미트볼",
+          "price": 24900,
+          "price_text": "24,900"
+        },
+        {
+          "name": "참나물치미추리 항정구이",
+          "price": 24900,
+          "price_text": "24,900"
+        },
+        {
+          "name": "관자구이&앤다이브 한입 쌈",
+          "price": 21900,
+          "price_text": "21,900"
+        },
+        {
+          "name": "코코넛새우아보카도샐러드",
+          "price": 16900,
+          "price_text": "16,900"
+        },
+        {
+          "name": "돈마호크 스테이크",
+          "price": 35900,
+          "price_text": "35,900"
+        },
+        {
+          "name": "꽈리닭강정",
+          "price": 18900,
+          "price_text": "18,900"
+        },
+        {
+          "name": "광어매콤메밀면",
+          "price": 16800,
+          "price_text": "16,800"
+        },
+        {
+          "name": "루꼴라치즈감자전",
+          "price": 16900,
+          "price_text": "16,900"
+        },
+        {
+          "name": "매생이소라리조또",
+          "price": 14800,
+          "price_text": "14,800"
+        },
+        {
+          "name": "고등어와 백김치파스타",
+          "price": 16800,
+          "price_text": "16,800"
+        },
+        {
+          "name": "연어아보카도덮밥",
+          "price": 15800,
+          "price_text": "15,800"
+        },
+        {
+          "name": "차돌순두부칼국수",
+          "price": 12800,
+          "price_text": "12,800"
+        },
+        {
+          "name": "참나물꼬막덮밥",
+          "price": 12800,
+          "price_text": "12,800"
+        },
+        {
+          "name": "전복버섯버터솥밥",
+          "price": 20000,
+          "price_text": "20,000"
+        },
+        {
+          "name": "주류",
+          "price": null,
+          "price_text": ""
+        },
+        {
+          "name": "음료",
+          "price": null,
+          "price_text": ""
+        },
+        {
+          "name": "에이드",
+          "price": null,
+          "price_text": ""
+        }
+      ],
+      "crawled_at": "2025-08-12T12:48:44.698399",
+      "success": true,
+      "page_number": 1,
+      "position_in_page": 8
+    },
+    {
+      "index": 8,
+      "name": "오봉집 신논현점",
+      "category": "한식",
+      "address": "서울 강남구 학동로2길 50 1층",
+      "contact": "0507-1373-6974",
+      "menus": [
+        {
+          "name": "오봉집낙지스페셜",
+          "price": 59000,
+          "price_text": "59,000"
+        },
+        {
+          "name": "오봉집문어스페셜",
+          "price": 59000,
+          "price_text": "59,000"
+        },
+        {
+          "name": "오봉집오징어스페셜",
+          "price": 58000,
+          "price_text": "58,000"
+        },
+        {
+          "name": "매생이연포보쌈",
+          "price": 59000,
+          "price_text": "59,000"
+        },
+        {
+          "name": "보쌈칼국수세트",
+          "price": 39000,
+          "price_text": "39,000"
+        },
+        {
+          "name": "오봉집보쌈",
+          "price": 33000,
+          "price_text": "33,000"
+        },
+        {
+          "name": "직화낙지볶음",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "불매운맛낙지볶음",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "직화제낙볶음",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "직화오징어볶음",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "직화오제볶음",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "직화제육볶음",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "칼낙지",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "보쌈정식",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "바지락칼국수",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "오봉집문어삼합",
+          "price": 35000,
+          "price_text": "35,000"
+        },
+        {
+          "name": "문어모밀",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "문어초무침",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "가브리수육전골",
+          "price": 34000,
+          "price_text": "34,000"
+        },
+        {
+          "name": "매생이연포탕",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "얼큰낙지전골",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "오봉집조개탕",
+          "price": 22000,
+          "price_text": "22,000"
+        },
+        {
+          "name": "갑오징어숙회",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "쫀득편육",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "수육두부김치",
+          "price": 22000,
+          "price_text": "22,000"
+        },
+        {
+          "name": "직화오돌뼈주먹밥",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "쟁반막국수",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "김치전",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "부추전",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "왕만두",
+          "price": 6000,
+          "price_text": "6,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:48:57.300573",
+      "success": true,
+      "page_number": 1,
+      "position_in_page": 9
+    },
+    {
+      "index": 9,
+      "name": "벽돌해피푸드 압구정점",
+      "category": "중식당",
+      "address": "서울 강남구 도산대로51길 36 1층",
+      "contact": "02-514-0200",
+      "menus": [
+        {
+          "name": "마라샹궈",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "토마토 계란 덮밥",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "사천식 돼지고기 튀김",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "크림새우",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "해피 돼지고기 튀김",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "우육탕면",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "마라탕면",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "다진 돼지고기 비빔면",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "다진 돼지고기 비빔밥",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "새우 완탕면",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "해산물 볶음면",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "소고기 해물짬뽕",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "돈까스 볶음밥",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "XO 해산물 볶음밥",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "베이컨 볶음밥",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "계란 볶음밥",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "토마토 계란볶음",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "공심채볶음",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "로메인볶음",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "목이버섯 오이무침",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "샐러리 만두",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "옥수수알 튀김",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "인절미우유튀김",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "연두부튀김",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "해피 소고기 튀김",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "유린바사위",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "사천식 새우마파두부",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "사천식 닭고기 튀김",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "사천식 소프트크랩 튀김",
+          "price": 23000,
+          "price_text": "23,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:49:09.882329",
+      "success": true,
+      "page_number": 1,
+      "position_in_page": 10
+    },
+    {
+      "index": 0,
+      "name": "강남쪽갈비 강남구청역점",
+      "category": "육류,고기요리",
+      "address": "서울 강남구 선릉로131길 24 1층",
+      "contact": "0507-1382-4633",
+      "menus": [
+        {
+          "name": "양념쪽갈비",
+          "price": 18900,
+          "price_text": "18,900"
+        },
+        {
+          "name": "콜키지프리 (매장이용2시간)",
+          "price": null,
+          "price_text": ""
+        },
+        {
+          "name": "소금구이쪽갈비",
+          "price": 18900,
+          "price_text": "18,900"
+        },
+        {
+          "name": "매운쪽갈비",
+          "price": 18900,
+          "price_text": "18,900"
+        },
+        {
+          "name": "돼지껍데기",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "LA갈비",
+          "price": 24900,
+          "price_text": "24,900"
+        },
+        {
+          "name": "참치마요주먹밥",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "오돌뼈주먹밥",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "홍콩라면",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "홍합탕",
+          "price": 12000,
+          "price_text": "12,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:49:32.506698",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 1
+    },
+    {
+      "index": 1,
+      "name": "산솔 신논현점",
+      "category": "육류,고기요리",
+      "address": "서울 강남구 강남대로112길 15 지상1층",
+      "contact": "0507-1382-9927",
+      "menus": [
+        {
+          "name": "산 모듬 (480g) (2~3인)",
+          "price": 49000,
+          "price_text": "49,000"
+        },
+        {
+          "name": "솔 모듬 (680g) (3-4인)",
+          "price": 69000,
+          "price_text": "69,000"
+        },
+        {
+          "name": "산솔 한우 차돌박이",
+          "price": 22000,
+          "price_text": "22,000"
+        },
+        {
+          "name": "산솔 숙성삼겹살 (170g)",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "산솔 숙성꽃목살 (170g)",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "산솔 가브리살 (160g)",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "산솔 숙성항정살 (150g)",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "산솔 숙성껍살 (160g)",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "미나리 한우 육회",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "산 더덕구이",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "깍두기 볶음밥 (2인분)",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "폭탄치즈 계란찜",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "시골 된장찌개",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "초당 짬뽕 순두부찌개",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "메밀 물막국수",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "홍게라면",
+          "price": 8000,
+          "price_text": "8,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:49:44.956760",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 2
+    },
+    {
+      "index": 2,
+      "name": "구테로이테 본점",
+      "category": "카페,디저트",
+      "address": "서울 강남구 선릉로131길 16 1층 구테로이테",
+      "contact": "02-518-1117",
+      "menus": [
+        {
+          "name": "시그니처 클래식 코스",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "파인콘",
+          "price": 3800,
+          "price_text": "3,800"
+        },
+        {
+          "name": "구테로이테",
+          "price": 3800,
+          "price_text": "3,800"
+        },
+        {
+          "name": "그라니따(Only ice)",
+          "price": 3800,
+          "price_text": "3,800"
+        },
+        {
+          "name": "구테 넛 슈페너(Only ice)",
+          "price": 5800,
+          "price_text": "5,800"
+        },
+        {
+          "name": "스톤 슈페너(Only ice)",
+          "price": 5800,
+          "price_text": "5,800"
+        },
+        {
+          "name": "베리 뱅 콘판나(Only ice)",
+          "price": 5800,
+          "price_text": "5,800"
+        },
+        {
+          "name": "유자 버블 브루(Only ice)",
+          "price": 5800,
+          "price_text": "5,800"
+        },
+        {
+          "name": "에스프레소",
+          "price": 2100,
+          "price_text": "2,100"
+        },
+        {
+          "name": "에스프레소 도피오",
+          "price": 2600,
+          "price_text": "2,600"
+        },
+        {
+          "name": "레오파드",
+          "price": 2500,
+          "price_text": "2,500"
+        },
+        {
+          "name": "콘파나",
+          "price": 3200,
+          "price_text": "3,200"
+        },
+        {
+          "name": "카페크레마(Only ice)",
+          "price": 3600,
+          "price_text": "3,600"
+        },
+        {
+          "name": "롱블랙",
+          "price": 3800,
+          "price_text": "3,800"
+        },
+        {
+          "name": "플랫화이트",
+          "price": 4100,
+          "price_text": "4,100"
+        },
+        {
+          "name": "아인슈페너",
+          "price": 6300,
+          "price_text": "6,300"
+        },
+        {
+          "name": "아포가토(Only ice)",
+          "price": 7200,
+          "price_text": "7,200"
+        },
+        {
+          "name": "오미자 아메리카노",
+          "price": 6800,
+          "price_text": "6,800"
+        },
+        {
+          "name": "콜드브루(Only ice)",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "수정과 콜드브루(Only ice)",
+          "price": 6600,
+          "price_text": "6,600"
+        },
+        {
+          "name": "클래식 딥 쇼콜라",
+          "price": 5800,
+          "price_text": "5,800"
+        },
+        {
+          "name": "로즈 뱅쇼(Only hot)",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "캐모마일 리치 펀치(Only ice)",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "애플망고 그린에이드(Only ice)",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "자두 에이드(Only ice)",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "굿벨트 유자차",
+          "price": 5800,
+          "price_text": "5,800"
+        },
+        {
+          "name": "굿벨트 오미자차",
+          "price": 5800,
+          "price_text": "5,800"
+        },
+        {
+          "name": "쿨민트",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "캐모마일",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "히비스커스",
+          "price": 6000,
+          "price_text": "6,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:49:57.574164",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 3
+    },
+    {
+      "index": 3,
+      "name": "치보 강남신사점",
+      "category": "일식당",
+      "address": "서울 강남구 강남대로154길 21 1층 101호",
+      "contact": "0507-1432-1973",
+      "menus": [
+        {
+          "name": "히로시마야끼",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "도톤보리야끼",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "치즈 듬~뿍 쉬림프 오코노미야끼",
+          "price": 22000,
+          "price_text": "22,000"
+        },
+        {
+          "name": "[평일 점심] 일본식 카레",
+          "price": 13500,
+          "price_text": "13,500"
+        },
+        {
+          "name": "[평일 점심] 부타동",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "[평일 점심] 텐신항",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "간사이식 야끼교자",
+          "price": 5500,
+          "price_text": "5,500"
+        },
+        {
+          "name": "명란치즈 감자오코노미야끼",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "[평일 점심 2인 할인 SET]",
+          "price": 36000,
+          "price_text": "36,000"
+        },
+        {
+          "name": "[평일점심한정판매] 야끼소바빵",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "모던야끼",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "미소참깨야끼소바",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "치보 믹스야끼소바",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "파 가득 해물 소금야끼소바",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "돈페야끼",
+          "price": 11000,
+          "price_text": "11,000"
+        },
+        {
+          "name": "나고야식 닭철판구이",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "부채살 야끼니꾸",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "부타야끼",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "해물 오코노미야끼",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "트러플 표고버섯구이",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "부타노 쇼가야끼",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "철판관자구이",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "소주",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "맥주",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "짐빔 하이볼",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "레몬사워",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "카시스 오렌지",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "얼그레이 피치 하이볼",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "산토리 하이볼",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "자몽 라임 하이볼",
+          "price": 10000,
+          "price_text": "10,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:50:10.170447",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 4
+    },
+    {
+      "index": 4,
+      "name": "머무를 정 세이로무시 선릉점",
+      "category": "일식당",
+      "address": "서울 강남구 테헤란로64길 9 107호",
+      "contact": "0507-1330-8760",
+      "menus": [
+        {
+          "name": "(2~3인)소고기+제철생선+야채",
+          "price": 159000,
+          "price_text": "159,000"
+        },
+        {
+          "name": "(2~3인) 소고기+장어+야채",
+          "price": 149000,
+          "price_text": "149,000"
+        },
+        {
+          "name": "한우 스키야키",
+          "price": 65000,
+          "price_text": "65,000"
+        },
+        {
+          "name": "(2~3인) 소고기+랍스터+야채",
+          "price": 169000,
+          "price_text": "169,000"
+        },
+        {
+          "name": "점심특선 (우나기동)",
+          "price": 40000,
+          "price_text": "40,000"
+        },
+        {
+          "name": "점심특선 (카이센동)",
+          "price": 35000,
+          "price_text": "35,000"
+        },
+        {
+          "name": "점심특선 (스테이크동)",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "점심특선 (냉소바&덴푸라)",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "사시미 모리아와세",
+          "price": 40000,
+          "price_text": "40,000"
+        },
+        {
+          "name": "랍스터 사시미",
+          "price": 90000,
+          "price_text": "90,000"
+        },
+        {
+          "name": "큐브육회",
+          "price": 45000,
+          "price_text": "45,000"
+        },
+        {
+          "name": "해산물 술찜",
+          "price": 38000,
+          "price_text": "38,000"
+        },
+        {
+          "name": "항정살 짚불구이",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "표고버섯 육회튀김",
+          "price": 30000,
+          "price_text": "30,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:50:20.548843",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 5
+    },
+    {
+      "index": 5,
+      "name": "핫쵸 스타필드 코엑스몰점",
+      "category": "일식당",
+      "address": "서울 강남구 영동대로 513 코엑스 스타필드 지하 1층",
+      "contact": "0507-1417-6760",
+      "menus": [
+        {
+          "name": "핫쵸 히로시마 오코노미야끼",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "전통 히로시마 오코노미야끼",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "네기 히로시마 오코노미야끼",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "김치 히로시마 오코노미야끼",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "할라피뇨 히로시마 오코노미야끼",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "소고기 히로시마 오코노미야끼",
+          "price": 20000,
+          "price_text": "20,000"
+        },
+        {
+          "name": "소유(간장) 야끼소바",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "토오가라시(고추) 야끼소바",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "파 돈페야끼",
+          "price": 11000,
+          "price_text": "11,000"
+        },
+        {
+          "name": "명란 크림 타마고야끼",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "야끼교자(날개교자)",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "철판 시오 차돌양지 숙주볶음",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "치즈&토마토 츠케모노",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "산토리 하이볼",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "레몬사와",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "산토리 프리미엄 몰츠 생맥주",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "기린 병맥주",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "국순당 쌀 막걸리(캔)",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "츄하이(생과일 하이볼)",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "소다&에이드",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "콜라, 스프라이트, 제로콜라",
+          "price": 3000,
+          "price_text": "3,000"
+        },
+        {
+          "name": "미닛메이드",
+          "price": 3000,
+          "price_text": "3,000"
+        },
+        {
+          "name": "페리에",
+          "price": 4000,
+          "price_text": "4,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:50:33.033291",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 6
+    },
+    {
+      "index": 6,
+      "name": "선덕칼국수 역삼본점",
+      "category": "한식",
+      "address": "서울 강남구 테헤란로27길 29 주암빌딩 B1",
+      "contact": "0507-1367-5322",
+      "menus": [
+        {
+          "name": "선덕 닭칼국수 best",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "선덕 닭곰탕",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "선덕 감자전",
+          "price": 22000,
+          "price_text": "22,000"
+        },
+        {
+          "name": "선덕콩국수 Best",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "김치말이냉면",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "선덕 치즈감자전 best",
+          "price": 33000,
+          "price_text": "33,000"
+        },
+        {
+          "name": "얼큰닭칼국수",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "얼큰닭곰탕",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "선덕만두",
+          "price": 11000,
+          "price_text": "11,000"
+        },
+        {
+          "name": "쭈꾸미볶음",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "선덕닭무침",
+          "price": 25000,
+          "price_text": "25,000"
+        },
+        {
+          "name": "오징어김치전",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "막걸리 한모금",
+          "price": 2000,
+          "price_text": "2,000"
+        },
+        {
+          "name": "쭈꾸미삼겹",
+          "price": 35000,
+          "price_text": "35,000"
+        },
+        {
+          "name": "선덕김치<포장판매>",
+          "price": 4000,
+          "price_text": "4,000"
+        },
+        {
+          "name": "선덕김치",
+          "price": 20000,
+          "price_text": "20,000"
+        },
+        {
+          "name": "선덕김치",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "선덕콩물",
+          "price": 11000,
+          "price_text": "11,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:50:45.515369",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 7
+    },
+    {
+      "index": 7,
+      "name": "한사발포차 논현점",
+      "category": "요리주점",
+      "address": "서울 강남구 강남대로120길 12 1층 한사발포차 논현점",
+      "contact": "",
+      "menus": [
+        {
+          "name": "곱도리탕",
+          "price": 37900,
+          "price_text": "37,900"
+        },
+        {
+          "name": "계란달달토스트",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "닭볶음탕",
+          "price": 33000,
+          "price_text": "33,000"
+        },
+        {
+          "name": "냉제육",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "계란말이",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "계란만두",
+          "price": 11000,
+          "price_text": "11,000"
+        },
+        {
+          "name": "한사발수육",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "신(辛)들린쭈꾸미볶음&주먹밥",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "개쩌는팥빙수",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "한우육회",
+          "price": 22000,
+          "price_text": "22,000"
+        },
+        {
+          "name": "대파돈까스",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "칼비빔면",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "꽃도리탕",
+          "price": 45000,
+          "price_text": "45,000"
+        },
+        {
+          "name": "우도리탕",
+          "price": 42000,
+          "price_text": "42,000"
+        },
+        {
+          "name": "로제곱도리탕",
+          "price": 42000,
+          "price_text": "42,000"
+        },
+        {
+          "name": "닭발&오돌뼈",
+          "price": 31000,
+          "price_text": "31,000"
+        },
+        {
+          "name": "떡도리탕",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "두부김치",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "베이컨김치전",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "철판닭갈비",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "돼지불고기",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "무뼈닭발",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "새우부추전",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "한사발 통닭",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "통오징어숙회",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "오돌뼈",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "꼬치어묵탕",
+          "price": 20000,
+          "price_text": "20,000"
+        },
+        {
+          "name": "고추튀김(8p)",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "먹태&튀각",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "감자튀김",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "바싹옥수수전",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "은행버터구이",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "파인애플 샤베트",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "묵사발",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "짜계치",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "우동",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "황도",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "우유튀김",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "요구르트샤베트",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "한사발식혜",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "뽕따 하이볼",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "짐빔 하이볼",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "매실 하이볼",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "유자 하이볼",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "산토리 하이볼",
+          "price": 7500,
+          "price_text": "7,500"
+        },
+        {
+          "name": "얼그레이 하이볼",
+          "price": 7500,
+          "price_text": "7,500"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:51:02.497220",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 8
+    },
+    {
+      "index": 8,
+      "name": "코제트 도산",
+      "category": "카페,디저트",
+      "address": "서울 강남구 압구정로48길 39 B1층",
+      "contact": "0507-1421-2071",
+      "menus": [
+        {
+          "name": "망고 빙수",
+          "price": 25000,
+          "price_text": "25,000"
+        },
+        {
+          "name": "코제트 슈페너 (only ICE)",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "소프트 아이스크림 라떼 (ICE)",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "아메리카노 (HOT/ICE)",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "솔티카라멜 약과",
+          "price": 3000,
+          "price_text": "3,000"
+        },
+        {
+          "name": "복숭아 티 에이드",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "흑임자 라떼",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "인절미 라떼",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "솔티카라멜 약과 소프트 아이스크림",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "밀크폼 카푸치노",
+          "price": 5500,
+          "price_text": "5,500"
+        },
+        {
+          "name": "블루베리 루이보스 (HOT/ICE)",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "피치우롱 (HOT/ICE)",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "레몬라임 에이드",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "플랫화이트 (HOT/ICE)",
+          "price": 5500,
+          "price_text": "5,500"
+        },
+        {
+          "name": "카페라떼 (HOT/ICE)",
+          "price": 5500,
+          "price_text": "5,500"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:51:12.865624",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 9
+    },
+    {
+      "index": 9,
+      "name": "카이센동우니도",
+      "category": "일식당",
+      "address": "서울 강남구 압구정로2길 15 1층 카이센동우니도",
+      "contact": "0507-1401-0517",
+      "menus": [
+        {
+          "name": "생생사케동",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "오늘의우니반판(40g)",
+          "price": 20000,
+          "price_text": "20,000"
+        },
+        {
+          "name": "생연어방어동",
+          "price": 24000,
+          "price_text": "24,000"
+        },
+        {
+          "name": "카이센동(모듬해산물덮밥)",
+          "price": 27000,
+          "price_text": "27,000"
+        },
+        {
+          "name": "우니도카이센동(스페샬)",
+          "price": 39000,
+          "price_text": "39,000"
+        },
+        {
+          "name": "생연어+명란네기토로",
+          "price": 20000,
+          "price_text": "20,000"
+        },
+        {
+          "name": "히사호동",
+          "price": 24000,
+          "price_text": "24,000"
+        },
+        {
+          "name": "아부리돈부리",
+          "price": 24000,
+          "price_text": "24,000"
+        },
+        {
+          "name": "특별한민물장어덮밥(200g)",
+          "price": 25000,
+          "price_text": "25,000"
+        },
+        {
+          "name": "삼미방어동",
+          "price": 26000,
+          "price_text": "26,000"
+        },
+        {
+          "name": "혼마구로사케동",
+          "price": 26000,
+          "price_text": "26,000"
+        },
+        {
+          "name": "히마사동",
+          "price": 26000,
+          "price_text": "26,000"
+        },
+        {
+          "name": "사케우니이쿠라동",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "혼마구로동",
+          "price": 30000,
+          "price_text": "30,000"
+        },
+        {
+          "name": "미미방어동",
+          "price": 30000,
+          "price_text": "30,000"
+        },
+        {
+          "name": "토로토로동",
+          "price": 36000,
+          "price_text": "36,000"
+        },
+        {
+          "name": "우니도방어동",
+          "price": 38000,
+          "price_text": "38,000"
+        },
+        {
+          "name": "오늘의우니동(80g)",
+          "price": 48000,
+          "price_text": "48,000"
+        },
+        {
+          "name": "오늘의우니이쿠라동",
+          "price": 45000,
+          "price_text": "45,000"
+        },
+        {
+          "name": "우니도로호다테동",
+          "price": 45000,
+          "price_text": "45,000"
+        },
+        {
+          "name": "우니호다테에비동",
+          "price": 45000,
+          "price_text": "45,000"
+        },
+        {
+          "name": "우니도로에비동",
+          "price": 47000,
+          "price_text": "47,000"
+        },
+        {
+          "name": "우마이우니동",
+          "price": 48000,
+          "price_text": "48,000"
+        },
+        {
+          "name": "카니미소구이",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "오늘의우니한판(80g)",
+          "price": 40000,
+          "price_text": "40,000"
+        },
+        {
+          "name": "카니크림고로케2p",
+          "price": 4000,
+          "price_text": "4,000"
+        },
+        {
+          "name": "에비크림고로케2p",
+          "price": 4000,
+          "price_text": "4,000"
+        },
+        {
+          "name": "멘치카츠고로케2p",
+          "price": 4000,
+          "price_text": "4,000"
+        },
+        {
+          "name": "통새우후라이2p",
+          "price": 5000,
+          "price_text": "5,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:51:25.422457",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 10
+    },
+    {
+      "index": 10,
+      "name": "퍼스트커피랩 강남점",
+      "category": "카페,디저트",
+      "address": "서울 강남구 봉은사로6길 39 1층",
+      "contact": "0507-1315-7680",
+      "menus": [
+        {
+          "name": "스페셜티 아메리카노",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "스페니쉬 라떼",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "아인슈페너",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "애플유자티",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "자몽 에이드",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "시.고 커피 (시나몬 고구마)",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "오미자 에이드",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "자바칩 프라페",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "카페라떼",
+          "price": 7500,
+          "price_text": "7,500"
+        },
+        {
+          "name": "카라멜마끼야또",
+          "price": 8500,
+          "price_text": "8,500"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:51:35.756322",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 11
+    },
+    {
+      "index": 11,
+      "name": "1974비래옥 선릉점",
+      "category": "곰탕,설렁탕",
+      "address": "서울 강남구 테헤란로63길 9 1층 104호, 104-1호",
+      "contact": "0507-1376-9086",
+      "menus": [],
+      "crawled_at": "2025-08-12T12:51:47.194317",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 12
+    },
+    {
+      "index": 12,
+      "name": "으뜸스시 신사직영점",
+      "category": "초밥,롤",
+      "address": "서울 강남구 압구정로2길 62 지상1층 101호",
+      "contact": "0507-1448-0857",
+      "menus": [
+        {
+          "name": "대광어초밥",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "묵은지광어초밥",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "점보엔가와초밥",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "점성어초밥",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "연어초밥",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "소스연어초밥",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "연어뱃살초밥",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "아까미초밥",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "메카초밥",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "계란새우초밥",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "계란새우(어니언)초밥",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "명이고기초밥",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "계란고기초밥",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "육회불초밥",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "키조개관자",
+          "price": 2200,
+          "price_text": "2,200"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:51:57.597015",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 13
+    },
+    {
+      "index": 13,
+      "name": "데일리픽스 강남본점",
+      "category": "햄버거",
+      "address": "서울 강남구 논현로85길 70 1층 102호",
+      "contact": "0507-1346-2468",
+      "menus": [],
+      "crawled_at": "2025-08-12T12:52:08.469907",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 14
+    },
+    {
+      "index": 14,
+      "name": "멘츠루 신사점",
+      "category": "일본식라면",
+      "address": "서울 강남구 강남대로162길 21 1층 102호",
+      "contact": "0507-1306-6465",
+      "menus": [
+        {
+          "name": "쇼유라멘",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "시오라멘",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "유자시오라멘",
+          "price": 11000,
+          "price_text": "11,000"
+        },
+        {
+          "name": "매운쇼유(해장라멘)",
+          "price": 10500,
+          "price_text": "10,500"
+        },
+        {
+          "name": "토리파이탄",
+          "price": 11000,
+          "price_text": "11,000"
+        },
+        {
+          "name": "모츠라멘(소곱창)",
+          "price": 14500,
+          "price_text": "14,500"
+        },
+        {
+          "name": "아부라소바",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "츠케맨",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "호르몬동(대창덮밥)",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "규동",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "수제 가라아게",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "닭껍질교자",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "타코야끼",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "아사히 생맥주 420ml",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "기린 병맥주",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "산토리 하이볼",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "소주",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "사케",
+          "price": null,
+          "price_text": ""
+        }
+      ],
+      "crawled_at": "2025-08-12T12:52:20.946880",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 15
+    },
+    {
+      "index": 15,
+      "name": "에이비카페",
+      "category": "카페",
+      "address": "서울 강남구 강남대로102길 32 1층 101호",
+      "contact": "0507-1411-2076",
+      "menus": [
+        {
+          "name": "아메리카노",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "데블스 쇼콜라 케이크",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "순우유 케이크",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "데블스 쇼콜라 케이크",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "얼그레이 쇼콜라 케이크",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "뉴욕 바스크 치즈 케이크",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "당근 케이크",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "순우유 케이크",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "레몬 케이크",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "말렌카 허니 호두 케이크",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "쿠키앤크림 케이크",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "크룽지",
+          "price": 3500,
+          "price_text": "3,500"
+        },
+        {
+          "name": "레몬 크림 도넛",
+          "price": 4000,
+          "price_text": "4,000"
+        },
+        {
+          "name": "스위스&아메리칸 치즈 베이글",
+          "price": 4900,
+          "price_text": "4,900"
+        },
+        {
+          "name": "모짜렐라 할라피뇨 베이글",
+          "price": 4900,
+          "price_text": "4,900"
+        },
+        {
+          "name": "플레인 베이글",
+          "price": 3900,
+          "price_text": "3,900"
+        },
+        {
+          "name": "블루베리 베이글",
+          "price": 4900,
+          "price_text": "4,900"
+        },
+        {
+          "name": "잠봉뵈르 베이글 샌드위치",
+          "price": 10800,
+          "price_text": "10,800"
+        },
+        {
+          "name": "플레인크림치즈",
+          "price": 2200,
+          "price_text": "2,200"
+        },
+        {
+          "name": "쪽파크림치즈",
+          "price": 2900,
+          "price_text": "2,900"
+        },
+        {
+          "name": "플레인 코코넛칩",
+          "price": 3500,
+          "price_text": "3,500"
+        },
+        {
+          "name": "캬라멜 코코넛칩",
+          "price": 3500,
+          "price_text": "3,500"
+        },
+        {
+          "name": "초코 코코넛칩",
+          "price": 3500,
+          "price_text": "3,500"
+        },
+        {
+          "name": "아메리카노",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "카페라떼",
+          "price": 5500,
+          "price_text": "5,500"
+        },
+        {
+          "name": "바닐라라떼",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "카라멜라떼",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "라빠르쉐 설탕라떼",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "콜드브루",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "콜드브루 라떼",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "콜드브루 디카페인",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "콜드브루 라떼 디카페인",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "딸기라떼",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "말차라떼",
+          "price": 7500,
+          "price_text": "7,500"
+        },
+        {
+          "name": "초코라떼",
+          "price": 7500,
+          "price_text": "7,500"
+        },
+        {
+          "name": "밀크티",
+          "price": 7500,
+          "price_text": "7,500"
+        },
+        {
+          "name": "망고라떼",
+          "price": 7500,
+          "price_text": "7,500"
+        },
+        {
+          "name": "얼그레이",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "캐모마일",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "루이보스 바닐라(로네펠트)",
+          "price": 5500,
+          "price_text": "5,500"
+        },
+        {
+          "name": "아이스티",
+          "price": 5500,
+          "price_text": "5,500"
+        },
+        {
+          "name": "오렌지 자몽 블랙",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "애플 피치 우롱 티",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "청사과 에이드",
+          "price": 7500,
+          "price_text": "7,500"
+        },
+        {
+          "name": "자두에이드",
+          "price": 7500,
+          "price_text": "7,500"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:52:35.790889",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 16
+    },
+    {
+      "index": 16,
+      "name": "몽갈비",
+      "category": "육류,고기요리",
+      "address": "서울 강남구 논현로149길 5 1층",
+      "contact": "0507-1444-0642",
+      "menus": [
+        {
+          "name": "소금 몽갈비 (300g)",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "간장 몽갈비 (300g)",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "양념 몽갈비 (300g)",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "LA갈비(200g)",
+          "price": 20000,
+          "price_text": "20,000"
+        },
+        {
+          "name": "매운 몽갈비 (300g)",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "마라 몽갈비 (300g)",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "묵은지 대창 갈비찜",
+          "price": 26000,
+          "price_text": "26,000"
+        },
+        {
+          "name": "뚝배기 김치치즈밥",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "물냉면",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "비빔냉면",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "계란탕",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "순두부 찌개 추가",
+          "price": 6000,
+          "price_text": "6,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:52:46.164532",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 17
+    },
+    {
+      "index": 17,
+      "name": "달링키친",
+      "category": "양식",
+      "address": "서울 강남구 압구정로14길 34 3층",
+      "contact": "0507-1325-3460",
+      "menus": [
+        {
+          "name": "달링 1991 라자냐",
+          "price": 29500,
+          "price_text": "29,500"
+        },
+        {
+          "name": "까르보나라",
+          "price": 24000,
+          "price_text": "24,000"
+        },
+        {
+          "name": "스테이크&라이스",
+          "price": 39000,
+          "price_text": "39,000"
+        },
+        {
+          "name": "몬테크리스토",
+          "price": 23500,
+          "price_text": "23,500"
+        },
+        {
+          "name": "프렌치 브렉퍼스트",
+          "price": 24000,
+          "price_text": "24,000"
+        },
+        {
+          "name": "필터커피 핫",
+          "price": 5500,
+          "price_text": "5,500"
+        },
+        {
+          "name": "콜드브루 라떼",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "레몬라임에이드",
+          "price": 7500,
+          "price_text": "7,500"
+        },
+        {
+          "name": "딸기에이드",
+          "price": 7500,
+          "price_text": "7,500"
+        },
+        {
+          "name": "오렌지주스",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "달링 시그니처 스테이크",
+          "price": 72000,
+          "price_text": "72,000"
+        },
+        {
+          "name": "단호박 수프 & 브레드",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "비프 볼로네제",
+          "price": 26500,
+          "price_text": "26,500"
+        },
+        {
+          "name": "엔쵸비 오일 파스타",
+          "price": 23500,
+          "price_text": "23,500"
+        },
+        {
+          "name": "트리플 머쉬룸 파스타",
+          "price": 25000,
+          "price_text": "25,000"
+        },
+        {
+          "name": "달링 브렉퍼스트",
+          "price": 23500,
+          "price_text": "23,500"
+        },
+        {
+          "name": "햄치즈 오믈렛",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "오렌지 그린 샐러드",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "양송이 수프 & 브레드",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "쉬림프 로제 파스타",
+          "price": 24500,
+          "price_text": "24,500"
+        },
+        {
+          "name": "치킨 파마잔",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "트러플 크림 리조또",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "바나나 리코타 프렌치 토스트",
+          "price": 23500,
+          "price_text": "23,500"
+        },
+        {
+          "name": "시저 샐러드",
+          "price": 19500,
+          "price_text": "19,500"
+        },
+        {
+          "name": "치킨윙",
+          "price": 10500,
+          "price_text": "10,500"
+        },
+        {
+          "name": "스윗&포테이토 프라이즈",
+          "price": 12500,
+          "price_text": "12,500"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:52:58.725716",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 18
+    },
+    {
+      "index": 18,
+      "name": "진밀옥 본점",
+      "category": "칼국수,만두",
+      "address": "서울 강남구 테헤란로81길 16 1층",
+      "contact": "0507-1346-4124",
+      "menus": [
+        {
+          "name": "진세트",
+          "price": 70000,
+          "price_text": "70,000"
+        },
+        {
+          "name": "한우사골칼국수",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "낙지보쌈大",
+          "price": 55000,
+          "price_text": "55,000"
+        },
+        {
+          "name": "부석태콩국수",
+          "price": 11000,
+          "price_text": "11,000"
+        },
+        {
+          "name": "밀세트",
+          "price": 60000,
+          "price_text": "60,000"
+        },
+        {
+          "name": "옥세트",
+          "price": 45000,
+          "price_text": "45,000"
+        },
+        {
+          "name": "한우육개장칼국수",
+          "price": 11000,
+          "price_text": "11,000"
+        },
+        {
+          "name": "맛보기 수육 (고기만)",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "만두",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "문어보쌈中",
+          "price": 45000,
+          "price_text": "45,000"
+        },
+        {
+          "name": "문어보쌈大",
+          "price": 55000,
+          "price_text": "55,000"
+        },
+        {
+          "name": "낙지보쌈中",
+          "price": 45000,
+          "price_text": "45,000"
+        },
+        {
+          "name": "보쌈中",
+          "price": 35000,
+          "price_text": "35,000"
+        },
+        {
+          "name": "보쌈大",
+          "price": 45000,
+          "price_text": "45,000"
+        },
+        {
+          "name": "생합탕",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "해물부추전",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "백김치",
+          "price": 5000,
+          "price_text": "5,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:53:11.195629",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 19
+    },
+    {
+      "index": 19,
+      "name": "육미당 몽산",
+      "category": "육류,고기요리",
+      "address": "서울 강남구 강남대로96길 15 2층",
+      "contact": "0507-1309-9829",
+      "menus": [
+        {
+          "name": "육즙 콸콸 소갈비살 세트",
+          "price": 69900,
+          "price_text": "69,900"
+        },
+        {
+          "name": "소고기 끝판왕 ~ 소마카세 세트",
+          "price": 77900,
+          "price_text": "77,900"
+        },
+        {
+          "name": "돼지고기 끝판왕~ 돈마카세 세트",
+          "price": 69900,
+          "price_text": "69,900"
+        },
+        {
+          "name": "우리가족 배터져요 패밀리세트",
+          "price": 99900,
+          "price_text": "99,900"
+        },
+        {
+          "name": "둘이서 배터져요 커플세트",
+          "price": 56900,
+          "price_text": "56,900"
+        },
+        {
+          "name": "육즙 콸콸 소갈비살(150g)",
+          "price": 17900,
+          "price_text": "17,900"
+        },
+        {
+          "name": "고소한 한우차돌(150g)",
+          "price": 19900,
+          "price_text": "19,900"
+        },
+        {
+          "name": "육향 가득 와규 부채살(150g)",
+          "price": 17900,
+          "price_text": "17,900"
+        },
+        {
+          "name": "투뿔한우 뺨때리는 눈꽃살",
+          "price": 29900,
+          "price_text": "29,900"
+        },
+        {
+          "name": "천겹 항정살",
+          "price": 16900,
+          "price_text": "16,900"
+        },
+        {
+          "name": "육즙 삼겹살",
+          "price": 14900,
+          "price_text": "14,900"
+        },
+        {
+          "name": "아싸 가브리살",
+          "price": 15900,
+          "price_text": "15,900"
+        },
+        {
+          "name": "바로 뽑은 냉면(물냉 / 비냉)",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "육회가 한뭉텅이 육회비빔밥",
+          "price": 8900,
+          "price_text": "8,900"
+        },
+        {
+          "name": "수리술밥 차돌된장찌개",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "육회가 한뭉텅이 육회 비빔냉면",
+          "price": 8900,
+          "price_text": "8,900"
+        },
+        {
+          "name": "속초식 코다리 비빔냉면",
+          "price": 8900,
+          "price_text": "8,900"
+        },
+        {
+          "name": "투뿔 한우육회",
+          "price": 25900,
+          "price_text": "25,900"
+        },
+        {
+          "name": "몽산 하이볼",
+          "price": 7500,
+          "price_text": "7,500"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:53:23.713885",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 20
+    },
+    {
+      "index": 20,
+      "name": "도시맥주 신사가로수길본점",
+      "category": "맥주,호프",
+      "address": "서울 강남구 강남대로152길 43 1층, 2층, 3층",
+      "contact": "0507-1369-6441",
+      "menus": [
+        {
+          "name": "소주 모든종류",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "한라봉.파인.메론.야구르트샤베트",
+          "price": null,
+          "price_text": ""
+        },
+        {
+          "name": "소세지김치볶음밥",
+          "price": 9500,
+          "price_text": "9,500"
+        },
+        {
+          "name": "피카츄돈까스",
+          "price": 5000,
+          "price_text": "5,000"
+        },
+        {
+          "name": "소떡소떡",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "파김치짜파게티",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "왕쥐포구이",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "한치구이",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "반건조오징어",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "먹태",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "어묵탕",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "부대찌개",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "바지락탕",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "김치어묵우동",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "김치수제비",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "얼큰순두부",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "멜론+설탕토마토",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "닭똥집",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "3종계절과일",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "칼집모듬소세지",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "골뱅이쫄면",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "즉석떡볶이[떡쫄라]",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "Zombie매운무뼈닭발",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "좀비추천오돌뼈주먹밥",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "Zombie치즈불닭",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "케이준치킨샐러드",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "롤치즈돈까스",
+          "price": 11000,
+          "price_text": "11,000"
+        },
+        {
+          "name": "버팔로윙봉",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "갈릭빠다감튀",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "순살파닭",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "순살양념치킨",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "순살후라이드",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "좀비추천1KG반반치킨",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "좀비추천1KG양념치킨",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "좀비추천1KG후라이드치킨",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "Zombie수제IPA",
+          "price": 5500,
+          "price_text": "5,500"
+        },
+        {
+          "name": "Zombie수제흑맥주",
+          "price": 5500,
+          "price_text": "5,500"
+        },
+        {
+          "name": "Zombie생맥주",
+          "price": null,
+          "price_text": ""
+        }
+      ],
+      "crawled_at": "2025-08-12T12:53:38.474173",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 21
+    },
+    {
+      "index": 21,
+      "name": "양인환대",
+      "category": "육류,고기요리",
+      "address": "서울 강남구 강남대로42길 17 1층",
+      "contact": "0507-1445-1041",
+      "menus": [
+        {
+          "name": "프렌치랙",
+          "price": 35000,
+          "price_text": "35,000"
+        },
+        {
+          "name": "양갈비",
+          "price": 33000,
+          "price_text": "33,000"
+        },
+        {
+          "name": "격자육",
+          "price": 31000,
+          "price_text": "31,000"
+        },
+        {
+          "name": "양등심",
+          "price": 31000,
+          "price_text": "31,000"
+        },
+        {
+          "name": "제비추리",
+          "price": 31000,
+          "price_text": "31,000"
+        },
+        {
+          "name": "한우등심 1등급++",
+          "price": 50000,
+          "price_text": "50,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:53:48.761289",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 22
+    },
+    {
+      "index": 22,
+      "name": "까치화방 강남역점",
+      "category": "카페,디저트",
+      "address": "서울 강남구 봉은사로4길 23 1층",
+      "contact": "0507-1497-5535",
+      "menus": [
+        {
+          "name": "바닐라크림콜드브루",
+          "price": 6800,
+          "price_text": "6,800"
+        },
+        {
+          "name": "루이보스 플럼 티",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "마롱팥빙수",
+          "price": 22000,
+          "price_text": "22,000"
+        },
+        {
+          "name": "망고 APT 케이크",
+          "price": 48000,
+          "price_text": "48,000"
+        },
+        {
+          "name": "피치 홀케이크",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "스페셜 플라워 케이크",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "샤인머스캣 요거트 아파트 케이크",
+          "price": 48000,
+          "price_text": "48,000"
+        },
+        {
+          "name": "무화과 생크림 아파트 케이크",
+          "price": 49000,
+          "price_text": "49,000"
+        },
+        {
+          "name": "무화과 레드벨벳 크림치즈 미니 케이크",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "무화과 생크림 미니 케이크",
+          "price": 31000,
+          "price_text": "31,000"
+        },
+        {
+          "name": "무화과 크림치즈 조각 케이크",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "말차 오트 설화",
+          "price": 6300,
+          "price_text": "6,300"
+        },
+        {
+          "name": "제스티 말차 설화",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "샤인머스캣 요거트 빙수",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "샤인머스캣 요거트 홀케이크",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "샤인머스캣 요거트 조각 케이크",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "에스프레소",
+          "price": 4300,
+          "price_text": "4,300"
+        },
+        {
+          "name": "아메리카노",
+          "price": 4800,
+          "price_text": "4,800"
+        },
+        {
+          "name": "카페라떼",
+          "price": 5300,
+          "price_text": "5,300"
+        },
+        {
+          "name": "카라멜 마끼야또",
+          "price": 6200,
+          "price_text": "6,200"
+        },
+        {
+          "name": "수플레 카푸치노",
+          "price": 5700,
+          "price_text": "5,700"
+        },
+        {
+          "name": "아이스크림 라떼",
+          "price": 7200,
+          "price_text": "7,200"
+        },
+        {
+          "name": "콜드브루",
+          "price": 5500,
+          "price_text": "5,500"
+        },
+        {
+          "name": "돌체 콜드브루",
+          "price": 6800,
+          "price_text": "6,800"
+        },
+        {
+          "name": "까치 라떼",
+          "price": 6300,
+          "price_text": "6,300"
+        },
+        {
+          "name": "블랙설화 (아인슈페너)",
+          "price": 6300,
+          "price_text": "6,300"
+        },
+        {
+          "name": "까치설화 (아인슈페너)",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "로얄 머스켓 밀크티",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "자몽허니블랙티(제로)",
+          "price": 6800,
+          "price_text": "6,800"
+        },
+        {
+          "name": "다크 쇼콜라",
+          "price": 6800,
+          "price_text": "6,800"
+        },
+        {
+          "name": "허브&과일 수제청 티",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "허브&과일 수제청 에이드 (ICE)",
+          "price": 6800,
+          "price_text": "6,800"
+        },
+        {
+          "name": "루이보스 티",
+          "price": 5500,
+          "price_text": "5,500"
+        },
+        {
+          "name": "베티나르디 티 (5종)",
+          "price": 5500,
+          "price_text": "5,500"
+        },
+        {
+          "name": "체리 빙수",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "체리 컵빙수",
+          "price": 9800,
+          "price_text": "9,800"
+        },
+        {
+          "name": "망고 치즈 컵빙수",
+          "price": 8800,
+          "price_text": "8,800"
+        },
+        {
+          "name": "마롱 팥 컵빙수",
+          "price": 7800,
+          "price_text": "7,800"
+        },
+        {
+          "name": "여름을 담은 아파트 케이크",
+          "price": 46000,
+          "price_text": "46,000"
+        },
+        {
+          "name": "여름을 담은 홀케이크",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "망고 홀케이크",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "말차 갸또 케이크",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "여름을 담은 조각 케이크",
+          "price": 8200,
+          "price_text": "8,200"
+        },
+        {
+          "name": "망고 조각케이크",
+          "price": 8300,
+          "price_text": "8,300"
+        },
+        {
+          "name": "말차 팥 갸또 조각케이크",
+          "price": 7800,
+          "price_text": "7,800"
+        },
+        {
+          "name": "피치 조각케이크",
+          "price": 7800,
+          "price_text": "7,800"
+        },
+        {
+          "name": "럭키 초코",
+          "price": 7200,
+          "price_text": "7,200"
+        },
+        {
+          "name": "럭키 당근",
+          "price": 7200,
+          "price_text": "7,200"
+        },
+        {
+          "name": "럭키 얼그레이",
+          "price": 7200,
+          "price_text": "7,200"
+        },
+        {
+          "name": "럭키 레몬",
+          "price": 7200,
+          "price_text": "7,200"
+        },
+        {
+          "name": "까치 플라워",
+          "price": 35000,
+          "price_text": "35,000"
+        },
+        {
+          "name": "까치 노리개 키링",
+          "price": 7700,
+          "price_text": "7,700"
+        },
+        {
+          "name": "까치 우표 키링",
+          "price": 6700,
+          "price_text": "6,700"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:54:05.722041",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 23
+    },
+    {
+      "index": 23,
+      "name": "강삼가든",
+      "category": "육류,고기요리",
+      "address": "서울 강남구 강남대로102길 20 1층 강삼가든",
+      "contact": "0507-1346-2406",
+      "menus": [
+        {
+          "name": "강삼겹살",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "목살",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "새우 항정살",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "가브리살",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "갈매기살",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "뼈삼겹",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "숄더렉",
+          "price": 38000,
+          "price_text": "38,000"
+        },
+        {
+          "name": "흑돼지 삼겹살",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "흑돼지 목살",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "숯불 돼지갈비",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "1++ 숙성 한우 채끝 등심",
+          "price": 48000,
+          "price_text": "48,000"
+        },
+        {
+          "name": "1++ 한우생등심",
+          "price": 39000,
+          "price_text": "39,000"
+        },
+        {
+          "name": "양갈비 프렌치랙",
+          "price": 36000,
+          "price_text": "36,000"
+        },
+        {
+          "name": "1++ 한우육회",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "강삼가든 프리미엄",
+          "price": 93000,
+          "price_text": "93,000"
+        },
+        {
+          "name": "강삼가든 블랙 프리미엄",
+          "price": 93000,
+          "price_text": "93,000"
+        },
+        {
+          "name": "강삼가든 시그니처",
+          "price": 72000,
+          "price_text": "72,000"
+        },
+        {
+          "name": "강삼가든 콜라보",
+          "price": 58000,
+          "price_text": "58,000"
+        },
+        {
+          "name": "강삼가든 VIP",
+          "price": 193000,
+          "price_text": "193,000"
+        },
+        {
+          "name": "김치찌개",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "된장찌개",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "물냉면",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "비빔냉면",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "차돌비빔국수",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "김치어묵국수",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "1++ 한우 육회비빔밥",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "우거지 된장술밥",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "계란찜",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "강삼 두루치기",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "제육쌈밥",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "돼지불백",
+          "price": 12000,
+          "price_text": "12,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:54:20.422364",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 24
+    },
+    {
+      "index": 24,
+      "name": "영동그집",
+      "category": "육류,고기요리",
+      "address": "서울 강남구 봉은사로1길 42-8",
+      "contact": "0507-1483-9902",
+      "menus": [
+        {
+          "name": "돼지 가리비(300g)",
+          "price": 36000,
+          "price_text": "36,000"
+        },
+        {
+          "name": "돼지 감자살(150g)",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "그집 삼겹살(150g)",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "제주목살",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "영동 원갈비(150g)",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "돼지김치찌개",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "그집된장술밥",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "물냉면",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "그집리조또",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "비빔냉면",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "콜키지차지",
+          "price": 20000,
+          "price_text": "20,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:54:30.976976",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 25
+    },
+    {
+      "index": 25,
+      "name": "신사만장어",
+      "category": "장어,먹장어요리",
+      "address": "서울 강남구 도산대로1길 10",
+      "contact": "0507-1355-9302",
+      "menus": [
+        {
+          "name": "장어덮밥 VIP (생물 520g)",
+          "price": 58000,
+          "price_text": "58,000"
+        },
+        {
+          "name": "장어덮밥 특 (생물 340g)",
+          "price": 42000,
+          "price_text": "42,000"
+        },
+        {
+          "name": "보양전복 뚝배기",
+          "price": 38000,
+          "price_text": "38,000"
+        },
+        {
+          "name": "불로장생 장어탕",
+          "price": 38000,
+          "price_text": "38,000"
+        },
+        {
+          "name": "장어한판(2~3인분)",
+          "price": 96000,
+          "price_text": "96,000"
+        },
+        {
+          "name": "3미 장어(3~4인분)",
+          "price": 144000,
+          "price_text": "144,000"
+        },
+        {
+          "name": "수플레 계란찜",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "전복 버터 구이",
+          "price": 65000,
+          "price_text": "65,000"
+        },
+        {
+          "name": "신사만 장어 세트 (2인이상 주문 가능)",
+          "price": 68000,
+          "price_text": "68,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:54:41.470283",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 26
+    },
+    {
+      "index": 26,
+      "name": "일상정원 코엑스점",
+      "category": "일식당",
+      "address": "서울 강남구 봉은사로 524 오크우드 프리미어 호텔 지하2층",
+      "contact": "0507-1485-8070",
+      "menus": [
+        {
+          "name": "🌿도심 속 휴식공간",
+          "price": null,
+          "price_text": ""
+        },
+        {
+          "name": "구름 스키야키(관서식)",
+          "price": 21400,
+          "price_text": "21,400"
+        },
+        {
+          "name": "미소 샤브샤브(관동식)",
+          "price": 18400,
+          "price_text": "18,400"
+        },
+        {
+          "name": "소유 모츠나베(규슈식)",
+          "price": 21400,
+          "price_text": "21,400"
+        },
+        {
+          "name": "솜사탕에이드 (블루오렌지or라즈베리)",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "[여름메뉴] 붓카케 우동",
+          "price": 15900,
+          "price_text": "15,900"
+        },
+        {
+          "name": "[여름메뉴] 제주 청귤소바 정식",
+          "price": 15900,
+          "price_text": "15,900"
+        },
+        {
+          "name": "한우육회동 반상",
+          "price": 19900,
+          "price_text": "19,900"
+        },
+        {
+          "name": "우나기동 반상",
+          "price": 23900,
+          "price_text": "23,900"
+        },
+        {
+          "name": "매콤 온우동정식",
+          "price": 14900,
+          "price_text": "14,900"
+        },
+        {
+          "name": "말차 들기름 소바 정식",
+          "price": 17900,
+          "price_text": "17,900"
+        },
+        {
+          "name": "모듬 튀김",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "카키후라이",
+          "price": 15900,
+          "price_text": "15,900"
+        },
+        {
+          "name": "한우 육회 (소금or고추장)",
+          "price": 28900,
+          "price_text": "28,900"
+        },
+        {
+          "name": "전복 버터구이",
+          "price": 31900,
+          "price_text": "31,900"
+        },
+        {
+          "name": "[디너한정] 닭껍질꼬치",
+          "price": 9900,
+          "price_text": "9,900"
+        },
+        {
+          "name": "[디너한정] 타코와사비",
+          "price": 11900,
+          "price_text": "11,900"
+        },
+        {
+          "name": "[디너한정] 일상가라아게",
+          "price": 14900,
+          "price_text": "14,900"
+        },
+        {
+          "name": "일상 하이볼",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "사케 하이볼",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "사케 (도쿠리 or 마쓰잔)",
+          "price": 8000,
+          "price_text": "8,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:54:53.986338",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 27
+    },
+    {
+      "index": 27,
+      "name": "그랜드 인터컨티넨탈 서울 파르나스 그랜드 키친",
+      "category": "뷔페",
+      "address": "서울 강남구 테헤란로 521 그랜드 인터컨티넨탈 서울 파르나스 1층",
+      "contact": "02-559-7575",
+      "menus": [
+        {
+          "name": "[로즈마리룸] 30인 이상 단체 예약",
+          "price": null,
+          "price_text": ""
+        },
+        {
+          "name": "아침(성인)",
+          "price": 85000,
+          "price_text": "85,000"
+        },
+        {
+          "name": "아침(어린이)",
+          "price": 42500,
+          "price_text": "42,500"
+        },
+        {
+          "name": "주중-점심(성인)",
+          "price": 173000,
+          "price_text": "173,000"
+        },
+        {
+          "name": "주중-점심(어린이)",
+          "price": 86500,
+          "price_text": "86,500"
+        },
+        {
+          "name": "주중-저녁(성인)",
+          "price": 198000,
+          "price_text": "198,000"
+        },
+        {
+          "name": "주중-저녁(어린이)",
+          "price": 99000,
+          "price_text": "99,000"
+        },
+        {
+          "name": "주말-점심, 저녁(성인)",
+          "price": 198000,
+          "price_text": "198,000"
+        },
+        {
+          "name": "주말-점심, 저녁(어린이)",
+          "price": 99000,
+          "price_text": "99,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:55:04.330629",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 28
+    },
+    {
+      "index": 28,
+      "name": "아리계곡",
+      "category": "요리주점",
+      "address": "서울 강남구 테헤란로1길 28-14 지상1층 101, 102호",
+      "contact": "0507-1393-7153",
+      "menus": [
+        {
+          "name": "진흙오리전병(한정판매)",
+          "price": 19900,
+          "price_text": "19,900"
+        },
+        {
+          "name": "원조닭전골",
+          "price": 22900,
+          "price_text": "22,900"
+        },
+        {
+          "name": "얼큰해장닭전골",
+          "price": 23900,
+          "price_text": "23,900"
+        },
+        {
+          "name": "누룽지아귀간육회",
+          "price": 22900,
+          "price_text": "22,900"
+        },
+        {
+          "name": "소곱창순두부전골",
+          "price": 23900,
+          "price_text": "23,900"
+        },
+        {
+          "name": "통돼지후라이드",
+          "price": 18900,
+          "price_text": "18,900"
+        },
+        {
+          "name": "계곡불닭볶음",
+          "price": 22900,
+          "price_text": "22,900"
+        },
+        {
+          "name": "닭목살유린기",
+          "price": 13900,
+          "price_text": "13,900"
+        },
+        {
+          "name": "흑임자오이무침",
+          "price": 7900,
+          "price_text": "7,900"
+        },
+        {
+          "name": "산나물닭냉채",
+          "price": 9900,
+          "price_text": "9,900"
+        },
+        {
+          "name": "닭고기육전",
+          "price": 10900,
+          "price_text": "10,900"
+        },
+        {
+          "name": "통통떡마늘똥집",
+          "price": 11900,
+          "price_text": "11,900"
+        },
+        {
+          "name": "꽈리고추연골볶음",
+          "price": 11900,
+          "price_text": "11,900"
+        },
+        {
+          "name": "포슬포슬감자떡",
+          "price": 12900,
+          "price_text": "12,900"
+        },
+        {
+          "name": "흑마늘닭튀김",
+          "price": 13900,
+          "price_text": "13,900"
+        },
+        {
+          "name": "숯불매운닭발",
+          "price": 14900,
+          "price_text": "14,900"
+        },
+        {
+          "name": "묵은지볶음밥",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "고구마약과아이스",
+          "price": 8900,
+          "price_text": "8,900"
+        },
+        {
+          "name": "깍두기빙수",
+          "price": 8900,
+          "price_text": "8,900"
+        },
+        {
+          "name": "옥수수왕새우깡",
+          "price": 13900,
+          "price_text": "13,900"
+        },
+        {
+          "name": "양파닭",
+          "price": 14900,
+          "price_text": "14,900"
+        },
+        {
+          "name": "산오리도토리묵",
+          "price": 18900,
+          "price_text": "18,900"
+        },
+        {
+          "name": "알곤이짬뽕탕",
+          "price": 21900,
+          "price_text": "21,900"
+        },
+        {
+          "name": "바질향채닭전골",
+          "price": 23900,
+          "price_text": "23,900"
+        },
+        {
+          "name": "용암모짜치즈",
+          "price": 3900,
+          "price_text": "3,900"
+        },
+        {
+          "name": "콜키지(1병당)",
+          "price": 30000,
+          "price_text": "30,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:55:16.940099",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 29
+    },
+    {
+      "index": 29,
+      "name": "바샤커피 청담 플래그십 스토어",
+      "category": "카페,디저트",
+      "address": "서울 강남구 압구정로 432",
+      "contact": "0507-1444-1910",
+      "menus": [
+        {
+          "name": "Bacha Coffee",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "Take Away 커피",
+          "price": 11000,
+          "price_text": "11,000"
+        },
+        {
+          "name": "Take Away 크루아상 (1P)",
+          "price": 4000,
+          "price_text": "4,000"
+        },
+        {
+          "name": "스크램블 에그와 블랙 트러플",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "프랑스식 오믈렛과 로메스코 소스",
+          "price": 22000,
+          "price_text": "22,000"
+        },
+        {
+          "name": "한우 채끝 프렌치토스트 샌드위치",
+          "price": 35000,
+          "price_text": "35,000"
+        },
+        {
+          "name": "슬로우쿡 치킨 프렌치토스트 샌드위치",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "한우 안심 스테이크",
+          "price": 45000,
+          "price_text": "45,000"
+        },
+        {
+          "name": "국내산 전복 리조토",
+          "price": 39000,
+          "price_text": "39,000"
+        },
+        {
+          "name": "블랙 트러플 파스타",
+          "price": 39000,
+          "price_text": "39,000"
+        },
+        {
+          "name": "전통 모로칸 케프타 미트볼",
+          "price": 37000,
+          "price_text": "37,000"
+        },
+        {
+          "name": "니스식 바샤 샐러드",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "마라케시 스파이스 치킨 샐러드",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "피스타치오 크루아상 (2P)",
+          "price": 9900,
+          "price_text": "9,900"
+        },
+        {
+          "name": "아몬드 크루아상 (2P)",
+          "price": 9900,
+          "price_text": "9,900"
+        },
+        {
+          "name": "라즈베리 시나몬 크루아상 (2P)",
+          "price": 9900,
+          "price_text": "9,900"
+        },
+        {
+          "name": "1910 & 초콜릿 크루아상 (2P)",
+          "price": 9900,
+          "price_text": "9,900"
+        },
+        {
+          "name": "버터 크루아상 (2P)",
+          "price": 9900,
+          "price_text": "9,900"
+        },
+        {
+          "name": "트러플 크루아상",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "콩테 치즈 크루아상",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "티라미수, 비엔나 던 커피",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "아웃 오브 아프리카 바닐라 밀푀유",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "레몬 타르트, 유자, 마시멜로",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "브리오쉬 푀이테, 커피 가나슈",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "홈메이드 추로스와 따뜻한 초콜릿 소스",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "브레드 푸딩, 바닐라 크렘 앙글레스",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "막달레나 커피, 오렌지 주스 목테일",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "모카 모히토 칵테일",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "바샤 슬링 칵테일",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "아이리시 커피 칵테일",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "쿠바 칵테일",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "화이트/레드와인(Glass)",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "화이트/레드와인(Bottle)",
+          "price": 90000,
+          "price_text": "90,000"
+        },
+        {
+          "name": "Remy Massin 샴페인",
+          "price": 150000,
+          "price_text": "150,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:55:31.684767",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 30
+    },
+    {
+      "index": 30,
+      "name": "역전포장마차 강남",
+      "category": "술집",
+      "address": "서울 강남구 강남대로96길 11-4 2층",
+      "contact": "0507-1342-4245",
+      "menus": [
+        {
+          "name": "한우 곱도리탕 원조",
+          "price": 32900,
+          "price_text": "32,900"
+        },
+        {
+          "name": "소주3900,생맥2900",
+          "price": 2900,
+          "price_text": "2,900"
+        },
+        {
+          "name": "역전 오뎅바(기본)",
+          "price": 12900,
+          "price_text": "12,900"
+        },
+        {
+          "name": "통마늘염통",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "얼큰 어묵 우동",
+          "price": 7900,
+          "price_text": "7,900"
+        },
+        {
+          "name": "왕교자만두",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "페페로니 콘치즈",
+          "price": 8900,
+          "price_text": "8,900"
+        },
+        {
+          "name": "한우투뿔 육회물회",
+          "price": 25900,
+          "price_text": "25,900"
+        },
+        {
+          "name": "나의 허니 토마토",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "못난이 치즈감자(모자100%)",
+          "price": 18900,
+          "price_text": "18,900"
+        },
+        {
+          "name": "파인샤베트",
+          "price": 7900,
+          "price_text": "7,900"
+        },
+        {
+          "name": "김역전차돌떡볶이",
+          "price": 19900,
+          "price_text": "19,900"
+        },
+        {
+          "name": "쫄뱅이 (골뱅이+쫄면)",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "빠따 계란후라이",
+          "price": 4900,
+          "price_text": "4,900"
+        },
+        {
+          "name": "반건조오징어&먹태",
+          "price": 19900,
+          "price_text": "19,900"
+        },
+        {
+          "name": "깐깐한 깐풍기",
+          "price": 18900,
+          "price_text": "18,900"
+        },
+        {
+          "name": "윽깬 감자 고로케",
+          "price": 8900,
+          "price_text": "8,900"
+        },
+        {
+          "name": "강남닭도리탕",
+          "price": 24000,
+          "price_text": "24,000"
+        },
+        {
+          "name": "스스로즉석라면",
+          "price": 5500,
+          "price_text": "5,500"
+        },
+        {
+          "name": "닭껍질튀김",
+          "price": 8900,
+          "price_text": "8,900"
+        },
+        {
+          "name": "숯불닭발",
+          "price": 16900,
+          "price_text": "16,900"
+        },
+        {
+          "name": "Big 콘치즈",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "닭목살어니언튀김",
+          "price": 9900,
+          "price_text": "9,900"
+        },
+        {
+          "name": "관자새우부추전",
+          "price": 19900,
+          "price_text": "19,900"
+        },
+        {
+          "name": "빠따갈릭 감튀",
+          "price": 8900,
+          "price_text": "8,900"
+        },
+        {
+          "name": "오돌뼈와주먹밥",
+          "price": 17900,
+          "price_text": "17,900"
+        },
+        {
+          "name": "마장동 한우투뿔육회",
+          "price": 24900,
+          "price_text": "24,900"
+        },
+        {
+          "name": "한우 곱마니 곱창전골",
+          "price": 35900,
+          "price_text": "35,900"
+        },
+        {
+          "name": "1사단 부대볶음",
+          "price": 12900,
+          "price_text": "12,900"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:55:44.311957",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 31
+    },
+    {
+      "index": 31,
+      "name": "베르체 도심공항터미널점",
+      "category": "카페,디저트",
+      "address": "서울 강남구 테헤란로87길 22 지하1층 Q105호",
+      "contact": "02-551-8866",
+      "menus": [
+        {
+          "name": "에스프레소",
+          "price": 4900,
+          "price_text": "4,900"
+        },
+        {
+          "name": "카페 콘파냐",
+          "price": 5500,
+          "price_text": "5,500"
+        },
+        {
+          "name": "아포가토",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "플랫 화이트",
+          "price": 5900,
+          "price_text": "5,900"
+        },
+        {
+          "name": "아메리카노",
+          "price": 5200,
+          "price_text": "5,200"
+        },
+        {
+          "name": "카페 라떼",
+          "price": 6200,
+          "price_text": "6,200"
+        },
+        {
+          "name": "카푸치노",
+          "price": 6200,
+          "price_text": "6,200"
+        },
+        {
+          "name": "베르체 라떼",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "바니글리아 라떼",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "아인슈페너",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "아이리쉬 크림커피",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "말차 라떼",
+          "price": 6900,
+          "price_text": "6,900"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:55:54.882897",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 32
+    },
+    {
+      "index": 32,
+      "name": "다몽집 신논현본점",
+      "category": "육류,고기요리",
+      "address": "서울 강남구 강남대로100길 13 지하1층/2층 다몽집",
+      "contact": "0507-1468-4245",
+      "menus": [
+        {
+          "name": "안창갈비(250g)",
+          "price": 24000,
+          "price_text": "24,000"
+        },
+        {
+          "name": "할머니된장찌개",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "트러플 육회 (1++한우)",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "깍둑가브리(170g)",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "통갈매기살(200g)",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "연목살(170g)",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "\"특상\" 한우 우설",
+          "price": 38000,
+          "price_text": "38,000"
+        },
+        {
+          "name": "삼겹살(170g)",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "깍뚝항정(160g)",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "돈비너스살(170g)",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "1++한우살치살(넘버9)(130g)",
+          "price": 69000,
+          "price_text": "69,000"
+        },
+        {
+          "name": "치즈폭탄계란찜",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "함흥 한우 육회 냉면",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "치즈 폭탄 감자 볶음밥",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "비빔 냉면",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "대게내장볶음밥",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "할머니된장술밥전골",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "물냉면",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "맨초밥",
+          "price": 2000,
+          "price_text": "2,000"
+        },
+        {
+          "name": "공기밥",
+          "price": 1000,
+          "price_text": "1,000"
+        },
+        {
+          "name": "하이볼",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "와인 Half Bottle Wine",
+          "price": 12000,
+          "price_text": "12,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:56:07.428000",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 33
+    },
+    {
+      "index": 33,
+      "name": "신정",
+      "category": "육류,고기요리",
+      "address": "서울 강남구 헌릉로569길 39-3 주차는 발렛 주차",
+      "contact": "02-554-1033",
+      "menus": [
+        {
+          "name": "양갈비",
+          "price": 60000,
+          "price_text": "60,000"
+        },
+        {
+          "name": "오리구이 한 마리",
+          "price": 90000,
+          "price_text": "90,000"
+        },
+        {
+          "name": "진기스칸",
+          "price": 65000,
+          "price_text": "65,000"
+        },
+        {
+          "name": "국수전골",
+          "price": 35000,
+          "price_text": "35,000"
+        },
+        {
+          "name": "곱창전골",
+          "price": 58000,
+          "price_text": "58,000"
+        },
+        {
+          "name": "등심구이",
+          "price": 65000,
+          "price_text": "65,000"
+        },
+        {
+          "name": "메밀소바",
+          "price": 11000,
+          "price_text": "11,000"
+        },
+        {
+          "name": "삼미우동",
+          "price": 11000,
+          "price_text": "11,000"
+        },
+        {
+          "name": "국수전골(미국산)",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "곱창전골(미국산)",
+          "price": 33000,
+          "price_text": "33,000"
+        },
+        {
+          "name": "진기스칸(미국산)",
+          "price": 40000,
+          "price_text": "40,000"
+        },
+        {
+          "name": "등심(미국산)",
+          "price": 37000,
+          "price_text": "37,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:56:18.006888",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 34
+    },
+    {
+      "index": 34,
+      "name": "모미지 신논현점",
+      "category": "일식당",
+      "address": "서울 강남구 봉은사로1길 33 2층",
+      "contact": "0507-1432-0881",
+      "menus": [
+        {
+          "name": "계절 모둠 사시미 小",
+          "price": 55000,
+          "price_text": "55,000"
+        },
+        {
+          "name": "계절 모둠 사시미 大",
+          "price": 85000,
+          "price_text": "85,000"
+        },
+        {
+          "name": "특선 모둠 사시미",
+          "price": 135000,
+          "price_text": "135,000"
+        },
+        {
+          "name": "사케주문시/계절 모둠 사시미 小",
+          "price": 50000,
+          "price_text": "50,000"
+        },
+        {
+          "name": "사케주문시/계절 모둠 사시미 大",
+          "price": 75000,
+          "price_text": "75,000"
+        },
+        {
+          "name": "사케주문시/특선 모둠 사시미",
+          "price": 115000,
+          "price_text": "115,000"
+        },
+        {
+          "name": "단새우 우니",
+          "price": 58000,
+          "price_text": "58,000"
+        },
+        {
+          "name": "우니사합",
+          "price": 78000,
+          "price_text": "78,000"
+        },
+        {
+          "name": "랍스터 사시미(500g1미+버터구이)",
+          "price": 58000,
+          "price_text": "58,000"
+        },
+        {
+          "name": "시로미 고노와다",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "연어 사시미",
+          "price": 37000,
+          "price_text": "37,000"
+        },
+        {
+          "name": "마구로 타다끼",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "마구로 육회",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "안키모 사시미",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "한우 스키야끼",
+          "price": 45000,
+          "price_text": "45,000"
+        },
+        {
+          "name": "한우 등심 마늘 타다키",
+          "price": 33000,
+          "price_text": "33,000"
+        },
+        {
+          "name": "한우 샤브샤브",
+          "price": 45000,
+          "price_text": "45,000"
+        },
+        {
+          "name": "방어사시미 小",
+          "price": 50000,
+          "price_text": "50,000"
+        },
+        {
+          "name": "방어사시미 大",
+          "price": 80000,
+          "price_text": "80,000"
+        },
+        {
+          "name": "모미지 모둠 쿠시야끼",
+          "price": 35000,
+          "price_text": "35,000"
+        },
+        {
+          "name": "야키토리 5종",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "삼겹말이 4종",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "장어 숯불구이",
+          "price": 39000,
+          "price_text": "39,000"
+        },
+        {
+          "name": "한우 숯불구이",
+          "price": 33000,
+          "price_text": "33,000"
+        },
+        {
+          "name": "메로구이",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "도미머리 구이(소금)",
+          "price": 27000,
+          "price_text": "27,000"
+        },
+        {
+          "name": "연어머리 구이(소금)",
+          "price": 25000,
+          "price_text": "25,000"
+        },
+        {
+          "name": "시샤모(10피스)",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "명란구이",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "사천식 가라아게",
+          "price": 24000,
+          "price_text": "24,000"
+        },
+        {
+          "name": "명란 가리비 튀김",
+          "price": 26000,
+          "price_text": "26,000"
+        },
+        {
+          "name": "난방 치킨",
+          "price": 24000,
+          "price_text": "24,000"
+        },
+        {
+          "name": "테바사키 튀김",
+          "price": 26000,
+          "price_text": "26,000"
+        },
+        {
+          "name": "오징어 먹물 덴뿌라",
+          "price": 25000,
+          "price_text": "25,000"
+        },
+        {
+          "name": "새우 덴뿌라",
+          "price": 26000,
+          "price_text": "26,000"
+        },
+        {
+          "name": "크림 에비마요",
+          "price": 24000,
+          "price_text": "24,000"
+        },
+        {
+          "name": "모둠 고로케",
+          "price": 20000,
+          "price_text": "20,000"
+        },
+        {
+          "name": "조개 술찜",
+          "price": 26000,
+          "price_text": "26,000"
+        },
+        {
+          "name": "차돌박이 숙주볶음",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "호르몬 야끼우동(대창볶음우동)",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "해물 야끼우동",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "해물 토마토 스튜",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "새우요세나베",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "나가사끼 해물 짬뽕나베",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "중화풍 해물 짬뽕나베",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "오뎅 나베",
+          "price": 26000,
+          "price_text": "26,000"
+        },
+        {
+          "name": "차돌박이 탄탄나베",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "명란모츠나베",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "후토마끼",
+          "price": 30000,
+          "price_text": "30,000"
+        },
+        {
+          "name": "육회마끼",
+          "price": 30000,
+          "price_text": "30,000"
+        },
+        {
+          "name": "금태솥밥",
+          "price": 30000,
+          "price_text": "30,000"
+        },
+        {
+          "name": "우나기솥밥",
+          "price": 25000,
+          "price_text": "25,000"
+        },
+        {
+          "name": "도미솥밥",
+          "price": 20000,
+          "price_text": "20,000"
+        },
+        {
+          "name": "전복솥밥",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "타코 와사비",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "크림치즈",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "오이 타다끼",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "연어 샐러드",
+          "price": 28000,
+          "price_text": "28,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:56:35.054774",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 35
+    },
+    {
+      "index": 35,
+      "name": "단성무이 강남점",
+      "category": "요리주점",
+      "address": "서울 강남구 강남대로96길 16 1층",
+      "contact": "0507-1424-4655",
+      "menus": [
+        {
+          "name": "홍콩 덕 한상",
+          "price": 26900,
+          "price_text": "26,900"
+        },
+        {
+          "name": "쌀국수사리+도넛샤브+모둠해물",
+          "price": 46000,
+          "price_text": "46,000"
+        },
+        {
+          "name": "쌀국수사리+도넛마라샤브+모둠해물",
+          "price": 46500,
+          "price_text": "46,500"
+        },
+        {
+          "name": "망고스무디하이볼",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "한우육회",
+          "price": 21900,
+          "price_text": "21,900"
+        },
+        {
+          "name": "유린기",
+          "price": 19500,
+          "price_text": "19,500"
+        },
+        {
+          "name": "도넛마라샤브",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "크림짬뽕파스타",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "산더미 수육전골",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "무이구름주",
+          "price": 9500,
+          "price_text": "9,500"
+        },
+        {
+          "name": "크림새우",
+          "price": 19500,
+          "price_text": "19,500"
+        },
+        {
+          "name": "칠리새우",
+          "price": 19500,
+          "price_text": "19,500"
+        },
+        {
+          "name": "도넛샤브",
+          "price": 27500,
+          "price_text": "27,500"
+        },
+        {
+          "name": "바지락술찜",
+          "price": 16500,
+          "price_text": "16,500"
+        },
+        {
+          "name": "마라샹궈",
+          "price": 16500,
+          "price_text": "16,500"
+        },
+        {
+          "name": "반건조 오징어",
+          "price": 10900,
+          "price_text": "10,900"
+        },
+        {
+          "name": "튀김 어포",
+          "price": 4900,
+          "price_text": "4,900"
+        },
+        {
+          "name": "새우마빡튀김",
+          "price": 7900,
+          "price_text": "7,900"
+        },
+        {
+          "name": "먹태",
+          "price": 14900,
+          "price_text": "14,900"
+        },
+        {
+          "name": "완탕면",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "피아오량 딤섬",
+          "price": 7300,
+          "price_text": "7,300"
+        },
+        {
+          "name": "샤오롱바오 딤섬",
+          "price": 5900,
+          "price_text": "5,900"
+        },
+        {
+          "name": "교자튀김",
+          "price": 5900,
+          "price_text": "5,900"
+        },
+        {
+          "name": "교자강정",
+          "price": 6900,
+          "price_text": "6,900"
+        },
+        {
+          "name": "고추튀김",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "멘보샤",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "미나리 냉채 수육 무침",
+          "price": 11900,
+          "price_text": "11,900"
+        },
+        {
+          "name": "문어 냉채 무침",
+          "price": 11900,
+          "price_text": "11,900"
+        },
+        {
+          "name": "지중해식 문어 샐러드",
+          "price": 11900,
+          "price_text": "11,900"
+        },
+        {
+          "name": "어향김말이",
+          "price": 10500,
+          "price_text": "10,500"
+        },
+        {
+          "name": "어향 쉬림프 가지튀김",
+          "price": 16500,
+          "price_text": "16,500"
+        },
+        {
+          "name": "흑후추우삼겹",
+          "price": 11900,
+          "price_text": "11,900"
+        },
+        {
+          "name": "스윗망고",
+          "price": 10500,
+          "price_text": "10,500"
+        },
+        {
+          "name": "파인애플샤베트",
+          "price": 8500,
+          "price_text": "8,500"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:56:49.792263",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 36
+    },
+    {
+      "index": 36,
+      "name": "모스가든",
+      "category": "양식",
+      "address": "서울 강남구 논현로139길 12",
+      "contact": "0507-1489-1988",
+      "menus": [
+        {
+          "name": "방유당 메밀 여름 막국수",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "시골 농장 호박 스프",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "카이로 후무스 딥과 먹물 치아바타",
+          "price": 25000,
+          "price_text": "25,000"
+        },
+        {
+          "name": "지중해풍 페스카토레 쌀국수",
+          "price": 38000,
+          "price_text": "38,000"
+        },
+        {
+          "name": "베트남식 치킨 스타우브 그릴",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "제주 메밀 청귤 초계국수",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "완도 전복 삼계 빠에야",
+          "price": 34000,
+          "price_text": "34,000"
+        },
+        {
+          "name": "캘리포니아 쉬림프 냉누들",
+          "price": 26000,
+          "price_text": "26,000"
+        },
+        {
+          "name": "굿사마리안 호박 스프 (1인)",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "굿사마리안 매콤토마토 스프 (1인)",
+          "price": 11000,
+          "price_text": "11,000"
+        },
+        {
+          "name": "성주 참외 오이탕탕이 샐러드",
+          "price": 20000,
+          "price_text": "20,000"
+        },
+        {
+          "name": "말리부 오렌지 가든 샐러드",
+          "price": 23000,
+          "price_text": "23,000"
+        },
+        {
+          "name": "만가닥버섯 명란파스타",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "시칠리아 가든 라자냐",
+          "price": 28000,
+          "price_text": "28,000"
+        },
+        {
+          "name": "이탈리아 남부식 문어 오르기에떼",
+          "price": 30000,
+          "price_text": "30,000"
+        },
+        {
+          "name": "매콤토마토 해산물 떡그라탕",
+          "price": 30000,
+          "price_text": "30,000"
+        },
+        {
+          "name": "토스카나식 오징어먹물 버터 빠에야",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "폴로리다 오렌지 치킨 스타우브그릴",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "하와이안 치킨 스타우브그릴",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "의성 마늘 레드 칠리 스타우브그릴",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "싱가폴리안 페퍼 치킨 스타우브 그릴",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "꽁블가든스커리 스타우브 그릴",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "안동 갈비 치킨 스타우브 그릴",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "시칠리아식 토마토 치킨 스타우브 그릴",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "사마리안 스테이크",
+          "price": 58000,
+          "price_text": "58,000"
+        },
+        {
+          "name": "스페니쉬 자숙 돌문어 세비체",
+          "price": 26000,
+          "price_text": "26,000"
+        },
+        {
+          "name": "남해 흰다리 새우 스타우브 그릴 8P",
+          "price": 32000,
+          "price_text": "32,000"
+        },
+        {
+          "name": "가든 씨푸드 스타우브 그릴",
+          "price": 48000,
+          "price_text": "48,000"
+        },
+        {
+          "name": "알프스 스타우브 감자전",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "보성 말차 이시돌 목장 아이스크림",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "제주 농장 청귤티",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "로얄 이시돌 밀크티",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "청송사과케일 주스",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "디톡스 팜 주스",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "뷰티뷰티 팜 쥬스",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "오!마이건강주스",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "제주당근주스",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "제주 그레이씨와 감귤양",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "하동 히비스커스 블라섬 차",
+          "price": 6500,
+          "price_text": "6,500"
+        },
+        {
+          "name": "문경오미자 티",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "제주 청귤에이드",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "건강레모네이드",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "문경 오미자 에이드",
+          "price": 8500,
+          "price_text": "8,500"
+        },
+        {
+          "name": "아메리카노",
+          "price": 6000,
+          "price_text": "6,000"
+        },
+        {
+          "name": "카페라떼",
+          "price": 7000,
+          "price_text": "7,000"
+        },
+        {
+          "name": "바닐라 라떼",
+          "price": 8000,
+          "price_text": "8,000"
+        },
+        {
+          "name": "오틀리라떼",
+          "price": 8000,
+          "price_text": "8,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:57:06.973017",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 37
+    },
+    {
+      "index": 37,
+      "name": "닭가대표 숯불직화구이치킨 강남역삼대표점",
+      "category": "요리주점",
+      "address": "서울 강남구 테헤란로21길 25 1층 닭가대표 강남역삼대표점",
+      "contact": "0507-1400-8236",
+      "menus": [],
+      "crawled_at": "2025-08-12T12:57:17.868651",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 38
+    },
+    {
+      "index": 38,
+      "name": "후추포인트",
+      "category": "양식",
+      "address": "서울 강남구 봉은사로6길 30 1층",
+      "contact": "0507-1384-1540",
+      "menus": [
+        {
+          "name": "초당옥수수 뇨끼",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "클래식 라자냐",
+          "price": 21000,
+          "price_text": "21,000"
+        },
+        {
+          "name": "투움바 파스타",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "화이트 라구 파스타",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "후추 스테이크",
+          "price": 36000,
+          "price_text": "36,000"
+        },
+        {
+          "name": "콥 샐러드",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "타코 샐러드",
+          "price": 18000,
+          "price_text": "18,000"
+        },
+        {
+          "name": "클램차우더",
+          "price": 9000,
+          "price_text": "9,000"
+        },
+        {
+          "name": "김치볶음밥",
+          "price": 14000,
+          "price_text": "14,000"
+        },
+        {
+          "name": "새우 루꼴라 파스타",
+          "price": 17000,
+          "price_text": "17,000"
+        },
+        {
+          "name": "부라타 토마토 파스타",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "포르치니 감자뇨끼",
+          "price": 20000,
+          "price_text": "20,000"
+        }
+      ],
+      "crawled_at": "2025-08-12T12:57:28.233608",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 39
+    },
+    {
+      "index": 39,
+      "name": "갓잇 도곡점",
+      "category": "멕시코,남미음식",
+      "address": "서울 강남구 논현로28길 35 1층 101호 갓잇 도곡점",
+      "contact": "0507-1385-9039",
+      "menus": [],
+      "crawled_at": "2025-08-12T12:57:39.021283",
+      "success": true,
+      "page_number": 2,
+      "position_in_page": 40
+    },
+    {
+      "index": 0,
+      "name": "로마옥 도곡",
+      "category": "양식",
+      "address": "서울 강남구 강남대로48길 11 1층 로마옥",
+      "contact": "0507-1325-2396",
+      "menus": [
+        {
+          "name": "잣 카프레제 샐러드",
+          "price": 15000,
+          "price_text": "15,000"
+        },
+        {
+          "name": "치킨 꼬르동 시저샐러드",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "다시마 숙성 광어 카르파치오",
+          "price": 16000,
+          "price_text": "16,000"
+        },
+        {
+          "name": "크리스피 먹물 관자와 감자 퓨레",
+          "price": 19000,
+          "price_text": "19,000"
+        },
+        {
+          "name": "피리피리 치킨",
+          "price": 29000,
+          "price_text": "29,000"
+        },
+        {
+          "name": "발사믹 글레이즈 연어 스테이크",
+          "price": 35000,
+          "price_text": "35,000"
+        },
+        {
+          "name": "마살라 소스와 수비드한 항정살",
+          "price": 37000,
+          "price_text": "37,000"
+        },
+        {
+          "name": "한우 채끝 스테이크",
+          "price": 64000,
+          "price_text": "64,000"
+        },
+        {
+          "name": "안심 스테이크",
+          "price": 64000,
+          "price_text": "64,000"
+        },
+        {
+          "name": "바질 비앙코 파스타",
+          "price": 24000,
+          "price_text": "24,000"
+        },
+        {
+          "name": "전복 게우 파스타",
+          "price": 25000,
+          "price_text": "25,000"
+        },
+        {
+          "name": "트러플 크림 파스타",
+          "price": 25000,
+          "price_text": "25,000"
+        },
+        {
+          "name": "그릴드 감베리 뽀모도로 파스타",
+          "price": 26000,
+          "price_text": "26,000"
+        },
+        {
+          "name": "한우 라구 생면 라자냐롤",
+          "price": 27000,
+          "price_text": "27,000"
+        },
+        {
+          "name": "갑오징어 먹물 리조또",
+          "price": 24000,
+          "price_text": "24,000"
+        },
+        {
+          "name": "매생이 관자 리조또",
+          "price": 25000,
+          "price_text": "25,000"
+        },
+        {
+          "name": "제철 과일 & 치즈 플레터",
+          "price": 13000,
+          "price_text": "13,000"
+        },
+        {
+          "name": "티라미쑥",
+          "price": 10000,
+          "price_text": "10,000"
+        },
+        {
+          "name": "부넷",
+          "price": 12000,
+          "price_text": "12,000"
+        },
+        {
+          "name": "wine",
+          "price": null,
+          "price_text": ""
+        }
+      ],
+      "crawled_at": "2025-08-12T12:58:04.032848",
+      "success": true,
+      "page_number": 3,
+      "position_in_page": 1
+    },
+    {
+      "index": 1,
+      "name": "광화문석갈비 코엑스점",
+      "category": "육류,고기요리",
+      "address": "서울 강남구 테헤란로87길 22 도심공항터미널 1층",
+      "contact": "0507-1378-0348",
+      "menus": [
+        {
+          "name": "🔥광석씨네 점심메뉴",
+          "price": null,
+          "price_text": ""
+        },
+        {
+          "name": "🔥광석씨네 술차림&스페셜요리",
+          "price": null,
+          "price_text": ""
+        },
+        {
+          "name": "🍶 주류 및 음료",
+          "price": null,
+          "price_text": ""
+        },
+        {
+          "name": "돼지 돌판구이",
+          "price": 18900,
+          "price_text": "18,900"
+        },
+        {
+          "name": "소 돌판구이",
+          "price": 26900,
+          "price_text": "26,900"
+        },
+        {
+          "name": "돼지 갈비찜",
+          "price": 19400,
+          "price_text": "19,400"
+        },
+        {
+          "name": "소 갈비찜",
+          "price": 27300,
+          "price_text": "27,300"
+        },
+        {
+          "name": "한우 화로구이",
+          "price": 32900,
+          "price_text": "32,900"
+        },
+        {
+          "name": "들기름 고사리 막국수",
+          "price": 17300,
+          "price_text": "17,300"
+        },
+        {
+          "name": "한우 육회물회",
+          "price": 19400,
+          "price_text": "19,400"
+        },
+        {
+          "name": "한우 육회비빔밥",
+          "price": 19400,
+          "price_text": "19,400"
+        },
+        {
+          "name": "새콤한 등갈비 튀김",
+          "price": 25900,
+          "price_text": "25,900"
+        },
+        {
+          "name": "치즈감자전",
+          "price": 18900,
+          "price_text": "18,900"
+        },
+        {
+          "name": "소 돌판구이 세트(2인)",
+          "price": 69500,
+          "price_text": "69,500"
+        },
+        {
+          "name": "소 돌판구이 세트(3인)",
+          "price": 87900,
+          "price_text": "87,900"
+        },
+        {
+          "name": "돼지 돌판구이 세트(2인)",
+          "price": 52900,
+          "price_text": "52,900"
+        },
+        {
+          "name": "돼지 돌판구이 세트(3인)",
+          "price": 68900,
+          "price_text": "68,900"
+        },
+        {
+          "name": "돼지 돌판구이 도시락",
+          "price": 18900,
+          "price_text": "18,900"
+        },
+        {
+          "name": "소 돌판구이 도시락",
+          "price": 26900,
+          "price_text": "26,900"
+        },
+        {
+          "name": "📌 구이 세트 메뉴",
+          "price": null,
+          "price_text": ""
+        }
+      ],
+      "crawled_at": "2025-08-12T12:58:16.535185",
+      "success": true,
+      "page_number": 3,
+      "position_in_page": 2
+    }
+  ],
+  "page_counts": {
+    "page_1": 10,
+    "page_2": 40,
+    "page_3": 2
+  },
+  "total_restaurants": 52,
+  "total_menus": 1139
+}
