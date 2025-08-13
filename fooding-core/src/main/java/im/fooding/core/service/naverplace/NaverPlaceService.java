@@ -18,7 +18,8 @@ public class NaverPlaceService {
     private final NaverPlaceRepository naverPlaceRepository;
 
     @Transactional
-    public String create(
+    public Long create(
+            Long id,
             String name,
             String category,
             String address,
@@ -26,6 +27,7 @@ public class NaverPlaceService {
             List<NaverPlace.Menu> menus
     ) {
         NaverPlace naverPlace = NaverPlace.builder()
+                .id(id)
                 .name(name)
                 .category(category)
                 .address(address)

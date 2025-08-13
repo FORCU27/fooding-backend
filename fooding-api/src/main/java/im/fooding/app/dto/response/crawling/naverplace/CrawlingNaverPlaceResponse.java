@@ -11,7 +11,7 @@ import lombok.Value;
 public class CrawlingNaverPlaceResponse {
 
     @Schema(description = "ID", example = "6889bf12db34d469470f868e")
-    String id;
+    Long id;
 
     @Schema(description = "이름", example = "자연산 해담일식 대게마을")
     String name;

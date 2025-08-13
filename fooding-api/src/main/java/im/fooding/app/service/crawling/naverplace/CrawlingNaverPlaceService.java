@@ -21,8 +21,9 @@ public class CrawlingNaverPlaceService {
     private final NaverPlaceService naverPlaceService;
 
     @Transactional
-    public String create(@Valid CrawlingNaverPlaceCreateRequest request) {
+    public Long create(@Valid CrawlingNaverPlaceCreateRequest request) {
         return naverPlaceService.create(
+                request.getId(),
                 request.getName(),
                 request.getCategory(),
                 request.getAddress(),
