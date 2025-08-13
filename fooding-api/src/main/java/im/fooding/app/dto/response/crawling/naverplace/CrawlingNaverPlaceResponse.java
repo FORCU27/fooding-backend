@@ -10,16 +10,16 @@ import lombok.Value;
 @Builder
 public class CrawlingNaverPlaceResponse {
 
-    @Schema(description = "이름", example = "자연산 해담일식 대게마을")
+    @Schema(description = "ID", example = "6889bf12db34d469470f868e")
     String id;
 
-    @Schema(description = "가게 종류", example = "일식당")
+    @Schema(description = "이름", example = "자연산 해담일식 대게마을")
     String name;
 
-    @Schema(description = "주소", example = "서울 강남구 언주로93길 12 1층 해담일식")
+    @Schema(description = "가게 종류", example = "일식당")
     String category;
 
-    @Schema(description = "연락처", example = "0507-1397-3305")
+    @Schema(description = "주소", example = "서울 강남구 언주로93길 12 1층 해담일식")
     String address;
 
     @Schema(description = "연락처", example = "0507-1397-3305")
