@@ -10,7 +10,6 @@ spring:
 
   elasticsearch:
     uris: http://localhost:9200
-    id: ${ELASTIC_SEARCH_ID:}
     key: ${ELASTIC_SEARCH_KEY:}
 
   data:

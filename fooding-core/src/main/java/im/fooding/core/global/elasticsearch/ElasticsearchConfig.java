@@ -6,6 +6,7 @@ import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.Getter;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
@@ -18,22 +19,20 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 @Configuration
+@Getter
 public class ElasticsearchConfig {
     private final String host;
-    private final String id;
     private final String key;
 
     public ElasticsearchConfig(@Value("${spring.elasticsearch.uris}") String host,
-                               @Value("${spring.elasticsearch.id}") String id,
                                @Value("${spring.elasticsearch.key}") String key) {
         this.host = host;
-        this.id = id;
         this.key = key;
     }
 
     @Bean
     public RestClient restClient() {
-        Header apiKeyHeader = new BasicHeader("Authorization", "ApiKey " + getApiKey());
+        Header apiKeyHeader = new BasicHeader("Authorization", "ApiKey %s".formatted(key));
         return RestClient.builder(HttpHost.create(host))
                 .setDefaultHeaders(new Header[]{apiKeyHeader})
                 .build();
@@ -45,11 +44,5 @@ public class ElasticsearchConfig {
         mapper.registerModule(new JavaTimeModule());
         ElasticsearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper(mapper));
         return new ElasticsearchClient(transport);
-    }
-
-    private String getApiKey() {
-        // String apiKey = "%s:%s".formatted(id, key);
-        // return Base64.getEncoder().encodeToString(apiKey.getBytes(StandardCharsets.UTF_8));
-        return key;
     }
 }
