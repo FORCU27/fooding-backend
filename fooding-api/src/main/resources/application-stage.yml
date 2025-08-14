@@ -9,7 +9,6 @@ spring:
 
   elasticsearch:
     uris: ${ELASTIC_SEARCH_URIS}
-    id: ${ELASTIC_SEARCH_ID}
     key: ${ELASTIC_SEARCH_KEY}
 
   data:
