@@ -1,10 +1,17 @@
 package im.fooding.app.service.crawling.catchtable;
 
+import im.fooding.app.dto.request.crawling.catchtable.CatchTableMenuRequest;
+import im.fooding.app.dto.request.crawling.catchtable.CatchTableStoreRequest;
 import im.fooding.app.dto.response.crawling.GetStoreDocumentResponse;
+import im.fooding.app.dto.response.crawling.GetStoreMenuDocumentResponse;
+import im.fooding.core.model.store.document.CatchTableStoreDocument;
 import im.fooding.core.model.store.document.StoreDocument;
+import im.fooding.core.model.store.document.StoreMenuDocument;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.store.StoreService;
+import im.fooding.core.service.store.document.CatchTableStoreDocumentService;
 import im.fooding.core.service.store.document.StoreDocumentService;
+import im.fooding.core.service.store.document.StoreMenuDocumentService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,66 +30,59 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class CrawlingCatchtableService {
-    private final StoreDocumentService documentService;
+    private final CatchTableStoreDocumentService documentService;
+    private final StoreMenuDocumentService menuDocumentService;
     private final StoreService storeService;
-    private final UserService userService;
 
-    // CSV 파일의 Store 정보를 MongoDB Document로 만드는 함수
-    private List<StoreDocument> csvToDocument() {
-        // csv 파일을 읽어옴
-        String fileName = "";
-        String line = "";
-        String SPLIT_BY = ",";
-
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            List<StoreDocument> documentList = new ArrayList<StoreDocument>();
-            while ((line = br.readLine()) != null) {
-                String[] store = line.split(SPLIT_BY);
-                // 이름, 설명, 주소, 가격대, 시간대, 지역, 분류, 위치
-                // Document에 정의되지 않은 값들은 무시
-                StoreDocument storeDoc = StoreDocument.builder()
-                        .name( store[0] )
-                        .category( store[6] )
-                        .address( store[2] )
-                        .reviewCount( 0 )
-                        .averageRating( 0 )
-                        .visitCount( 0 )
-                        .createdAt( LocalDateTime.now() )
-                        .build();
-                documentList.add( storeDoc );
-            }
-            return documentList;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public String saveDocuments(CatchTableStoreRequest request){
+        // 1개의 Request = 1개의 Store
+        System.out.println( request.getStoreName() );
+        CatchTableStoreDocument storeDocument = CatchTableStoreDocument.builder()
+                .name(request.getStoreName())
+                .city(request.getRegion())
+                .category(request.getCategory())
+                .description(request.getDescription())
+                .priceCategory(request.getPriceCategory())
+                .direction(request.getDirection())
+                .information(request.getInformation())
+                .address(request.getAddress())
+                .build();
+        String storeDocumentId = documentService.save( storeDocument );
+        return storeDocumentId;
     }
 
-    public void saveDocuments(){
-        List<StoreDocument > documentList = this.csvToDocument();
-        for( StoreDocument document : documentList )documentService.save( document );
+    public void saveMenuDocument(CatchTableMenuRequest request){
+        StoreMenuDocument menuDocument = StoreMenuDocument.builder()
+                .storeId( request.getStoreId() )
+                .menuName( request.getMenuName() )
+                .price( request.getPrice() )
+                .build();
+        menuDocumentService.save( menuDocument );
     }
 
     // 만들어진 모든 MongoDB의 Document를 조회하는 함수
     public Page<GetStoreDocumentResponse> getDocuments(Pageable pageable){
         // fullTextSearch 함수가 null 값들을 받아낼 수 있는지 확인 필요
-        return documentService.fullTextSearch( null, null, null, pageable ).map(GetStoreDocumentResponse::of);
+        return null;
     }
 
     // Document ID를 통해 특정 Document의 정보를 확인하는 함수
-    public GetStoreDocumentResponse findDocumentById(long documentId){
+    public GetStoreDocumentResponse findDocumentById(String documentId){
         // Document ID를 통해 특정 Document의 정보를 불러오는 함수 필요
-        return GetStoreDocumentResponse.of( documentService.findById( documentId ) );
+        GetStoreDocumentResponse response = GetStoreDocumentResponse.of( documentService.findById( documentId ) );
+        List<StoreMenuDocument> menuList = menuDocumentService.findByStoreId(documentId).stream().toList();
+        response.setMenuList( menuList.stream().map(GetStoreMenuDocumentResponse::of).toList() );
+        return response;
     }
 
     // MongoDB의 Document의 ID를 통해 해당 ID의 Document를 MySQL Store Entity로 저장하는 함수
-    public void create( long documentId ){
-        StoreDocument document = documentService.findById( documentId );
+    public void create( String documentId ){
+        CatchTableStoreDocument document = documentService.findById( documentId );
         // owner, name, region, city, address, category, description, priceCategory, eventDescription, contactNumber, direction, information,
         //      isParkingAvailable, isNewOpen, isTakeOut, latitude, longitude
         storeService.create(
-                null, document.getName(), null, null, document.getAddress(), document.getCategory(), null, null, "",
-                "", "", "", false, false, false, null, null
+                null, document.getName(), null, document.getCity(), document.getAddress(), document.getCategory(), document.getDescription(), document.getPriceCategory(),
+                "", "", document.getDirection(), document.getInformation(), false, false, false, 0.0, 0.0
         );
     }
 }

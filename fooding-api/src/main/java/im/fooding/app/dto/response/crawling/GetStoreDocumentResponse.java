@@ -1,37 +1,40 @@
 package im.fooding.app.dto.response.crawling;
 
+import im.fooding.core.model.store.document.CatchTableStoreDocument;
 import im.fooding.core.model.store.document.StoreDocument;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetStoreDocumentResponse {
-    private long id;
+    private String id;
     private String name;
     private String category;
     private String address;
-    private int reviewCount;
-    private double averageRating;
-    private int visitCount;
-    private LocalDateTime createdAt;
+    private String city;
+    private String description;
+    private String priceCategory;
+    private String direction;
+    private String information;
+    private List<GetStoreMenuDocumentResponse> menuList;
 
-    public static GetStoreDocumentResponse of(StoreDocument document){
+    public static GetStoreDocumentResponse of(CatchTableStoreDocument document){
         return GetStoreDocumentResponse.builder()
                 .id(document.getId())
                 .name(document.getName())
                 .category(document.getCategory())
                 .address(document.getAddress())
-                .reviewCount(document.getReviewCount())
-                .averageRating(document.getAverageRating())
-                .visitCount(document.getVisitCount())
-                .createdAt(document.getCreatedAt())
+                .city(document.getCity())
+                .description(document.getDescription())
+                .priceCategory(document.getPriceCategory())
+                .direction(document.getDirection())
+                .information(document.getInformation())
                 .build();
     }
 }
