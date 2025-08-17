@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -9,21 +11,36 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.*;
 
 public class Main {
 
+    // 웹 크롤링
     private WebDriver driver;
     private WebDriverWait wait;
     private WebDriverWait shortWait;
     private WebDriverWait longWait;
 
+    // HTTP 메서드 사용
+    private final HttpClient httpClient;
+    private final ObjectMapper objectMapper;
+
+    private final String HOST_URL = "https://localhost:8080";
+
     public Main(WebDriver driver) {
+        // 웹 크롤링 관련 인스턴스 생성
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         this.shortWait = new WebDriverWait(driver, Duration.ofSeconds(3));
         this.longWait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        // API 메서드 관련 인스턴스 생성
+        this.httpClient = HttpClient.newBuilder().connectTimeout( Duration.ofSeconds(30) ).build();
+        this.objectMapper = new ObjectMapper();
     }
 
     public Store clickDivByDataIndex(int dataIndex) {
@@ -399,6 +416,19 @@ public class Main {
         return store;
     }
 
+    private void uploadToFooding( List<Store> storeList ){
+        System.out.println( "총 " + storeList.size() + "개의 가게 생성 시작" );
+        for( Store store : storeList ){
+            System.out.println( store.getName() + " >> 가게 생성중" );
+            String documentId = createStore( store );
+            List<StoreMenu> menuList = store.getMenuList();
+            for( StoreMenu menu : menuList ){
+                createMenu( menu, documentId );
+            }
+        }
+        System.out.println( "모든 가게 생성 완료" );
+    }
+
     private static void exportStoreList(List<Store> storeList, String position) {
         try (FileWriter writer = new FileWriter("catchtable_store_list_" + position + ".csv")) {
             // CSV 헤더 작성
@@ -449,6 +479,45 @@ public class Main {
             return "\"" + field.replace("\"", "\"\"") + "\"";
         }
         return field;
+    }
+
+    private String createStore( Store store ){
+        try {
+            String requestBody = objectMapper.writeValueAsString( store );
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create( HOST_URL + "/crawling/catchtable/shops"))
+                    .header("accept", "*/*")
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+            HttpResponse<String> response = httpClient.send( request, HttpResponse.BodyHandlers.ofString() );
+            if( response.statusCode() != 200 ) throw new RuntimeException();
+
+            JsonNode jsonNode = objectMapper.readTree( response.body() );
+            String status = jsonNode.get("status").asText();if (!"OK".equals(status)) throw new RuntimeException();
+            return jsonNode.get("data").asText();
+        }
+        catch ( Exception e ) {
+            System.out.println( "Error" );
+            return null;
+        }
+    }
+
+    private static void createMenu( StoreMenu menu, String storeDocumentId ){
+        try {
+            String requestBody = objectMapper.writeValueAsString( menu );
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri( URI.create( HOST_URL + "/") )
+                    .header("accept", "*/*")
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+            HttpResponse<String> response = httpClient.send( request, HttpResponse.BodyHandlers.ofString() );
+            if( response.statusCode() != 200 ) throw new RuntimeException();
+        }
+        catch( Exception e ){
+            System.out.println( "Error" );
+        }
     }
 
     private boolean ensureElementVisible(int dataIndex) {
