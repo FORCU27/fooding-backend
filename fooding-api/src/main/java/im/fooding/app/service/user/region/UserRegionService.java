@@ -20,7 +20,12 @@ public class UserRegionService {
     private final RegionService regionService;
 
     public PageResponse<UserRegionResponse> list(@Valid UserRegionListRequest request) {
-        Page<Region> regions = regionService.list(request.getPageable());
+        Region parentRegion = null;
+        if (request.getParentRegionId() != null) {
+            parentRegion = regionService.get(request.getParentRegionId());
+        }
+
+        Page<Region> regions = regionService.list(parentRegion, request.getLevel(), request.getPageable());
         return PageResponse.of(
                 regions.stream().map(UserRegionResponse::from).toList(),
                 PageInfo.of(regions)
