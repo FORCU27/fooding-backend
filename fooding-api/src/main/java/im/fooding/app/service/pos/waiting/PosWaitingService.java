@@ -9,8 +9,10 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
+import im.fooding.core.model.notification.NotificationTemplate;
 import im.fooding.core.model.user.User;
 import im.fooding.core.model.waiting.*;
+import im.fooding.core.service.notification.NotificationTemplateService;
 import im.fooding.core.service.plan.PlanService;
 import im.fooding.core.service.user.UserService;
 import im.fooding.core.service.waiting.StoreWaitingService;
@@ -48,6 +50,7 @@ public class PosWaitingService {
     private final WaitingLogService waitingLogService;
     private final UserService userService;
     private final PlanService planService;
+    private final NotificationTemplateService notificationTemplateService;
 
     public PosStoreWaitingResponse details(long id) {
         return PosStoreWaitingResponse.from(storeWaitingService.get(id));
@@ -179,6 +182,7 @@ public class PosWaitingService {
     }
 
     private void sendNotification(Waiting waiting, StoreWaiting storeWaiting) {
+        // todo: pub sub 구조로 변경 후 삭제
         int order = storeWaitingService.getOrder(storeWaiting.getId());
         int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
 
@@ -189,7 +193,44 @@ public class PosWaitingService {
                 order,
                 storeWaiting.getCallNumber()
         );
+
+        // NotificationTemplate 저장
+        String phoneNumber = null;
+        String email = null;
+        WaitingUser waitingUser = storeWaiting.getWaitingUser();
+        User user = storeWaiting.getUser();
+        if (waitingUser != null) {
+            phoneNumber = waitingUser.getPhoneNumber();
+        } else if (user != null) {
+            phoneNumber = user.getPhoneNumber();
+            email = user.getEmail();
+        }
+
+        String storeName = store.getName();
+        int waitingNumber = storeWaiting.getCallNumber();
+        if (phoneNumber != null) {
+            notificationTemplateService.createWaitingRegisterTemplate(
+                    storeName,
+                    personnel,
+                    order,
+                    waitingNumber,
+                    NotificationTemplate.Type.WaitingCreatedSms,
+                    phoneNumber
+            );
+        }
+
+        if (email != null) {
+            notificationTemplateService.createWaitingRegisterTemplate(
+                    storeName,
+                    personnel,
+                    order,
+                    waitingNumber,
+                    NotificationTemplate.Type.WaitingCreatedEmail,
+                    email
+            );
+        }
     }
+
     @Transactional
     public void updateWaitingStatus(long id, String statusValue) {
         Waiting waiting = waitingService.get(id);
