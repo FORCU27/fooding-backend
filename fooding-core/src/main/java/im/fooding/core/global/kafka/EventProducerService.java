@@ -7,18 +7,28 @@ import im.fooding.core.model.ddd.DddEvent;
 import im.fooding.core.repository.ddd.DddEventRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class EventProducerService {
     private final DddEventRepository dddEventRepository;
     private final ObjectMapper objectMapper;
     private final KafkaTemplate<String, String> kafkaTemplate;
-    private static final String TOPIC = "fooding.event.internal";
+    private final String TOPIC;
+
+    public EventProducerService(DddEventRepository dddEventRepository,
+                                ObjectMapper objectMapper,
+                                KafkaTemplate<String, String> kafkaTemplate,
+                                @Value("${kafka.internal.topic}") String topic) {
+        this.dddEventRepository = dddEventRepository;
+        this.objectMapper = objectMapper;
+        this.kafkaTemplate = kafkaTemplate;
+        this.TOPIC = topic;
+    }
 
     @Transactional
     public void publishEventA(StoreCreatedEvent storeCreatedEvent) {

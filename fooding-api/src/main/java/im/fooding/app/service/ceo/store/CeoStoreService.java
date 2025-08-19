@@ -66,7 +66,7 @@ public class CeoStoreService {
                 "", "", "", "", "", "", true, true, true, null, null);
 
         storeMemberService.create(store, user, StorePosition.OWNER);
-        eventProducerService.publishEventA(new StoreCreatedEvent("1234"));
+        eventProducerService.publishEventA(new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
         return store.getId();
     }
 
@@ -100,10 +100,5 @@ public class CeoStoreService {
         } catch (IOException e) {
             throw new ApiException(ErrorCode.ELASTICSEARCH_DELETE_FAILED);
         }
-    }
-
-    @KafkaEventHandler(StoreCreatedEvent.class)
-    public void handleB(StoreCreatedEvent storeCreatedEvent) {
-        log.info("Processing storeCreatedEvent: {}", storeCreatedEvent);
     }
 }

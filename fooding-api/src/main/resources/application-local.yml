@@ -152,3 +152,8 @@ management:
   health:
     elasticsearch:
       enabled: false
+
+kafka:
+  internal:
+    topic: fooding.event.internal.local
+    groupId: fooding-event-internal-local

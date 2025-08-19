@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -34,23 +35,31 @@ public class EventStore implements ApplicationContextAware {
     }
 
     private void scanForEventHandlers(ApplicationContext applicationContext) {
-        Map<String, Object> beans = applicationContext.getBeansOfType(Object.class);
+        // 모든 빈 이름을 가져와서 각각 처리
+        String[] beanNames = applicationContext.getBeanDefinitionNames();
 
-        for (Object bean : beans.values()) {
-            Method[] methods = bean.getClass().getMethods();
+        for (String beanName : beanNames) {
+            try {
+                Object bean = applicationContext.getBean(beanName);
+//                Method[] methods = bean.getClass().getMethods();
+                Class<?> targetClass = AopUtils.getTargetClass(bean);
+                Method[] methods = targetClass.getDeclaredMethods();
+                for (Method method : methods) {
+                    KafkaEventHandler annotation = method.getAnnotation(KafkaEventHandler.class);
+                    if (annotation != null) {
+                        Class<?> eventType = annotation.value();
+                        HandlerMethod handlerMethod = new HandlerMethod(bean, method);
 
-            for (Method method : methods) {
-                KafkaEventHandler annotation = method.getAnnotation(KafkaEventHandler.class);
-                if (annotation != null) {
-                    Class<?> eventType = annotation.value();
-                    HandlerMethod handlerMethod = new HandlerMethod(bean, method);
+                        eventHandlers.computeIfAbsent(eventType, k -> new ArrayList<>())
+                                .add(handlerMethod);
 
-                    eventHandlers.computeIfAbsent(eventType, k -> new ArrayList<>())
-                            .add(handlerMethod);
-
-                    log.info("Registered event handler: {} for event type: {}",
-                            method.getName(), eventType.getSimpleName());
+                        log.info("Registered event handler: {} for event type: {}",
+                                method.getName(), eventType.getSimpleName());
+                    }
                 }
+            } catch (Exception e) {
+                // 일부 빈은 초기화 시점에 문제가 있을 수 있으므로 로그만 남기고 계속 진행
+                log.debug("Failed to process bean: {}", beanName, e);
             }
         }
     }
@@ -63,7 +72,7 @@ public class EventStore implements ApplicationContextAware {
         }
     }
 
-    @KafkaListener(topics = "fooding.event.internal", groupId = "fooding-event-internal-${spring.profiles.active}")
+    @KafkaListener(topics = "${kafka.internal.topic}", groupId = "${kafka.internal.groupId}")
     public void handleEvents(ConsumerRecord<String, String> record) {
         try {
             JsonNode cdcMessage = objectMapper.readTree(record.value());
