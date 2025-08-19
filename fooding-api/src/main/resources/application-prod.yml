@@ -137,3 +137,8 @@ management:
       show-details: always
     prometheus:
       enabled: true
+
+kafka:
+  internal:
+    topic: fooding.event.internal.production
+    groupId: fooding-event-internal-production

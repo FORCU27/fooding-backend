@@ -1,6 +1,7 @@
 package im.fooding.core.model.store.document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import im.fooding.core.event.store.StoreCreatedEvent;
 import im.fooding.core.model.store.Store;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -53,6 +54,20 @@ public class StoreDocument {
                 .createdAt(store.getCreatedAt())
                 .build();
     }
+
+    public static StoreDocument of(StoreCreatedEvent event) {
+        return StoreDocument.builder()
+                .id(event.getId())
+                .name(event.getName())
+                .category(event.getCategory())
+                .address(event.getAddress())
+                .reviewCount(event.getReviewCount())
+                .averageRating(event.getAverageRating())
+                .visitCount(event.getVisitCount())
+                .createdAt(event.getCreatedAt())
+                .build();
+    }
+
 
     public String getIndex() {
         return "stores_v1";
