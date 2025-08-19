@@ -4,8 +4,11 @@ import im.fooding.app.dto.request.ceo.store.CeoCreateStoreRequest;
 import im.fooding.app.dto.request.ceo.store.CeoSearchStoreRequest;
 import im.fooding.app.dto.request.ceo.store.CeoUpdateStoreRequest;
 import im.fooding.app.dto.response.ceo.store.CeoStoreResponse;
+import im.fooding.core.event.store.StoreCreatedEvent;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.global.kafka.EventProducerService;
+import im.fooding.core.global.kafka.KafkaEventHandler;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePosition;
@@ -20,6 +23,7 @@ import im.fooding.core.service.store.subway.SubwayStationService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +40,10 @@ public class CeoStoreService {
     private final RegionService regionService;
     private final SubwayStationService subwayStationService;
     private final StoreDocumentService storeDocumentService;
+    private final EventProducerService eventProducerService;
+
+    @Value("${spring.profiles.active}")
+    private String profile;
 
     @Transactional(readOnly = true)
     public List<CeoStoreResponse> list(long userId, CeoSearchStoreRequest search) {
@@ -58,15 +66,7 @@ public class CeoStoreService {
                 "", "", "", "", "", "", true, true, true, null, null);
 
         storeMemberService.create(store, user, StorePosition.OWNER);
-
-        // elasticSearch document 생성
-        try {
-            storeDocumentService.save(StoreDocument.from(store));
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
-        }
-
+        eventProducerService.publishEventA(new StoreCreatedEvent("1234"));
         return store.getId();
     }
 
@@ -100,5 +100,10 @@ public class CeoStoreService {
         } catch (IOException e) {
             throw new ApiException(ErrorCode.ELASTICSEARCH_DELETE_FAILED);
         }
+    }
+
+    @KafkaEventHandler(StoreCreatedEvent.class)
+    public void handleB(StoreCreatedEvent storeCreatedEvent) {
+        log.info("Processing storeCreatedEvent: {}", storeCreatedEvent);
     }
 }
