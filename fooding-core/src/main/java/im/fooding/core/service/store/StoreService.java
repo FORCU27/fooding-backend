@@ -1,22 +1,27 @@
 package im.fooding.core.service.store;
 
 import im.fooding.core.dto.request.store.StoreFilter;
+import im.fooding.core.event.store.StoreCreatedEvent;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.global.infra.slack.SlackClient;
+import im.fooding.core.global.kafka.KafkaEventHandler;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreSortType;
+import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.store.StoreRepository;
+import im.fooding.core.service.store.document.StoreDocumentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -24,6 +29,8 @@ import java.util.List;
 @Slf4j
 public class StoreService {
     private final StoreRepository storeRepository;
+    private final StoreDocumentService storeDocumentService;
+    private final SlackClient slackClient;
 
     /**
      * 가게 목록 조회
@@ -140,7 +147,7 @@ public class StoreService {
         Store store = findById(id);
         store.update(name, region, city, address, category, description, contactNumber, priceCategory, eventDescription,
                 direction, information, isParkingAvailable, isNewOpen, isTakeOut, latitude, longitude);
-        store.setNearSubwayStations( stations );
+        store.setNearSubwayStations(stations);
         return store;
     }
 
@@ -175,5 +182,15 @@ public class StoreService {
 
     public void decreaseBookmarkCount(Store store) {
         store.decreaseBookmarkCount();
+    }
+
+    @KafkaEventHandler(StoreCreatedEvent.class)
+    public void handleA(StoreCreatedEvent storeCreatedEvent) {
+        try {
+            storeDocumentService.save(StoreDocument.of(storeCreatedEvent));
+            slackClient.sendNotificationMessage("%s 가게 생성".formatted(storeCreatedEvent.getName()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

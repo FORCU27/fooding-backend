@@ -154,3 +154,8 @@ management:
       show-details: always
     prometheus:
       enabled: true
+
+kafka:
+  internal:
+    topic: fooding.event.internal.stage
+    groupId: fooding-event-internal-stage
