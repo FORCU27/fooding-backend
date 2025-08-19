@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,7 +34,18 @@ public class StoreDocumentService {
     private final ElasticsearchClient client;
     private final ObjectMapper objectMapper;
 
-    public void save(StoreDocument storeDocument) throws IOException {
+    public void save(Long id, String name, String category, String address, int reviewCount, double averageRating, int visitCount, LocalDateTime createdAt) throws IOException {
+        StoreDocument storeDocument = StoreDocument.builder()
+                .id(id)
+                .name(name)
+                .category(category)
+                .address(address)
+                .reviewCount(reviewCount)
+                .averageRating(averageRating)
+                .visitCount(visitCount)
+                .createdAt(createdAt)
+                .build();
+
         client.index(i -> i
                 .index(storeDocument.getIndex())
                 .id(storeDocument.getId().toString())

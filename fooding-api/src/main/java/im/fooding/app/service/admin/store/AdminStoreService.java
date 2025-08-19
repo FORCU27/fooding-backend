@@ -6,12 +6,11 @@ import im.fooding.app.dto.request.admin.store.AdminUpdateStoreRequest;
 import im.fooding.app.dto.response.admin.store.AdminStoreResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
-import im.fooding.core.global.exception.ApiException;
-import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.event.store.StoreCreatedEvent;
+import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePosition;
-import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
@@ -25,13 +24,11 @@ import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +43,7 @@ public class AdminStoreService {
     private final RegionService regionService;
     private final SubwayStationService subwayStationService;
     private final StoreDocumentService storeDocumentService;
+    private final EventProducerService eventProducerService;
 
     @Transactional(readOnly = true)
     public PageResponse<AdminStoreResponse> list(AdminSearchStoreRequest request) {
@@ -56,7 +54,7 @@ public class AdminStoreService {
                 pageInfo);
     }
 
-    @Cacheable( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
+    @Cacheable(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager")
     @Transactional(readOnly = true)
     public AdminStoreResponse retrieve(Long id) {
         Store store = storeService.findById(id);
@@ -76,17 +74,12 @@ public class AdminStoreService {
                 request.getIsTakeOut(), request.getLatitude(), request.getLongitude());
 
         storeMemberService.create(store, user, StorePosition.OWNER);
-
-        try {
-            storeDocumentService.save(StoreDocument.from(store));
-        } catch (IOException e) {
-            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
-        }
+        eventProducerService.publishEvent("StoreCreatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
         return store.getId();
     }
 
     @Transactional
-    @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
+    @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager")
     public void update(Long id, AdminUpdateStoreRequest request) {
         Region region = regionService.get(request.getRegionId());
 
@@ -95,22 +88,13 @@ public class AdminStoreService {
         Store store = storeService.update(id, request.getName(), region, request.getCity(), request.getAddress(), request.getCategory(), request.getDescription(),
                 request.getContactNumber(), request.getPriceCategory(), request.getEventDescription(), request.getDirection(),
                 request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude(), nearStations);
-
-        try {
-            storeDocumentService.save(StoreDocument.from(store));
-        } catch (IOException e) {
-            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
-        }
+        eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
     }
 
     @Transactional
-    @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
+    @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager")
     public void delete(Long id, Long deletedBy) {
         storeService.delete(id, deletedBy);
-        try {
-            storeDocumentService.delete(id);
-        } catch (IOException e) {
-            throw new ApiException(ErrorCode.ELASTICSEARCH_DELETE_FAILED);
-        }
+        eventProducerService.publishEvent("StoreDeletedEvent", new StoreCreatedEvent(id));
     }
 }
