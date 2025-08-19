@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StoreCreatedEvent {
+public class StoreUpdatedEvent {
     private Long id;
 
     private String name;
@@ -27,8 +27,4 @@ public class StoreCreatedEvent {
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
-
-    public StoreCreatedEvent(Long id) {
-        this.id = id;
-    }
 }

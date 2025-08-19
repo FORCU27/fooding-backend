@@ -2,6 +2,8 @@ package im.fooding.core.service.store;
 
 import im.fooding.core.dto.request.store.StoreFilter;
 import im.fooding.core.event.store.StoreCreatedEvent;
+import im.fooding.core.event.store.StoreDeletedEvent;
+import im.fooding.core.event.store.StoreUpdatedEvent;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.global.infra.slack.SlackClient;
@@ -9,7 +11,6 @@ import im.fooding.core.global.kafka.KafkaEventHandler;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreSortType;
-import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.store.StoreRepository;
@@ -21,7 +22,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -185,10 +185,34 @@ public class StoreService {
     }
 
     @KafkaEventHandler(StoreCreatedEvent.class)
-    public void handleA(StoreCreatedEvent storeCreatedEvent) {
+    public void handleStoreCreatedEvent(StoreCreatedEvent storeCreatedEvent) {
         try {
-            storeDocumentService.save(StoreDocument.of(storeCreatedEvent));
+            storeDocumentService.save(storeCreatedEvent.getId(), storeCreatedEvent.getName(), storeCreatedEvent.getCategory(),
+                    storeCreatedEvent.getAddress(), storeCreatedEvent.getReviewCount(), storeCreatedEvent.getAverageRating(),
+                    storeCreatedEvent.getVisitCount(), storeCreatedEvent.getCreatedAt()
+            );
             slackClient.sendNotificationMessage("%s 가게 생성".formatted(storeCreatedEvent.getName()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @KafkaEventHandler(StoreUpdatedEvent.class)
+    public void handleStoreUpdatedEvent(StoreUpdatedEvent storeUpdatedEvent) {
+        try {
+            storeDocumentService.save(storeUpdatedEvent.getId(), storeUpdatedEvent.getName(), storeUpdatedEvent.getCategory(),
+                    storeUpdatedEvent.getAddress(), storeUpdatedEvent.getReviewCount(), storeUpdatedEvent.getAverageRating(),
+                    storeUpdatedEvent.getVisitCount(), storeUpdatedEvent.getCreatedAt()
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @KafkaEventHandler(StoreDeletedEvent.class)
+    public void handleStoreDeletedEvent(StoreDeletedEvent storeDeletedEvent) {
+        try {
+            storeDocumentService.delete(storeDeletedEvent.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }

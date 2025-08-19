@@ -35,13 +35,11 @@ public class EventStore implements ApplicationContextAware {
     }
 
     private void scanForEventHandlers(ApplicationContext applicationContext) {
-        // 모든 빈 이름을 가져와서 각각 처리
         String[] beanNames = applicationContext.getBeanDefinitionNames();
 
         for (String beanName : beanNames) {
             try {
                 Object bean = applicationContext.getBean(beanName);
-//                Method[] methods = bean.getClass().getMethods();
                 Class<?> targetClass = AopUtils.getTargetClass(bean);
                 Method[] methods = targetClass.getDeclaredMethods();
                 for (Method method : methods) {
@@ -58,7 +56,6 @@ public class EventStore implements ApplicationContextAware {
                     }
                 }
             } catch (Exception e) {
-                // 일부 빈은 초기화 시점에 문제가 있을 수 있으므로 로그만 남기고 계속 진행
                 log.debug("Failed to process bean: {}", beanName, e);
             }
         }
