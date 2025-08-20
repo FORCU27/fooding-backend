@@ -8,6 +8,7 @@ import im.fooding.core.event.store.StoreCreatedEvent;
 import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StorePosition;
 import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.User;
@@ -51,8 +52,8 @@ public class CeoStoreService {
     public Long create(CeoCreateStoreRequest request, long userId) {
         User user = userService.findById(userId);
 
-        Store store = storeService.create(user, request.getName(), null, "", "", "",
-                "", "", "", "", "", "", true, true, true, null, null);
+        Store store = storeService.create(user, request.getName(), null, "", "", StoreCategory.KOREAN,
+                "", "", "", false, false, null, null);
 
         storeMemberService.create(store, user, StorePosition.OWNER);
         eventProducerService.publishEvent("StoreCreatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
@@ -67,9 +68,8 @@ public class CeoStoreService {
         // 주소를 통해 인근 지하철역 조회 ( 1km 반경 내 )
         List<SubwayStation> nearStations = subwayStationService.getNearStations(request.getLatitude(), request.getLongitude());
 
-        Store store = storeService.update(id, request.getName(), region, request.getCity(), request.getAddress(), request.getCategory(), request.getDescription(),
-                request.getContactNumber(), request.getPriceCategory(), request.getEventDescription(), request.getDirection(),
-                request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude(), nearStations);
+        Store store = storeService.update(id, request.getName(), region, request.getAddress(), request.getAddressDetail(), request.getCategory(), request.getDescription(),
+                request.getContactNumber(), request.getDirection(), false, false, request.getLatitude(), request.getLongitude(), nearStations);
 
         eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
     }

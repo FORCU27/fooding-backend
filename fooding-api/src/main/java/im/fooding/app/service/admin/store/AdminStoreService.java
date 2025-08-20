@@ -17,7 +17,6 @@ import im.fooding.core.model.user.User;
 import im.fooding.core.service.region.RegionService;
 import im.fooding.core.service.store.StoreMemberService;
 import im.fooding.core.service.store.StoreService;
-import im.fooding.core.service.store.document.StoreDocumentService;
 import im.fooding.core.service.store.subway.SubwayStationService;
 import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
@@ -42,7 +41,6 @@ public class AdminStoreService {
     private final UserAuthorityService userAuthorityService;
     private final RegionService regionService;
     private final SubwayStationService subwayStationService;
-    private final StoreDocumentService storeDocumentService;
     private final EventProducerService eventProducerService;
 
     @Transactional(readOnly = true)
@@ -68,10 +66,9 @@ public class AdminStoreService {
 
         userAuthorityService.checkPermission(user.getAuthorities(), Role.CEO);
 
-        Store store = storeService.create(user, request.getName(), region, request.getCity(), request.getAddress(), request.getCategory(),
-                request.getDescription(), request.getPriceCategory(), request.getEventDescription(), request.getContactNumber(),
-                request.getDirection(), request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(),
-                request.getIsTakeOut(), request.getLatitude(), request.getLongitude());
+        Store store = storeService.create(user, request.getName(), region, request.getAddress(), request.getAddressDetail(), request.getCategory(),
+                request.getDescription(), request.getContactNumber(), request.getDirection(), false, false,
+                request.getLatitude(), request.getLongitude());
 
         storeMemberService.create(store, user, StorePosition.OWNER);
         eventProducerService.publishEvent("StoreCreatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
@@ -85,9 +82,9 @@ public class AdminStoreService {
 
         List<SubwayStation> nearStations = subwayStationService.getNearStations(request.getLatitude(), request.getLongitude());
 
-        Store store = storeService.update(id, request.getName(), region, request.getCity(), request.getAddress(), request.getCategory(), request.getDescription(),
-                request.getContactNumber(), request.getPriceCategory(), request.getEventDescription(), request.getDirection(),
-                request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude(), nearStations);
+        Store store = storeService.update(id, request.getName(), region, request.getAddress(), request.getAddressDetail(), request.getCategory(),
+                request.getDescription(), request.getContactNumber(), request.getDirection(), false, false, request.getLatitude(), request.getLongitude(), nearStations);
+
         eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
     }
 
