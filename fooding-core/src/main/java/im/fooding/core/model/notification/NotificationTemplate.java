@@ -33,4 +33,16 @@ public class NotificationTemplate extends BaseDocument {
         this.subject = subject;
         this.content = content;
     }
+
+    public void updateType(Type type) {
+        this.type = type;
+    }
+
+    public void updateSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }
