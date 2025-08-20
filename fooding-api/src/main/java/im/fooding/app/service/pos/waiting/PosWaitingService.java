@@ -9,10 +9,8 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
-import im.fooding.core.model.notification.NotificationTemplate;
 import im.fooding.core.model.user.User;
 import im.fooding.core.model.waiting.*;
-import im.fooding.core.service.notification.NotificationTemplateService;
 import im.fooding.core.service.plan.PlanService;
 import im.fooding.core.service.user.UserService;
 import im.fooding.core.service.waiting.StoreWaitingService;
@@ -35,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import org.springframework.util.StringUtils;
 
 @Service
 @Transactional(readOnly = true)
@@ -50,7 +49,6 @@ public class PosWaitingService {
     private final WaitingLogService waitingLogService;
     private final UserService userService;
     private final PlanService planService;
-    private final NotificationTemplateService notificationTemplateService;
 
     public PosStoreWaitingResponse details(long id) {
         return PosStoreWaitingResponse.from(storeWaitingService.get(id));
@@ -149,8 +147,9 @@ public class PosWaitingService {
         if (storeWaiting.getUser() != null) {
             planService.create(storeWaiting);
         }
-
-        sendNotification(waiting, storeWaiting);
+        if (StringUtils.hasText(phoneNumber)) {
+            sendSmsNotification(waiting, storeWaiting, phoneNumber);
+        }
     }
 
     private WaitingUser getOrRegisterUser(PosWaitingRegisterRequest request, String phoneNumber, Waiting waiting) {
@@ -181,54 +180,18 @@ public class PosWaitingService {
         return storeWaitingService.register(storeWaitingRegisterRequest);
     }
 
-    private void sendNotification(Waiting waiting, StoreWaiting storeWaiting) {
-        // todo: pub sub 구조로 변경 후 삭제
+    private void sendSmsNotification(Waiting waiting, StoreWaiting storeWaiting, String phoneNumber) {
         int order = storeWaitingService.getOrder(storeWaiting.getId());
         int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
 
         Store store = waiting.getStore();
-        userNotificationApplicationService.sendWaitingRegisterMessage(
+        userNotificationApplicationService.sendSmsWaitingRegisterMessage(
                 store.getName(),
                 personnel,
                 order,
-                storeWaiting.getCallNumber()
+                storeWaiting.getCallNumber(),
+                phoneNumber
         );
-
-        // NotificationTemplate 저장
-        String phoneNumber = null;
-        String email = null;
-        WaitingUser waitingUser = storeWaiting.getWaitingUser();
-        User user = storeWaiting.getUser();
-        if (waitingUser != null) {
-            phoneNumber = waitingUser.getPhoneNumber();
-        } else if (user != null) {
-            phoneNumber = user.getPhoneNumber();
-            email = user.getEmail();
-        }
-
-        String storeName = store.getName();
-        int waitingNumber = storeWaiting.getCallNumber();
-        if (phoneNumber != null) {
-            notificationTemplateService.createWaitingRegisterTemplate(
-                    storeName,
-                    personnel,
-                    order,
-                    waitingNumber,
-                    NotificationTemplate.Type.WaitingCreatedSms,
-                    phoneNumber
-            );
-        }
-
-        if (email != null) {
-            notificationTemplateService.createWaitingRegisterTemplate(
-                    storeName,
-                    personnel,
-                    order,
-                    waitingNumber,
-                    NotificationTemplate.Type.WaitingCreatedEmail,
-                    email
-            );
-        }
     }
 
     @Transactional

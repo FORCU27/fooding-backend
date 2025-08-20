@@ -4,7 +4,9 @@ import im.fooding.app.dto.response.user.notification.UserNotificationResponse;
 import im.fooding.core.global.infra.slack.SlackClient;
 import im.fooding.core.global.util.RewardMessageBuilder;
 import im.fooding.core.global.util.WaitingMessageBuilder;
+import im.fooding.core.model.notification.NotificationTemplate;
 import im.fooding.core.model.notification.UserNotification;
+import im.fooding.core.service.notification.NotificationTemplateService;
 import im.fooding.core.service.notification.UserNotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,16 +26,34 @@ import im.fooding.core.common.PageResponse;
 public class UserNotificationApplicationService {
     private final SlackClient slackClient;
     private final UserNotificationService userNotificationService;
+    private final NotificationTemplateService notificationTemplateService;
 
     @Value("${message.sender}")
     private String SENDER;
 
-    public void sendWaitingRegisterMessage(String storeName, int personnel, int order, int callNumber) {
-        String message = WaitingMessageBuilder.buildRegisterMessage(
+    public void sendEmailWaitingRegisterMessage(String storeName, int personnel, int order, int callNumber, String email) {
+        NotificationTemplate template = notificationTemplateService.getNotificationTemplateByType(NotificationTemplate.Type.WaitingCreatedEmail);
+        String subject = template.getSubject();
+        String content = template.getContent().formatted(
                 storeName,
                 personnel,
                 order,
-                callNumber);
+                callNumber
+        );
+        String message = WaitingMessageBuilder.buildMessage(subject, content);
+        slackClient.sendNotificationMessage(message);
+    }
+
+    public void sendSmsWaitingRegisterMessage(String storeName, int personnel, int order, int callNumber, String phoneNumber) {
+        NotificationTemplate template = notificationTemplateService.getNotificationTemplateByType(NotificationTemplate.Type.WaitingCreatedSms);
+        String subject = template.getSubject();
+        String content = template.getContent().formatted(
+                storeName,
+                personnel,
+                order,
+                callNumber
+        );
+        String message = WaitingMessageBuilder.buildMessage(subject, content);
         slackClient.sendNotificationMessage(message);
     }
 

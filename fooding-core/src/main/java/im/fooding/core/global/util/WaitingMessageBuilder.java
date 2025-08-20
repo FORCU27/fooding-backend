@@ -1,24 +1,6 @@
 package im.fooding.core.global.util;
 
 public class WaitingMessageBuilder {
-    public static String buildRegisterMessage(String store, int totalPersonCount, int order, int waitingNumber) {
-        return """
-            title
-            푸딩 웨이팅 등록 완료
-
-            body
-            안녕하세요 고객님!
-            [%s]에 웨이팅이 등록되었습니다. 입장 순서가 되면 안내 메시지를 보내드릴게요.
-
-            - 인원: %d명
-            - 순서: %d번째
-            - 웨이팅번호: %d
-    
-            [주의사항]
-            - 차례가 되었을 때 현장에 없는 경우 입장이 취소될 수 있습니다.
-            """
-                .formatted(store, totalPersonCount, order, waitingNumber);
-    }
 
     public static String buildWaitingCallMessage(String store, int callNumber, int entryTimeLimit) {
         return """
@@ -66,5 +48,15 @@ public class WaitingMessageBuilder {
                다음에 방문해 주세요!
                """
                 .formatted(store, reason);
+    }
+
+    public static String buildMessage(String subject, String content) {
+        return """
+                title
+                %s
+                body
+                %s
+                """
+                .formatted(subject, content);
     }
 }
