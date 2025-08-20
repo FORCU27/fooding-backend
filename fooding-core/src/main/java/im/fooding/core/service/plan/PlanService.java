@@ -6,6 +6,7 @@ import im.fooding.core.model.plan.Plan.VisitStatus;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.repository.plan.PlanRepository;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,12 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PlanService {
 
     private final PlanRepository planRepository;
 
     @Transactional
-    public void create(StoreWaiting storeWaiting) {
+    public ObjectId create(StoreWaiting storeWaiting) {
         ReservationType reservationType = switch (storeWaiting.getChannel()) {
             case ONLINE -> ReservationType.ONLINE_WAITING;
             case IN_PERSON -> ReservationType.ONSITE_WAITING;
@@ -42,10 +44,9 @@ public class PlanService {
                 .adultCount(storeWaiting.getAdultCount())
                 .build();
 
-        planRepository.save(plan);
+        return planRepository.save(plan).getId();
     }
 
-    @Transactional(readOnly = true)
     public Page<Plan> list(Long userId, Pageable pageable) {
         return planRepository.findAllByUserIdAndDeletedFalse(userId, pageable);
     }
