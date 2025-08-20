@@ -34,6 +34,10 @@ public class RegionService {
         return regionRepository.findAllByDeletedFalse(pageable);
     }
 
+    public Page<Region> list(Region parentRegion, Integer level, Pageable pageable) {
+        return regionRepository.listActive(parentRegion, level, pageable);
+    }
+
     @Transactional
     public void update(RegionUpdateRequest request) {
         Region region = get(request.id());

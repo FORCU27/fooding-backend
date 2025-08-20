@@ -29,8 +29,10 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
     //elasticsearch
-    implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
     implementation("co.elastic.clients:elasticsearch-java:8.13.4")
+
+    //kafka
+    implementation("org.springframework.kafka:spring-kafka")
 
     //querydsl
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")

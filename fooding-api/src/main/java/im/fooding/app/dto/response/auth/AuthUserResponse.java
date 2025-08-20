@@ -19,6 +19,9 @@ public class AuthUserResponse {
     @Schema(description = "이메일", example = "admin@gmail.com", requiredMode = RequiredMode.REQUIRED)
     private String email;
 
+    @Schema(description = "이름", example = "홍길동", requiredMode = RequiredMode.NOT_REQUIRED)
+    private String name;
+
     @Schema(description = "닉네임", example = "홍길동", requiredMode = RequiredMode.REQUIRED)
     private String nickname;
 
@@ -36,6 +39,9 @@ public class AuthUserResponse {
 
     @Schema(description = "성별", example = "NONE", requiredMode = RequiredMode.REQUIRED)
     private Gender gender;
+
+    @Schema(description = "설명", example = "안녕하세요.", requiredMode = RequiredMode.NOT_REQUIRED)
+    private String description;
 
     @Schema(description = "이용약관 동의 여부", example = "true", requiredMode = RequiredMode.REQUIRED)
     private boolean termsAgreed;
@@ -59,15 +65,21 @@ public class AuthUserResponse {
     private LocalDateTime updatedAt;
 
     @Builder
-    private AuthUserResponse(long id, String email, String nickname, String phoneNumber, String referralCode, String profileImage, int loginCount, Gender gender, boolean termsAgreed, boolean privacyPolicyAgreed, boolean marketingConsent, boolean pushAgreed, LocalDateTime lastLoggedInAt, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private AuthUserResponse(
+            long id, String email, String name, String nickname, String phoneNumber, String referralCode, String profileImage, int loginCount,
+            Gender gender, String description, boolean termsAgreed, boolean privacyPolicyAgreed, boolean marketingConsent, boolean pushAgreed,
+            LocalDateTime lastLoggedInAt, LocalDateTime createdAt, LocalDateTime updatedAt
+    ) {
         this.id = id;
         this.email = email;
+        this.name = name;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
         this.referralCode = referralCode;
         this.profileImage = profileImage;
         this.loginCount = loginCount;
         this.gender = gender;
+        this.description = description;
         this.termsAgreed = termsAgreed;
         this.privacyPolicyAgreed = privacyPolicyAgreed;
         this.marketingConsent = marketingConsent;
@@ -81,12 +93,14 @@ public class AuthUserResponse {
         return AuthUserResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
+                .name(user.getName())
                 .nickname(user.getNickname())
                 .phoneNumber(user.getPhoneNumber())
                 .referralCode(user.getReferralCode())
                 .profileImage(user.getProfileImage())
                 .loginCount(user.getLoginCount())
                 .gender(user.getGender())
+                .description(user.getDescription())
                 .termsAgreed(user.isTermsAgreed())
                 .privacyPolicyAgreed(user.isPrivacyPolicyAgreed())
                 .marketingConsent(user.isMarketingConsent())

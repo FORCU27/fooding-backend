@@ -8,6 +8,7 @@ import im.fooding.core.model.user.Gender;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.user.UserRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -117,7 +118,7 @@ public class UserService {
      * @param pushAgreed
      */
 
-    public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description, boolean pushAgreed) {
+    public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description, boolean pushAgreed, String name) {
         User user = findById(id);
         if( nickname != null ){
             if (!nickname.equals(user.getNickname()) && checkDuplicatedNickname(nickname)) {
@@ -130,7 +131,7 @@ public class UserService {
             }
         }
         user.updateDescription( description );
-        user.update(nickname, phoneNumber, gender, referralCode, marketingConsent, pushAgreed);
+        user.update(nickname, phoneNumber, gender, referralCode, marketingConsent, pushAgreed, name);
     }
 
     /**
@@ -202,5 +203,10 @@ public class UserService {
         return userRepository.findByPhoneNumber(phoneNumber)
                 .filter(it -> !it.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    public Optional<User> findOptionalByPhoneNumber(String phoneNumber) {
+        return userRepository.findByPhoneNumber(phoneNumber)
+                .filter(it -> !it.isDeleted());
     }
 }

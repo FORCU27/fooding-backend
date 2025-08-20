@@ -1,75 +1,61 @@
 package im.fooding.app.dto.response.user.plan;
 
-import im.fooding.core.model.waiting.StoreWaiting;
-import im.fooding.core.model.waiting.StoreWaitingChannel;
-import im.fooding.core.model.waiting.StoreWaitingStatus;
+import im.fooding.core.model.plan.Plan;
+import im.fooding.core.model.plan.Plan.ReservationType;
+import im.fooding.core.model.plan.Plan.VisitStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 @Value
 @Builder(access = AccessLevel.PRIVATE)
 public class UserPlanResponse {
 
-    @Schema(description = "ID", requiredMode = RequiredMode.REQUIRED, example = "ID")
-    long id;
+    @Schema(description = "ID", requiredMode = RequiredMode.REQUIRED, example = "6889bf12db34d469470f868e")
+    String id;
 
-    @Schema(description = "예약 type (RESERVATION, ON_SITE_WAITING, ONLINE_WAITING)", requiredMode = RequiredMode.REQUIRED, example = "RESERVATION")
-    ReservationType type;
+    @Schema(description = "예약 type (RESERVATION, ONSITE_WAITING, ONLINE_WAITING)", requiredMode = RequiredMode.REQUIRED, example = "RESERVATION")
+    ReservationType reservationType;
+
+    @Schema(description = "예약/웨이팅 도메인의 ID", requiredMode = RequiredMode.REQUIRED, example = "1")
+    long originId;
 
     @Schema(description = "가게 이름", requiredMode = RequiredMode.REQUIRED, example = "바다풍경 정육식당 흑돼지 용담탑동본점")
-    String storeName;
+    long storeId;
 
     @Schema(description = "방문 상태 (SCHEDULED, COMPLETED, NOT_VISITED)", requiredMode = RequiredMode.REQUIRED, example = "SCHEDULED")
     VisitStatus visitStatus;
 
-    @Schema(description = "예약 일시 (예약시 존재)", requiredMode = RequiredMode.NOT_REQUIRED, example = "2025-04-30T15:30:00")
+    @Schema(description = "예약 일시", requiredMode = RequiredMode.REQUIRED, example = "2025-07-30T06:01:16.711Z")
     LocalDateTime reservationTime;
 
-    @Schema(description = "예약 인원 수", requiredMode = RequiredMode.REQUIRED, example = "3")
-    int numberOfPeople;
+    @Schema(description = "생성 일시", requiredMode = RequiredMode.REQUIRED, example = "2025-07-30T06:01:16.711Z")
+    LocalDateTime createdAt;
 
-    @RequiredArgsConstructor
-    public enum VisitStatus {
-        SCHEDULED,      // 방문예정
-        COMPLETED,      // 방문완료
-        NOT_VISITED,    // 취소/노쇼
-        ;
-    }
+    @Schema(description = "예약한 유아용 의자 수", requiredMode = RequiredMode.REQUIRED, example = "3")
+    int infantChairCount;
 
-    @RequiredArgsConstructor
-    public enum ReservationType {
-        RESERVATION,        // 예약
-        ON_SITE_WAITING,    // 현장 웨이팅
-        ONLINE_WAITING,     // 온라인 웨이팅
-        ;
-    }
+    @Schema(description = "예약한 유아 수", requiredMode = RequiredMode.REQUIRED, example = "3")
+    int infantCount;
 
-    public static UserPlanResponse from(StoreWaiting storeWaiting) {
-        ReservationType type = storeWaiting.getChannel() == StoreWaitingChannel.ONLINE
-                ? ReservationType.ONLINE_WAITING
-                : ReservationType.ON_SITE_WAITING;
-        VisitStatus visitStatus = toVisitStatus(storeWaiting.getStatus());
-        int numberOfPeople = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
+    @Schema(description = "예약한 성인 수", requiredMode = RequiredMode.REQUIRED, example = "3")
+    int adultCount;
 
-        return UserPlanResponse.builder()
-                .id(storeWaiting.getId())
-                .type(type)
-                .storeName(storeWaiting.getStoreName())
-                .visitStatus(visitStatus)
-                .numberOfPeople(numberOfPeople)
-                .build();
-    }
-
-    private static VisitStatus toVisitStatus(StoreWaitingStatus storeWaitingStatus) {
-        return switch (storeWaitingStatus) {
-            case WAITING ->  VisitStatus.SCHEDULED;
-            case SEATED -> VisitStatus.COMPLETED;
-            case CANCELLED -> VisitStatus.NOT_VISITED;
-        };
+    public static UserPlanResponse from(Plan plan) {
+        return new UserPlanResponse(
+                plan.getId().toString(),
+                plan.getReservationType(),
+                plan.getOriginId(),
+                plan.getStoreId(),
+                plan.getVisitStatus(),
+                plan.getReservationTime(),
+                plan.getCreatedAt(),
+                plan.getInfantChairCount(),
+                plan.getInfantCount(),
+                plan.getAdultCount()
+        );
     }
 }

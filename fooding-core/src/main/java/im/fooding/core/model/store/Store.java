@@ -196,4 +196,11 @@ public class Store extends BaseEntity {
     public void setNearSubwayStations(List<SubwayStation> stations){
         this.subwayStations = stations;
     }
+
+    public String getRegionId() {
+        if (region == null) {
+            return null;
+        }
+        return region.getId();
+    }
 }

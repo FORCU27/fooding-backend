@@ -63,9 +63,9 @@ jobs:
             KAKAO_MAP_API_URL=${{ secrets.KAKAO_MAP_API_URL  }}
             JPA_DDL_AUTO=${{ secrets.JPA_DDL_AUTO  }}
             ELASTIC_SEARCH_URIS=${{ secrets.ELASTIC_SEARCH_URIS}}
-            ELASTIC_SEARCH_USERNAME=${{ secrets.ELASTIC_SEARCH_USERNAME }}
-            ELASTIC_SEARCH_PASSWORD=${{ secrets.ELASTIC_SEARCH_PASSWORD }}
+            ELASTIC_SEARCH_KEY=${{ secrets.ELASTIC_SEARCH_KEY }}
             MONGODB_URI=${{ secrets.MONGODB_URI }}
+            KAFKA_BOOTSTRAP_SERVERS=${{ secrets.KAFKA_BOOTSTRAP_SERVERS}}
       - name: Deployment
         uses: appleboy/ssh-action@master
         with:

@@ -44,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/user/store-coupons").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/stores/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/store-posts/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/user/regions/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/app/rewards/**").permitAll()
                         .requestMatchers("/user/**").hasAnyRole("USER")
                         // TODO: 추후 백오피스 로그인 생기면 주석 해제
@@ -66,7 +67,8 @@ public class SecurityConfig {
                 "/auth/google/token",
                 "/auth/kakao/token",
                 "/auth/naver/token",
-                "/auth/apple/token"
+                "/auth/apple/token",
+                "/auth/nickname/check"
         };
     }
 

@@ -15,6 +15,7 @@ import java.util.List;
 
 import static im.fooding.core.model.coupon.QCoupon.coupon;
 import static im.fooding.core.model.store.QStore.store;
+import static im.fooding.core.model.store.QStoreImage.storeImage;
 
 @RequiredArgsConstructor
 public class QCouponRepositoryImpl implements QCouponRepository {
@@ -26,9 +27,11 @@ public class QCouponRepositoryImpl implements QCouponRepository {
                 .select(coupon)
                 .from(coupon)
                 .leftJoin(coupon.store, store).fetchJoin()
+                .leftJoin(store.images, storeImage)
                 .where(
                         coupon.deleted.isFalse(),
                         storeDeletedIfStoreExists(),
+                        storeImageDeletedIfStoreImageExists(),
                         searchStore(storeId),
                         search(searchString),
                         searchStatus(status),
@@ -42,6 +45,7 @@ public class QCouponRepositoryImpl implements QCouponRepository {
         JPAQuery<Coupon> countQuery = query
                 .select(coupon)
                 .from(coupon)
+                .leftJoin(coupon.store, store).fetchJoin()
                 .where(
                         coupon.deleted.isFalse(),
                         storeDeletedIfStoreExists(),
@@ -64,6 +68,10 @@ public class QCouponRepositoryImpl implements QCouponRepository {
 
     private BooleanExpression storeDeletedIfStoreExists() {
         return store.id.isNull().or(store.deleted.isFalse());
+    }
+
+    private BooleanExpression storeImageDeletedIfStoreImageExists() {
+        return storeImage.id.isNull().or(storeImage.deleted.isFalse());
     }
 
     private BooleanExpression searchStatus(CouponStatus status) {

@@ -4,16 +4,16 @@ import im.fooding.app.dto.request.ceo.store.CeoCreateStoreRequest;
 import im.fooding.app.dto.request.ceo.store.CeoSearchStoreRequest;
 import im.fooding.app.dto.request.ceo.store.CeoUpdateStoreRequest;
 import im.fooding.app.dto.response.ceo.store.CeoStoreResponse;
+import im.fooding.core.event.store.StoreCreatedEvent;
+import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePosition;
-import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.region.RegionService;
 import im.fooding.core.service.store.StoreMemberService;
 import im.fooding.core.service.store.StoreService;
-import im.fooding.core.service.store.document.StoreDocumentService;
 import im.fooding.core.service.store.subway.SubwayStationService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class CeoStoreService {
     private final UserService userService;
     private final RegionService regionService;
     private final SubwayStationService subwayStationService;
-    private final StoreDocumentService storeDocumentService;
+    private final EventProducerService eventProducerService;
 
     @Transactional(readOnly = true)
     public List<CeoStoreResponse> list(long userId, CeoSearchStoreRequest search) {
@@ -55,10 +55,7 @@ public class CeoStoreService {
                 "", "", "", "", "", "", true, true, true, null, null);
 
         storeMemberService.create(store, user, StorePosition.OWNER);
-
-        // elasticSearch document 생성
-        storeDocumentService.save(StoreDocument.from(store));
-
+        eventProducerService.publishEvent("StoreCreatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
         return store.getId();
     }
 
@@ -74,14 +71,13 @@ public class CeoStoreService {
                 request.getContactNumber(), request.getPriceCategory(), request.getEventDescription(), request.getDirection(),
                 request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude(), nearStations);
 
-        // elasticSearch document 수정
-        storeDocumentService.save(StoreDocument.from(store));
+        eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
     }
 
     @Transactional
     public void delete(Long id, long deletedBy) {
         storeMemberService.checkMember(id, deletedBy);
         storeService.delete(id, deletedBy);
-        storeDocumentService.delete(String.valueOf(id));
+        eventProducerService.publishEvent("StoreDeletedEvent", new StoreCreatedEvent(id));
     }
 }

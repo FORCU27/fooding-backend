@@ -9,7 +9,10 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
+import im.fooding.core.model.user.User;
 import im.fooding.core.model.waiting.*;
+import im.fooding.core.service.plan.PlanService;
+import im.fooding.core.service.user.UserService;
 import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
@@ -22,6 +25,7 @@ import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.app.dto.request.pos.waiting.PosWaitingOccupancyUpdateRequest;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -42,6 +46,8 @@ public class PosWaitingService {
     private final WaitingSettingService waitingSettingService;
     private final WaitingUserService waitingUserService;
     private final WaitingLogService waitingLogService;
+    private final UserService userService;
+    private final PlanService planService;
 
     public PosStoreWaitingResponse details(long id) {
         return PosStoreWaitingResponse.from(storeWaitingService.get(id));
@@ -117,6 +123,7 @@ public class PosWaitingService {
         storeWaiting.injectUser(user);
     }
 
+    @Transactional
     public void register(long id, PosWaitingRegisterRequest request) {
         Waiting waiting = waitingService.get(id);
         storeWaitingService.validate(waiting);
@@ -124,6 +131,7 @@ public class PosWaitingService {
         String name = request.name();
         String phoneNumber = request.phoneNumber();
 
+        Optional<User> user = userService.findOptionalByPhoneNumber(phoneNumber);
         WaitingUser waitingUser = null;
         if ((name != null && !name.isBlank())
                 || (phoneNumber != null && !phoneNumber.isBlank())
@@ -131,9 +139,13 @@ public class PosWaitingService {
             waitingUser = getOrRegisterUser(request, phoneNumber, waiting);
         }
 
-        StoreWaiting storeWaiting = registerStoreWaiting(request, waiting, waitingUser);
+        StoreWaiting storeWaiting = registerStoreWaiting(request, waiting, user.orElse(null), waitingUser);
 
         waitingLogService.logRegister(storeWaiting);
+
+        if (storeWaiting.getUser() != null) {
+            planService.create(storeWaiting);
+        }
 
         sendNotification(waiting, storeWaiting);
     }
@@ -152,8 +164,9 @@ public class PosWaitingService {
         return waitingUserService.getOrElseRegister(waitingUserRegisterRequest);
     }
 
-    private StoreWaiting registerStoreWaiting(PosWaitingRegisterRequest request, Waiting waiting, WaitingUser waitingUser) {
+    private StoreWaiting registerStoreWaiting(PosWaitingRegisterRequest request, Waiting waiting, User user, WaitingUser waitingUser) {
         StoreWaitingRegisterRequest storeWaitingRegisterRequest = StoreWaitingRegisterRequest.builder()
+                .user(user)
                 .waitingUser(waitingUser)
                 .store(waiting.getStore())
                 .channel(StoreWaitingChannel.IN_PERSON.getValue())

@@ -43,8 +43,8 @@ public class User extends BaseEntity {
     @Column(length = 20)
     private String referralCode;
 
-    @Size( max = 150, message = "소개는 최대 150자까지 가능합니다." )
-    @Column( length = 150 )
+    @Size(max = 150, message = "소개는 최대 150자까지 가능합니다.")
+    @Column(length = 150)
     private String description;
 
     private String name;
@@ -125,11 +125,12 @@ public class User extends BaseEntity {
         this.lastLoggedInAt = LocalDateTime.now();
     }
 
-    public void update(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, boolean pushAgreed) {
-        if( StringUtils.hasText(nickname) ) this.nickname = nickname;
-        if( StringUtils.hasText(phoneNumber) ) this.phoneNumber = phoneNumber;
-        if( gender != null ) this.gender = gender;
-        if( StringUtils.hasText(referralCode) ) this.referralCode = referralCode;
+    public void update(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, boolean pushAgreed, String name) {
+        if (StringUtils.hasText(nickname)) this.nickname = nickname;
+        if (StringUtils.hasText(phoneNumber)) this.phoneNumber = phoneNumber;
+        if (gender != null) this.gender = gender;
+        if (StringUtils.hasText(referralCode)) this.referralCode = referralCode;
+        if (StringUtils.hasText(name)) this.name = name;
         if (marketingConsent) {
             this.marketingConsent = true;
             this.marketingConsentAt = this.marketingConsentAt == null ? LocalDateTime.now() : this.marketingConsentAt;
@@ -137,7 +138,7 @@ public class User extends BaseEntity {
             this.marketingConsent = false;
             this.marketingConsentAt = null;
         }
-        if(pushAgreed) {
+        if (pushAgreed) {
             this.pushAgreed = true;
             this.pushAgreedAt = this.pushAgreedAt == null ? LocalDateTime.now() : this.pushAgreedAt;
         } else {
@@ -146,7 +147,9 @@ public class User extends BaseEntity {
         }
     }
 
-    public void updateDescription( String description ){ this.description = description; }
+    public void updateDescription(String description) {
+        this.description = description;
+    }
 
     public void updatePassword(String password) {
         this.password = password;
