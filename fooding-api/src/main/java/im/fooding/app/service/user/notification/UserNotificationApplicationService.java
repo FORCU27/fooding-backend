@@ -32,7 +32,7 @@ public class UserNotificationApplicationService {
     private String SENDER;
 
     public void sendEmailWaitingRegisterMessage(String storeName, int personnel, int order, int callNumber, String email) {
-        NotificationTemplate template = notificationTemplateService.getNotificationTemplateByType(NotificationTemplate.Type.WaitingCreatedEmail);
+        NotificationTemplate template = notificationTemplateService.getByType(NotificationTemplate.Type.WaitingCreatedEmail);
         String subject = template.getSubject();
         String content = template.getContent().formatted(
                 storeName,
@@ -45,7 +45,7 @@ public class UserNotificationApplicationService {
     }
 
     public void sendSmsWaitingRegisterMessage(String storeName, int personnel, int order, int callNumber, String phoneNumber) {
-        NotificationTemplate template = notificationTemplateService.getNotificationTemplateByType(NotificationTemplate.Type.WaitingCreatedSms);
+        NotificationTemplate template = notificationTemplateService.getByType(NotificationTemplate.Type.WaitingCreatedSms);
         String subject = template.getSubject();
         String content = template.getContent().formatted(
                 storeName,

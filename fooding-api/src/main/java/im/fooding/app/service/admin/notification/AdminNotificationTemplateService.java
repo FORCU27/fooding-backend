@@ -33,7 +33,7 @@ public class AdminNotificationTemplateService {
 
     @Transactional
     public String create(@Valid AdminCreateNotificationTemplateRequest request) {
-        return notificationTemplateService.createNotificationTemplate(
+        return notificationTemplateService.create(
                 request.getSubject(),
                 request.getContent(),
                 request.getType()

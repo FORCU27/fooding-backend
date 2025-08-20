@@ -17,7 +17,7 @@ public class NotificationTemplateService {
 
     private final NotificationTemplateRepository notificationTemplateRepository;
 
-    public ObjectId createNotificationTemplate(
+    public ObjectId create(
             String subject,
             String content,
             NotificationTemplate.Type type
@@ -29,7 +29,7 @@ public class NotificationTemplateService {
         return newNotificationTemplate.getId();
     }
 
-    public NotificationTemplate getNotificationTemplateByType(NotificationTemplate.Type type) {
+    public NotificationTemplate getByType(NotificationTemplate.Type type) {
         return notificationTemplateRepository.findByType(type)
                 .filter(it ->!it.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.NOTIFICATION_TEMPLATE_NOT_FOUND));
