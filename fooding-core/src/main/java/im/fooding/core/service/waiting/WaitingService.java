@@ -34,6 +34,12 @@ public class WaitingService {
                 .orElseThrow(() -> new ApiException(ErrorCode.WAITING_NOT_FOUND));
     }
 
+    public Waiting getByStore(Store store) {
+        return waitingRepository.findByStore(store)
+                .filter(it -> !it.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.WAITING_NOT_FOUND));
+    }
+
     public Page<Waiting> list(Pageable pageable) {
         return waitingRepository.findAllByDeletedFalse(pageable);
     }

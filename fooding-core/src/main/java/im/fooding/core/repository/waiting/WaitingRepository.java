@@ -3,6 +3,7 @@ package im.fooding.core.repository.waiting;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingStatus;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
