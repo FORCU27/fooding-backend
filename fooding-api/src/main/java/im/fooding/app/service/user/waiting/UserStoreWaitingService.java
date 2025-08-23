@@ -16,10 +16,12 @@ import im.fooding.core.service.user.UserService;
 import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.service.waiting.WaitingService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -62,21 +64,41 @@ public class UserStoreWaitingService {
 
         ObjectId planId = planService.create(storeWaiting);
 
-        sendNotification(waiting, storeWaiting);
+        if (StringUtils.hasText(user.getPhoneNumber())) {
+            sendSmsNotification(waiting, storeWaiting, user.getPhoneNumber());
+        }
+        if (StringUtils.hasText(user.getEmail())) {
+            sendEmailNotification(waiting, storeWaiting, user.getEmail());
+        }
 
         return new UserStoreWaitingCreateResponse(storeWaiting.getId(), planId.toString());
     }
 
-    private void sendNotification(Waiting waiting, StoreWaiting storeWaiting) {
+    private void sendSmsNotification(Waiting waiting, StoreWaiting storeWaiting, String phoneNumber) {
         int order = storeWaitingService.getOrder(storeWaiting.getId());
         int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
 
         Store store = waiting.getStore();
-        userNotificationApplicationService.sendWaitingRegisterMessage(
+        userNotificationApplicationService.sendSmsWaitingRegisterMessage(
                 store.getName(),
                 personnel,
                 order,
-                storeWaiting.getCallNumber()
+                storeWaiting.getCallNumber(),
+                phoneNumber
+        );
+    }
+
+    private void sendEmailNotification(Waiting waiting, StoreWaiting storeWaiting, String email) {
+        int order = storeWaitingService.getOrder(storeWaiting.getId());
+        int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
+
+        Store store = waiting.getStore();
+        userNotificationApplicationService.sendSmsWaitingRegisterMessage(
+                store.getName(),
+                personnel,
+                order,
+                storeWaiting.getCallNumber(),
+                email
         );
     }
 }

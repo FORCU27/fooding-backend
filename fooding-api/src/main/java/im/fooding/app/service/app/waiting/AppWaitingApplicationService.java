@@ -32,6 +32,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @Transactional(readOnly = true)
@@ -80,7 +81,9 @@ public class AppWaitingApplicationService {
 
         waitingLogService.logRegister(storeWaiting);
 
-        sendNotification(waiting, storeWaiting);
+        if (StringUtils.hasText(phoneNumber)) {
+            sendNotification(waiting, storeWaiting, phoneNumber);
+        }
 
         long callNumber = storeWaiting.getCallNumber();
         long waitingTurn = storeWaitingService.getWaitingCount(store);
@@ -122,16 +125,17 @@ public class AppWaitingApplicationService {
         return storeWaitingService.register(storeWaitingRegisterRequest);
     }
 
-    private void sendNotification(Waiting waiting, StoreWaiting storeWaiting) {
+    private void sendNotification(Waiting waiting, StoreWaiting storeWaiting, String phoneNumber) {
         int order = storeWaitingService.getOrder(storeWaiting.getId());
         int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
 
         Store store = waiting.getStore();
-        userNotificationApplicationService.sendWaitingRegisterMessage(
+        userNotificationApplicationService.sendSmsWaitingRegisterMessage(
                 store.getName(),
                 personnel,
                 order,
-                storeWaiting.getCallNumber()
+                storeWaiting.getCallNumber(),
+                phoneNumber
         );
     }
 
