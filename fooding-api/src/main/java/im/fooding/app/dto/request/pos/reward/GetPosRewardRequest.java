@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class GetRewardRequest extends BasicSearch {
+public class GetPosRewardRequest extends BasicSearch {
         @NotNull
         @Schema( description = "가게 ID" )
         Long storeId;

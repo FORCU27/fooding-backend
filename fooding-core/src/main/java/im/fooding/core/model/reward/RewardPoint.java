@@ -36,6 +36,9 @@ public class RewardPoint extends BaseEntity {
     @Column(name = "point")
     private int point;
 
+    @Column(name = "memo")
+    private String memo;
+
     public void addPoint(int earnPoint) {
         this.point += earnPoint;
     }
@@ -47,11 +50,16 @@ public class RewardPoint extends BaseEntity {
         this.point -= usePoint;
     }
 
+    public void updateMemo( String memo ){
+        this.memo = memo;
+    }
+
     @Builder
-    public RewardPoint(Store store, String phoneNumber, User user, int point) {
+    public RewardPoint(Store store, String phoneNumber, User user, int point, String memo) {
         this.store = store;
         this.phoneNumber = phoneNumber;
         this.user = user;
         this.point = point;
+        this.memo = memo;
     }
 }
