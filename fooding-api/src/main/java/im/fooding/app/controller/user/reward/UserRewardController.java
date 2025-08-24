@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserRewardController {
     private final RewardApplicationService service;
 
-    @GetMapping( "/log" )
+    @GetMapping( "/logs" )
     @Operation( summary = "스토어 별 보유 포인트 적립 내역 조회" )
     public ApiResult<PageResponse<GetRewardLogResponse>> getRewardLog(
             @ModelAttribute GetRewardLogRequest request
