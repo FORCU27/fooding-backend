@@ -27,7 +27,6 @@ import java.util.List;
 
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
-import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -79,16 +78,14 @@ public class UserNotificationApplicationService {
         int callNumber = storeWaiting.getCallNumber();
 
         // WaitingUser 처리
-        Optional.ofNullable(event.waitingUserId())
-                .map(waitingUserService::get)
+        Optional.ofNullable(storeWaiting.getWaitingUser())
                 .map(WaitingUser::getPhoneNumber)
                 .ifPresent(phoneNumber -> sendSmsWaitingRegisterMessage(
                         storeName, personnel, order, callNumber, phoneNumber
                 ));
 
         // User 처리
-        Optional.ofNullable(event.userId())
-                .map(userService::findById)
+        Optional.ofNullable(storeWaiting.getUser())
                 .ifPresent(user -> {
                     Optional.ofNullable(user.getEmail())
                             .ifPresent(email -> sendEmailWaitingRegisterMessage(

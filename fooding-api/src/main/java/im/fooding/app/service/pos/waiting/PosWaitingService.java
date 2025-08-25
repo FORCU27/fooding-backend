@@ -151,11 +151,7 @@ public class PosWaitingService {
 
         eventProducerService.publishEvent(
                 StoreWaitingRegisteredEvent.class.getSimpleName(),
-                new StoreWaitingRegisteredEvent(
-                        storeWaiting.getId(),
-                        user != null ? user.getId() : null,
-                        waitingUser != null ? waitingUser.getId() : null
-                )
+                new StoreWaitingRegisteredEvent(storeWaiting.getId())
         );
     }
 
