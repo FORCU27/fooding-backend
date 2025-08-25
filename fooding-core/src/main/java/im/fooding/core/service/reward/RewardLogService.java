@@ -29,8 +29,8 @@ public class RewardLogService {
      * @param pageable
      * @return Page<RewardLog>
      */
-    public Page<RewardLog> list(String searchString, Pageable pageable, Long storeId, String phoneNumber ){
-        return repository.list( searchString, pageable, storeId, phoneNumber );
+    public Page<RewardLog> list(String searchString, Pageable pageable, Long storeId, String phoneNumber, RewardStatus status){
+        return repository.list( searchString, pageable, storeId, phoneNumber, status );
     }
 
     /**
@@ -40,6 +40,17 @@ public class RewardLogService {
      */
     public RewardLog findById( Long logId ){
         return repository.findById( logId ).orElseThrow( () -> new ApiException(ErrorCode.REWARD_LOG_NOT_FOUND) );
+    }
+
+    /**
+     * 리워드 로그 개수 조회
+     * @param storeId
+     * @param phoneNumber
+     * @param searchString
+     * @return Page<RewardLog>
+     */
+    public Long countList(String searchString, Long storeId, String phoneNumber, RewardStatus status){
+        return repository.listCount( searchString, storeId, phoneNumber, status);
     }
 
     /**
