@@ -9,6 +9,8 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
+import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
+import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.user.User;
 import im.fooding.core.model.waiting.*;
 import im.fooding.core.service.plan.PlanService;
@@ -20,12 +22,10 @@ import im.fooding.core.service.waiting.WaitingUserService;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.app.dto.request.pos.waiting.PosWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
-import im.fooding.core.model.store.Store;
 import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.app.dto.request.pos.waiting.PosWaitingOccupancyUpdateRequest;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -33,7 +33,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import org.springframework.util.StringUtils;
 
 @Service
 @Transactional(readOnly = true)
@@ -49,6 +48,7 @@ public class PosWaitingService {
     private final WaitingLogService waitingLogService;
     private final UserService userService;
     private final PlanService planService;
+    private final EventProducerService eventProducerService;
 
     public PosStoreWaitingResponse details(long id) {
         return PosStoreWaitingResponse.from(storeWaitingService.get(id));
@@ -132,7 +132,8 @@ public class PosWaitingService {
         String name = request.name();
         String phoneNumber = request.phoneNumber();
 
-        Optional<User> user = userService.findOptionalByPhoneNumber(phoneNumber);
+        User user = userService.findOptionalByPhoneNumber(phoneNumber)
+                .orElse(null);
         WaitingUser waitingUser = null;
         if ((name != null && !name.isBlank())
                 || (phoneNumber != null && !phoneNumber.isBlank())
@@ -140,16 +141,22 @@ public class PosWaitingService {
             waitingUser = getOrRegisterUser(request, phoneNumber, waiting);
         }
 
-        StoreWaiting storeWaiting = registerStoreWaiting(request, waiting, user.orElse(null), waitingUser);
+        StoreWaiting storeWaiting = registerStoreWaiting(request, waiting, user, waitingUser);
 
         waitingLogService.logRegister(storeWaiting);
 
         if (storeWaiting.getUser() != null) {
             planService.create(storeWaiting);
         }
-        if (StringUtils.hasText(phoneNumber)) {
-            sendSmsNotification(waiting, storeWaiting, phoneNumber);
-        }
+
+        eventProducerService.publishEvent(
+                StoreWaitingRegisteredEvent.class.getSimpleName(),
+                new StoreWaitingRegisteredEvent(
+                        storeWaiting.getId(),
+                        user != null ? user.getId() : null,
+                        waitingUser != null ? waitingUser.getId() : null
+                )
+        );
     }
 
     private WaitingUser getOrRegisterUser(PosWaitingRegisterRequest request, String phoneNumber, Waiting waiting) {
@@ -178,20 +185,6 @@ public class PosWaitingService {
                 .build();
 
         return storeWaitingService.register(storeWaitingRegisterRequest);
-    }
-
-    private void sendSmsNotification(Waiting waiting, StoreWaiting storeWaiting, String phoneNumber) {
-        int order = storeWaitingService.getOrder(storeWaiting.getId());
-        int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
-
-        Store store = waiting.getStore();
-        userNotificationApplicationService.sendSmsWaitingRegisterMessage(
-                store.getName(),
-                personnel,
-                order,
-                storeWaiting.getCallNumber(),
-                phoneNumber
-        );
     }
 
     @Transactional
