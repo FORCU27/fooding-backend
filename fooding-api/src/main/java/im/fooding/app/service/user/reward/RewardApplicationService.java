@@ -4,6 +4,7 @@ package im.fooding.app.service.user.reward;
 import im.fooding.app.dto.request.app.coupon.AppSearchCouponRequest;
 import im.fooding.app.dto.request.user.reward.GetRewardLogRequest;
 import im.fooding.app.dto.request.user.reward.GetRewardPointRequest;
+import im.fooding.app.dto.request.user.reward.GetUserRewardLogRequest;
 import im.fooding.app.dto.request.user.reward.UpdateRewardPointRequest;
 import im.fooding.app.dto.response.app.coupon.AppUserCouponResponse;
 import im.fooding.app.dto.response.user.reward.GetRewardLogResponse;
@@ -58,7 +59,23 @@ public class RewardApplicationService {
      * @return StoreDeviceResponse
      */
     public Page<GetRewardLogResponse> getRewardLog(GetRewardLogRequest request){
-        return logService.list(request.getSearchString(), request.getPageable(), request.getStoreId(), request.getPhoneNumber()).map(GetRewardLogResponse::of);
+        return logService.list(request.getSearchString(), request.getPageable(), request.getStoreId(), request.getPhoneNumber(), request.getStatus()).map(GetRewardLogResponse::of);
+    }
+
+    /**
+     * Reward 개인 로그 조회
+     *
+     * @param userId
+     * @param request
+     * @return PageResponse<GetRewardPointResponse>
+     */
+    public PageResponse<GetRewardLogResponse> getUserRewardLog(long userId, GetUserRewardLogRequest request){
+        User user = userService.findById( userId );
+        String phoneNumber = user.getPhoneNumber();
+
+        if( phoneNumber == null ) return null;
+        Page<GetRewardLogResponse> result = logService.list( null, request.getPageable(), null, phoneNumber, request.getStatus() ).map( GetRewardLogResponse::of );
+        return PageResponse.of( result.stream().toList(), PageInfo.of( result ) );
     }
 
     /**
@@ -70,6 +87,15 @@ public class RewardApplicationService {
     public Page<GetRewardPointResponse> getRewardPoint(GetRewardPointRequest request){
         return pointService.list( request.getSearchString(), request.getStoreId(), request.getPhoneNumber(), request.getPageable() ).map( GetRewardPointResponse::of );
     }
+
+    public Long getLogCount( Long storeId, long userId, RewardStatus status ) {
+        User user = userService.findById( userId );
+        String phoneNumber = user.getPhoneNumber();
+
+        if( phoneNumber == null ) return null;
+        return logService.countList( null, storeId, phoneNumber, status );
+    }
+
 
     /**
      * Reward 적립
