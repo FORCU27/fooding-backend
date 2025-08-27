@@ -6,22 +6,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum StoreCategory {
-    KOREAN("한식"),
-    JAPANESE("일식"),
-    CHINESE("중식"),
-    WESTERN("양식"),
-    ASIAN("아시안푸드"),
-
+    PORK("족발/보쌈"),
+    MEAT("고기"),
     CHICKEN("치킨"),
-    PORK_FEET("족발보쌈"),
-    BBQ("고기"),
-    STREET_FOOD("분식"),
-    BURGER_SALAD("햄버거샐러드"),
-    LUNCHBOX_PORRIDGE("도시락죽"),
-
+    JAPANESE("일식"),
+    WESTERN("양식"),
+    CHINESE("중식"),
+    KOREAN("한식"),
+    ASIAN("아시안 푸드"),
+    LUNCHBOX_PORRIDGE("도시락/죽"),
+    CAFE_DESSERT("카페/디저트"),
+    BURGER("햄버거"),
+    SALAD("샐러드"),
+    SNACK("분식"),
     SEAFOOD("수산물"),
-    SNACKS("술안주"),
-    CAFE_DESSERT("카페디저트");
+    SIDE_DISH("술안주"),
+    ;
 
     private final String name;
 }

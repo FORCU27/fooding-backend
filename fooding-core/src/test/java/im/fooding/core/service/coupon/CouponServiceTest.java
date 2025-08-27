@@ -7,6 +7,7 @@ import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.coupon.*;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.repository.coupon.CouponRepository;
 import im.fooding.core.repository.region.RegionRepository;
 import im.fooding.core.repository.store.StoreRepository;
@@ -199,14 +200,11 @@ class CouponServiceTest extends TestConfig {
         Store store = Store.builder()
                 .name("테스트가게")
                 .region(saveRegion())
-                .city("테스트")
                 .address("테스트")
-                .category("테스트")
+                .category(StoreCategory.KOREAN)
                 .description("테스트")
-                .priceCategory("테스트")
                 .contactNumber("테스트")
                 .direction("테스트")
-                .information("테스트")
                 .build();
         return storeRepository.save(store);
     }
