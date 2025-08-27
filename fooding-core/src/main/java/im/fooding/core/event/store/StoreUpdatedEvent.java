@@ -1,6 +1,7 @@
 package im.fooding.core.event.store;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import im.fooding.core.model.store.StoreCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ public class StoreUpdatedEvent {
 
     private String name;
 
-    private String category;
+    private StoreCategory category;
 
     private String address;
 
