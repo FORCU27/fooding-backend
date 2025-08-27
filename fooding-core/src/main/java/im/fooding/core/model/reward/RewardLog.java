@@ -41,6 +41,9 @@ public class RewardLog extends BaseEntity {
     @Enumerated( EnumType.STRING )
     private RewardChannel channel;
 
+    @Column( name = "memo" )
+    private String memo;
+
     @Builder
     public RewardLog(
             Store store,
@@ -48,7 +51,8 @@ public class RewardLog extends BaseEntity {
             int point,
             RewardStatus status,
             RewardType type,
-            RewardChannel channel
+            RewardChannel channel,
+            String memo
     ){
         this.store = store;
         this.phoneNumber = phoneNumber;
@@ -56,9 +60,12 @@ public class RewardLog extends BaseEntity {
         this.status = status;
         this.type = type;
         this.channel = channel;
+        this.memo = memo;
     }
 
     public void updateStatus( RewardStatus status ){
         this.status = status;
     }
+
+    public void updateMemo( String memo ) { this.memo = memo; }
 }

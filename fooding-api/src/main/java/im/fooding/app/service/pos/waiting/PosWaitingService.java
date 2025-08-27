@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import org.springframework.util.StringUtils;
 
 @Service
 @Transactional(readOnly = true)
@@ -146,8 +147,9 @@ public class PosWaitingService {
         if (storeWaiting.getUser() != null) {
             planService.create(storeWaiting);
         }
-
-        sendNotification(waiting, storeWaiting);
+        if (StringUtils.hasText(phoneNumber)) {
+            sendSmsNotification(waiting, storeWaiting, phoneNumber);
+        }
     }
 
     private WaitingUser getOrRegisterUser(PosWaitingRegisterRequest request, String phoneNumber, Waiting waiting) {
@@ -178,18 +180,20 @@ public class PosWaitingService {
         return storeWaitingService.register(storeWaitingRegisterRequest);
     }
 
-    private void sendNotification(Waiting waiting, StoreWaiting storeWaiting) {
+    private void sendSmsNotification(Waiting waiting, StoreWaiting storeWaiting, String phoneNumber) {
         int order = storeWaitingService.getOrder(storeWaiting.getId());
         int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
 
         Store store = waiting.getStore();
-        userNotificationApplicationService.sendWaitingRegisterMessage(
+        userNotificationApplicationService.sendSmsWaitingRegisterMessage(
                 store.getName(),
                 personnel,
                 order,
-                storeWaiting.getCallNumber()
+                storeWaiting.getCallNumber(),
+                phoneNumber
         );
     }
+
     @Transactional
     public void updateWaitingStatus(long id, String statusValue) {
         Waiting waiting = waitingService.get(id);
