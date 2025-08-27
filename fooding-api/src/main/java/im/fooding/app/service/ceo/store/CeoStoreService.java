@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -63,12 +64,10 @@ public class CeoStoreService {
     @Transactional
     public void update(Long id, CeoUpdateStoreRequest request, long userId) {
         storeMemberService.checkMember(id, userId);
-        Region region = regionService.get(request.getRegionId());
-
         // 주소를 통해 인근 지하철역 조회 ( 1km 반경 내 )
         List<SubwayStation> nearStations = subwayStationService.getNearStations(request.getLatitude(), request.getLongitude());
 
-        Store store = storeService.update(id, request.getName(), region, request.getAddress(), request.getAddressDetail(), request.getCategory(), request.getDescription(),
+        Store store = storeService.update(id, request.getName(), getRegion(request.getRegionId()), request.getAddress(), request.getAddressDetail(), request.getCategory(), request.getDescription(),
                 request.getContactNumber(), request.getDirection(), false, false, request.getLatitude(), request.getLongitude(), nearStations);
 
         eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
@@ -79,5 +78,9 @@ public class CeoStoreService {
         storeMemberService.checkMember(id, deletedBy);
         storeService.delete(id, deletedBy);
         eventProducerService.publishEvent("StoreDeletedEvent", new StoreCreatedEvent(id));
+    }
+
+    private Region getRegion(String regionId) {
+        return StringUtils.hasText(regionId) ? regionService.get(regionId) : null;
     }
 }

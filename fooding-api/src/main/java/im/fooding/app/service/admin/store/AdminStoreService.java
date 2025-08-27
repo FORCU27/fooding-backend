@@ -27,6 +27,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,11 +63,9 @@ public class AdminStoreService {
     @Transactional
     public Long create(AdminCreateStoreRequest request) {
         User user = userService.findById(request.getOwnerId());
-        Region region = regionService.get(request.getRegionId());
-
         userAuthorityService.checkPermission(user.getAuthorities(), Role.CEO);
 
-        Store store = storeService.create(user, request.getName(), region, request.getAddress(), request.getAddressDetail(), request.getCategory(),
+        Store store = storeService.create(user, request.getName(), getRegion(request.getRegionId()), request.getAddress(), request.getAddressDetail(), request.getCategory(),
                 request.getDescription(), request.getContactNumber(), request.getDirection(), false, false,
                 request.getLatitude(), request.getLongitude());
 
@@ -78,11 +77,8 @@ public class AdminStoreService {
     @Transactional
     @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager")
     public void update(Long id, AdminUpdateStoreRequest request) {
-        Region region = regionService.get(request.getRegionId());
-
         List<SubwayStation> nearStations = subwayStationService.getNearStations(request.getLatitude(), request.getLongitude());
-
-        Store store = storeService.update(id, request.getName(), region, request.getAddress(), request.getAddressDetail(), request.getCategory(),
+        Store store = storeService.update(id, request.getName(), getRegion(request.getRegionId()), request.getAddress(), request.getAddressDetail(), request.getCategory(),
                 request.getDescription(), request.getContactNumber(), request.getDirection(), false, false, request.getLatitude(), request.getLongitude(), nearStations);
 
         eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
@@ -93,5 +89,9 @@ public class AdminStoreService {
     public void delete(Long id, Long deletedBy) {
         storeService.delete(id, deletedBy);
         eventProducerService.publishEvent("StoreDeletedEvent", new StoreCreatedEvent(id));
+    }
+
+    private Region getRegion(String regionId) {
+        return StringUtils.hasText(regionId) ? regionService.get(regionId) : null;
     }
 }
