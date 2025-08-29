@@ -6,7 +6,7 @@ import im.fooding.app.dto.request.admin.menu.AdminMenuUpdateRequest;
 import im.fooding.app.dto.response.admin.menu.AdminMenuResponse;
 import im.fooding.app.dto.response.admin.waiting.AdminWaitingResponse;
 import im.fooding.app.service.file.FileUploadService;
-import im.fooding.core.common.BasicSearch;
+import im.fooding.app.dto.request.admin.menu.AdminMenuListRequest;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.file.File;
@@ -52,8 +52,8 @@ public class AdminMenuService {
         return AdminMenuResponse.from(menuService.get(id));
     }
 
-    public PageResponse<AdminMenuResponse> list(BasicSearch search) {
-        Page<Menu> menus = menuService.list(search.getPageable());
+    public PageResponse<AdminMenuResponse> list(AdminMenuListRequest search) {
+        Page<Menu> menus = menuService.list(search.getStoreId(), search.getSearchString(), search.getPageable());
         return PageResponse.of(menus.stream().map(AdminMenuResponse::from).toList(), PageInfo.of(menus));
     }
 

@@ -13,19 +13,22 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 import static im.fooding.core.model.store.QStoreService.storeService;
+import im.fooding.core.model.store.StoreServiceType;
 
 @RequiredArgsConstructor
 public class QStoreServiceRepositoryImpl implements QStoreServiceRepository{
     private final JPAQueryFactory query;
 
     @Override
-    public Page<StoreService> list(String searchString, Pageable pageable) {
+    public Page<StoreService> list(String searchString, Long storeId, StoreServiceType serviceType, Pageable pageable) {
         List<StoreService> results = query
                 .select( storeService )
                 .from( storeService )
                 .where(
                         storeService.deleted.isFalse(),
-                        search( searchString )
+                        search( searchString ),
+                        storeIdFilter( storeId ),
+                        serviceTypeFilter( serviceType )
                 )
                 .orderBy( storeService.id.desc() )
                 .offset( pageable.getOffset() )
@@ -36,7 +39,9 @@ public class QStoreServiceRepositoryImpl implements QStoreServiceRepository{
                 .from( storeService )
                 .where(
                         storeService.deleted.isFalse(),
-                        search( searchString )
+                        search( searchString ),
+                        storeIdFilter( storeId ),
+                        serviceTypeFilter( serviceType )
                 );
         return PageableExecutionUtils.getPage( results, pageable, countQuery::fetchCount );
     }
@@ -44,6 +49,18 @@ public class QStoreServiceRepositoryImpl implements QStoreServiceRepository{
     private BooleanExpression search( String searchString ){
         return StringUtils.hasText( searchString )
                 ? storeService.store.name.contains( searchString )
+                : null;
+    }
+
+    private BooleanExpression storeIdFilter( Long storeId ){
+        return storeId != null
+                ? storeService.store.id.eq( storeId )
+                : null;
+    }
+    
+    private BooleanExpression serviceTypeFilter( StoreServiceType serviceType ){
+        return serviceType != null
+                ? storeService.type.eq( serviceType )
                 : null;
     }
 }

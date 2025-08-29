@@ -35,8 +35,17 @@ public class CrawlingNaverPlaceService {
     }
 
     public PageResponse<CrawlingNaverPlaceResponse> getNaverPlaces(CrawlingNaverPageRequest request) {
-        Page<CrawlingNaverPlaceResponse> naverPlaces = naverPlaceService.getNaverPlaces(request.getPageable())
+        Page<CrawlingNaverPlaceResponse> naverPlaces = naverPlaceService.getNaverPlaces(request.getPageable(), request.getIsUploaded())
                 .map(CrawlingNaverPlaceResponse::from);
         return PageResponse.of(naverPlaces.toList(), PageInfo.of(naverPlaces));
+    }
+
+    /**
+     * 단일 NaverPlace 조회
+     */
+    public CrawlingNaverPlaceResponse getNaverPlace(Long id) {
+        return naverPlaceService.findById(id)
+                .map(CrawlingNaverPlaceResponse::from)
+                .orElseThrow(() -> new RuntimeException("NaverPlace를 찾을 수 없습니다: " + id));
     }
 }

@@ -34,9 +34,11 @@ public class RegionService {
         return regionRepository.findAllByDeletedFalse(pageable);
     }
 
-    public Page<Region> list(Region parentRegion, Integer level, Pageable pageable) {
-        return regionRepository.listActive(parentRegion, level, pageable);
+    public Page<Region> list(Region parentRegion, Integer level, String searchString, Pageable pageable) {
+        return regionRepository.listActive(parentRegion, level, searchString, pageable);
     }
+
+    // Note: name filtering can be applied at service/controller level if needed.
 
     @Transactional
     public void update(RegionUpdateRequest request) {

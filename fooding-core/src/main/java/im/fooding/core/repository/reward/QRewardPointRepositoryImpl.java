@@ -23,21 +23,28 @@ public class QRewardPointRepositoryImpl implements QRewardPointRepository{
         BooleanBuilder condition = new BooleanBuilder();
         condition.and( rewardPoint.deleted.isFalse() );
 
+        if (storeId != null) {
+            condition.and(rewardPoint.store.id.eq(storeId));
+        }
+        if (phoneNumber != null) {
+            condition.and(rewardPoint.phoneNumber.eq(phoneNumber));
+        }
+        if (searchString != null && !searchString.isBlank()) {
+            condition.and(rewardPoint.store.name.containsIgnoreCase(searchString));
+        }
+
         List<RewardPoint> results = query
                 .select( rewardPoint )
                 .from( rewardPoint )
                 .where( condition )
-                .where( rewardPoint.store.id.eq( storeId ) )
-                .where( rewardPoint.phoneNumber.eq( phoneNumber ) )
+                .orderBy(rewardPoint.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
         JPAQuery<Long> countQuery = query
                 .select( rewardPoint.count() )
                 .from( rewardPoint )
-                .where( condition )
-                .where( rewardPoint.store.id.eq( storeId ) )
-                .where( rewardPoint.phoneNumber.eq( phoneNumber ) );
+                .where( condition );
         return PageableExecutionUtils.getPage(
                 results, pageable, countQuery::fetchCount
         );
@@ -45,6 +52,6 @@ public class QRewardPointRepositoryImpl implements QRewardPointRepository{
 
     private BooleanExpression search( String searchString ){
         return StringUtils.hasText( searchString )
-                ? rewardPoint.store.name.contains( searchString ) : null;
+                ? rewardPoint.store.name.containsIgnoreCase( searchString ) : null;
     }
 }

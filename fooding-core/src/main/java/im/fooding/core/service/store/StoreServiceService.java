@@ -50,11 +50,13 @@ public class StoreServiceService {
      * 스토어 서비스 전제 조회
      *
      * @param searchString
+     * @param storeId 가게 ID (선택사항, null이면 전체 조회)
+     * @param serviceType 서비스 타입 (선택사항, null이면 전체 조회)
      * @param pageable
      * @return Page<StoreService>
      */
-    public Page<StoreService> list(String searchString, Pageable pageable ){
-        return repository.list( searchString, pageable );
+    public Page<StoreService> list(String searchString, Long storeId, StoreServiceType serviceType, Pageable pageable ){
+        return repository.list( searchString, storeId, serviceType, pageable );
     }
 
     /**
