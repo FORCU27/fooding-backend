@@ -97,7 +97,8 @@ public class Store extends BaseEntity {
                   boolean isNewOpen,
                   boolean isTakeOut,
                   Double latitude,
-                  Double longitude
+                  Double longitude,
+                  StoreStatus status
     ) {
         this.owner = owner;
         this.name = name;
@@ -171,8 +172,7 @@ public class Store extends BaseEntity {
     public void decreaseBookmarkCount() {
         this.bookmarkCount--;
     }
-
-    public void setNearSubwayStations(List<SubwayStation> stations) {
+    
     public void updateStatus(StoreStatus status) {
         this.status = status;
     }

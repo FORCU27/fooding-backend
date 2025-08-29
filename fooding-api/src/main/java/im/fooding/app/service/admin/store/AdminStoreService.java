@@ -93,6 +93,8 @@ public class AdminStoreService {
 
     private Region getRegion(String regionId) {
         return StringUtils.hasText(regionId) ? regionService.get(regionId) : null;
+    }
+
     @Transactional
     @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
     public void approve(Long id) {
