@@ -25,7 +25,7 @@ public class UserRegionService {
             parentRegion = regionService.get(request.getParentRegionId());
         }
 
-        Page<Region> regions = regionService.list(parentRegion, request.getLevel(), request.getPageable());
+        Page<Region> regions = regionService.list(parentRegion, request.getLevel(), request.getSearchString(), request.getPageable());
         return PageResponse.of(
                 regions.stream().map(UserRegionResponse::from).toList(),
                 PageInfo.of(regions)

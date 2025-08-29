@@ -42,7 +42,12 @@ public class AdminRegionService {
     }
 
     public PageResponse<AdminRegionResponse> list(@Valid AdminRegionListRequest request) {
-        Page<Region> regions = regionService.list(request.getPageable());
+        Region parentRegion = null;
+        if (request.getParentRegionId() != null) {
+            parentRegion = regionService.get(request.getParentRegionId());
+        }
+
+        Page<Region> regions = regionService.list(parentRegion, null, request.getSearchString(), request.getPageable());
         return PageResponse.of(
                 regions.stream().map(AdminRegionResponse::from).toList(),
                 PageInfo.of(regions)

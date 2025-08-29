@@ -6,5 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface QRegionRepository {
 
-    Page<Region> listActive(Region parentRegion, Integer level, Pageable pageable);
+    // Extended: add searchString for name like filtering
+    Page<Region> listActive(Region parentRegion, Integer level, String searchString, Pageable pageable);
 }
