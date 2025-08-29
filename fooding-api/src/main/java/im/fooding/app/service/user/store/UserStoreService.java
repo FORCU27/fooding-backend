@@ -58,7 +58,7 @@ public class UserStoreService {
             StoreStatus.SUSPENDED, 
             StoreStatus.CLOSED
         );
-        Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), false, userVisibleStatuses);
+        Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), false, userVisibleStatuses, null);
         List<UserStoreListResponse> list = stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList();
 
         if (list != null && !list.isEmpty()) {
