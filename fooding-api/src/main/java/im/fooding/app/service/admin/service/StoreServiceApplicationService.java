@@ -42,7 +42,8 @@ public class StoreServiceApplicationService {
      * @return PageResponse<StoreServiceResponse>
      */
     public PageResponse<StoreServiceResponse> list(RetrieveStoreServiceRequest request){
-        Page<im.fooding.core.model.store.StoreService> result = service.list("", request.getPageable() );
+        Page<im.fooding.core.model.store.StoreService> result = service.list("", request.getStoreId(), request.getPageable());
+        
         PageInfo pageinfo = PageInfo.of( result );
         return PageResponse.of(
                 result.getContent().stream().map(StoreServiceResponse::of).collect(Collectors.toList()),

@@ -5,5 +5,5 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface QStoreServiceRepository {
-    Page<StoreService> list( String searchString, Pageable pageable );
+    Page<StoreService> list( String searchString, Long storeId, Pageable pageable );
 }
