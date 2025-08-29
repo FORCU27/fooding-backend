@@ -10,6 +10,7 @@ import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.store.document.StoreDocument;
 import lombok.RequiredArgsConstructor;
@@ -34,11 +35,11 @@ public class StoreDocumentService {
     private final ElasticsearchClient client;
     private final ObjectMapper objectMapper;
 
-    public void save(Long id, String name, String category, String address, int reviewCount, double averageRating, int visitCount, LocalDateTime createdAt) throws IOException {
+    public void save(Long id, String name, StoreCategory category, String address, int reviewCount, double averageRating, int visitCount, LocalDateTime createdAt) throws IOException {
         StoreDocument storeDocument = StoreDocument.builder()
                 .id(id)
                 .name(name)
-                .category(category)
+                .category(category.name())
                 .address(address)
                 .reviewCount(reviewCount)
                 .averageRating(averageRating)

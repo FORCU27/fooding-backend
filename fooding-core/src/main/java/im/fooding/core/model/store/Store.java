@@ -5,15 +5,14 @@ import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.User;
 import jakarta.persistence.*;
-
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.List;
 
 
 @Entity
@@ -36,36 +35,23 @@ public class Store extends BaseEntity {
     @JoinColumn(name = "region_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Region region;
 
-    @Column(name = "city", nullable = false)
-    private String city;
-
     @Column(name = "address", nullable = false)
     private String address;
 
+    private String addressDetail;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "category", nullable = false)
-    private String category;
+    private StoreCategory category;
 
     @Column(name = "description", nullable = false)
     private String description;
-
-    @Column(name = "price_category", nullable = false)
-    private String priceCategory;
-
-    @Column(name = "event_description")
-    private String eventDescription;
 
     @Column(name = "contact_number", nullable = false)
     private String contactNumber;
 
     @Column(nullable = false)
     private String direction;
-
-    @Column(nullable = false)
-    private String information;
-
-    @Column(nullable = false)
-    @ColumnDefault("false")
-    private boolean isParkingAvailable;
 
     @Column(nullable = false)
     private boolean isNewOpen;
@@ -94,38 +80,29 @@ public class Store extends BaseEntity {
     private List<StoreImage> images;
 
     @Builder
-    private Store(
-            User owner,
-            String name,
-            Region region,
-            String city,
-            String address,
-            String category,
-            String description,
-            String contactNumber,
-            String priceCategory,
-            String eventDescription,
-            String direction,
-            String information,
-            boolean isParkingAvailable,
-            boolean isNewOpen,
-            boolean isTakeOut,
-            Double latitude,
-            Double longitude
+    private Store(User owner,
+                  String name,
+                  Region region,
+                  String address,
+                  String addressDetail,
+                  StoreCategory category,
+                  String description,
+                  String contactNumber,
+                  String direction,
+                  boolean isNewOpen,
+                  boolean isTakeOut,
+                  Double latitude,
+                  Double longitude
     ) {
         this.owner = owner;
         this.name = name;
         this.region = region;
-        this.city = city;
         this.address = address;
+        this.addressDetail = addressDetail;
         this.category = category;
         this.description = description;
         this.contactNumber = contactNumber;
-        this.priceCategory = priceCategory;
-        this.eventDescription = eventDescription;
         this.direction = direction;
-        this.information = information;
-        this.isParkingAvailable = isParkingAvailable;
         this.isNewOpen = isNewOpen;
         this.isTakeOut = isTakeOut;
         this.latitude = latitude;
@@ -136,16 +113,12 @@ public class Store extends BaseEntity {
     public void update(
             String name,
             Region region,
-            String city,
             String address,
-            String category,
+            String addressDetail,
+            StoreCategory category,
             String description,
             String contactNumber,
-            String priceCategory,
-            String eventDescription,
             String direction,
-            String information,
-            boolean isParkingAvailable,
             boolean isNewOpen,
             boolean isTakeOut,
             Double latitude,
@@ -153,16 +126,12 @@ public class Store extends BaseEntity {
     ) {
         this.name = name;
         this.region = region;
-        this.city = city;
         this.address = address;
+        this.addressDetail = addressDetail;
         this.category = category;
         this.description = description;
         this.contactNumber = contactNumber;
-        this.priceCategory = priceCategory;
-        this.eventDescription = eventDescription;
         this.direction = direction;
-        this.information = information;
-        this.isParkingAvailable = isParkingAvailable;
         this.isNewOpen = isNewOpen;
         this.isTakeOut = isTakeOut;
         this.latitude = latitude;
@@ -193,7 +162,7 @@ public class Store extends BaseEntity {
         this.bookmarkCount--;
     }
 
-    public void setNearSubwayStations(List<SubwayStation> stations){
+    public void setNearSubwayStations(List<SubwayStation> stations) {
         this.subwayStations = stations;
     }
 

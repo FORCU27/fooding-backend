@@ -25,9 +25,6 @@ public class UserBookmarkResponse {
     @Schema(description = "가게명", example = "홍길동 식당", requiredMode = RequiredMode.REQUIRED)
     private String name;
 
-    @Schema(description = "가게가 위치한 도시", example = "합정", requiredMode = RequiredMode.REQUIRED)
-    private String city;
-
     @Schema(description = "해당 가게의 총 방문수", example = "1000", requiredMode = RequiredMode.REQUIRED)
     private int visitCount;
 
@@ -50,11 +47,10 @@ public class UserBookmarkResponse {
     private List<UserStoreImageResponse> images;
 
     @Builder
-    private UserBookmarkResponse(Long id, Long storeId, String name, String city, int visitCount, int reviewCount, int bookmarkCount, double averageRating, Integer estimatedWaitingTimeMinutes, List<UserStoreImageResponse> images) {
+    private UserBookmarkResponse(Long id, Long storeId, String name, int visitCount, int reviewCount, int bookmarkCount, double averageRating, Integer estimatedWaitingTimeMinutes, List<UserStoreImageResponse> images) {
         this.id = id;
         this.storeId = storeId;
         this.name = name;
-        this.city = city;
         this.visitCount = visitCount;
         this.reviewCount = reviewCount;
         this.bookmarkCount = bookmarkCount;
@@ -74,7 +70,6 @@ public class UserBookmarkResponse {
                 .id(store.getId())
                 .storeId(store.getId())
                 .name(store.getName())
-                .city(store.getCity())
                 .visitCount(store.getVisitCount())
                 .reviewCount(store.getReviewCount())
                 .bookmarkCount(store.getBookmarkCount())
