@@ -69,6 +69,7 @@ public class Menu extends BaseEntity {
 
     @Builder
     private Menu(
+            Store store,
             MenuCategory category,
             String name,
             BigDecimal price,
@@ -78,6 +79,7 @@ public class Menu extends BaseEntity {
             boolean isSignature,
             boolean isRecommend
     ) {
+        this.store = store;
         this.category = category;
         this.name = name;
         this.price = price;
