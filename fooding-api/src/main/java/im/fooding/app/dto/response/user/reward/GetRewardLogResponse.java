@@ -20,6 +20,9 @@ public class GetRewardLogResponse {
     @Schema( description = "가게 이름" )
     private String storeName;
 
+    @Schema( description = "가게 ID" )
+    private long storeId;
+
     @Schema( description = "전화번호" )
     private String phoneNumber;
 
@@ -39,9 +42,10 @@ public class GetRewardLogResponse {
     private LocalDateTime createdAt;
 
     @Builder
-    public GetRewardLogResponse( Long id, String storeName, String phoneNumber, int point, RewardStatus status, RewardType type, RewardChannel channel, LocalDateTime createdAt ){
+    public GetRewardLogResponse( Long id, String storeName, long storeId, String phoneNumber, int point, RewardStatus status, RewardType type, RewardChannel channel, LocalDateTime createdAt ){
         this.id = id;
         this.storeName = storeName;
+        this.storeId = storeId;
         this.phoneNumber = phoneNumber;
         this.point = point;
         this.status = status;
@@ -54,6 +58,7 @@ public class GetRewardLogResponse {
         return GetRewardLogResponse.builder()
                 .id(rewardLog.getId())
                 .storeName(rewardLog.getStore().getName())
+                .storeId(rewardLog.getStore().getId())
                 .phoneNumber(rewardLog.getPhoneNumber())
                 .point(rewardLog.getPoint())
                 .status(rewardLog.getStatus())

@@ -28,7 +28,8 @@ public class PosRewardService {
                 request.getSearchString(),
                 request.getPageable(),
                 request.getStoreId(),
-                request.getPhoneNumber()
+                request.getPhoneNumber(),
+                request.getStatus()
         ).map( GetPosRewardResponse::of );
         return PageResponse.of( result.stream().toList(), PageInfo.of( result ) );
     }
