@@ -3,12 +3,14 @@ package im.fooding.core.repository.store;
 import im.fooding.core.dto.request.store.StoreFilter;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreSortType;
+import im.fooding.core.model.store.StoreStatus;
 import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface QStoreRepository {
 
@@ -16,12 +18,13 @@ public interface QStoreRepository {
             Pageable pageable,
             StoreSortType sortType,
             SortDirection sortDirection,
-            boolean includeDeleted
+            boolean includeDeleted,
+            Set<StoreStatus> statuses
     );
 
     List<Store> listByUserId(long userId, StoreFilter filter);
 
-    Optional<Store> retrieve(long storeId);
+    Optional<Store> retrieve(long storeId, Set<StoreStatus> statuses);
 
-    List<Store> list(List<Long> ids);
+    List<Store> list(List<Long> ids, Set<StoreStatus> statuses);
 }

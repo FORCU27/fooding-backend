@@ -58,4 +58,39 @@ public class AdminStoreController {
         adminStoreService.delete(id, userInfo.getId());
         return ApiResult.ok();
     }
+
+    @PutMapping("/{id}/approve")
+    @Operation(summary = "매장 승인")
+    public ApiResult<Void> approve(@PathVariable Long id) {
+        adminStoreService.approve(id);
+        return ApiResult.ok();
+    }
+
+    @PutMapping("/{id}/reject")
+    @Operation(summary = "매장 거부")
+    public ApiResult<Void> reject(@PathVariable Long id) {
+        adminStoreService.reject(id);
+        return ApiResult.ok();
+    }
+
+    @PutMapping("/{id}/suspend")
+    @Operation(summary = "매장 일시정지")
+    public ApiResult<Void> suspend(@PathVariable Long id) {
+        adminStoreService.suspend(id);
+        return ApiResult.ok();
+    }
+
+    @PutMapping("/{id}/close")
+    @Operation(summary = "매장 폐업")
+    public ApiResult<Void> close(@PathVariable Long id) {
+        adminStoreService.close(id);
+        return ApiResult.ok();
+    }
+
+    @PutMapping("/{id}/pending")
+    @Operation(summary = "매장 심사중으로 변경")
+    public ApiResult<Void> setPending(@PathVariable Long id) {
+        adminStoreService.setPending(id);
+        return ApiResult.ok();
+    }
 }

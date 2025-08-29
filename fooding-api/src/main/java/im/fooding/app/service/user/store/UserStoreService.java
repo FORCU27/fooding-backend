@@ -18,6 +18,7 @@ import im.fooding.core.model.store.information.StoreOperatingHour;
 import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingStatus;
+import im.fooding.core.model.store.StoreStatus;
 import im.fooding.core.service.bookmark.BookmarkService;
 import im.fooding.core.service.store.StoreOperatingHourService;
 import im.fooding.core.service.store.StoreService;
@@ -36,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.EnumSet;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +52,13 @@ public class UserStoreService {
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreListResponse> list(UserSearchStoreRequest request, UserInfo userInfo) {
-        Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), false);
+        Set<StoreStatus> userVisibleStatuses = EnumSet.of(
+            StoreStatus.APPROVED, 
+            StoreStatus.REJECTED, 
+            StoreStatus.SUSPENDED, 
+            StoreStatus.CLOSED
+        );
+        Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), false, userVisibleStatuses);
         List<UserStoreListResponse> list = stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList();
 
         if (list != null && !list.isEmpty()) {
@@ -72,7 +80,13 @@ public class UserStoreService {
 
             List<Long> ids = stores.getContent().stream().map(StoreDocument::getId).toList();
 
-            List<UserStoreListResponse> list = storeService.list(ids).stream()
+            Set<StoreStatus> userVisibleStatuses = EnumSet.of(
+                StoreStatus.APPROVED, 
+                StoreStatus.REJECTED, 
+                StoreStatus.SUSPENDED, 
+                StoreStatus.CLOSED
+            );
+            List<UserStoreListResponse> list = storeService.list(ids, userVisibleStatuses).stream()
                     .map(store -> UserStoreListResponse.of(store, null))
                     .toList();
 
@@ -96,7 +110,13 @@ public class UserStoreService {
 
     @Transactional
     public UserStoreResponse retrieve(Long id, UserInfo userInfo) {
-        Store store = storeService.retrieve(id);
+        Set<StoreStatus> userVisibleStatuses = EnumSet.of(
+            StoreStatus.APPROVED, 
+            StoreStatus.REJECTED, 
+            StoreStatus.SUSPENDED, 
+            StoreStatus.CLOSED
+        );
+        Store store = storeService.retrieve(id, userVisibleStatuses);
         storeService.increaseVisitCount(store);
         UserStoreResponse userStoreResponse = UserStoreResponse.of(store, null);
 

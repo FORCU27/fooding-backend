@@ -46,7 +46,7 @@ public class AdminStoreService {
 
     @Transactional(readOnly = true)
     public PageResponse<AdminStoreResponse> list(AdminSearchStoreRequest request) {
-        Page<Store> result = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), false);
+        Page<Store> result = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), false, null);
         PageInfo pageInfo = PageInfo.of(result);
         return PageResponse.of(
                 result.getContent().stream().map(AdminStoreResponse::new).collect(Collectors.toList()),
@@ -93,5 +93,68 @@ public class AdminStoreService {
 
     private Region getRegion(String regionId) {
         return StringUtils.hasText(regionId) ? regionService.get(regionId) : null;
+    @Transactional
+    @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
+    public void approve(Long id) {
+        Store store = storeService.findById(id);
+        store.approve();
+        
+        try {
+            storeDocumentService.save(StoreDocument.from(store));
+        } catch (IOException e) {
+            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
+        }
+    }
+
+    @Transactional
+    @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
+    public void reject(Long id) {
+        Store store = storeService.findById(id);
+        store.reject();
+        
+        try {
+            storeDocumentService.save(StoreDocument.from(store));
+        } catch (IOException e) {
+            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
+        }
+    }
+
+    @Transactional
+    @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
+    public void suspend(Long id) {
+        Store store = storeService.findById(id);
+        store.suspend();
+        
+        try {
+            storeDocumentService.save(StoreDocument.from(store));
+        } catch (IOException e) {
+            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
+        }
+    }
+
+    @Transactional
+    @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
+    public void close(Long id) {
+        Store store = storeService.findById(id);
+        store.close();
+        
+        try {
+            storeDocumentService.save(StoreDocument.from(store));
+        } catch (IOException e) {
+            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
+        }
+    }
+
+    @Transactional
+    @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
+    public void setPending(Long id) {
+        Store store = storeService.findById(id);
+        store.setPending();
+        
+        try {
+            storeDocumentService.save(StoreDocument.from(store));
+        } catch (IOException e) {
+            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
+        }
     }
 }
