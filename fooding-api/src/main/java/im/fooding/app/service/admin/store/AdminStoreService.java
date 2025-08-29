@@ -17,7 +17,6 @@ import im.fooding.core.model.user.User;
 import im.fooding.core.service.region.RegionService;
 import im.fooding.core.service.store.StoreMemberService;
 import im.fooding.core.service.store.StoreService;
-import im.fooding.core.service.store.document.StoreDocumentService;
 import im.fooding.core.service.store.subway.SubwayStationService;
 import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
@@ -28,6 +27,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +42,6 @@ public class AdminStoreService {
     private final UserAuthorityService userAuthorityService;
     private final RegionService regionService;
     private final SubwayStationService subwayStationService;
-    private final StoreDocumentService storeDocumentService;
     private final EventProducerService eventProducerService;
 
     @Transactional(readOnly = true)
@@ -64,14 +63,11 @@ public class AdminStoreService {
     @Transactional
     public Long create(AdminCreateStoreRequest request) {
         User user = userService.findById(request.getOwnerId());
-        Region region = regionService.get(request.getRegionId());
-
         userAuthorityService.checkPermission(user.getAuthorities(), Role.CEO);
 
-        Store store = storeService.create(user, request.getName(), region, request.getCity(), request.getAddress(), request.getCategory(),
-                request.getDescription(), request.getPriceCategory(), request.getEventDescription(), request.getContactNumber(),
-                request.getDirection(), request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(),
-                request.getIsTakeOut(), request.getLatitude(), request.getLongitude());
+        Store store = storeService.create(user, request.getName(), getRegion(request.getRegionId()), request.getAddress(), request.getAddressDetail(), request.getCategory(),
+                request.getDescription(), request.getContactNumber(), request.getDirection(), false, false,
+                request.getLatitude(), request.getLongitude());
 
         storeMemberService.create(store, user, StorePosition.OWNER);
         eventProducerService.publishEvent("StoreCreatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
@@ -81,13 +77,10 @@ public class AdminStoreService {
     @Transactional
     @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager")
     public void update(Long id, AdminUpdateStoreRequest request) {
-        Region region = regionService.get(request.getRegionId());
-
         List<SubwayStation> nearStations = subwayStationService.getNearStations(request.getLatitude(), request.getLongitude());
+        Store store = storeService.update(id, request.getName(), getRegion(request.getRegionId()), request.getAddress(), request.getAddressDetail(), request.getCategory(),
+                request.getDescription(), request.getContactNumber(), request.getDirection(), false, false, request.getLatitude(), request.getLongitude(), nearStations);
 
-        Store store = storeService.update(id, request.getName(), region, request.getCity(), request.getAddress(), request.getCategory(), request.getDescription(),
-                request.getContactNumber(), request.getPriceCategory(), request.getEventDescription(), request.getDirection(),
-                request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude(), nearStations);
         eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
     }
 
@@ -161,5 +154,7 @@ public class AdminStoreService {
         } catch (IOException e) {
             throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
         }
+    private Region getRegion(String regionId) {
+        return StringUtils.hasText(regionId) ? regionService.get(regionId) : null;
     }
 }

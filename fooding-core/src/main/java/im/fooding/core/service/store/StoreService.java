@@ -10,6 +10,7 @@ import im.fooding.core.global.infra.slack.SlackClient;
 import im.fooding.core.global.kafka.KafkaEventHandler;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.store.StoreStatus;
 import im.fooding.core.model.store.subway.SubwayStation;
@@ -92,16 +93,12 @@ public class StoreService {
             User owner,
             String name,
             Region region,
-            String city,
             String address,
-            String category,
+            String addressDetail,
+            StoreCategory category,
             String description,
-            String priceCategory,
-            String eventDescription,
             String contactNumber,
             String direction,
-            String information,
-            boolean isParkingAvailable,
             boolean isNewOpen,
             boolean isTakeOut,
             Double latitude,
@@ -111,16 +108,12 @@ public class StoreService {
                 .owner(owner)
                 .name(name)
                 .region(region)
-                .city(city)
                 .address(address)
+                .addressDetail(addressDetail)
                 .category(category)
                 .description(description)
-                .priceCategory(priceCategory)
-                .eventDescription(eventDescription)
                 .contactNumber(contactNumber)
                 .direction(direction)
-                .information(information)
-                .isParkingAvailable(isParkingAvailable)
                 .isNewOpen(isNewOpen)
                 .isTakeOut(isTakeOut)
                 .latitude(latitude)
@@ -133,16 +126,12 @@ public class StoreService {
             long id,
             String name,
             Region region,
-            String city,
             String address,
-            String category,
+            String addressDetail,
+            StoreCategory category,
             String description,
             String contactNumber,
-            String priceCategory,
-            String eventDescription,
             String direction,
-            String information,
-            boolean isParkingAvailable,
             boolean isNewOpen,
             boolean isTakeOut,
             Double latitude,
@@ -152,6 +141,7 @@ public class StoreService {
         Store store = findById(id);
         store.update(name, region, city, address, category, description, contactNumber, priceCategory, eventDescription,
                 direction, information, isParkingAvailable, isNewOpen, isTakeOut, latitude, longitude, store.getStatus());
+        store.update(name, region, address, addressDetail, category, description, contactNumber, direction, isNewOpen, isTakeOut, latitude, longitude);
         store.setNearSubwayStations(stations);
         return store;
     }

@@ -1,9 +1,8 @@
 package im.fooding.app.dto.response.admin.store;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import im.fooding.core.dto.request.store.SubwayStationDto;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.subway.SubwayStation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
@@ -30,44 +29,23 @@ public class AdminStoreResponse {
     @Schema(description = "지역 ID", example = "KR-11", requiredMode = RequiredMode.NOT_REQUIRED)
     private String regionId;
 
-    @Schema(description = "도시", example = "홍대", requiredMode = RequiredMode.REQUIRED)
-    private String city;
-
     @Schema(description = "주소", example = "서울특별시 마포구", requiredMode = RequiredMode.REQUIRED)
     private String address;
 
-    @Schema(description = "카테고리", example = "한식", requiredMode = RequiredMode.REQUIRED)
-    private String category;
+    @Schema(description = "주소 상세", example = "마포빌딩 2층", requiredMode = RequiredMode.NOT_REQUIRED)
+    private String addressDetail;
 
-    @Schema(description = "설명", example = "설명설명", requiredMode = RequiredMode.REQUIRED)
+    @Schema(description = "업종", example = "KOREAN", requiredMode = RequiredMode.REQUIRED)
+    private StoreCategory category;
+
+    @Schema(description = "매장소개", example = "설명설명", requiredMode = RequiredMode.REQUIRED)
     private String description;
 
-    @Schema(description = "가격대", example = "15000 ~ 30000", requiredMode = RequiredMode.REQUIRED)
-    private String priceCategory;
-
-    @Schema(description = "이벤트설명", example = "이벤트없음", requiredMode = RequiredMode.NOT_REQUIRED)
-    private String eventDescription;
-
-    @Schema(description = "연락처", example = "010-0000-0000", requiredMode = RequiredMode.REQUIRED)
+    @Schema(description = "매장번호", example = "010-0000-0000", requiredMode = RequiredMode.REQUIRED)
     private String contactNumber;
 
-    @Schema(description = "오시는길", example = "홍대입구역 2번출구 앞", requiredMode = RequiredMode.REQUIRED)
+    @Schema(description = "찾아오시는길", example = "홍대입구역 2번출구 앞", requiredMode = RequiredMode.REQUIRED)
     private String direction;
-
-    @Schema(description = "영업 정보", example = "오전9시 ~ 오후9시", requiredMode = RequiredMode.REQUIRED)
-    private String information;
-
-    @JsonProperty("isParkingAvailable")
-    @Schema(description = "주차가능여부", example = "true", requiredMode = RequiredMode.REQUIRED)
-    private boolean isParkingAvailable;
-
-    @JsonProperty("isNewOpen")
-    @Schema(description = "신규오픈여부", example = "true", requiredMode = RequiredMode.REQUIRED)
-    private boolean isNewOpen;
-
-    @JsonProperty("isTakeOut")
-    @Schema(description = "포장가능여부", example = "true", requiredMode = RequiredMode.REQUIRED)
-    private boolean isTakeOut;
 
     @Schema(description = "위도", example = "36.40947226931638", requiredMode = RequiredMode.NOT_REQUIRED)
     private Double latitude;
@@ -83,18 +61,12 @@ public class AdminStoreResponse {
         this.ownerId = store.getOwner() != null ? store.getOwner().getId() : null;
         this.name = store.getName();
         this.regionId = store.getRegionId();
-        this.city = store.getCity();
         this.address = store.getAddress();
+        this.addressDetail = store.getAddressDetail();
         this.category = store.getCategory();
         this.description = store.getDescription();
-        this.priceCategory = store.getPriceCategory();
-        this.eventDescription = store.getEventDescription();
         this.contactNumber = store.getContactNumber();
         this.direction = store.getDirection();
-        this.information = store.getInformation();
-        this.isParkingAvailable = store.isParkingAvailable();
-        this.isNewOpen = store.isNewOpen();
-        this.isTakeOut = store.isTakeOut();
         this.latitude = store.getLatitude();
         this.longitude = store.getLongitude();
         this.stations = new ArrayList<>();
