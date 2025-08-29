@@ -1,11 +1,21 @@
 package im.fooding.app.service.user.notification;
 
 import im.fooding.app.dto.response.user.notification.UserNotificationResponse;
+import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
 import im.fooding.core.global.infra.slack.SlackClient;
+import im.fooding.core.global.kafka.KafkaEventHandler;
 import im.fooding.core.global.util.RewardMessageBuilder;
 import im.fooding.core.global.util.WaitingMessageBuilder;
+import im.fooding.core.model.notification.NotificationTemplate;
 import im.fooding.core.model.notification.UserNotification;
+import im.fooding.core.model.waiting.StoreWaiting;
+import im.fooding.core.model.waiting.WaitingUser;
+import im.fooding.core.service.notification.NotificationTemplateService;
 import im.fooding.core.service.notification.UserNotificationService;
+import im.fooding.core.service.user.UserService;
+import im.fooding.core.service.waiting.StoreWaitingService;
+import im.fooding.core.service.waiting.WaitingUserService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -24,17 +34,68 @@ import im.fooding.core.common.PageResponse;
 public class UserNotificationApplicationService {
     private final SlackClient slackClient;
     private final UserNotificationService userNotificationService;
+    private final NotificationTemplateService notificationTemplateService;
+    private final WaitingUserService waitingUserService;
+    private final StoreWaitingService storeWaitingService;
+    private final UserService userService;
 
     @Value("${message.sender}")
     private String SENDER;
 
-    public void sendWaitingRegisterMessage(String storeName, int personnel, int order, int callNumber) {
-        String message = WaitingMessageBuilder.buildRegisterMessage(
+    public void sendEmailWaitingRegisterMessage(String storeName, int personnel, int order, int callNumber, String email) {
+        NotificationTemplate template = notificationTemplateService.getByType(NotificationTemplate.Type.WaitingCreatedEmail);
+        String subject = template.getSubject();
+        String content = template.getContent().formatted(
                 storeName,
                 personnel,
                 order,
-                callNumber);
+                callNumber
+        );
+        String message = WaitingMessageBuilder.buildMessage(subject, content);
         slackClient.sendNotificationMessage(message);
+    }
+
+    public void sendSmsWaitingRegisterMessage(String storeName, int personnel, int order, int callNumber, String phoneNumber) {
+        NotificationTemplate template = notificationTemplateService.getByType(NotificationTemplate.Type.WaitingCreatedSms);
+        String subject = template.getSubject();
+        String content = template.getContent().formatted(
+                storeName,
+                personnel,
+                order,
+                callNumber
+        );
+        String message = WaitingMessageBuilder.buildMessage(subject, content);
+        slackClient.sendNotificationMessage(message);
+    }
+
+    @KafkaEventHandler(StoreWaitingRegisteredEvent.class)
+    public void sendWaitingRegisterMessage(StoreWaitingRegisteredEvent event) {
+        StoreWaiting storeWaiting = storeWaitingService.get(event.storeWaitingId());
+
+        String storeName = storeWaiting.getStoreName();
+        int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
+        int order = storeWaitingService.getOrder(storeWaiting.getId());
+        int callNumber = storeWaiting.getCallNumber();
+
+        // WaitingUser 처리
+        Optional.ofNullable(storeWaiting.getWaitingUser())
+                .map(WaitingUser::getPhoneNumber)
+                .ifPresent(phoneNumber -> sendSmsWaitingRegisterMessage(
+                        storeName, personnel, order, callNumber, phoneNumber
+                ));
+
+        // User 처리
+        Optional.ofNullable(storeWaiting.getUser())
+                .ifPresent(user -> {
+                    Optional.ofNullable(user.getEmail())
+                            .ifPresent(email -> sendEmailWaitingRegisterMessage(
+                                    storeName, personnel, order, callNumber, email
+                            ));
+                    Optional.ofNullable(user.getPhoneNumber())
+                            .ifPresent(phoneNumber -> sendSmsWaitingRegisterMessage(
+                                    storeName, personnel, order, callNumber, phoneNumber
+                            ));
+                });
     }
 
     public void sendWaitingCallMessage(String store, int callNumber, int entryTimeLimit) {

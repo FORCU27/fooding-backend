@@ -4,26 +4,25 @@ import im.fooding.app.dto.request.ceo.store.CeoCreateStoreRequest;
 import im.fooding.app.dto.request.ceo.store.CeoSearchStoreRequest;
 import im.fooding.app.dto.request.ceo.store.CeoUpdateStoreRequest;
 import im.fooding.app.dto.response.ceo.store.CeoStoreResponse;
-import im.fooding.core.global.exception.ApiException;
-import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.event.store.StoreCreatedEvent;
+import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StorePosition;
-import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.region.RegionService;
 import im.fooding.core.service.store.StoreMemberService;
 import im.fooding.core.service.store.StoreService;
-import im.fooding.core.service.store.document.StoreDocumentService;
 import im.fooding.core.service.store.subway.SubwayStationService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -35,7 +34,7 @@ public class CeoStoreService {
     private final UserService userService;
     private final RegionService regionService;
     private final SubwayStationService subwayStationService;
-    private final StoreDocumentService storeDocumentService;
+    private final EventProducerService eventProducerService;
 
     @Transactional(readOnly = true)
     public List<CeoStoreResponse> list(long userId, CeoSearchStoreRequest search) {
@@ -54,51 +53,34 @@ public class CeoStoreService {
     public Long create(CeoCreateStoreRequest request, long userId) {
         User user = userService.findById(userId);
 
-        Store store = storeService.create(user, request.getName(), null, "", "", "",
-                "", "", "", "", "", "", true, true, true, null, null);
+        Store store = storeService.create(user, request.getName(), null, "", "", StoreCategory.KOREAN,
+                "", "", "", false, false, null, null);
 
         storeMemberService.create(store, user, StorePosition.OWNER);
-
-        // elasticSearch document 생성
-        try {
-            storeDocumentService.save(StoreDocument.from(store));
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
-        }
-
+        eventProducerService.publishEvent("StoreCreatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
         return store.getId();
     }
 
     @Transactional
     public void update(Long id, CeoUpdateStoreRequest request, long userId) {
         storeMemberService.checkMember(id, userId);
-        Region region = regionService.get(request.getRegionId());
-
         // 주소를 통해 인근 지하철역 조회 ( 1km 반경 내 )
         List<SubwayStation> nearStations = subwayStationService.getNearStations(request.getLatitude(), request.getLongitude());
 
-        Store store = storeService.update(id, request.getName(), region, request.getCity(), request.getAddress(), request.getCategory(), request.getDescription(),
-                request.getContactNumber(), request.getPriceCategory(), request.getEventDescription(), request.getDirection(),
-                request.getInformation(), request.getIsParkingAvailable(), request.getIsNewOpen(), request.getIsTakeOut(), request.getLatitude(), request.getLongitude(), nearStations);
+        Store store = storeService.update(id, request.getName(), getRegion(request.getRegionId()), request.getAddress(), request.getAddressDetail(), request.getCategory(), request.getDescription(),
+                request.getContactNumber(), request.getDirection(), false, false, request.getLatitude(), request.getLongitude(), nearStations);
 
-        // elasticSearch document 수정
-        try {
-            storeDocumentService.save(StoreDocument.from(store));
-        } catch (IOException e) {
-            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
-        }
+        eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
     }
 
     @Transactional
     public void delete(Long id, long deletedBy) {
         storeMemberService.checkMember(id, deletedBy);
         storeService.delete(id, deletedBy);
-        // elasticSearch document 삭제
-        try {
-            storeDocumentService.delete(id);
-        } catch (IOException e) {
-            throw new ApiException(ErrorCode.ELASTICSEARCH_DELETE_FAILED);
-        }
+        eventProducerService.publishEvent("StoreDeletedEvent", new StoreCreatedEvent(id));
+    }
+
+    private Region getRegion(String regionId) {
+        return StringUtils.hasText(regionId) ? regionService.get(regionId) : null;
     }
 }

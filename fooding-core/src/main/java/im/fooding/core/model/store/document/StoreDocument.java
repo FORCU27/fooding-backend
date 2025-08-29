@@ -1,7 +1,6 @@
 package im.fooding.core.model.store.document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import im.fooding.core.model.store.Store;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,19 +38,6 @@ public class StoreDocument {
         this.averageRating = averageRating;
         this.visitCount = visitCount;
         this.createdAt = createdAt;
-    }
-
-    public static StoreDocument from(Store store) {
-        return StoreDocument.builder()
-                .id(store.getId())
-                .name(store.getName())
-                .category(store.getCategory())
-                .address(store.getAddress())
-                .reviewCount(store.getReviewCount())
-                .averageRating(store.getAverageRating())
-                .visitCount(store.getVisitCount())
-                .createdAt(store.getCreatedAt())
-                .build();
     }
 
     public String getIndex() {

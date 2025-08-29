@@ -89,6 +89,7 @@ public class UserReviewService {
         return reviewLikeService.list(reviewIds);
     }
 
+    @Transactional
     public void create(CreateReviewRequest request){
         User user = userService.findById( request.getUserId() );
         Store store = storeService.findById( request.getStoreId() );
@@ -98,6 +99,7 @@ public class UserReviewService {
                 .taste( request.getTaste() )
                 .total( request.getTotal() )
                 .build();
+        // 리뷰 추가
         Review review = Review.builder()
                 .store( store )
                 .writer( user )
@@ -105,8 +107,9 @@ public class UserReviewService {
                 .content( request.getContent() )
                 .visitPurposeType( request.getVisitPurpose() )
                 .build();
-        reviewService.create( review );
-
+        Review result = reviewService.create( review );
+        // 리뷰 이미지 추가
+        reviewImageService.create( result, request.getImageUrls() );
         // 리뷰 수 추가
         storeService.increaseReviewCount( store );
     }

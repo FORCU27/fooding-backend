@@ -10,7 +10,6 @@ spring:
 
   elasticsearch:
     uris: http://localhost:9200
-    id: ${ELASTIC_SEARCH_ID:}
     key: ${ELASTIC_SEARCH_KEY:}
 
   data:
@@ -153,3 +152,8 @@ management:
   health:
     elasticsearch:
       enabled: false
+
+kafka:
+  internal:
+    topic: fooding.event.internal.local
+    groupId: fooding-event-internal-local

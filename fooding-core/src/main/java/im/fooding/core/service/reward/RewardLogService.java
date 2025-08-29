@@ -70,6 +70,8 @@ public class RewardLogService {
         repository.save( rewardLog );
     }
 
+    public void save( RewardLog log ){repository.save( log );}
+
     /**
      * 리워드 로그 삭제
      * @param id

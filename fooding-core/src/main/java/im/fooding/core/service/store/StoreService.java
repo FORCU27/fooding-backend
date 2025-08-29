@@ -1,14 +1,21 @@
 package im.fooding.core.service.store;
 
 import im.fooding.core.dto.request.store.StoreFilter;
+import im.fooding.core.event.store.StoreCreatedEvent;
+import im.fooding.core.event.store.StoreDeletedEvent;
+import im.fooding.core.event.store.StoreUpdatedEvent;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.global.infra.slack.SlackClient;
+import im.fooding.core.global.kafka.KafkaEventHandler;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.store.StoreRepository;
+import im.fooding.core.service.store.document.StoreDocumentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.query.SortDirection;
@@ -23,6 +30,8 @@ import java.util.List;
 @Slf4j
 public class StoreService {
     private final StoreRepository storeRepository;
+    private final StoreDocumentService storeDocumentService;
+    private final SlackClient slackClient;
 
     /**
      * 가게 목록 조회
@@ -79,16 +88,12 @@ public class StoreService {
             User owner,
             String name,
             Region region,
-            String city,
             String address,
-            String category,
+            String addressDetail,
+            StoreCategory category,
             String description,
-            String priceCategory,
-            String eventDescription,
             String contactNumber,
             String direction,
-            String information,
-            boolean isParkingAvailable,
             boolean isNewOpen,
             boolean isTakeOut,
             Double latitude,
@@ -98,16 +103,12 @@ public class StoreService {
                 .owner(owner)
                 .name(name)
                 .region(region)
-                .city(city)
                 .address(address)
+                .addressDetail(addressDetail)
                 .category(category)
                 .description(description)
-                .priceCategory(priceCategory)
-                .eventDescription(eventDescription)
                 .contactNumber(contactNumber)
                 .direction(direction)
-                .information(information)
-                .isParkingAvailable(isParkingAvailable)
                 .isNewOpen(isNewOpen)
                 .isTakeOut(isTakeOut)
                 .latitude(latitude)
@@ -120,16 +121,12 @@ public class StoreService {
             long id,
             String name,
             Region region,
-            String city,
             String address,
-            String category,
+            String addressDetail,
+            StoreCategory category,
             String description,
             String contactNumber,
-            String priceCategory,
-            String eventDescription,
             String direction,
-            String information,
-            boolean isParkingAvailable,
             boolean isNewOpen,
             boolean isTakeOut,
             Double latitude,
@@ -137,9 +134,8 @@ public class StoreService {
             List<SubwayStation> stations
     ) {
         Store store = findById(id);
-        store.update(name, region, city, address, category, description, contactNumber, priceCategory, eventDescription,
-                direction, information, isParkingAvailable, isNewOpen, isTakeOut, latitude, longitude);
-        store.setNearSubwayStations( stations );
+        store.update(name, region, address, addressDetail, category, description, contactNumber, direction, isNewOpen, isTakeOut, latitude, longitude);
+        store.setNearSubwayStations(stations);
         return store;
     }
 
@@ -174,5 +170,39 @@ public class StoreService {
 
     public void decreaseBookmarkCount(Store store) {
         store.decreaseBookmarkCount();
+    }
+
+    @KafkaEventHandler(StoreCreatedEvent.class)
+    public void handleStoreCreatedEvent(StoreCreatedEvent storeCreatedEvent) {
+        try {
+            storeDocumentService.save(storeCreatedEvent.getId(), storeCreatedEvent.getName(), storeCreatedEvent.getCategory(),
+                    storeCreatedEvent.getAddress(), storeCreatedEvent.getReviewCount(), storeCreatedEvent.getAverageRating(),
+                    storeCreatedEvent.getVisitCount(), storeCreatedEvent.getCreatedAt()
+            );
+            slackClient.sendNotificationMessage("%s 가게 생성".formatted(storeCreatedEvent.getName()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @KafkaEventHandler(StoreUpdatedEvent.class)
+    public void handleStoreUpdatedEvent(StoreUpdatedEvent storeUpdatedEvent) {
+        try {
+            storeDocumentService.save(storeUpdatedEvent.getId(), storeUpdatedEvent.getName(), storeUpdatedEvent.getCategory(),
+                    storeUpdatedEvent.getAddress(), storeUpdatedEvent.getReviewCount(), storeUpdatedEvent.getAverageRating(),
+                    storeUpdatedEvent.getVisitCount(), storeUpdatedEvent.getCreatedAt()
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @KafkaEventHandler(StoreDeletedEvent.class)
+    public void handleStoreDeletedEvent(StoreDeletedEvent storeDeletedEvent) {
+        try {
+            storeDocumentService.delete(storeDeletedEvent.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

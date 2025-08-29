@@ -63,7 +63,6 @@ jobs:
             KAKAO_MAP_API_URL=${{ secrets.STAGE_KAKAO_MAP_API_URL  }}
             JPA_DDL_AUTO=${{ secrets.STAGE_JPA_DDL_AUTO  }}
             ELASTIC_SEARCH_URIS=${{ secrets.STAGE_ELASTIC_SEARCH_URIS }}
-            ELASTIC_SEARCH_ID=${{ secrets.STAGE_ELASTIC_SEARCH_ID }}
             ELASTIC_SEARCH_KEY=${{ secrets.STAGE_ELASTIC_SEARCH_KEY }}
             MONGODB_URI=${{ secrets.STAGE_MONGODB_URI  }}
             KAFKA_BOOTSTRAP_SERVERS=${{ secrets.STAGE_KAFKA_BOOTSTRAP_SERVERS}}

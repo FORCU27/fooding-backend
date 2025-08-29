@@ -9,7 +9,6 @@ spring:
 
   elasticsearch:
     uris: ${ELASTIC_SEARCH_URIS}
-    id: ${ELASTIC_SEARCH_ID}
     key: ${ELASTIC_SEARCH_KEY}
 
   data:
@@ -138,3 +137,8 @@ management:
       show-details: always
     prometheus:
       enabled: true
+
+kafka:
+  internal:
+    topic: fooding.event.internal.production
+    groupId: fooding-event-internal-production
