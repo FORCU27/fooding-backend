@@ -136,7 +136,7 @@ public class StoreService {
             boolean isTakeOut,
             Double latitude,
             Double longitude,
-            List<SubwayStation> stations,
+            List<SubwayStation> stations
     ) {
         Store store = findById(id);
         store.update(name, region, address, addressDetail, category, description, contactNumber, direction, isNewOpen, isTakeOut, latitude, longitude, store.getStatus());
