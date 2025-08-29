@@ -103,6 +103,10 @@ public class MenuCategoryService {
         return menuCategoryRepository.findAllByDeletedFalse(pageable);
     }
 
+    public Page<MenuCategory> list(Long storeId, String searchString, Pageable pageable) {
+        return menuCategoryRepository.list(storeId, searchString, pageable);
+    }
+
     /**
      * 메뉴 카테고리 정렬
      *
