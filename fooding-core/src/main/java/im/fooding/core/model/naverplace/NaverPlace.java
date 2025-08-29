@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class NaverPlace {
 
     @Id
-    private Long id;
+    private String id;
 
     private String name;
     private String category;
@@ -29,7 +29,7 @@ public class NaverPlace {
 
     @Builder
     public NaverPlace(
-            Long id,
+            String id,
             String name,
             String category,
             String address,

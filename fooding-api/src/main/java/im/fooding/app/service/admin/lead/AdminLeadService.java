@@ -57,10 +57,25 @@ public class AdminLeadService {
      * NaverPlace를 Store로 업로드
      */
     @Transactional
-    public Long upload(Long naverPlaceId, AdminLeadUploadRequest request) {
+    public Long upload(String naverPlaceId, AdminLeadUploadRequest request) {
         User owner = userService.findById(request.getOwnerId());
         Region region = regionService.findById(request.getRegionId());
         
         return naverPlaceService.upload(naverPlaceId, owner, region);
+    }
+
+    /**
+     * 리드 상세 조회
+     */
+    public AdminLeadResponse getLead(String id) {
+        CrawlingNaverPlaceResponse naverPlace = crawlingNaverPlaceService.getNaverPlace(id);
+        
+        return AdminLeadResponse.builder()
+                .id(naverPlace.getId())
+                .name(naverPlace.getName())
+                .phone(naverPlace.getContact())
+                .source("NAVER_PLACE")
+                .createdAt("") // NaverPlace에는 createdAt 필드가 없으므로 빈 문자열로 설정
+                .build();
     }
 }

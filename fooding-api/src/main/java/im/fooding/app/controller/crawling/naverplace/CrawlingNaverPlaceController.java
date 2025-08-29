@@ -22,7 +22,7 @@ public class CrawlingNaverPlaceController {
 
     @PostMapping
     @Operation(summary = "naver-plcae crawling 데이터 저장")
-    public ApiResult<Long> create(@Valid @RequestBody CrawlingNaverPlaceCreateRequest request) {
+    public ApiResult<String> create(@Valid @RequestBody CrawlingNaverPlaceCreateRequest request) {
         return ApiResult.ok(crawlingNaverPlaceService.create(request));
     }
 

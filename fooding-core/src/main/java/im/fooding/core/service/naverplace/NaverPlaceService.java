@@ -29,8 +29,8 @@ public class NaverPlaceService {
     private final StoreService storeService;
 
     @Transactional
-    public Long create(
-            Long id,
+    public String create(
+            String id,
             String name,
             String category,
             String address,
@@ -74,6 +74,13 @@ public class NaverPlaceService {
             return new PageImpl<>(filteredPlaces, pageable, filteredPlaces.size());
         }
     }
+
+    /**
+     * ID로 NaverPlace 조회
+     */
+    public Optional<NaverPlace> findById(String id) {
+        return naverPlaceRepository.findById(id);
+    }
     
     /**
      * NaverPlace 정보를 바탕으로 Store를 생성하고 isUploaded를 true로 설정
@@ -85,7 +92,7 @@ public class NaverPlaceService {
      * @throws ApiException 이미 업로드된 경우 또는 NaverPlace를 찾을 수 없는 경우
      */
     @Transactional
-    public Long upload(Long naverPlaceId, User owner, Region region) {
+    public Long upload(String naverPlaceId, User owner, Region region) {
         NaverPlace naverPlace = naverPlaceRepository.findById(naverPlaceId)
                 .orElseThrow(() -> new ApiException(ErrorCode.NOT_FOUND, "NaverPlace를 찾을 수 없습니다: " + naverPlaceId));
         

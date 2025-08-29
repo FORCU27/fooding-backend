@@ -9,7 +9,7 @@ import lombok.Value;
 public class AdminLeadResponse {
 
     @Schema(description = "ID", example = "1")
-    Long id;
+    String id;
 
     @Schema(description = "이름", example = "홍길동")
     String name;
