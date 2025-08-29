@@ -5,7 +5,7 @@ import im.fooding.app.dto.request.admin.menu.AdminMenuUpdateRequest;
 import im.fooding.app.dto.response.admin.menu.AdminMenuResponse;
 import im.fooding.app.service.admin.menu.AdminMenuService;
 import im.fooding.core.common.ApiResult;
-import im.fooding.core.common.BasicSearch;
+import im.fooding.app.dto.request.admin.menu.AdminMenuListRequest;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.UserInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,8 +54,8 @@ public class AdminMenuController {
     @GetMapping
     @Operation(summary = "메뉴 조회(page)")
     public ApiResult<PageResponse<AdminMenuResponse>> list(
-            @Parameter(description = "검색 및 페이징 조건")
-            @ModelAttribute BasicSearch search
+            @Parameter(description = "검색 및 페이징 조건 (storeId 포함)")
+            @ModelAttribute AdminMenuListRequest search
     ) {
         return ApiResult.ok(adminMenuService.list(search));
     }

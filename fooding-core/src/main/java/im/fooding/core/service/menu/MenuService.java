@@ -51,6 +51,10 @@ public class MenuService {
         return menuRepository.findAllByDeletedFalse(pageable);
     }
 
+    public Page<Menu> list(Long storeId, String searchString, Pageable pageable) {
+        return menuRepository.list(storeId, searchString, pageable);
+    }
+
     @Transactional
     public void update(MenuUpdateRequest request) {
         Menu menu = menuRepository.findById(request.id())
