@@ -117,8 +117,7 @@ public class NaverPlaceService {
                 false, // isNewOpen
                 true,  // isTakeOut
                 null,  // latitude
-                null,  // longitude
-                List.of() // subwayStations
+                null   // longitude
         );
         
         // NaverPlace를 업로드 완료 상태로 변경
@@ -133,7 +132,7 @@ public class NaverPlaceService {
      */
     private StoreCategory convertToStoreCategory(String naverCategory) {
         if (naverCategory == null) {
-            return StoreCategory.ETC;
+            return StoreCategory.KOREAN; // 기본값을 KOREAN으로 변경
         }
         
         String lowerCategory = naverCategory.toLowerCase();
@@ -147,19 +146,17 @@ public class NaverPlaceService {
         } else if (lowerCategory.contains("양식") || lowerCategory.contains("서양")) {
             return StoreCategory.WESTERN;
         } else if (lowerCategory.contains("카페") || lowerCategory.contains("디저트")) {
-            return StoreCategory.CAFE;
+            return StoreCategory.CAFE_DESSERT;
         } else if (lowerCategory.contains("치킨") || lowerCategory.contains("닭")) {
             return StoreCategory.CHICKEN;
-        } else if (lowerCategory.contains("피자")) {
-            return StoreCategory.PIZZA;
         } else if (lowerCategory.contains("햄버거")) {
             return StoreCategory.BURGER;
         } else if (lowerCategory.contains("분식")) {
             return StoreCategory.SNACK;
         } else if (lowerCategory.contains("술") || lowerCategory.contains("바")) {
-            return StoreCategory.BAR;
+            return StoreCategory.SIDE_DISH;
         } else {
-            return StoreCategory.ETC;
+            return StoreCategory.KOREAN; // 기본값을 KOREAN으로 변경
         }
     }
 }
