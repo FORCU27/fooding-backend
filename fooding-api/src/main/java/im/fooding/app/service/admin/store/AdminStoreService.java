@@ -46,7 +46,7 @@ public class AdminStoreService {
 
     @Transactional(readOnly = true)
     public PageResponse<AdminStoreResponse> list(AdminSearchStoreRequest request) {
-        Page<Store> result = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), false, null);
+        Page<Store> result = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), false, null, request.getSearchString());
         PageInfo pageInfo = PageInfo.of(result);
         return PageResponse.of(
                 result.getContent().stream().map(AdminStoreResponse::new).collect(Collectors.toList()),

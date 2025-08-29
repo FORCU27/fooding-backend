@@ -47,6 +47,7 @@ public class AdminLeadService {
                         .phone(n.getContact())
                         .source("NAVER_PLACE")
                         .createdAt("")
+                        .isUploaded(n.isUploaded())
                         .build())
                 .collect(Collectors.toList());
 
@@ -77,6 +78,7 @@ public class AdminLeadService {
                 .phone(naverPlace.getContact())
                 .source("NAVER_PLACE")
                 .createdAt("") // NaverPlace에는 createdAt 필드가 없으므로 빈 문자열로 설정
+                .isUploaded(naverPlace.getIsUploaded())
                 .build();
     }
 }

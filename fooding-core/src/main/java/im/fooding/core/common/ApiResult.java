@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public class ApiResult<T> {
     @Schema(description = "결과", example = "OK")
-    @Builder.Default
     private HttpStatus status = HttpStatus.OK;
 
     @Schema(description = "결과데이터")

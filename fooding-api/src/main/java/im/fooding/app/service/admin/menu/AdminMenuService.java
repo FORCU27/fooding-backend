@@ -60,7 +60,7 @@ public class AdminMenuService {
     @Transactional
     public void update(long id, AdminMenuUpdateRequest request) {
         Store store = storeService.findById(request.storeId());
-        MenuCategory menuCategory = menuCategoryService.get(id);
+        MenuCategory menuCategory = menuCategoryService.get(request.categoryId());
 
         String menuImageUrl = null;
         if (StringUtils.hasText(request.imageId())) {

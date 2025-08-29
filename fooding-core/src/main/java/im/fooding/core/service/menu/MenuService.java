@@ -28,6 +28,7 @@ public class MenuService {
     @Transactional
     public void create(MenuCreateRequest request) {
         Menu menu = Menu.builder()
+                .store(request.store())
                 .category(request.category())
                 .name(request.name())
                 .price(request.price())
