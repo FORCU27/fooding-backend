@@ -35,7 +35,7 @@ public class CrawlingNaverPlaceService {
     }
 
     public PageResponse<CrawlingNaverPlaceResponse> getNaverPlaces(CrawlingNaverPageRequest request) {
-        Page<CrawlingNaverPlaceResponse> naverPlaces = naverPlaceService.getNaverPlaces(request.getPageable())
+        Page<CrawlingNaverPlaceResponse> naverPlaces = naverPlaceService.getNaverPlaces(request.getPageable(), request.getIsUploaded())
                 .map(CrawlingNaverPlaceResponse::from);
         return PageResponse.of(naverPlaces.toList(), PageInfo.of(naverPlaces));
     }
