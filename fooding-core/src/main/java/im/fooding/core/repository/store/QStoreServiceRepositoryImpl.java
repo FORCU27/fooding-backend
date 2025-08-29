@@ -19,13 +19,14 @@ public class QStoreServiceRepositoryImpl implements QStoreServiceRepository{
     private final JPAQueryFactory query;
 
     @Override
-    public Page<StoreService> list(String searchString, Pageable pageable) {
+    public Page<StoreService> list(String searchString, Long storeId, Pageable pageable) {
         List<StoreService> results = query
                 .select( storeService )
                 .from( storeService )
                 .where(
                         storeService.deleted.isFalse(),
-                        search( searchString )
+                        search( searchString ),
+                        storeIdFilter( storeId )
                 )
                 .orderBy( storeService.id.desc() )
                 .offset( pageable.getOffset() )
@@ -36,7 +37,8 @@ public class QStoreServiceRepositoryImpl implements QStoreServiceRepository{
                 .from( storeService )
                 .where(
                         storeService.deleted.isFalse(),
-                        search( searchString )
+                        search( searchString ),
+                        storeIdFilter( storeId )
                 );
         return PageableExecutionUtils.getPage( results, pageable, countQuery::fetchCount );
     }
@@ -44,6 +46,12 @@ public class QStoreServiceRepositoryImpl implements QStoreServiceRepository{
     private BooleanExpression search( String searchString ){
         return StringUtils.hasText( searchString )
                 ? storeService.store.name.contains( searchString )
+                : null;
+    }
+
+    private BooleanExpression storeIdFilter( Long storeId ){
+        return storeId != null
+                ? storeService.store.id.eq( storeId )
                 : null;
     }
 }
