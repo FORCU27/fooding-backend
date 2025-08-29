@@ -29,8 +29,8 @@ public class NaverPlaceService {
     private final StoreService storeService;
 
     @Transactional
-    public String create(
-            String id,
+    public Long create(
+            Long id,
             String name,
             String category,
             String address,
@@ -78,26 +78,26 @@ public class NaverPlaceService {
     /**
      * ID로 NaverPlace 조회
      */
-    public Optional<NaverPlace> findById(String id) {
+    public Optional<NaverPlace> findById(Long id) {
         return naverPlaceRepository.findById(id);
     }
     
     /**
      * NaverPlace 정보를 바탕으로 Store를 생성하고 isUploaded를 true로 설정
      * 
-     * @param naverPlaceId NaverPlace ID
+     * @param id NaverPlace ID
      * @param owner Store 소유자
      * @param region Store 지역
      * @return 생성된 Store ID
      * @throws ApiException 이미 업로드된 경우 또는 NaverPlace를 찾을 수 없는 경우
      */
     @Transactional
-    public Long upload(String naverPlaceId, User owner, Region region) {
-        NaverPlace naverPlace = naverPlaceRepository.findById(naverPlaceId)
-                .orElseThrow(() -> new ApiException(ErrorCode.NOT_FOUND, "NaverPlace를 찾을 수 없습니다: " + naverPlaceId));
+    public Long upload(Long id, User owner, Region region) {
+        NaverPlace naverPlace = naverPlaceRepository.findById(id)
+                .orElseThrow(() -> new ApiException(ErrorCode.NOT_FOUND, "NaverPlace를 찾을 수 없습니다: " + id));
         
         if (naverPlace.isUploaded()) {
-            throw new ApiException(ErrorCode.STORE_NOT_FOUND, "이미 업로드된 NaverPlace입니다: " + naverPlaceId);
+            throw new ApiException(ErrorCode.STORE_NOT_FOUND, "이미 업로드된 NaverPlace입니다: " + id);
         }
         
         // NaverPlace 카테고리를 StoreCategory로 변환

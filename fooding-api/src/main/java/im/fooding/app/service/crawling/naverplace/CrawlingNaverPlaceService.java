@@ -21,7 +21,7 @@ public class CrawlingNaverPlaceService {
     private final NaverPlaceService naverPlaceService;
 
     @Transactional
-    public String create(@Valid CrawlingNaverPlaceCreateRequest request) {
+    public Long create(@Valid CrawlingNaverPlaceCreateRequest request) {
         return naverPlaceService.create(
                 request.getId(),
                 request.getName(),
@@ -43,7 +43,7 @@ public class CrawlingNaverPlaceService {
     /**
      * 단일 NaverPlace 조회
      */
-    public CrawlingNaverPlaceResponse getNaverPlace(String id) {
+    public CrawlingNaverPlaceResponse getNaverPlace(Long id) {
         return naverPlaceService.findById(id)
                 .map(CrawlingNaverPlaceResponse::from)
                 .orElseThrow(() -> new RuntimeException("NaverPlace를 찾을 수 없습니다: " + id));
