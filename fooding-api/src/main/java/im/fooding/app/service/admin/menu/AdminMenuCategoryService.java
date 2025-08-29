@@ -36,7 +36,9 @@ public class AdminMenuCategoryService {
     }
 
     public PageResponse<AdminMenuCategoryResponse> list(@Valid AdminMenuCategoryListRequest request) {
-        Page<MenuCategory> menuCategories = menuCategoryService.list(request.getPageable());
+        Page<MenuCategory> menuCategories = menuCategoryService.list(
+                request.getStoreId(), request.getSearchString(), request.getPageable()
+        );
         return PageResponse.of(
                 menuCategories.stream().map(AdminMenuCategoryResponse::from).toList(),
                 PageInfo.of(menuCategories)

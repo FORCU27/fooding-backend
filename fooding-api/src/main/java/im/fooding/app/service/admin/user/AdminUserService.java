@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Slf4j
 @Service
@@ -29,7 +30,15 @@ public class AdminUserService {
 
     @Transactional(readOnly = true)
     public PageResponse<AdminUserResponse> list(AdminSearchUserRequest search) {
-        Page<User> page = userService.list(search.getSearchString(), search.getPageable(), search.getRole());
+        // email 검색이 있으면 searchString에 추가
+        String searchString = search.getSearchString();
+        if (StringUtils.hasText(search.getEmail())) {
+            searchString = StringUtils.hasText(searchString) 
+                ? searchString + " " + search.getEmail() 
+                : search.getEmail();
+        }
+        
+        Page<User> page = userService.list(searchString, search.getPageable(), search.getRole());
         return PageResponse.of(
                 page.getContent().stream().map(AdminUserResponse::from).toList(),
                 PageInfo.of(page));

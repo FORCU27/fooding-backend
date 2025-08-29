@@ -13,4 +13,7 @@ import lombok.Setter;
 public class AdminSearchUserRequest extends BasicSearch {
     @Schema(description = "role", example = "ADMIN")
     private Role role;
+    
+    @Schema(description = "이메일 검색", example = "user@example.com")
+    private String email;
 }
