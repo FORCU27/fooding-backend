@@ -30,12 +30,13 @@ public class AdminLeadService {
     private final RegionService regionService;
 
     public PageResponse<AdminLeadResponse> list(AdminLeadPageRequest request) {
-        CrawlingNaverPageRequest crawlingReq = new CrawlingNaverPageRequest(
-                request.getSearchString(),
-                request.getPageNum(),
-                request.getPageSize(),
-                request.getIsUploaded()
-        );
+        // AdminLeadPageRequest를 CrawlingNaverPageRequest로 변환
+        CrawlingNaverPageRequest crawlingReq = CrawlingNaverPageRequest.builder()
+                .searchString(request.getSearchString())
+                .pageNum(request.getPageNum())
+                .pageSize(request.getPageSize())
+                .isUploaded(request.getIsUploaded())
+                .build();
 
         PageResponse<CrawlingNaverPlaceResponse> naverPage = crawlingNaverPlaceService.getNaverPlaces(crawlingReq);
 
