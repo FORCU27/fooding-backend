@@ -89,6 +89,11 @@ public class Store extends BaseEntity {
 
     private int bookmarkCount;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'PENDING'")
+    private StoreStatus status;
+
     @OneToMany(mappedBy = "store")
     @BatchSize(size = 10) // 한 번에 10개씩 배치로 로딩
     private List<StoreImage> images;
@@ -111,7 +116,8 @@ public class Store extends BaseEntity {
             boolean isNewOpen,
             boolean isTakeOut,
             Double latitude,
-            Double longitude
+            Double longitude,
+            StoreStatus status
     ) {
         this.owner = owner;
         this.name = name;
@@ -130,6 +136,7 @@ public class Store extends BaseEntity {
         this.isTakeOut = isTakeOut;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.status = status != null ? status : StoreStatus.PENDING;
         this.subwayStations = null;
     }
 
@@ -149,7 +156,8 @@ public class Store extends BaseEntity {
             boolean isNewOpen,
             boolean isTakeOut,
             Double latitude,
-            Double longitude
+            Double longitude,
+            StoreStatus status
     ) {
         this.name = name;
         this.region = region;
@@ -167,6 +175,9 @@ public class Store extends BaseEntity {
         this.isTakeOut = isTakeOut;
         this.latitude = latitude;
         this.longitude = longitude;
+        if (status != null) {
+            this.status = status;
+        }
     }
 
     public void increaseVisitCount() {
@@ -191,6 +202,50 @@ public class Store extends BaseEntity {
 
     public void decreaseBookmarkCount() {
         this.bookmarkCount--;
+    }
+
+    public void updateStatus(StoreStatus status) {
+        this.status = status;
+    }
+
+    public void approve() {
+        this.status = StoreStatus.APPROVED;
+    }
+
+    public void reject() {
+        this.status = StoreStatus.REJECTED;
+    }
+
+    public void suspend() {
+        this.status = StoreStatus.SUSPENDED;
+    }
+
+    public void close() {
+        this.status = StoreStatus.CLOSED;
+    }
+
+    public void setPending() {
+        this.status = StoreStatus.PENDING;
+    }
+
+    public boolean isPending() {
+        return this.status == StoreStatus.PENDING;
+    }
+
+    public boolean isApproved() {
+        return this.status == StoreStatus.APPROVED;
+    }
+
+    public boolean isRejected() {
+        return this.status == StoreStatus.REJECTED;
+    }
+
+    public boolean isSuspended() {
+        return this.status == StoreStatus.SUSPENDED;
+    }
+
+    public boolean isClosed() {
+        return this.status == StoreStatus.CLOSED;
     }
 
     public void setNearSubwayStations(List<SubwayStation> stations){

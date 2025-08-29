@@ -11,6 +11,7 @@ import im.fooding.core.global.kafka.KafkaEventHandler;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreSortType;
+import im.fooding.core.model.store.StoreStatus;
 import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.store.StoreRepository;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -39,13 +41,15 @@ public class StoreService {
      * @param pageable
      * @param sortType
      * @param sortDirection
+     * @param includeDeleted
+     * @param statuses 조회할 상태들, null이면 모든 상태 조회
      */
-    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, boolean includeDeleted) {
-        return storeRepository.list(pageable, sortType, sortDirection, includeDeleted);
+    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, boolean includeDeleted, Set<StoreStatus> statuses) {
+        return storeRepository.list(pageable, sortType, sortDirection, includeDeleted, statuses);
     }
 
-    public List<Store> list(List<Long> ids) {
-        return storeRepository.list(ids);
+    public List<Store> list(List<Long> ids, Set<StoreStatus> statuses) {
+        return storeRepository.list(ids, statuses);
     }
 
     /**
@@ -62,14 +66,15 @@ public class StoreService {
      * 가게 아이디로 조회(image 포함)
      *
      * @param storeId
+     * @param statuses 조회할 상태들, null이면 모든 상태 조회
      * @return Store
      */
-    public Store retrieve(long storeId) {
-        return storeRepository.retrieve(storeId).orElseThrow(() -> new ApiException(ErrorCode.STORE_NOT_FOUND));
+    public Store retrieve(long storeId, Set<StoreStatus> statuses) {
+        return storeRepository.retrieve(storeId, statuses).orElseThrow(() -> new ApiException(ErrorCode.STORE_NOT_FOUND));
     }
 
     /**
-     * 가게 아이디로 조회
+     * 가게 아이디로 조회 (관리자용 - 모든 상태 포함)
      *
      * @param storeId
      * @return Store
