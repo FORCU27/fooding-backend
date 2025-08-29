@@ -22,5 +22,8 @@ public class AdminLeadResponse {
 
     @Schema(description = "생성일", example = "2025-08-29T12:00:00Z")
     String createdAt;
+
+    @Schema(description = "업로드 여부", example = "false")
+    Boolean isUploaded;
 }
 
