@@ -23,6 +23,9 @@ public class NaverPlace {
     private String address;
     private String contact;
     private List<Menu> menus;
+    
+    @Column(columnDefinition = "boolean default false")
+    private boolean isUploaded = false;
 
     @Builder
     public NaverPlace(
@@ -39,6 +42,11 @@ public class NaverPlace {
         this.address = address;
         this.contact = contact;
         this.menus = menus;
+        this.isUploaded = false;
+    }
+    
+    public void markAsUploaded() {
+        this.isUploaded = true;
     }
 
     @Getter
