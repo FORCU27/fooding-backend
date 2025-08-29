@@ -19,7 +19,8 @@ public interface QStoreRepository {
             StoreSortType sortType,
             SortDirection sortDirection,
             boolean includeDeleted,
-            Set<StoreStatus> statuses
+            Set<StoreStatus> statuses,
+            String searchString
     );
 
     List<Store> listByUserId(long userId, StoreFilter filter);

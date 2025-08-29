@@ -45,8 +45,8 @@ public class StoreService {
      * @param includeDeleted
      * @param statuses 조회할 상태들, null이면 모든 상태 조회
      */
-    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, boolean includeDeleted, Set<StoreStatus> statuses) {
-        return storeRepository.list(pageable, sortType, sortDirection, includeDeleted, statuses);
+    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, boolean includeDeleted, Set<StoreStatus> statuses, String searchString) {
+        return storeRepository.list(pageable, sortType, sortDirection, includeDeleted, statuses, searchString);
     }
 
     public List<Store> list(List<Long> ids, Set<StoreStatus> statuses) {

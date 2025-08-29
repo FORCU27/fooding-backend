@@ -34,7 +34,7 @@ public class QStoreRepositoryImpl implements QStoreRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, boolean includeDeleted, Set<StoreStatus> statuses) {
+    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, boolean includeDeleted, Set<StoreStatus> statuses, String searchString) {
         OrderSpecifier<?> orderSpecifier = getOrderSpecifier(sortType, sortDirection);
 
         List<Store> content = query
@@ -44,7 +44,8 @@ public class QStoreRepositoryImpl implements QStoreRepository {
                 .where(
                         isStoreDeleted(includeDeleted),
                         storeImageDeletedIfExists(),
-                        statusesCondition(statuses)
+                        statusesCondition(statuses),
+                        nameContains(searchString)
                 )
                 .orderBy(orderSpecifier)
                 .offset(pageable.getOffset())
@@ -56,7 +57,8 @@ public class QStoreRepositoryImpl implements QStoreRepository {
                 .from(store)
                 .where(
                         isStoreDeleted(includeDeleted),
-                        statusesCondition(statuses)
+                        statusesCondition(statuses),
+                        nameContains(searchString)
                 );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
@@ -145,5 +147,9 @@ public class QStoreRepositoryImpl implements QStoreRepository {
 
     private BooleanExpression statusesCondition(Set<StoreStatus> statuses) {
         return statuses != null && !statuses.isEmpty() ? store.status.in(statuses) : null;
+    }
+
+    private BooleanExpression nameContains(String searchString) {
+        return (searchString != null && !searchString.isBlank()) ? store.name.containsIgnoreCase(searchString) : null;
     }
 }
