@@ -20,10 +20,11 @@ public class QRegionRepositoryImpl implements QRegionRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<Region> listActive(Region parentRegion, Integer level, Pageable pageable) {
+    public Page<Region> listActive(Region parentRegion, Integer level, String searchString, Pageable pageable) {
         BooleanBuilder conditions = new BooleanBuilder();
         conditions.and(parentRegionEq(parentRegion));
         conditions.and(levelEq(level));
+        conditions.and(nameContains(searchString));
         conditions.and(region.deleted.isFalse());
 
         List<Region> results = query
@@ -55,5 +56,12 @@ public class QRegionRepositoryImpl implements QRegionRepository {
             return null;
         }
         return region.level.eq(level);
+    }
+
+    private static BooleanExpression nameContains(String searchString) {
+        if (searchString == null || searchString.isBlank()) {
+            return null;
+        }
+        return region.name.containsIgnoreCase(searchString);
     }
 }

@@ -20,7 +20,8 @@ public class CeoRegionService {
     private final RegionService regionService;
 
     public PageResponse<CeoRegionResponse> list(@Valid CeoRegionListRequest request) {
-        Page<Region> regions = regionService.list(request.getPageable());
+        // No filters for CEO list; use extended signature with nulls
+        Page<Region> regions = regionService.list(null, null, null, request.getPageable());
         return PageResponse.of(
                 regions.stream().map(CeoRegionResponse::from).toList(),
                 PageInfo.of(regions)
