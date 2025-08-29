@@ -151,7 +151,7 @@ public class StoreService {
     ) {
         Store store = findById(id);
         store.update(name, region, city, address, category, description, contactNumber, priceCategory, eventDescription,
-                direction, information, isParkingAvailable, isNewOpen, isTakeOut, latitude, longitude);
+                direction, information, isParkingAvailable, isNewOpen, isTakeOut, latitude, longitude, store.getStatus());
         store.setNearSubwayStations(stations);
         return store;
     }
