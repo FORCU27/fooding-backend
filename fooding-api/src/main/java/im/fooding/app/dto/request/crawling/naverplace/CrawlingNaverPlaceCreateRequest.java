@@ -12,7 +12,7 @@ public class CrawlingNaverPlaceCreateRequest {
 
     @NotNull
     @Schema(description = "ID", example = "37792495")
-    String id;
+    Long id;
 
     @NotBlank
     @Schema(description = "이름", example = "자연산 해담일식 대게마을")

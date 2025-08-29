@@ -58,7 +58,7 @@ public class AdminLeadService {
      * NaverPlace를 Store로 업로드
      */
     @Transactional
-    public Long upload(String naverPlaceId, AdminLeadUploadRequest request) {
+    public Long upload(Long naverPlaceId, AdminLeadUploadRequest request) {
         User owner = userService.findById(request.getOwnerId());
         Region region = regionService.get(request.getRegionId());
         
@@ -68,7 +68,7 @@ public class AdminLeadService {
     /**
      * 리드 상세 조회
      */
-    public AdminLeadResponse getLead(String id) {
+    public AdminLeadResponse getLead(Long id) {
         CrawlingNaverPlaceResponse naverPlace = crawlingNaverPlaceService.getNaverPlace(id);
         
         return AdminLeadResponse.builder()

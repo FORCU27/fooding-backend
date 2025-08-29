@@ -29,7 +29,7 @@ public class AdminLeadController {
     @PostMapping("/{id}/upload")
     @Operation(summary = "리드를 Store로 업로드")
     public ApiResult<Long> upload(
-            @PathVariable String id,
+            @PathVariable Long id,
             @Valid @RequestBody AdminLeadUploadRequest request
     ) {
         return ApiResult.ok(adminLeadService.upload(id, request));
@@ -37,8 +37,7 @@ public class AdminLeadController {
 
     @GetMapping("/{id}")
     @Operation(summary = "리드 상세 조회")
-    public ApiResult<AdminLeadResponse> getLead(@PathVariable String id) {
+    public ApiResult<AdminLeadResponse> getLead(@PathVariable Long id) {
         return ApiResult.ok(adminLeadService.getLead(id));
     }
 }
-
