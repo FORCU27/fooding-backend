@@ -28,6 +28,9 @@ public class CrawlingNaverPlaceResponse {
     @Schema(description = "메뉴 리스트")
     List<Menu> menus;
 
+    @Schema(description = "업로드 여부", example = "false")
+    Boolean isUploaded;
+
     @Value
     public static class Menu {
 
@@ -55,6 +58,7 @@ public class CrawlingNaverPlaceResponse {
                 .address(naverPlace.getAddress())
                 .contact(naverPlace.getContact())
                 .menus(menus)
+                .isUploaded(naverPlace.isUploaded())
                 .build();
     }
 }
