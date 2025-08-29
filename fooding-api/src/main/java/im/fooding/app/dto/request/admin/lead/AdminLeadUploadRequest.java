@@ -14,6 +14,6 @@ public class AdminLeadUploadRequest {
     private Long ownerId;
     
     @NotNull(message = "지역 ID는 필수입니다")
-    @Schema(description = "Store 지역 ID", example = "1")
-    private Long regionId;
+    @Schema(description = "Store 지역 ID", example = "KR-11")
+    private String regionId;
 }
