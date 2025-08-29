@@ -100,12 +100,6 @@ public class AdminStoreService {
     public void approve(Long id) {
         Store store = storeService.findById(id);
         store.approve();
-        
-        try {
-            storeDocumentService.save(StoreDocument.from(store));
-        } catch (IOException e) {
-            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
-        }
     }
 
     @Transactional
@@ -113,12 +107,6 @@ public class AdminStoreService {
     public void reject(Long id) {
         Store store = storeService.findById(id);
         store.reject();
-        
-        try {
-            storeDocumentService.save(StoreDocument.from(store));
-        } catch (IOException e) {
-            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
-        }
     }
 
     @Transactional
@@ -126,12 +114,6 @@ public class AdminStoreService {
     public void suspend(Long id) {
         Store store = storeService.findById(id);
         store.suspend();
-        
-        try {
-            storeDocumentService.save(StoreDocument.from(store));
-        } catch (IOException e) {
-            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
-        }
     }
 
     @Transactional
@@ -139,12 +121,6 @@ public class AdminStoreService {
     public void close(Long id) {
         Store store = storeService.findById(id);
         store.close();
-        
-        try {
-            storeDocumentService.save(StoreDocument.from(store));
-        } catch (IOException e) {
-            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
-        }
     }
 
     @Transactional
@@ -152,11 +128,5 @@ public class AdminStoreService {
     public void setPending(Long id) {
         Store store = storeService.findById(id);
         store.setPending();
-        
-        try {
-            storeDocumentService.save(StoreDocument.from(store));
-        } catch (IOException e) {
-            throw new ApiException(ErrorCode.ELASTICSEARCH_SAVE_FAILED);
-        }
     }
 }

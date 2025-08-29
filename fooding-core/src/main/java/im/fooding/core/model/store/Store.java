@@ -218,7 +218,7 @@ public class Store extends BaseEntity {
         return this.status == StoreStatus.CLOSED;
     }
 
-    public void setNearSubwayStations(List<SubwayStation> stations){
+    public void setNearSubwayStations(List<SubwayStation> stations) {
         this.subwayStations = stations;
     }
 
