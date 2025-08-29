@@ -10,9 +10,13 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.user.User;
+import im.fooding.core.model.naverplace.NaverPlace;
 import im.fooding.core.service.naverplace.NaverPlaceService;
 import im.fooding.core.service.region.RegionService;
 import im.fooding.core.service.user.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -30,17 +34,13 @@ public class AdminLeadService {
     private final RegionService regionService;
 
     public PageResponse<AdminLeadResponse> list(AdminLeadPageRequest request) {
-        // AdminLeadPageRequest를 CrawlingNaverPageRequest로 변환
-        CrawlingNaverPageRequest crawlingReq = CrawlingNaverPageRequest.builder()
-                .searchString(request.getSearchString())
-                .pageNum(request.getPageNum())
-                .pageSize(request.getPageSize())
-                .isUploaded(request.getIsUploaded())
-                .build();
+        // Pageable 객체 생성
+        Pageable pageable = PageRequest.of(request.getPageNum(), request.getPageSize());
+        
+        // naverPlaceService를 직접 사용하여 목록 조회
+        Page<NaverPlace> naverPlaces = naverPlaceService.getNaverPlaces(pageable, request.getIsUploaded());
 
-        PageResponse<CrawlingNaverPlaceResponse> naverPage = crawlingNaverPlaceService.getNaverPlaces(crawlingReq);
-
-        List<AdminLeadResponse> list = naverPage.getList().stream()
+        List<AdminLeadResponse> list = naverPlaces.getContent().stream()
                 .map(n -> AdminLeadResponse.builder()
                         .id(n.getId())
                         .name(n.getName())
@@ -50,7 +50,7 @@ public class AdminLeadService {
                         .build())
                 .collect(Collectors.toList());
 
-        PageInfo pageInfo = naverPage.getPageInfo();
+        PageInfo pageInfo = PageInfo.of(naverPlaces);
         return PageResponse.of(list, pageInfo);
     }
     
@@ -60,7 +60,7 @@ public class AdminLeadService {
     @Transactional
     public Long upload(String naverPlaceId, AdminLeadUploadRequest request) {
         User owner = userService.findById(request.getOwnerId());
-        Region region = regionService.findById(request.getRegionId());
+        Region region = regionService.get(request.getRegionId());
         
         return naverPlaceService.upload(naverPlaceId, owner, region);
     }
