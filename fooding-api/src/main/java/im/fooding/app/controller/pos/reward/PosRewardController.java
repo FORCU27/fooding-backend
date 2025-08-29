@@ -24,7 +24,7 @@ public class PosRewardController {
     @GetMapping()
     @Operation( summary = "특정 스토어의 리워드 적립 조회" )
     public ApiResult<PageResponse<GetPosRewardResponse>> list(
-            @RequestBody GetPosRewardRequest request
+            @ModelAttribute GetPosRewardRequest request
     ){
         return ApiResult.ok( service.list( request ) );
     }
