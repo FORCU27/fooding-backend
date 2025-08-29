@@ -139,9 +139,7 @@ public class StoreService {
             List<SubwayStation> stations
     ) {
         Store store = findById(id);
-        store.update(name, region, city, address, category, description, contactNumber, priceCategory, eventDescription,
-                direction, information, isParkingAvailable, isNewOpen, isTakeOut, latitude, longitude, store.getStatus());
-        store.update(name, region, address, addressDetail, category, description, contactNumber, direction, isNewOpen, isTakeOut, latitude, longitude);
+        store.update(name, region, address, addressDetail, category, description, contactNumber, direction, isNewOpen, isTakeOut, latitude, longitude, store.getStatus());
         store.setNearSubwayStations(stations);
         return store;
     }
