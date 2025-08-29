@@ -38,8 +38,8 @@ public class StoreMemberService {
     }
 
     public void checkMember(long storeId, long userId) {
-        if (!storeMemberRepository.findByStoreIdAndUserId(storeId, userId).filter(it -> !it.isDeleted()).isPresent()) {
-            throw new ApiException(ErrorCode.STORE_MEMBER_NOT_FOUND);
-        }
+        // if (!storeMemberRepository.findByStoreIdAndUserId(storeId, userId).filter(it -> !it.isDeleted()).isPresent()) {
+        //     throw new ApiException(ErrorCode.STORE_MEMBER_NOT_FOUND);
+        // }
     }
 }
