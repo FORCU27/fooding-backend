@@ -3,7 +3,7 @@ package im.fooding.app.service.admin.store;
 import im.fooding.app.dto.request.admin.store.AdminStorePostCreateRequest;
 import im.fooding.app.dto.request.admin.store.AdminStorePostUpdateRequest;
 import im.fooding.app.dto.response.admin.store.AdminStorePostResponse;
-import im.fooding.core.common.BasicSearch;
+import im.fooding.app.dto.request.admin.store.AdminStorePostListRequest;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.store.Store;
@@ -41,9 +41,9 @@ public class AdminStorePostService {
         return AdminStorePostResponse.from(storePostService.findById(id));
     }
 
-    public PageResponse<AdminStorePostResponse> list(BasicSearch search) {
-        Page<StorePost> storePosts = storePostService.list(search.getPageable());
-        return PageResponse.of(storePosts.stream().map(AdminStorePostResponse::from).toList(), PageInfo.of(storePosts));
+    public PageResponse<AdminStorePostResponse> list(AdminStorePostListRequest search) {
+        Page<StorePost> page = storePostService.list(search.getStoreId(), search.getSearchString(), search.getPageable());
+        return PageResponse.of(page.stream().map(AdminStorePostResponse::from).toList(), PageInfo.of(page));
     }
 
     @Transactional

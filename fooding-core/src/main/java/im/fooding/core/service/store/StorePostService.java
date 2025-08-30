@@ -21,11 +21,12 @@ public class StorePostService {
     private final StorePostRepository storePostRepository;
 
     public List<StorePost> list(Long storeId) {
-      return storePostRepository.findByStoreIdOrderByIsFixedDescUpdatedAtDesc(storeId);
+        // Backward-compatible non-paged list (CEO/User use case)
+        return storePostRepository.list(storeId, null, Pageable.unpaged()).getContent();
     }
 
-    public Page<StorePost> list(Pageable pageable) {
-        return storePostRepository.findAllByDeletedFalse(pageable);
+    public Page<StorePost> list(Long storeId, String searchString, Pageable pageable) {
+        return storePostRepository.list(storeId, searchString, pageable);
     }
 
     public StorePost findById(Long id) {
