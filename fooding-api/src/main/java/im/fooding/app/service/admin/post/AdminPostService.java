@@ -1,6 +1,7 @@
 package im.fooding.app.service.admin.post;
 
 import im.fooding.app.dto.request.admin.post.AdminCreatePostRequest;
+import im.fooding.app.dto.request.admin.post.AdminPostListRequest;
 import im.fooding.app.dto.request.admin.post.AdminUpdatePostRequest;
 import im.fooding.app.dto.response.admin.post.AdminPostResponse;
 import im.fooding.core.model.post.Post;
@@ -21,11 +22,11 @@ import java.util.stream.Collectors;
 public class AdminPostService {
     private final PostService postService;
 
-    public List<AdminPostResponse> list(PostType type) {
-      List<Post> posts = postService.list(type);
-      return posts.stream()
-              .map(AdminPostResponse::from)
-              .collect(Collectors.toList());
+    public List<AdminPostResponse> list(AdminPostListRequest request) {
+        List<Post> posts = postService.list(request.getSearchString(), request.getPageable(), request.getType());
+        return posts.stream()
+                .map(AdminPostResponse::from)
+                .collect(Collectors.toList());
     }
 
     public AdminPostResponse retrieve(Long postId) {
