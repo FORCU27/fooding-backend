@@ -28,6 +28,9 @@ public class UserStoreWaitingResponse {
     @Schema(description = "성인 수", example = "1")
     Integer adultCount;
 
+    @Schema(description = "호출 번호", example = "1")
+    int callNumber;
+
     @Schema(description = "메모", example = "메모 내용입니다.")
     String memo;
 
@@ -48,6 +51,7 @@ public class UserStoreWaitingResponse {
                 waiting.getInfantChairCount(),
                 waiting.getInfantCount(),
                 waiting.getAdultCount(),
+                waiting.getCallNumber(),
                 waiting.getMemo()
         );
     }
