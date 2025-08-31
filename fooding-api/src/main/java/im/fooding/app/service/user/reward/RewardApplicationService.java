@@ -17,8 +17,6 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.coupon.UserCoupon;
 import im.fooding.core.model.notification.NotificationChannel;
-import im.fooding.core.model.reward.RewardLog;
-import im.fooding.core.model.reward.RewardPoint;
 import im.fooding.core.model.reward.RewardStatus;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.coupon.UserCouponService;
@@ -116,7 +114,7 @@ public class RewardApplicationService {
                 request.getType(),
                 request.getChannel()
         );
-        sendNotification( request.getStoreId(), request.getPoint() );
+        sendNotification(request.getPhoneNumber(), request.getStoreId(), request.getPoint());
     }
 
     /**
@@ -159,8 +157,8 @@ public class RewardApplicationService {
         publisher.publishEvent(new RequestCouponEvent(userCoupon.getName(), userCoupon.getUser().getPhoneNumber(), SENDER, NotificationChannel.SMS));
     }
 
-    private void sendNotification(long storeId, int point) {
-        String storeName = storeService.findById( storeId ).getName();
-        notificationService.sendRewardRegisterMessage( storeName, point );
+    private void sendNotification(String phoneNumber, long storeId, int point) {
+        String storeName = storeService.findById(storeId).getName();
+        notificationService.sendRewardEarnMessage(phoneNumber, storeName, point);
     }
 }
