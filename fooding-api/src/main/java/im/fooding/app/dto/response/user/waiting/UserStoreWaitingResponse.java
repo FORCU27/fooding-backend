@@ -2,6 +2,7 @@ package im.fooding.app.dto.response.user.waiting;
 
 import im.fooding.core.model.waiting.StoreWaiting;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDateTime;
 import lombok.Value;
 
 @Value
@@ -34,6 +35,9 @@ public class UserStoreWaitingResponse {
     @Schema(description = "메모", example = "메모 내용입니다.")
     String memo;
 
+    @Schema(description = "등록 일시", example = "2025-07-30T06:01:16.711Z")
+    LocalDateTime registeredAt;
+
     public static UserStoreWaitingResponse from(StoreWaiting waiting) {
         Long userId = null;
         if (waiting.getUser() != null) {
@@ -52,7 +56,8 @@ public class UserStoreWaitingResponse {
                 waiting.getInfantCount(),
                 waiting.getAdultCount(),
                 waiting.getCallNumber(),
-                waiting.getMemo()
+                waiting.getMemo(),
+                waiting.getCreatedAt()
         );
     }
 }
