@@ -31,6 +31,8 @@ import org.springframework.util.StringUtils;
 import java.net.URI;
 import java.util.List;
 
+import static im.fooding.core.global.util.Util.isAllowedBackofficeEmails;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -316,6 +318,10 @@ public class AuthService {
      * @return TokenResponse
      */
     private TokenResponse verifyOrRegisterAndIssueToken(String email, AuthProvider provider, Role role) {
+        if (role == Role.ADMIN && !isAllowedBackofficeEmails(email)) {
+            throw new ApiException(ErrorCode.ACCESS_DENIED_EXCEPTION);
+        }
+
         User user = userService.findByEmailAndProvider(email, provider);
         if (user == null) {
             user = userService.createSocialUser(email, provider);

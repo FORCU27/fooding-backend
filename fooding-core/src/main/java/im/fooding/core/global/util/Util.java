@@ -47,4 +47,13 @@ public class Util {
     public static DayOfWeek getDayOfWeek() {
         return LocalDate.now().getDayOfWeek();
     }
+
+    public static boolean isAllowedBackofficeEmails(String email) {
+        List<String> allowedEmails = Arrays.asList(
+                "karjyk@gmail.com", "yoon@hyperreality.gg", "jysjys7620@naver.com",
+                "jin@hyperreality.gg", "seongje00416@gmail.com", "jeongyounghyeon1106@gmail.com",
+                "cleo0718@gmail.com", "nononcrust@gmail.com", "leewj5192@gmail.com", "monee97101@gmail.com"
+        );
+        return allowedEmails.contains(email);
+    }
 }
