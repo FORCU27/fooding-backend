@@ -1,6 +1,7 @@
 package im.fooding.app.service.user.notification;
 
 import im.fooding.app.dto.response.user.notification.UserNotificationResponse;
+import im.fooding.core.event.reward.RewardEarnEvent;
 import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
 import im.fooding.core.global.infra.slack.SlackClient;
 import im.fooding.core.global.kafka.KafkaEventHandler;
@@ -137,13 +138,14 @@ public class UserNotificationApplicationService {
         return UserNotificationResponse.from(userNotificationService.getNotification(userId, notificationId));
     }
 
-    public void sendRewardEarnMessage(String phoneNumber, String storeName, int point) {
+    @KafkaEventHandler(RewardEarnEvent.class)
+    public void sendRewardEarnMessage(RewardEarnEvent event) {
         NotificationTemplate template = notificationTemplateService.getByType(Type.RewardEarnSms);
 
         String subject = template.getSubject();
         String content = template.getContent().formatted(
-                storeName,
-                point
+                event.storeName(),
+                event.point()
         );
         String message = RewardMessageBuilder.buildMessage(subject, content);
         slackClient.sendNotificationMessage(message);
