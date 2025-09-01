@@ -30,6 +30,9 @@ public class UserStoreResponse {
     @Schema(description = "업종", example = "KOREAN", requiredMode = RequiredMode.REQUIRED)
     private StoreCategory category;
 
+    @Schema(description = "지역", example = "KR-11", requiredMode = RequiredMode.NOT_REQUIRED)
+    private String regionId;
+
     @Schema(description = "매장소개", example = "설명설명", requiredMode = RequiredMode.REQUIRED)
     private String description;
 
@@ -70,13 +73,15 @@ public class UserStoreResponse {
     private List<UserStoreImageResponse> images;
 
     @Builder
-    private UserStoreResponse(Long id, String name, String address, String addressDetail, StoreCategory category, String description,
+    private UserStoreResponse(Long id, String name, String address, String addressDetail, StoreCategory category, String regionId, String description,
                               String contactNumber, String direction, int visitCount, int reviewCount, int bookmarkCount, double averageRating,
                               Integer estimatedWaitingTimeMinutes, Double latitude, Double longitude, List<UserStoreImageResponse> images) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.addressDetail = addressDetail;
         this.category = category;
+        this.regionId = regionId;
         this.description = description;
         this.contactNumber = contactNumber;
         this.direction = direction;
@@ -102,6 +107,7 @@ public class UserStoreResponse {
                 .address(store.getAddress())
                 .addressDetail(store.getAddressDetail())
                 .category(store.getCategory())
+                .regionId(store.getRegionId())
                 .description(store.getDescription())
                 .contactNumber(store.getContactNumber())
                 .direction(store.getDirection())

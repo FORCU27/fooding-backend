@@ -25,11 +25,16 @@ public class StoreDocument {
 
     private int visitCount;
 
+    private String regionId;
+
+    private String status;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
 
     @Builder
-    private StoreDocument(Long id, String name, String category, String address, int reviewCount, double averageRating, int visitCount, LocalDateTime createdAt) {
+    private StoreDocument(Long id, String name, String category, String address, int reviewCount, double averageRating,
+                          int visitCount, String regionId, String status, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -37,6 +42,8 @@ public class StoreDocument {
         this.reviewCount = reviewCount;
         this.averageRating = averageRating;
         this.visitCount = visitCount;
+        this.regionId = regionId;
+        this.status = status;
         this.createdAt = createdAt;
     }
 

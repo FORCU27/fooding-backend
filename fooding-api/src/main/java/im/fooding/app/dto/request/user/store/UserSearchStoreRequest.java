@@ -1,12 +1,15 @@
 package im.fooding.app.dto.request.user.store;
 
 import im.fooding.core.common.BasicSearch;
+import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StoreSortType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.query.SortDirection;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,4 +28,10 @@ public class UserSearchStoreRequest extends BasicSearch {
             allowableValues = {"ASCENDING", "DESCENDING"}
     )
     private SortDirection sortDirection = SortDirection.DESCENDING;
+
+    @Schema(description = "지역 ids", example = "[KR-11,KR-11680101]")
+    private List<String> regionIds;
+
+    @Schema(description = "카테고리", example = "KOREAN")
+    private StoreCategory category;
 }
