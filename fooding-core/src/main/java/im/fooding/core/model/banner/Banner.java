@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Document(collection = "plan")
+@Document(collection = "banner")
 public class Banner extends BaseDocument {
 
     @Id
