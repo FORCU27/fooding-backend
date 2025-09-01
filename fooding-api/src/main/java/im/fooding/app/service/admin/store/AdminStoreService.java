@@ -46,7 +46,7 @@ public class AdminStoreService {
 
     @Transactional(readOnly = true)
     public PageResponse<AdminStoreResponse> list(AdminSearchStoreRequest request) {
-        Page<Store> result = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), false, null, request.getSearchString());
+        Page<Store> result = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), null, null, false, null, request.getSearchString());
         PageInfo pageInfo = PageInfo.of(result);
         return PageResponse.of(
                 result.getContent().stream().map(AdminStoreResponse::new).collect(Collectors.toList()),
@@ -70,7 +70,7 @@ public class AdminStoreService {
                 request.getLatitude(), request.getLongitude());
 
         storeMemberService.create(store, user, StorePosition.OWNER);
-        eventProducerService.publishEvent("StoreCreatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
+        eventProducerService.publishEvent("StoreCreatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getRegionId(), store.getStatus(), store.getCreatedAt()));
         return store.getId();
     }
 
@@ -81,7 +81,7 @@ public class AdminStoreService {
         Store store = storeService.update(id, request.getName(), getRegion(request.getRegionId()), request.getAddress(), request.getAddressDetail(), request.getCategory(),
                 request.getDescription(), request.getContactNumber(), request.getDirection(), false, false, request.getLatitude(), request.getLongitude(), nearStations);
 
-        eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getCreatedAt()));
+        eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getRegionId(), store.getStatus(), store.getCreatedAt()));
     }
 
     @Transactional
@@ -96,35 +96,35 @@ public class AdminStoreService {
     }
 
     @Transactional
-    @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
+    @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager")
     public void approve(Long id) {
         Store store = storeService.findById(id);
         store.approve();
     }
 
     @Transactional
-    @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
+    @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager")
     public void reject(Long id) {
         Store store = storeService.findById(id);
         store.reject();
     }
 
     @Transactional
-    @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
+    @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager")
     public void suspend(Long id) {
         Store store = storeService.findById(id);
         store.suspend();
     }
 
     @Transactional
-    @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
+    @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager")
     public void close(Long id) {
         Store store = storeService.findById(id);
         store.close();
     }
 
     @Transactional
-    @CacheEvict( key="#id", value="AdminStore", cacheManager="contentCacheManager" )
+    @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager")
     public void setPending(Long id) {
         Store store = storeService.findById(id);
         store.setPending();

@@ -8,6 +8,7 @@ import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.dto.request.store.StoreFilter;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.store.StoreStatus;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class QStoreRepositoryImpl implements QStoreRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, boolean includeDeleted, Set<StoreStatus> statuses, String searchString) {
+    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, List<String> regionIds, StoreCategory category, boolean includeDeleted, Set<StoreStatus> statuses, String searchString) {
         OrderSpecifier<?> orderSpecifier = getOrderSpecifier(sortType, sortDirection);
 
         List<Store> content = query
@@ -45,7 +46,9 @@ public class QStoreRepositoryImpl implements QStoreRepository {
                         isStoreDeleted(includeDeleted),
                         storeImageDeletedIfExists(),
                         statusesCondition(statuses),
-                        nameContains(searchString)
+                        nameContains(searchString),
+                        searchRegionIds(regionIds),
+                        searchCategory(category)
                 )
                 .orderBy(orderSpecifier)
                 .offset(pageable.getOffset())
@@ -58,7 +61,9 @@ public class QStoreRepositoryImpl implements QStoreRepository {
                 .where(
                         isStoreDeleted(includeDeleted),
                         statusesCondition(statuses),
-                        nameContains(searchString)
+                        nameContains(searchString),
+                        searchRegionIds(regionIds),
+                        searchCategory(category)
                 );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
@@ -95,7 +100,7 @@ public class QStoreRepositoryImpl implements QStoreRepository {
     }
 
     @Override
-    public List<Store> list(List<Long> ids, Set<StoreStatus> statuses) {
+    public List<Store> list(List<Long> ids) {
         if (ids.isEmpty()) {
             return Collections.emptyList();
         }
@@ -115,8 +120,7 @@ public class QStoreRepositoryImpl implements QStoreRepository {
                 .where(
                         isStoreDeleted(false),
                         storeImageDeletedIfExists(),
-                        store.id.in(ids),
-                        statusesCondition(statuses)
+                        store.id.in(ids)
                 )
                 .orderBy(orderSpecifier)
                 .fetch();
@@ -151,5 +155,16 @@ public class QStoreRepositoryImpl implements QStoreRepository {
 
     private BooleanExpression nameContains(String searchString) {
         return (searchString != null && !searchString.isBlank()) ? store.name.containsIgnoreCase(searchString) : null;
+    }
+
+    private BooleanExpression searchRegionIds(List<String> regionIds) {
+        if (regionIds == null || regionIds.isEmpty()) {
+            return null;
+        }
+        return store.region.id.in(regionIds);
+    }
+
+    private BooleanExpression searchCategory(StoreCategory category) {
+        return category != null ? store.category.eq(category) : null;
     }
 }

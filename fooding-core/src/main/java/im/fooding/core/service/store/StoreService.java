@@ -42,15 +42,18 @@ public class StoreService {
      * @param pageable
      * @param sortType
      * @param sortDirection
+     * @param regionIds
+     * @param category
      * @param includeDeleted
      * @param statuses 조회할 상태들, null이면 모든 상태 조회
+     * @param searchString
      */
-    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, boolean includeDeleted, Set<StoreStatus> statuses, String searchString) {
-        return storeRepository.list(pageable, sortType, sortDirection, includeDeleted, statuses, searchString);
+    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, List<String> regionIds, StoreCategory category, boolean includeDeleted, Set<StoreStatus> statuses, String searchString) {
+        return storeRepository.list(pageable, sortType, sortDirection, regionIds, category, includeDeleted, statuses, searchString);
     }
 
-    public List<Store> list(List<Long> ids, Set<StoreStatus> statuses) {
-        return storeRepository.list(ids, statuses);
+    public List<Store> list(List<Long> ids) {
+        return storeRepository.list(ids);
     }
 
     /**
@@ -182,7 +185,7 @@ public class StoreService {
         try {
             storeDocumentService.save(storeCreatedEvent.getId(), storeCreatedEvent.getName(), storeCreatedEvent.getCategory(),
                     storeCreatedEvent.getAddress(), storeCreatedEvent.getReviewCount(), storeCreatedEvent.getAverageRating(),
-                    storeCreatedEvent.getVisitCount(), storeCreatedEvent.getCreatedAt()
+                    storeCreatedEvent.getVisitCount(), storeCreatedEvent.getRegionId(), storeCreatedEvent.getStatus(), storeCreatedEvent.getCreatedAt()
             );
             slackClient.sendNotificationMessage("%s 가게 생성".formatted(storeCreatedEvent.getName()));
         } catch (Exception e) {
@@ -195,7 +198,7 @@ public class StoreService {
         try {
             storeDocumentService.save(storeUpdatedEvent.getId(), storeUpdatedEvent.getName(), storeUpdatedEvent.getCategory(),
                     storeUpdatedEvent.getAddress(), storeUpdatedEvent.getReviewCount(), storeUpdatedEvent.getAverageRating(),
-                    storeUpdatedEvent.getVisitCount(), storeUpdatedEvent.getCreatedAt()
+                    storeUpdatedEvent.getVisitCount(), storeUpdatedEvent.getRegionId(), storeUpdatedEvent.getStatus(), storeUpdatedEvent.getCreatedAt()
             );
         } catch (Exception e) {
             e.printStackTrace();

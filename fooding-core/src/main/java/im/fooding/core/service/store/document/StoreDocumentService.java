@@ -1,17 +1,16 @@
 package im.fooding.core.service.store.document;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.SortOrder;
-import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch._types.query_dsl.TextQueryType;
+import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StoreSortType;
+import im.fooding.core.model.store.StoreStatus;
 import im.fooding.core.model.store.document.StoreDocument;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +34,7 @@ public class StoreDocumentService {
     private final ElasticsearchClient client;
     private final ObjectMapper objectMapper;
 
-    public void save(Long id, String name, StoreCategory category, String address, int reviewCount, double averageRating, int visitCount, LocalDateTime createdAt) throws IOException {
+    public void save(Long id, String name, StoreCategory category, String address, int reviewCount, double averageRating, int visitCount, String regionId, StoreStatus status, LocalDateTime createdAt) throws IOException {
         StoreDocument storeDocument = StoreDocument.builder()
                 .id(id)
                 .name(name)
@@ -44,6 +43,8 @@ public class StoreDocumentService {
                 .reviewCount(reviewCount)
                 .averageRating(averageRating)
                 .visitCount(visitCount)
+                .regionId(regionId)
+                .status(status.name())
                 .createdAt(createdAt)
                 .build();
 
@@ -65,7 +66,7 @@ public class StoreDocumentService {
         );
     }
 
-    public Page<StoreDocument> fullTextSearch(String searchString, StoreSortType sortType, SortDirection direction, Pageable pageable) throws IOException {
+    public Page<StoreDocument> fullTextSearch(String searchString, StoreSortType sortType, SortDirection direction, List<String> regionIds, StoreCategory category, Pageable pageable) throws IOException {
         SortOrder sortOrder = (direction == SortDirection.ASCENDING) ? SortOrder.Asc : SortOrder.Desc;
 
         String sortField = switch (sortType) {
@@ -75,23 +76,52 @@ public class StoreDocumentService {
             case VISIT -> "visitCount";
         };
 
-        // 향후 확장될 수 있는 검색 필드 리스트
+        // 향후 확장 가능한 검색 필드
         List<String> searchableFields = List.of("name");
 
-        Query query;
-        if (!StringUtils.hasText(searchString)) {
-            query = MatchAllQuery.of(m -> m)._toQuery();
-        } else {
-            query = MultiMatchQuery.of(m -> m
-                    .fields(searchableFields)
-                    .query(searchString)
-                    .type(TextQueryType.BestFields) // 또는 most_fields, cross_fields 등 상황에 따라 조절 가능
+        // --- 기본 검색 쿼리 ---
+        Query baseQuery = StringUtils.hasText(searchString)
+                ? MultiMatchQuery.of(m -> m
+                .fields(searchableFields)
+                .query(searchString)
+                .type(TextQueryType.BestFields)
+        )._toQuery()
+                : MatchAllQuery.of(m -> m)._toQuery();
+
+        // --- BoolQuery 조립 ---
+        BoolQuery.Builder boolBuilder = new BoolQuery.Builder()
+                .must(baseQuery);
+
+        // 지역 필터 추가 (있을 경우만)
+        if (regionIds != null && !regionIds.isEmpty()) {
+            Query regionQuery = TermsQuery.of(t -> t
+                    .field("regionId")
+                    .terms(v -> v.value(regionIds.stream()
+                            .map(FieldValue::of)
+                            .toList()))
             )._toQuery();
+            boolBuilder.filter(regionQuery);
+        }
+
+        // status 필터 추가
+        Query statusQuery = TermQuery.of(t -> t
+                .field("status")
+                .value(StoreStatus.APPROVED.name())
+        )._toQuery();
+        boolBuilder.filter(statusQuery);
+
+        // 카테고리 필터 추가 (있을 경우만)
+        if (category != null) {
+            Query categoryQuery = TermQuery.of(t -> t
+                    .field("category")
+                    .value(category.name())
+            )._toQuery();
+            boolBuilder.filter(categoryQuery);
         }
 
         SearchRequest request = SearchRequest.of(s -> s
                 .index("stores_v1")
-                .query(query)
+                .query(boolBuilder.build()._toQuery())
                 .sort(sort -> sort
                         .field(f -> f
                                 .field(sortField)
