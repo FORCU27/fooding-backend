@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,5 +31,11 @@ public class UserPlanController {
             @ModelAttribute UserPlanRetrieveRequest request
     ) {
         return ApiResult.ok(userPlanService.list(request, userInfo.getId()));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "플랜 상세 조회")
+    ApiResult<UserPlanResponse> get(@PathVariable String id) {
+        return ApiResult.ok(userPlanService.getPlan(id));
     }
 }
