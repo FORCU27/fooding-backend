@@ -12,5 +12,5 @@ public interface BannerRepository extends MongoRepository<Banner, ObjectId> {
 
     Page<Banner> findAllByDeletedFalse(Pageable pageable);
 
-    Page<Banner> findAllByIsActiveTrueAndDeletedFalse(Pageable pageable);
+    Page<Banner> findAllByActiveTrueAndDeletedFalse(Pageable pageable);
 }

@@ -21,7 +21,7 @@ public class Banner extends BaseDocument {
 
     private String description;
 
-    private boolean isActive = false;
+    private boolean active = false;
 
     private int priority;
 
@@ -53,14 +53,14 @@ public class Banner extends BaseDocument {
     public Banner(
             String name,
             String description,
-            boolean isActive,
+            boolean active,
             int priority,
             String link,
             LinkType linkType
     ) {
         this.name = name;
         this.description = description;
-        this.isActive = isActive;
+        this.active = active;
         this.priority = priority;
         this.link = link;
         this.linkType = linkType;
@@ -69,14 +69,14 @@ public class Banner extends BaseDocument {
     public void update(
             String name,
             String description,
-            boolean isActive,
+            boolean active,
             int priority,
             String link,
             LinkType linkType
     ) {
         this.name = name;
         this.description = description;
-        this.isActive = isActive;
+        this.active = active;
         this.priority = priority;
         this.link = link;
         this.linkType = linkType;

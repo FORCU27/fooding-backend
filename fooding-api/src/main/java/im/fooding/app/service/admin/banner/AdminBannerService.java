@@ -26,7 +26,7 @@ public class AdminBannerService {
          return bannerService.createBanner(
                  request.getName(),
                  request.getDescription(),
-                 request.getIsActive(),
+                 request.getActive(),
                  request.getPriority(),
                  request.getLink(),
                  request.getLinkType()
@@ -51,7 +51,7 @@ public class AdminBannerService {
                 new ObjectId(id),
                 request.getName(),
                 request.getDescription(),
-                request.getIsActive(),
+                request.getActive(),
                 request.getPriority(),
                 request.getLink(),
                 request.getLinkType()

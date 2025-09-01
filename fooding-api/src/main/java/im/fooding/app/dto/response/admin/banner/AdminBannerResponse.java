@@ -22,7 +22,7 @@ public class AdminBannerResponse {
     String description;
 
     @Schema(description = "활성화 상태", requiredMode = REQUIRED, example = "true")
-    Boolean isActive;
+    Boolean active;
 
     @Schema(description = "우선 순위", requiredMode = REQUIRED, example = "0")
     Integer priority;
@@ -38,7 +38,7 @@ public class AdminBannerResponse {
                 .id(banner.getId().toString())
                 .name(banner.getName())
                 .description(banner.getDescription())
-                .isActive(banner.isActive())
+                .active(banner.isActive())
                 .priority(banner.getPriority())
                 .link(banner.getLink())
                 .linkType(banner.getLinkType())

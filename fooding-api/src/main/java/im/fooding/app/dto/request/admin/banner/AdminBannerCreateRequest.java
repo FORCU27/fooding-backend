@@ -19,7 +19,7 @@ public class AdminBannerCreateRequest {
 
     @Schema(description = "활성화 상태", example = "true")
     @NotNull
-    Boolean isActive;
+    Boolean active;
 
     @Schema(description = "우선 순위", example = "0")
     @NotNull

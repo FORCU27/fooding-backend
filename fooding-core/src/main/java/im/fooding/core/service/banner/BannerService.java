@@ -30,7 +30,7 @@ public class BannerService {
         Banner newBanner = Banner.builder()
                 .name(name)
                 .description(description)
-                .isActive(active)
+                .active(active)
                 .priority(priority)
                 .link(link)
                 .linkType(linkType)
@@ -52,7 +52,7 @@ public class BannerService {
     }
 
     public Page<Banner> getActiveBanners(Pageable pageable) {
-        return bannerRepository.findAllByIsActiveTrueAndDeletedFalse(pageable);
+        return bannerRepository.findAllByActiveTrueAndDeletedFalse(pageable);
     }
 
     @Transactional
@@ -60,7 +60,7 @@ public class BannerService {
             ObjectId id,
             String name,
             String description,
-            boolean isActive,
+            boolean active,
             int priority,
             String link,
             Banner.LinkType linkType
@@ -70,7 +70,7 @@ public class BannerService {
         targetBanner.update(
                 name,
                 description,
-                isActive,
+                active,
                 priority,
                 link,
                 linkType
