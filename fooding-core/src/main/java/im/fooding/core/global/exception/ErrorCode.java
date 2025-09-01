@@ -122,6 +122,9 @@ public enum ErrorCode {
 
     // 예약/웨이팅
     PLAN_NOT_FOUND(HttpStatus.BAD_REQUEST, "12000", "등록된 예약/웨이팅이 없습니다."),
+
+    // 배너
+    BANNER_NOT_FOUND(HttpStatus.BAD_REQUEST, "13000", "등록된 배너가 없습니다."),
     ;
 
     private final HttpStatus status;
