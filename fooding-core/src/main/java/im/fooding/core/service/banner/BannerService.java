@@ -4,6 +4,7 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.banner.Banner;
 import im.fooding.core.repository.banner.BannerRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
@@ -45,6 +46,12 @@ public class BannerService {
         return bannerRepository.findById(id)
                 .filter(banner -> !banner.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.BANNER_NOT_FOUND));
+    }
+
+    public Banner getActiveBanner(ObjectId id) {
+        return Optional.of(getBanner(id))
+                .filter(Banner::isActive)
+                .orElseThrow(() -> new ApiException(ErrorCode.BANNER_INACTIVE));
     }
 
     public Page<Banner> getBanners(Pageable pageable) {

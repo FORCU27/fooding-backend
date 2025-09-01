@@ -20,7 +20,7 @@ public class UserBannerService {
     private final BannerService bannerService;
 
     public UserBannerResponse getBanner(String id) {
-        return UserBannerResponse.from(bannerService.getBanner(new ObjectId(id)));
+        return UserBannerResponse.from(bannerService.getActiveBanner(new ObjectId(id)));
     }
 
     public PageResponse<UserBannerResponse> getBanners(UserBannerPageRequest request) {
