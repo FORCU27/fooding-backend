@@ -22,7 +22,7 @@ public class BannerService {
     public ObjectId createBanner(
             String name,
             String description,
-            boolean isActive,
+            boolean active,
             int priority,
             String link,
             Banner.LinkType linkType
@@ -30,7 +30,7 @@ public class BannerService {
         Banner newBanner = Banner.builder()
                 .name(name)
                 .description(description)
-                .isActive(isActive)
+                .isActive(active)
                 .priority(priority)
                 .link(link)
                 .linkType(linkType)
@@ -49,6 +49,10 @@ public class BannerService {
 
     public Page<Banner> getBanners(Pageable pageable) {
         return bannerRepository.findAllByDeletedFalse(pageable);
+    }
+
+    public Page<Banner> getActiveBanners(Pageable pageable) {
+        return bannerRepository.findAllByIsActiveTrueAndDeletedFalse(pageable);
     }
 
     @Transactional

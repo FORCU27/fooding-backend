@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface BannerRepository extends MongoRepository<Banner, ObjectId> {
 
     Page<Banner> findAllByDeletedFalse(Pageable pageable);
+
+    Page<Banner> findAllByIsActiveTrueAndDeletedFalse(Pageable pageable);
 }
