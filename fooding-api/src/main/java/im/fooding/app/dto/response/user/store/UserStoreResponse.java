@@ -61,7 +61,7 @@ public class UserStoreResponse {
     private Double longitude;
 
     @Schema(description = "영업 종료 여부", example = "false", requiredMode = RequiredMode.REQUIRED)
-    private Boolean isFinished = false;
+    private Boolean isFinished = true;
 
     @Schema(description = "관심 여부", example = "false", requiredMode = RequiredMode.REQUIRED)
     private Boolean isBookmarked = false;
