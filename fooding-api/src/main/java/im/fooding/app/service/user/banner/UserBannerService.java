@@ -19,12 +19,12 @@ public class UserBannerService {
 
     private final BannerService bannerService;
 
-    public UserBannerResponse getBanner(String id) {
-        return UserBannerResponse.from(bannerService.getActiveBanner(new ObjectId(id)));
+    public UserBannerResponse get(String id) {
+        return UserBannerResponse.from(bannerService.getActive(new ObjectId(id)));
     }
 
-    public PageResponse<UserBannerResponse> getBanners(UserBannerPageRequest request) {
-        Page<Banner> banners = bannerService.getActiveBanners(request.getPageable());
+    public PageResponse<UserBannerResponse> list(UserBannerPageRequest request) {
+        Page<Banner> banners = bannerService.listActive(request.getPageable());
         return PageResponse.of(
                 banners.map(UserBannerResponse::from).toList(),
                 PageInfo.of(banners)

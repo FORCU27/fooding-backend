@@ -25,17 +25,17 @@ public class UserBannerController {
 
     @GetMapping("/{id}")
     @Operation(summary = "배너 조회")
-    public ApiResult<UserBannerResponse> getBanner(
+    public ApiResult<UserBannerResponse> get(
             @PathVariable String id
     ) {
-        return ApiResult.ok(userBannerService.getBanner(id));
+        return ApiResult.ok(userBannerService.get(id));
     }
 
     @GetMapping
     @Operation(summary = "배너 조회(page)")
-    public ApiResult<PageResponse<UserBannerResponse>> getBanners(
+    public ApiResult<PageResponse<UserBannerResponse>> list(
             @Valid UserBannerPageRequest request
     ) {
-        return ApiResult.ok(userBannerService.getBanners(request));
+        return ApiResult.ok(userBannerService.list(request));
     }
 }

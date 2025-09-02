@@ -20,7 +20,7 @@ public class BannerService {
     private final BannerRepository bannerRepository;
 
     @Transactional
-    public ObjectId createBanner(
+    public ObjectId create(
             String name,
             String description,
             boolean active,
@@ -42,28 +42,28 @@ public class BannerService {
         return savedBanner.getId();
     }
 
-    public Banner getBanner(ObjectId id) {
+    public Banner get(ObjectId id) {
         return bannerRepository.findById(id)
                 .filter(banner -> !banner.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.BANNER_NOT_FOUND));
     }
 
-    public Banner getActiveBanner(ObjectId id) {
-        return Optional.of(getBanner(id))
+    public Banner getActive(ObjectId id) {
+        return Optional.of(get(id))
                 .filter(Banner::isActive)
                 .orElseThrow(() -> new ApiException(ErrorCode.BANNER_INACTIVE));
     }
 
-    public Page<Banner> getBanners(Pageable pageable) {
+    public Page<Banner> list(Pageable pageable) {
         return bannerRepository.findAllByDeletedFalse(pageable);
     }
 
-    public Page<Banner> getActiveBanners(Pageable pageable) {
+    public Page<Banner> listActive(Pageable pageable) {
         return bannerRepository.findAllByActiveTrueAndDeletedFalse(pageable);
     }
 
     @Transactional
-    public void updateBanner(
+    public void update(
             ObjectId id,
             String name,
             String description,
@@ -72,7 +72,7 @@ public class BannerService {
             String link,
             Banner.LinkType linkType
     ) {
-        Banner targetBanner = getBanner(id);
+        Banner targetBanner = get(id);
 
         targetBanner.update(
                 name,
@@ -87,8 +87,8 @@ public class BannerService {
     }
 
     @Transactional
-    public void deleteBanner(ObjectId id, long deletedBy) {
-        Banner targetBanner = getBanner(id);
+    public void delete(ObjectId id, long deletedBy) {
+        Banner targetBanner = get(id);
 
         targetBanner.delete(deletedBy);
 
