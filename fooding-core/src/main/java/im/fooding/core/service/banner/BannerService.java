@@ -3,6 +3,7 @@ package im.fooding.core.service.banner;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.banner.Banner;
+import im.fooding.core.repository.banner.BannerFilter;
 import im.fooding.core.repository.banner.BannerRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -55,11 +56,11 @@ public class BannerService {
     }
 
     public Page<Banner> list(Pageable pageable) {
-        return bannerRepository.findAllByDeletedFalse(pageable);
+        return bannerRepository.list(pageable);
     }
 
-    public Page<Banner> listActive(Pageable pageable) {
-        return bannerRepository.findAllByActiveTrueAndDeletedFalse(pageable);
+    public Page<Banner> list(BannerFilter filter, Pageable pageable) {
+        return bannerRepository.list(filter, pageable);
     }
 
     @Transactional

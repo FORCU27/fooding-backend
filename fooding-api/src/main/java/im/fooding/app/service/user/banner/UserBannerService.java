@@ -5,6 +5,7 @@ import im.fooding.app.dto.response.user.banner.UserBannerResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.banner.Banner;
+import im.fooding.core.repository.banner.BannerFilter;
 import im.fooding.core.service.banner.BannerService;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
@@ -24,7 +25,11 @@ public class UserBannerService {
     }
 
     public PageResponse<UserBannerResponse> list(UserBannerPageRequest request) {
-        Page<Banner> banners = bannerService.listActive(request.getPageable());
+        BannerFilter filter = BannerFilter.builder()
+                .active(true)
+                .build();
+
+        Page<Banner> banners = bannerService.list(filter, request.getPageable());
         return PageResponse.of(
                 banners.map(UserBannerResponse::from).toList(),
                 PageInfo.of(banners)
