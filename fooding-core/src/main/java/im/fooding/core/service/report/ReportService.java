@@ -4,8 +4,6 @@ import im.fooding.core.model.report.Report;
 import im.fooding.core.model.report.ReportStatus;
 import im.fooding.core.model.report.ReportTargetType;
 import im.fooding.core.model.user.User;
-import im.fooding.core.repository.report.QReportRepository;
-import im.fooding.core.repository.report.QReportRepositoryImpl;
 import im.fooding.core.repository.report.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,4 +62,6 @@ public class ReportService {
         Report report = repository.findById( id ).orElseThrow();
         report.updateMemo( memo );
     }
+
+    public Report findById( long id ) { return repository.findById( id ).orElseThrow(); }
 }
