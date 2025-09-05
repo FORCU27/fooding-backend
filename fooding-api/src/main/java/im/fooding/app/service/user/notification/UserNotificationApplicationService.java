@@ -1,20 +1,20 @@
 package im.fooding.app.service.user.notification;
 
 import im.fooding.app.dto.response.user.notification.UserNotificationResponse;
+import im.fooding.core.event.reward.RewardEarnEvent;
 import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
 import im.fooding.core.global.infra.slack.SlackClient;
 import im.fooding.core.global.kafka.KafkaEventHandler;
 import im.fooding.core.global.util.RewardMessageBuilder;
 import im.fooding.core.global.util.WaitingMessageBuilder;
 import im.fooding.core.model.notification.NotificationTemplate;
+import im.fooding.core.model.notification.NotificationTemplate.Type;
 import im.fooding.core.model.notification.UserNotification;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.WaitingUser;
 import im.fooding.core.service.notification.NotificationTemplateService;
 import im.fooding.core.service.notification.UserNotificationService;
-import im.fooding.core.service.user.UserService;
 import im.fooding.core.service.waiting.StoreWaitingService;
-import im.fooding.core.service.waiting.WaitingUserService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,9 +35,7 @@ public class UserNotificationApplicationService {
     private final SlackClient slackClient;
     private final UserNotificationService userNotificationService;
     private final NotificationTemplateService notificationTemplateService;
-    private final WaitingUserService waitingUserService;
     private final StoreWaitingService storeWaitingService;
-    private final UserService userService;
 
     @Value("${message.sender}")
     private String SENDER;
@@ -140,10 +138,16 @@ public class UserNotificationApplicationService {
         return UserNotificationResponse.from(userNotificationService.getNotification(userId, notificationId));
     }
 
-    public void sendRewardRegisterMessage( String storeName, int point ) {
-        String message = RewardMessageBuilder.buildRegisterMessage(
-                storeName,
-                point );
+    @KafkaEventHandler(RewardEarnEvent.class)
+    public void sendRewardEarnMessage(RewardEarnEvent event) {
+        NotificationTemplate template = notificationTemplateService.getByType(Type.RewardEarnSms);
+
+        String subject = template.getSubject();
+        String content = template.getContent().formatted(
+                event.storeName(),
+                event.point()
+        );
+        String message = RewardMessageBuilder.buildMessage(subject, content);
         slackClient.sendNotificationMessage(message);
     }
 }
