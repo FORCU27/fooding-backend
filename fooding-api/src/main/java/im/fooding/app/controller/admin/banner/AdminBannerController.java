@@ -33,45 +33,45 @@ public class AdminBannerController {
 
     @PostMapping
     @Operation(summary = "배너 생성")
-    public ApiResult<String> createBanner(
+    public ApiResult<String> create(
             @RequestBody @Valid AdminBannerCreateRequest request
     ) {
-        return ApiResult.ok(adminBannerService.createBanner(request));
+        return ApiResult.ok(adminBannerService.create(request));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "배너 조회")
-    public ApiResult<AdminBannerResponse> getBanner(
+    public ApiResult<AdminBannerResponse> get(
             @PathVariable String id
     ) {
-        return ApiResult.ok(adminBannerService.getBanner(id));
+        return ApiResult.ok(adminBannerService.get(id));
     }
 
     @GetMapping
     @Operation(summary = "배너 조회(page)")
-    public ApiResult<PageResponse<AdminBannerResponse>> getBanners(
+    public ApiResult<PageResponse<AdminBannerResponse>> list(
             @Valid AdminBannerPageRequest request
     ) {
-        return ApiResult.ok(adminBannerService.getBanners(request));
+        return ApiResult.ok(adminBannerService.list(request));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "배너 수정")
-    public ApiResult<Void> updateBanner(
+    public ApiResult<Void> update(
             @PathVariable String id,
             @RequestBody @Valid AdminBannerUpdateRequest request
     ) {
-        adminBannerService.updateBanner(id, request);
+        adminBannerService.update(id, request);
         return ApiResult.ok();
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "배너 제거")
-    public ApiResult<Void> deleteBanner(
+    public ApiResult<Void> delete(
             @PathVariable String id,
             @AuthenticationPrincipal UserInfo userInfo
     ) {
-        adminBannerService.deleteBanner(id, userInfo.getId());
+        adminBannerService.delete(id, userInfo.getId());
         return ApiResult.ok();
     }
 }

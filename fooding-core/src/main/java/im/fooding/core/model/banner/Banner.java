@@ -1,5 +1,6 @@
 package im.fooding.core.model.banner;
 
+import com.querydsl.core.annotations.QueryEntity;
 import im.fooding.core.model.BaseDocument;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Document(collection = "banner")
+@QueryEntity
 public class Banner extends BaseDocument {
 
     @Id
