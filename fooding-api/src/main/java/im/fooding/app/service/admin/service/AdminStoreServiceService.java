@@ -5,21 +5,18 @@ import im.fooding.app.dto.request.admin.service.RetrieveStoreServiceRequest;
 import im.fooding.app.dto.response.admin.service.StoreServiceResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
-import im.fooding.core.model.store.StoreServiceType;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.store.StoreServiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class StoreServiceApplicationService {
+public class AdminStoreServiceService {
     private final StoreServiceService service;
     private final StoreService storeService;
 
@@ -42,9 +39,10 @@ public class StoreServiceApplicationService {
      * @return PageResponse<StoreServiceResponse>
      */
     public PageResponse<StoreServiceResponse> list(RetrieveStoreServiceRequest request){
-        Page<im.fooding.core.model.store.StoreService> result = service.list("", request.getStoreId(), request.getServiceType(), request.getPageable());
+        Page<im.fooding.core.model.store.StoreService> result = service.list(null, request.getStoreId(), request.getServiceType(), request.getPageable());
         
         PageInfo pageinfo = PageInfo.of( result );
+
         return PageResponse.of(
                 result.getContent().stream().map(StoreServiceResponse::of).collect(Collectors.toList()),
                 pageinfo
