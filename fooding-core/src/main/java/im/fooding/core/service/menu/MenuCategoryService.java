@@ -80,11 +80,11 @@ public class MenuCategoryService {
     /**
      * 메뉴 카테고리 삭제
      *
-     * @param userId
      * @param categoryId
+     * @param userId
      */
     @Transactional
-    public void delete(Long userId, Long categoryId) {
+    public void delete(Long categoryId, Long userId) {
         MenuCategory menuCategory = findByid(categoryId);
         menuCategory.delete(userId);
     }
