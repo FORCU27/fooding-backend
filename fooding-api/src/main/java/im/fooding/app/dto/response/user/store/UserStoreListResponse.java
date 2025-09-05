@@ -1,6 +1,7 @@
 package im.fooding.app.dto.response.user.store;
 
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
@@ -13,6 +14,12 @@ import lombok.NoArgsConstructor;
 public class UserStoreListResponse {
     @Schema(description = "id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private Long id;
+
+    @Schema(description = "업종", example = "KOREAN", requiredMode = RequiredMode.REQUIRED)
+    private StoreCategory category;
+
+    @Schema(description = "지역코드", example = "KR-11", requiredMode = RequiredMode.NOT_REQUIRED)
+    private String regionId;
 
     @Schema(description = "가게명", example = "홍길동 식당", requiredMode = RequiredMode.REQUIRED)
     private String name;
@@ -42,9 +49,11 @@ public class UserStoreListResponse {
     private Boolean isBookmarked = false;
 
     @Builder
-    private UserStoreListResponse(Long id, String name, String image, double averageRating, int visitCount,
+    private UserStoreListResponse(Long id, StoreCategory category, String regionId, String name, String image, double averageRating, int visitCount,
                                   int reviewCount, int bookmarkCount, Integer estimatedWaitingTimeMinutes) {
         this.id = id;
+        this.category = category;
+        this.regionId = regionId;
         this.name = name;
         this.mainImage = image;
         this.visitCount = visitCount;
@@ -58,6 +67,8 @@ public class UserStoreListResponse {
         String imageUrl = store.getImages() != null ? store.getImages().stream().findFirst().map(StoreImage::getImageUrl).orElse(null) : null;
         return UserStoreListResponse.builder()
                 .id(store.getId())
+                .category(store.getCategory())
+                .regionId(store.getRegionId())
                 .name(store.getName())
                 .image(imageUrl)
                 .visitCount(store.getVisitCount())

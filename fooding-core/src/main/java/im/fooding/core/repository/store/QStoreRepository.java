@@ -2,6 +2,7 @@ package im.fooding.core.repository.store;
 
 import im.fooding.core.dto.request.store.StoreFilter;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.store.StoreStatus;
 import org.hibernate.query.SortDirection;
@@ -18,6 +19,8 @@ public interface QStoreRepository {
             Pageable pageable,
             StoreSortType sortType,
             SortDirection sortDirection,
+            List<String> regionIds,
+            StoreCategory category,
             boolean includeDeleted,
             Set<StoreStatus> statuses,
             String searchString
@@ -27,5 +30,5 @@ public interface QStoreRepository {
 
     Optional<Store> retrieve(long storeId, Set<StoreStatus> statuses);
 
-    List<Store> list(List<Long> ids, Set<StoreStatus> statuses);
+    List<Store> list(List<Long> ids);
 }
