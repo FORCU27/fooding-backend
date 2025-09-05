@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class CeoSortMenuCategoryRequest {
 
     @NotEmpty
-    @Schema(description = "정렬된 순서로 나열된 메뉴 카테고리 ID", example = "5,3,4,2,1")
+    @Schema(description = "정렬된 순서로 나열된 메뉴 카테고리 ID", example = "[5,3,4,2,1]")
     private List<Long> menuCategoryIds;
 
 }

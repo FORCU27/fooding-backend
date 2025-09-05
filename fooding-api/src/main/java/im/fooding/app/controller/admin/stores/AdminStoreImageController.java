@@ -27,7 +27,7 @@ public class AdminStoreImageController {
     @Operation(summary = "가게 이미지 목록 조회")
     public ApiResult<PageResponse<AdminStoreImageResponse>> list(
             @PathVariable Long storeId, 
-            @Valid AdminSearchStoreImageRequest search) {
+            @ModelAttribute AdminSearchStoreImageRequest search) {
         return ApiResult.ok(service.list(storeId, search));
     }
 
