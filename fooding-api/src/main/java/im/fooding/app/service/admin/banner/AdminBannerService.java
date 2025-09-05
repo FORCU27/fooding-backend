@@ -22,8 +22,8 @@ public class AdminBannerService {
     private final BannerService bannerService;
 
     @Transactional
-    public String createBanner(AdminBannerCreateRequest request) {
-         return bannerService.createBanner(
+    public String create(AdminBannerCreateRequest request) {
+         return bannerService.create(
                  request.getName(),
                  request.getDescription(),
                  request.getActive(),
@@ -33,12 +33,12 @@ public class AdminBannerService {
          ).toString();
     }
 
-    public AdminBannerResponse getBanner(String id) {
-        return AdminBannerResponse.from(bannerService.getBanner(new ObjectId(id)));
+    public AdminBannerResponse get(String id) {
+        return AdminBannerResponse.from(bannerService.get(new ObjectId(id)));
     }
 
-    public PageResponse<AdminBannerResponse> getBanners(AdminBannerPageRequest request) {
-        Page<Banner> banners = bannerService.getBanners(request.getPageable());
+    public PageResponse<AdminBannerResponse> list(AdminBannerPageRequest request) {
+        Page<Banner> banners = bannerService.list(request.getPageable());
         return PageResponse.of(
                 banners.map(AdminBannerResponse::from).toList(),
                 PageInfo.of(banners)
@@ -46,8 +46,8 @@ public class AdminBannerService {
     }
 
     @Transactional
-    public void updateBanner(String id, AdminBannerUpdateRequest request) {
-        bannerService.updateBanner(
+    public void update(String id, AdminBannerUpdateRequest request) {
+        bannerService.update(
                 new ObjectId(id),
                 request.getName(),
                 request.getDescription(),
@@ -59,7 +59,7 @@ public class AdminBannerService {
     }
 
     @Transactional
-    public void deleteBanner(String id, long deletedBy) {
-        bannerService.deleteBanner(new ObjectId(id), deletedBy);
+    public void delete(String id, long deletedBy) {
+        bannerService.delete(new ObjectId(id), deletedBy);
     }
 }

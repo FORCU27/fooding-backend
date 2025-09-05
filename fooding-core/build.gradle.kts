@@ -40,6 +40,11 @@ dependencies {
     annotationProcessor("jakarta.annotation:jakarta.annotation-api")
     annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 
+    //querydsl-mongodb
+    implementation("com.querydsl:querydsl-mongodb:5.1.0")
+    implementation("com.querydsl:querydsl-core:5.1.0")
+    annotationProcessor("com.querydsl:querydsl-apt:5.1.0:general")
+
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")

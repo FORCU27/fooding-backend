@@ -40,7 +40,10 @@ subprojects {
         runtimeOnly("com.mysql:mysql-connector-j")
         implementation("org.springframework.boot:spring-boot-starter-data-redis")
         implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5")
-        implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+        implementation("org.springframework.boot:spring-boot-starter-data-mongodb") {
+            exclude(group = "org.mongodb", module = "mongodb-driver-sync")
+        }
+        implementation("org.mongodb:mongodb-driver-sync:5.1.0")
 
         //lombok
         compileOnly("org.projectlombok:lombok")
