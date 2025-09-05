@@ -60,7 +60,7 @@ public class CeoMenuCategoryController {
             @AuthenticationPrincipal UserInfo userInfo,
             @PathVariable Long categoryId
     ) {
-        service.delete(userInfo.getId(), categoryId);
+        service.delete(categoryId, userInfo.getId());
         return ApiResult.ok();
     }
 

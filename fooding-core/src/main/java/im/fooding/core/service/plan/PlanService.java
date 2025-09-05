@@ -1,5 +1,7 @@
 package im.fooding.core.service.plan;
 
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.plan.Plan;
 import im.fooding.core.model.plan.Plan.ReservationType;
 import im.fooding.core.model.plan.Plan.VisitStatus;
@@ -49,5 +51,11 @@ public class PlanService {
 
     public Page<Plan> list(Long userId, Pageable pageable) {
         return planRepository.findAllByUserIdAndDeletedFalse(userId, pageable);
+    }
+
+    public Plan getPlan(ObjectId id) {
+        return planRepository.findById(id)
+                .filter(plan -> !plan.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.PLAN_NOT_FOUND));
     }
 }

@@ -53,6 +53,6 @@ public class AdminMenuCategoryService {
     }
 
     public void delete(long id, long deletedBy) {
-        menuCategoryService.delete(deletedBy, id);
+        menuCategoryService.delete(id, deletedBy);
     }
 }
