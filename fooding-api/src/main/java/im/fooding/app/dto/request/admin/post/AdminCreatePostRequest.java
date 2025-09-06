@@ -25,11 +25,11 @@ public class AdminCreatePostRequest {
     private PostType type;
 
     @Schema(description = "홈페이지 노출 여부", example = "true")
-    private boolean isVisibleOnHomepage;
+    private Boolean isVisibleOnHomepage;
 
     @Schema(description = "POS 노출 여부", example = "false")
-    private boolean isVisibleOnPos;
+    private Boolean isVisibleOnPos;
 
     @Schema(description = "CEO앱 노출 여부", example = "true")
-    private boolean isVisibleOnCeo;
+    private Boolean isVisibleOnCeo;
 }

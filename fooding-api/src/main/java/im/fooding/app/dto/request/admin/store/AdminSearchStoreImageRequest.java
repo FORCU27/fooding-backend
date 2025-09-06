@@ -16,3 +16,4 @@ public class AdminSearchStoreImageRequest extends BasicSearch {
     @Schema(description = "스토어 ID", example = "1")
     private Long storeId;
 }
+
