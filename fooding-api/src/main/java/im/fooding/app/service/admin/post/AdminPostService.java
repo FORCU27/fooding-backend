@@ -40,9 +40,9 @@ public class AdminPostService {
               .title(request.getTitle())
               .content(request.getContent())
               .type(request.getType())
-              .isVisibleOnHomepage(request.isVisibleOnHomepage())
-              .isVisibleOnPos(request.isVisibleOnPos())
-              .isVisibleOnCeo(request.isVisibleOnCeo())
+              .isVisibleOnHomepage(request.getIsVisibleOnHomepage())
+              .isVisibleOnPos(request.getIsVisibleOnPos())
+              .isVisibleOnCeo(request.getIsVisibleOnCeo())
               .build();
 
       return postService.create(post).getId();
@@ -54,9 +54,9 @@ public class AdminPostService {
               postId,
               request.getTitle(),
               request.getContent(),
-              request.isVisibleOnHomepage(),
-              request.isVisibleOnPos(),
-              request.isVisibleOnCeo()
+              request.getIsVisibleOnHomepage(),
+              request.getIsVisibleOnPos(),
+              request.getIsVisibleOnCeo()
       );
     }
 
