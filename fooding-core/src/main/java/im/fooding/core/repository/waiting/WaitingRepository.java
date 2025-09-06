@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WaitingRepository extends JpaRepository<Waiting, Long> {
+public interface WaitingRepository extends JpaRepository<Waiting, Long>, QWaitingRepository {
 
     boolean existsByStore(Store store);
 

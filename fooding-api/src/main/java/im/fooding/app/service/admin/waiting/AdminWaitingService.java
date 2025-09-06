@@ -4,7 +4,7 @@ package im.fooding.app.service.admin.waiting;
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingCreateRequest;
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingUpdateRequest;
 import im.fooding.app.dto.response.admin.waiting.AdminWaitingResponse;
-import im.fooding.core.common.BasicSearch;
+import im.fooding.app.dto.request.admin.waiting.AdminWaitingListRequest;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.store.Store;
@@ -37,9 +37,12 @@ public class AdminWaitingService {
         return AdminWaitingResponse.from(waitingService.get(id));
     }
 
-    public PageResponse<AdminWaitingResponse> list(BasicSearch search) {
-        Page<Waiting> waitings = waitingService.list(search.getPageable());
-        return PageResponse.of(waitings.stream().map(AdminWaitingResponse::from).toList(), PageInfo.of(waitings));
+    public PageResponse<AdminWaitingResponse> list(AdminWaitingListRequest search) {
+        WaitingStatus status = (search.getStatus() != null && !search.getStatus().isBlank())
+                ? WaitingStatus.of(search.getStatus())
+                : null;
+        Page<Waiting> page = waitingService.list(search.getStoreId(), status, search.getPageable());
+        return PageResponse.of(page.stream().map(AdminWaitingResponse::from).toList(), PageInfo.of(page));
     }
 
     @Transactional

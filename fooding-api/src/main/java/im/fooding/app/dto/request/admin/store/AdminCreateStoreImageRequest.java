@@ -28,3 +28,4 @@ public class AdminCreateStoreImageRequest {
     @Schema(description = "태그", example = "업체,음식")
     private String tags;
 }
+

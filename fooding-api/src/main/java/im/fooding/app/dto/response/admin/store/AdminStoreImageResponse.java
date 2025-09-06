@@ -57,3 +57,4 @@ public class AdminStoreImageResponse {
                 .build();
     }
 }
+
