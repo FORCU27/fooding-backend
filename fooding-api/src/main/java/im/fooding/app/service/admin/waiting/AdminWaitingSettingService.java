@@ -5,6 +5,7 @@ import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingCreateRequest
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingUpdateRequest;
 import im.fooding.app.dto.response.admin.waiting.AdminWaitingSettingResponse;
 import im.fooding.core.common.BasicSearch;
+import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingListRequest;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.WaitingSettingCreateRequest;
@@ -37,8 +38,8 @@ public class AdminWaitingSettingService {
         return AdminWaitingSettingResponse.from(waitingSettingService.get(settingId));
     }
 
-    public PageResponse<AdminWaitingSettingResponse> list(BasicSearch search) {
-        Page<WaitingSetting> waitingSettings = waitingSettingService.list(search.getPageable());
+    public PageResponse<AdminWaitingSettingResponse> list(AdminWaitingSettingListRequest search) {
+        Page<WaitingSetting> waitingSettings = waitingSettingService.list(search.getWaitingId(), search.getIsActive(), search.getPageable());
         return PageResponse.of(waitingSettings.getContent().stream().map(AdminWaitingSettingResponse::from).toList(), PageInfo.of(waitingSettings));
     }
 
