@@ -5,7 +5,7 @@ import im.fooding.app.dto.request.admin.store.AdminStorePostUpdateRequest;
 import im.fooding.app.dto.response.admin.store.AdminStorePostResponse;
 import im.fooding.app.service.admin.store.AdminStorePostService;
 import im.fooding.core.common.ApiResult;
-import im.fooding.core.common.BasicSearch;
+import im.fooding.app.dto.request.admin.store.AdminStorePostListRequest;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.UserInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,8 +46,8 @@ public class AdminStorePostController {
     @GetMapping
     @Operation(summary = "가게 소식 조회(page)")
     public ApiResult<PageResponse<AdminStorePostResponse>> list(
-            @Parameter(description = "검색 및 페이징 조건")
-            @ModelAttribute BasicSearch search
+            @Parameter(description = "검색 및 페이징 조건 (storeId 포함)")
+            @ModelAttribute AdminStorePostListRequest search
     ) {
         return ApiResult.ok(adminStorePostService.list(search));
     }

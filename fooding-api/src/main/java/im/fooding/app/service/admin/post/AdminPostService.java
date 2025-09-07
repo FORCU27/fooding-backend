@@ -1,6 +1,7 @@
 package im.fooding.app.service.admin.post;
 
 import im.fooding.app.dto.request.admin.post.AdminCreatePostRequest;
+import im.fooding.app.dto.request.admin.post.AdminPostListRequest;
 import im.fooding.app.dto.request.admin.post.AdminUpdatePostRequest;
 import im.fooding.app.dto.response.admin.post.AdminPostResponse;
 import im.fooding.core.model.post.Post;
@@ -21,11 +22,11 @@ import java.util.stream.Collectors;
 public class AdminPostService {
     private final PostService postService;
 
-    public List<AdminPostResponse> list(PostType type) {
-      List<Post> posts = postService.list(type);
-      return posts.stream()
-              .map(AdminPostResponse::from)
-              .collect(Collectors.toList());
+    public List<AdminPostResponse> list(AdminPostListRequest request) {
+        List<Post> posts = postService.list(request.getSearchString(), request.getPageable(), request.getType());
+        return posts.stream()
+                .map(AdminPostResponse::from)
+                .collect(Collectors.toList());
     }
 
     public AdminPostResponse retrieve(Long postId) {
@@ -39,9 +40,9 @@ public class AdminPostService {
               .title(request.getTitle())
               .content(request.getContent())
               .type(request.getType())
-              .isVisibleOnHomepage(request.isVisibleOnHomepage())
-              .isVisibleOnPos(request.isVisibleOnPos())
-              .isVisibleOnCeo(request.isVisibleOnCeo())
+              .isVisibleOnHomepage(request.getIsVisibleOnHomepage())
+              .isVisibleOnPos(request.getIsVisibleOnPos())
+              .isVisibleOnCeo(request.getIsVisibleOnCeo())
               .build();
 
       return postService.create(post).getId();
@@ -53,9 +54,9 @@ public class AdminPostService {
               postId,
               request.getTitle(),
               request.getContent(),
-              request.isVisibleOnHomepage(),
-              request.isVisibleOnPos(),
-              request.isVisibleOnCeo()
+              request.getIsVisibleOnHomepage(),
+              request.getIsVisibleOnPos(),
+              request.getIsVisibleOnCeo()
       );
     }
 

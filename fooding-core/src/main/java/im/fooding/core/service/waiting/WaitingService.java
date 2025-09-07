@@ -40,8 +40,8 @@ public class WaitingService {
                 .orElseThrow(() -> new ApiException(ErrorCode.WAITING_NOT_FOUND));
     }
 
-    public Page<Waiting> list(Pageable pageable) {
-        return waitingRepository.findAllByDeletedFalse(pageable);
+    public Page<Waiting> list(Long storeId, WaitingStatus status, Pageable pageable) {
+        return waitingRepository.list(storeId, status, pageable);
     }
 
     @Transactional
@@ -74,9 +74,7 @@ public class WaitingService {
         return waiting.getStatus() == WaitingStatus.WAITING_OPEN;
     }
 
-    public Page<Waiting> list(WaitingStatus status, Pageable pageable) {
-        return waitingRepository.findAllByStatusAndDeletedFalse(status, pageable);
-    }
+    
 
     private void validateUniqueStore(Store store) {
         if (waitingRepository.existsByStore(store)) {

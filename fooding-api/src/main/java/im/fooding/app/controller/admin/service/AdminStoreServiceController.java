@@ -3,11 +3,14 @@ package im.fooding.app.controller.admin.service;
 import im.fooding.app.dto.request.admin.service.CreateStoreServiceRequest;
 import im.fooding.app.dto.request.admin.service.RetrieveStoreServiceRequest;
 import im.fooding.app.dto.response.admin.service.StoreServiceResponse;
-import im.fooding.app.service.admin.service.StoreServiceApplicationService;
+import im.fooding.app.service.admin.service.AdminStoreServiceService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.model.store.StoreServiceType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin/service" )
 @Tag(name="Admin StoreService Controller", description = "관리자 서비스 관리 컨트롤러")
 public class AdminStoreServiceController {
-    private final StoreServiceApplicationService service;
+    private final AdminStoreServiceService service;
 
     @PostMapping()
     @Operation(summary = "스토어 서비스 생성")
@@ -33,8 +36,19 @@ public class AdminStoreServiceController {
     @GetMapping()
     @Operation(summary = "모든 서비스 가입 내역 조회")
     public ApiResult<PageResponse<StoreServiceResponse>> list(
-            @ModelAttribute RetrieveStoreServiceRequest request
+            @RequestParam(required = false) String searchString,
+            @RequestParam(defaultValue = "1") @Min(1) int pageNum,
+            @RequestParam(defaultValue = "10") @Min(1) @Max(100) int pageSize,
+            @RequestParam(required = false) Long storeId,
+            @RequestParam(required = false) StoreServiceType serviceType
     ){
+        RetrieveStoreServiceRequest request = new RetrieveStoreServiceRequest();
+        request.setSearchString(searchString);
+        request.setPageNum(pageNum);
+        request.setPageSize(pageSize);
+        request.setStoreId(storeId);
+        request.setServiceType(serviceType);
+        
         return ApiResult.ok( service.list( request ) );
     }
 

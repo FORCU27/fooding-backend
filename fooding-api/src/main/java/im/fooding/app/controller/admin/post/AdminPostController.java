@@ -1,12 +1,12 @@
 package im.fooding.app.controller.admin.post;
 
 import im.fooding.app.dto.request.admin.post.AdminCreatePostRequest;
+import im.fooding.app.dto.request.admin.post.AdminPostListRequest;
 import im.fooding.app.dto.request.admin.post.AdminUpdatePostRequest;
 import im.fooding.app.dto.response.admin.post.AdminPostResponse;
 import im.fooding.app.service.admin.post.AdminPostService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.global.UserInfo;
-import im.fooding.core.model.post.PostType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -27,9 +27,9 @@ public class AdminPostController {
 
     @GetMapping
     @Operation(summary = "게시글 목록 조회")
-    public ApiResult<List<AdminPostResponse>> list(@RequestParam PostType type) {
-    List<AdminPostResponse> posts = adminPostService.list(type);
-    return ApiResult.ok(posts);
+    public ApiResult<List<AdminPostResponse>> list(@Valid AdminPostListRequest request) {
+        List<AdminPostResponse> posts = adminPostService.list(request);
+        return ApiResult.ok(posts);
     }
 
     @GetMapping("/{id}")

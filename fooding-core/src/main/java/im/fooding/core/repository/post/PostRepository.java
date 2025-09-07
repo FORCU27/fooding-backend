@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findByTypeOrderByCreatedAtDesc(PostType type);
+public interface PostRepository extends JpaRepository<Post, Long>, QPostRepository {
 }
