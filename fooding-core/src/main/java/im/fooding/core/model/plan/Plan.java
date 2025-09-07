@@ -1,5 +1,6 @@
 package im.fooding.core.model.plan;
 
+import com.querydsl.core.annotations.QueryEntity;
 import im.fooding.core.model.BaseDocument;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -13,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Document(collection = "plan")
+@QueryEntity
 public class Plan extends BaseDocument {
 
     @Id

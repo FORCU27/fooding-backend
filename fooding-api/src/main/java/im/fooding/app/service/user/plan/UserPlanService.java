@@ -7,6 +7,7 @@ import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.plan.Plan;
+import im.fooding.core.repository.plan.PlanFilter;
 import im.fooding.core.service.plan.PlanService;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
@@ -20,7 +21,11 @@ public class UserPlanService {
     private final PlanService planService;
 
     public PageResponse<UserPlanResponse> list(UserPlanRetrieveRequest request, Long userId) {
-        Page<Plan> plans = planService.list(userId, request.getPageable());
+        PlanFilter filter = PlanFilter.builder()
+                .userId(userId)
+                .visitStatus(request.getVisitStatus())
+                .build();
+        Page<Plan> plans = planService.list(filter, request.getPageable());
         Page<UserPlanResponse> planResponses = plans.map(UserPlanResponse::from);
 
         return PageResponse.of(planResponses.toList(), PageInfo.of(planResponses));
