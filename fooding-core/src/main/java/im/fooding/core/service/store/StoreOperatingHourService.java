@@ -33,6 +33,14 @@ public class StoreOperatingHourService {
         return repository.save(storeOperatingHour);
     }
 
+    public StoreOperatingHour initialize(Store store) {
+        StoreOperatingHour storeOperatingHour = StoreOperatingHour.builder()
+                .store(store)
+                .hasHoliday(false)
+                .build();
+        return  repository.save(storeOperatingHour);
+    }
+
     public void update(long id, boolean hasHoliday, StoreRegularHolidayType regularHolidayType, DayOfWeek regularHoliday, String closedNationalHolidays, String customHolidays, String operatingNotes) {
         StoreOperatingHour storeOperatingHour = findById(id);
         storeOperatingHour.update(hasHoliday, regularHolidayType, regularHoliday, closedNationalHolidays, customHolidays, operatingNotes);

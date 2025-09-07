@@ -27,8 +27,10 @@ public class StoreOperatingHour extends BaseEntity {
 
     private boolean hasHoliday;
 
+    @Enumerated(EnumType.STRING)
     private StoreRegularHolidayType regularHolidayType;
 
+    @Enumerated(EnumType.STRING)
     private DayOfWeek regularHoliday;
 
     private String closedNationalHolidays; // 공휴일 중 휴무일 "새해,설날연휴,추석연휴,크리스마스.."
