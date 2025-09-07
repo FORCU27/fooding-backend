@@ -7,6 +7,7 @@ import im.fooding.core.model.post.PostType;
 import im.fooding.core.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +20,8 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
 
-    public List<Post> list(PostType type) {
-      return postRepository.findByTypeOrderByCreatedAtDesc(type);
+    public List<Post> list(String searchString, Pageable pageable, PostType type) {
+        return postRepository.list(searchString, pageable, type).getContent();
     }
 
     public Post findById(Long id) {

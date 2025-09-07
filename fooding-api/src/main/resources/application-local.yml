@@ -15,14 +15,18 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:1234@localhost:27017/fooding?authSource=admin
+      repositories:
+        enabled: false
     redis:
       host: localhost
       port: 6379
       password: 1234
       database: 0
+      repositories:
+        enabled: false
 
   datasource:
-    url: jdbc:mysql://localhost:3308/fooding?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3309/fooding?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
     username: root
     password: 1234
 
@@ -153,7 +157,15 @@ management:
     elasticsearch:
       enabled: false
 
+cache:
+  type: none  # Redis 캐시 비활성화
 kafka:
   internal:
     topic: fooding.event.internal.local
     groupId: fooding-event-internal-local
+  consumer:
+    enabled: false  # Kafka 소비자 비활성화
+#kafka:
+#  internal:
+#    topic: fooding.event.internal.local
+#    groupId: fooding-event-internal-local

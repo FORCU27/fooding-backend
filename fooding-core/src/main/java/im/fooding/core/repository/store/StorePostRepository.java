@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StorePostRepository extends JpaRepository<StorePost, Long> {
+public interface StorePostRepository extends JpaRepository<StorePost, Long>, QStorePostRepository {
     List<StorePost> findByStoreIdOrderByIsFixedDescUpdatedAtDesc(Long storeId);
 
-    Page<StorePost> findAllByDeletedFalse(Pageable pageable);
+    Page<StorePost> findAllByDeletedFalse(Pageable pageable);   
 }

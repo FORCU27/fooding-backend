@@ -49,8 +49,8 @@ public class WaitingSettingService {
                 .orElseThrow(() -> new ApiException(ErrorCode.WAITING_SETTING_NOT_FOUND));
     }
 
-    public Page<WaitingSetting> list(Pageable pageable) {
-        return waitingSettingRepository.findAllByDeletedFalse(pageable);
+    public Page<WaitingSetting> list(Long waitingId, Boolean isActive, Pageable pageable) {
+        return waitingSettingRepository.list(waitingId, isActive, pageable);
     }
 
     @Transactional

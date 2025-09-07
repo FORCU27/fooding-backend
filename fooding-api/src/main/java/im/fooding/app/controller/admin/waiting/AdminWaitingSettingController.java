@@ -5,6 +5,7 @@ import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingUpdateRequest
 import im.fooding.app.dto.response.admin.waiting.AdminWaitingSettingResponse;
 import im.fooding.app.service.admin.waiting.AdminWaitingSettingService;
 import im.fooding.core.common.ApiResult;
+import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingListRequest;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.UserInfo;
@@ -54,8 +55,8 @@ public class AdminWaitingSettingController {
     @GetMapping
     @Operation(summary = "웨이팅 설정 조회(page)")
     public ApiResult<PageResponse<AdminWaitingSettingResponse>> list(
-            @Parameter(description = "검색 및 페이징 조건")
-            @ModelAttribute BasicSearch search
+            @Parameter(description = "검색 및 페이징 조건 (waitingId, isActive 포함)")
+            @ModelAttribute AdminWaitingSettingListRequest search
     ) {
         return ApiResult.ok(adminWaitingSettingService.list(search));
     }

@@ -125,7 +125,7 @@ public class UserStoreService {
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreListResponse> retrieveImmediateEntry(UserImmediateEntryStoreRequest request) {
-        Page<Waiting> waitings = waitingService.list(WaitingStatus.IMMEDIATE_ENTRY, request.getPageable());
+        Page<Waiting> waitings = waitingService.list(null, WaitingStatus.IMMEDIATE_ENTRY, request.getPageable());
 
         List<UserStoreListResponse> content = waitings.getContent().stream()
                 .map(Waiting::getStore)

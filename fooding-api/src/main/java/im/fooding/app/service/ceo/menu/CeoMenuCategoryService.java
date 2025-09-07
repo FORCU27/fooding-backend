@@ -28,7 +28,7 @@ public class CeoMenuCategoryService {
     }
 
     public void delete(Long categoryId, Long userId) {
-        menuCategoryService.delete(userId, categoryId);
+        menuCategoryService.delete(categoryId, userId);
     }
 
     public List<CeoMenuCategoryResponse> list(Long storeId) {

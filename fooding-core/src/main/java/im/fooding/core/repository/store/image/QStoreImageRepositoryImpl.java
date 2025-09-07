@@ -46,8 +46,8 @@ public class QStoreImageRepositoryImpl implements QStoreImageRepository {
                 .fetch();
 
         JPQLQuery<Long> countQuery = query
-                .select(store.count())
-                .from(store)
+                .select(storeImage.count())
+                .from(storeImage)
                 .where(
                         storeImage.store.id.eq(storeId),
                         searchTag(searchTag)
