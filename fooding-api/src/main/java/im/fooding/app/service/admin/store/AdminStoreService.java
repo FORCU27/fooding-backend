@@ -11,12 +11,12 @@ import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePosition;
+import im.fooding.core.model.store.information.StoreOperatingHour;
 import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.region.RegionService;
-import im.fooding.core.service.store.StoreMemberService;
-import im.fooding.core.service.store.StoreService;
+import im.fooding.core.service.store.*;
 import im.fooding.core.service.store.subway.SubwayStationService;
 import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
@@ -43,6 +43,9 @@ public class AdminStoreService {
     private final RegionService regionService;
     private final SubwayStationService subwayStationService;
     private final EventProducerService eventProducerService;
+    private final StoreInformationService storeInformationService;
+    private final StoreOperatingHourService storeOperatingHourService;
+    private final StoreDailyOperatingTimeService storeDailyOperatingTimeService;
 
     @Transactional(readOnly = true)
     public PageResponse<AdminStoreResponse> list(AdminSearchStoreRequest request) {
@@ -70,6 +73,9 @@ public class AdminStoreService {
                 request.getLatitude(), request.getLongitude());
 
         storeMemberService.create(store, user, StorePosition.OWNER);
+
+        initializeInformation(store);
+
         eventProducerService.publishEvent("StoreCreatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getRegionId(), store.getStatus(), store.getCreatedAt()));
         return store.getId();
     }
@@ -128,5 +134,16 @@ public class AdminStoreService {
 
     private Region getRegion(String regionId) {
         return StringUtils.hasText(regionId) ? regionService.get(regionId) : null;
+    }
+
+    /**
+     * 스토어 신규 생성시 부가정보, 영업시간/휴무일 기본값으로 초기 생성한다.
+     *
+     * @param store
+     */
+    private void initializeInformation(Store store) {
+        storeInformationService.initialize(store);
+        StoreOperatingHour storeOperatingHour = storeOperatingHourService.initialize(store);
+        storeDailyOperatingTimeService.initialize(storeOperatingHour);
     }
 }
