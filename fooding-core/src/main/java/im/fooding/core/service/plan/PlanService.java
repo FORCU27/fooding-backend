@@ -6,6 +6,7 @@ import im.fooding.core.model.plan.Plan;
 import im.fooding.core.model.plan.Plan.ReservationType;
 import im.fooding.core.model.plan.Plan.VisitStatus;
 import im.fooding.core.model.waiting.StoreWaiting;
+import im.fooding.core.repository.plan.PlanFilter;
 import im.fooding.core.repository.plan.PlanRepository;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
@@ -49,8 +50,8 @@ public class PlanService {
         return planRepository.save(plan).getId();
     }
 
-    public Page<Plan> list(Long userId, Pageable pageable) {
-        return planRepository.findAllByUserIdAndDeletedFalse(userId, pageable);
+    public Page<Plan> list(PlanFilter filter, Pageable pageable) {
+        return planRepository.list(filter, pageable);
     }
 
     public Plan getPlan(ObjectId id) {
