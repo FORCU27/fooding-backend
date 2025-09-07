@@ -4,6 +4,7 @@ import im.fooding.core.model.store.information.StoreRegularHolidayType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,7 @@ public class CeoCreateStoreOperatingHourRequest {
     
     @Schema(description = "영업시간")
     @Valid
+    @Size(min = 7, message = "월요일부터 일요일까지 입력해주세요.")
     private List<CeoCreateStoreDailyOperatingTimeRequest> dailyOperatingTimes;
 
     @Builder
