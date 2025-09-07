@@ -14,15 +14,15 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class CeoCreateStoreInformationRequest {
-    @Schema(description = "홈페이지/SNS 링크", example = "['https://...', 'https://...']")
+    @Schema(description = "홈페이지/SNS 링크", example = "[\"https://...\", \"https://...\"]")
     private List<String> links;
 
     @NotNull
     @Size(min = 1)
-    @Schema(description = "시설/서비스 정보", example = "['단체 이용 가능', '포장']")
+    @Schema(description = "시설/서비스 정보", example = "[\"단체 이용 가능\", \"포장\"]")
     private List<String> facilities;
 
-    @Schema(description = "결제수단", example = "['지역화페(카드형)', '간편결제']")
+    @Schema(description = "결제수단", example = "[\"지역화페(카드형)\", \"간편결제\"]")
     private List<String> paymentMethods;
 
     @NotNull
