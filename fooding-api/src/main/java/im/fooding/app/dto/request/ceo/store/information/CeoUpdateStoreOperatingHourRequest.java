@@ -23,10 +23,10 @@ public class CeoUpdateStoreOperatingHourRequest {
     @Schema(description = "요일 MONDAY, TUESDAY", example = "MONDAY")
     private DayOfWeek regularHoliday;
 
-    @Schema(description = "공휴일 중 휴무일", example = "['새해','설날연휴','추석연휴','크리스마스']")
+    @Schema(description = "공휴일 중 휴무일", example = "[\"새해\",\"설날연휴\",\"추석연휴\",\"크리스마스\"]")
     private List<String> closedNationalHolidays;
 
-    @Schema(description = "기타 휴무일", example = "['2025-08-21', '2025-12-24']")
+    @Schema(description = "기타 휴무일", example = "[\"2025-08-21\", \"2025-12-24\"]")
     private List<String> customHolidays;
 
     @Schema(description = "운영시간 관련 비고/메모", example = "연중무휴")

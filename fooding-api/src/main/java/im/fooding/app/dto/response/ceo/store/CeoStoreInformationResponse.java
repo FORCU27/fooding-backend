@@ -18,13 +18,13 @@ public class CeoStoreInformationResponse {
     @Schema(description = "id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private long id;
 
-    @Schema(description = "홈페이지/SNS 링크", example = "['https://...', 'https://...']", requiredMode = RequiredMode.NOT_REQUIRED)
+    @Schema(description = "홈페이지/SNS 링크", example = "[\"https://...\", \"https://...\"]", requiredMode = RequiredMode.NOT_REQUIRED)
     private List<String> links;
 
-    @Schema(description = "시설/서비스 정보", example = "['단체 이용 가능', '포장']", requiredMode = RequiredMode.REQUIRED)
+    @Schema(description = "시설/서비스 정보", example = "[\"단체 이용 가능\", \"포장\"]", requiredMode = RequiredMode.REQUIRED)
     private List<String> facilities;
 
-    @Schema(description = "결제수단", example = "['지역화페(카드형)', '간편결제']", requiredMode = RequiredMode.NOT_REQUIRED)
+    @Schema(description = "결제수단", example = "[\"지역화페(카드형)\", \"간편결제\"]", requiredMode = RequiredMode.NOT_REQUIRED)
     private List<String> paymentMethods;
 
     @Schema(description = "주차가능여부", example = "true", requiredMode = RequiredMode.REQUIRED)
