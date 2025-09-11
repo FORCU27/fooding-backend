@@ -38,6 +38,14 @@ public class StoreInformationService {
         return repository.save(storeInformation);
     }
 
+    public StoreInformation initialize(Store store) {
+        StoreInformation storeInformation = StoreInformation.builder()
+                .store(store)
+                .parkingAvailable(false)
+                .build();
+        return repository.save(storeInformation);
+    }
+
     public void update(long id, String links, String facilities, String paymentMethods, boolean parkingAvailable, StoreParkingType parkingType,
                        StoreParkingChargeType parkingChargeType, Integer parkingBasicTimeMinutes, Integer parkingBasicFee,
                        Integer parkingExtraMinutes, Integer parkingExtraFee, Integer parkingMaxDailyFee) {

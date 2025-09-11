@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +31,24 @@ public class StoreDailyOperatingTimeService {
                 .breakEndTime(breakEndTime)
                 .build();
         repository.save(storeDailyOperatingTime);
+    }
+
+    public void initialize(StoreOperatingHour storeOperatingHour) {
+        List<DayOfWeek> weeks = Arrays.asList(DayOfWeek.values());
+        List<StoreDailyOperatingTime> entities = new ArrayList<>();
+        weeks.forEach(week -> {
+            entities.add(
+                    StoreDailyOperatingTime.builder()
+                            .storeOperatingHour(storeOperatingHour)
+                            .dayOfWeek(week)
+                            .openTime(LocalTime.of(9, 00))
+                            .closeTime(LocalTime.of(22, 00))
+                            .breakStartTime(LocalTime.of(14, 30))
+                            .breakEndTime(LocalTime.of(16, 30))
+                            .build()
+            );
+        });
+        repository.saveAll(entities);
     }
 
     public void update(long id, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime, LocalTime breakStartTime, LocalTime breakEndTime) {
