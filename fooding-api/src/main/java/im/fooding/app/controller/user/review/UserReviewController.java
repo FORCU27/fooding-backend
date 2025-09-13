@@ -50,7 +50,7 @@ public class UserReviewController {
     @Operation(summary = "리뷰 신고", description = "특정 리뷰를 신고합니다.")
     public ApiResult<Void> reportReview(
             @PathVariable long reviewId,
-            @ModelAttribute CreateReportRequest request
+            @RequestBody CreateReportRequest request
     ){
         userReportService.createReport( reviewId, request );
         return ApiResult.ok();

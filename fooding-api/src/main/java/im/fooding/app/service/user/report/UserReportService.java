@@ -18,6 +18,7 @@ public class UserReportService {
     private final ReviewService reviewService;
 
     public void createReport( long id, CreateReportRequest request ){
+        System.out.println( request.getReporterId() );
         User reporter = userService.findById( request.getReporterId() );
         reportService.create(
                 request.getTargetType(),
