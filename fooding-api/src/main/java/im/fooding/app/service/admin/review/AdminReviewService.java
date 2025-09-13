@@ -37,13 +37,14 @@ public class AdminReviewService {
     @Transactional
     public void update( Long id, AdminUpdateReviewRequest request){
         Review review = reviewService.findById( id );
-        review.getScore().update(
-                request.getTotalScore(),
-                request.getTasteScore(),
-                request.getMoodScore(),
-                request.getServiceScore()
-        );
-        review.update( request.getContent(), request.getVisitPurposeType() );
+        float totalScore = ( request.getMoodScore() + request.getTasteScore() + request.getServiceScore() ) / 3;
+        ReviewScore score = ReviewScore.builder()
+                                .mood( request.getMoodScore() )
+                                .taste( request.getTasteScore() )
+                                .service( request.getServiceScore() )
+                                .total( totalScore )
+                                .build();
+        review.update( request.getContent(), request.getVisitPurposeType(), score );
     }
 
     @Transactional
