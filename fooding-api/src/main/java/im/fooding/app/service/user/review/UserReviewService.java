@@ -1,6 +1,7 @@
 package im.fooding.app.service.user.review;
 
 import im.fooding.app.dto.request.user.review.CreateReviewRequest;
+import im.fooding.app.dto.request.user.review.UpdateReviewRequest;
 import im.fooding.app.dto.request.user.review.UserRetrieveReviewRequest;
 import im.fooding.app.dto.response.user.review.UserReviewResponse;
 import im.fooding.core.common.PageInfo;
@@ -93,11 +94,13 @@ public class UserReviewService {
     public void create(CreateReviewRequest request){
         User user = userService.findById( request.getUserId() );
         Store store = storeService.findById( request.getStoreId() );
+
+        float totalScore = ( request.getMood() + request.getService() + request.getTaste() ) / 3;
         ReviewScore score = ReviewScore.builder()
                 .mood( request.getMood() )
                 .service( request.getService() )
                 .taste( request.getTaste() )
-                .total( request.getTotal() )
+                .total( totalScore )
                 .build();
         // 리뷰 추가
         Review review = Review.builder()
@@ -112,5 +115,22 @@ public class UserReviewService {
         reviewImageService.create( result, request.getImageUrls() );
         // 리뷰 수 추가
         storeService.increaseReviewCount( store );
+    }
+
+    @Transactional
+    public void delete( long id, long deletedBy ){
+        reviewService.delete( id, deletedBy );
+    }
+
+    @Transactional
+    public void update(long id, UpdateReviewRequest request){
+        float totalScore = ( request.getMoodScore() + request.getServiceScore() + request.getTasteScore() ) / 3;
+        ReviewScore score = ReviewScore.builder()
+                            .mood( request.getMoodScore() )
+                            .service( request.getServiceScore() )
+                            .taste( request.getTasteScore() )
+                            .total( totalScore )
+                            .build();
+        reviewService.update( id, request.getContent(), request.getVisitPurposeType(), score );
     }
 }

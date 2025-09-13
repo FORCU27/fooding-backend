@@ -2,17 +2,20 @@ package im.fooding.app.controller.user.review;
 
 import im.fooding.app.dto.request.user.report.CreateReportRequest;
 import im.fooding.app.dto.request.user.review.CreateReviewRequest;
+import im.fooding.app.dto.request.user.review.UpdateReviewRequest;
 import im.fooding.app.dto.request.user.review.UserRetrieveReviewRequest;
 import im.fooding.app.dto.response.user.review.UserReviewResponse;
 import im.fooding.app.service.user.report.UserReportService;
 import im.fooding.app.service.user.review.UserReviewService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.global.UserInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -52,4 +55,25 @@ public class UserReviewController {
         userReportService.createReport( reviewId, request );
         return ApiResult.ok();
     }
+
+    @PatchMapping( "/{reviewId}/update" )
+    @Operation(summary = "리뷰 수정", description = "특정 리뷰를 수정합니다.")
+    public ApiResult<Void> updateReview(
+            @PathVariable long reviewId,
+            @RequestBody UpdateReviewRequest request
+    ){
+        userReviewService.update( reviewId, request );
+        return ApiResult.ok();
+    }
+
+    @DeleteMapping( "/{reviewId}" )
+    @Operation(summary = "리뷰 삭제", description = "특정 리뷰를 삭제합니다..")
+    public ApiResult<Void> deleteReview(
+            @PathVariable long reviewId,
+            @AuthenticationPrincipal UserInfo userInfo
+    ){
+        userReviewService.delete( reviewId, userInfo.getId() );
+        return ApiResult.ok();
+    }
+
 }

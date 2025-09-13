@@ -3,7 +3,9 @@ package im.fooding.core.service.review;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.review.Review;
+import im.fooding.core.model.review.ReviewScore;
 import im.fooding.core.model.review.ReviewSortType;
+import im.fooding.core.model.review.VisitPurposeType;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.repository.review.ReviewRepository;
 import java.util.List;
@@ -82,6 +84,17 @@ public class ReviewService {
                 () -> new ApiException(ErrorCode.REVIEW_NOT_FOUND)
         );
         review.setBlind( isBlind );
+    }
+
+    /**
+     * * 리뷰 업데이트
+     * @param id, request
+     */
+    public void update(long id, String content, VisitPurposeType visitPurposeType, ReviewScore score){
+        Review review = reviewRepository.findById( id ).orElseThrow(
+                () -> new ApiException(ErrorCode.REVIEW_NOT_FOUND)
+        );
+        review.update( content, visitPurposeType, score );
     }
 
 }

@@ -26,8 +26,6 @@ public class CreateReviewRequest {
 
     // ReviewScore를 위한 값
     @NotNull
-    private float total;
-    @NotNull
     private float taste;
     @NotNull
     private float mood;

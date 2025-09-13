@@ -79,10 +79,12 @@ public class Review extends BaseEntity {
     }
 
     @Transactional
-    public void update(String content, VisitPurposeType visitPurposeType) {
+    public void update(String content, VisitPurposeType visitPurposeType, ReviewScore score) {
         this.content = content;
         this.visitPurposeType = visitPurposeType;
+        this.score = score;
     }
 
+    @Transactional
     public void setBlind( boolean isBlind ) { this.isBlind = isBlind; }
 }
