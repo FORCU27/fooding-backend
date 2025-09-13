@@ -73,4 +73,15 @@ public class ReviewService {
         return 0;
     }
 
+    /**
+     * * 리뷰 블라인드 여부 설정
+     * @param id
+     */
+    public void setBlind( long id, boolean isBlind ) {
+        Review review = reviewRepository.findById( id ).orElseThrow(
+                () -> new ApiException(ErrorCode.REVIEW_NOT_FOUND)
+        );
+        review.setBlind( isBlind );
+    }
+
 }

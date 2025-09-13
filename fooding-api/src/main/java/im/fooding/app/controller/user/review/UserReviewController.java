@@ -1,8 +1,10 @@
 package im.fooding.app.controller.user.review;
 
+import im.fooding.app.dto.request.user.report.CreateReportRequest;
 import im.fooding.app.dto.request.user.review.CreateReviewRequest;
 import im.fooding.app.dto.request.user.review.UserRetrieveReviewRequest;
 import im.fooding.app.dto.response.user.review.UserReviewResponse;
+import im.fooding.app.service.user.report.UserReportService;
 import im.fooding.app.service.user.review.UserReviewService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
@@ -21,8 +23,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserReviewController {
 
     private final UserReviewService userReviewService;
+    private final UserReportService userReportService;
 
-    @GetMapping("{storeId}/reviews")
+    @GetMapping("/{storeId}/reviews")
     @Operation(summary = "리뷰 전체 조회", description = "별점순 / 최신순으로 리뷰를 조회합니다.")
     public ApiResult<PageResponse<UserReviewResponse>> list(
             @PathVariable Long storeId,
@@ -37,6 +40,16 @@ public class UserReviewController {
             @Valid @RequestBody CreateReviewRequest request
     ){
         userReviewService.create( request );
+        return ApiResult.ok();
+    }
+
+    @PostMapping( "/{reviewId}/report")
+    @Operation(summary = "리뷰 신고", description = "특정 리뷰를 신고합니다.")
+    public ApiResult<Void> reportReview(
+            @PathVariable long reviewId,
+            @ModelAttribute CreateReportRequest request
+    ){
+        userReportService.createReport( reviewId, request );
         return ApiResult.ok();
     }
 }

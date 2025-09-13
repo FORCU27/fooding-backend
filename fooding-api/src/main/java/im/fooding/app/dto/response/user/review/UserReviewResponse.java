@@ -7,6 +7,7 @@ import im.fooding.core.model.review.VisitPurposeType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -83,7 +84,7 @@ public class UserReviewResponse {
             List<ReviewImage> images,
             Long likeCount
     ) {
-        return UserReviewResponse.builder()
+        UserReviewResponse.UserReviewResponseBuilder result = UserReviewResponse.builder()
                 .reviewId(review.getId())
                 .nickname(review.getWriter().getNickname())
                 .profileUrl(review.getWriter().getProfileImage())
@@ -95,7 +96,13 @@ public class UserReviewResponse {
                 .purpose(review.getVisitPurposeType())
                 .likeCount(likeCount)
                 .createdAt(review.getCreatedAt())
-                .updatedAt(review.getUpdatedAt())
-                .build();
+                .updatedAt(review.getUpdatedAt());
+        if( review.isBlind() ){
+            result.nickname( "블라인드 된 사용자" );
+            result.content( "블라인드 된 리뷰입니다." );
+            result.profileUrl( "" );
+            result.imageUrls( new ArrayList<>() );
+        }
+        return result.build();
     }
 }
