@@ -24,6 +24,7 @@ public class QReviewRepositoryImpl implements QReviewRepository {
     @Override
     public Page<Review> list(
             Long storeId,
+            Long writerId,
             Pageable pageable
     ) {
         OrderSpecifier<?> orderSpecifier = getOrderSpecifier( pageable );
@@ -31,6 +32,7 @@ public class QReviewRepositoryImpl implements QReviewRepository {
         BooleanBuilder whereClause = new BooleanBuilder();
         whereClause.and( review.deleted.isFalse() );
         if( storeId != null ) whereClause.and( review.store.id.eq( storeId ) );
+        if( writerId != null ) whereClause.and( review.writer.id.eq( writerId ) );
         JPAQuery<Review> jpaQuery = query
                 .select(review)
                 .from(review)
@@ -48,7 +50,7 @@ public class QReviewRepositoryImpl implements QReviewRepository {
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchOne);
     }
 
-    private OrderSpecifier<?> getOrderSpecifier( Pageable pageable){
+    private OrderSpecifier<?> getOrderSpecifier(Pageable pageable){
         if( !pageable.getSort().isSorted() ) return null;
         Order order = pageable.getSort().iterator().next().isAscending() ? Order.ASC : Order.DESC;
         return new OrderSpecifier<>( order, review.createdAt );

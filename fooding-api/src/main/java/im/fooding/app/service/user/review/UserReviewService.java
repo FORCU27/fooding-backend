@@ -52,7 +52,7 @@ public class UserReviewService {
         if( sortInformation != null )pageable = PageRequest.of( request.getPageNum() - 1, request.getPageSize(), sortInformation );
         else pageable = PageRequest.of(request.getPageNum() - 1, request.getPageSize() );
 
-        Page<Review> reviewPage = reviewService.list(storeId, pageable );
+        Page<Review> reviewPage = reviewService.list(storeId, request.getWriterId(), pageable );
 
         List<Long> reviewIds = getReviewIds(reviewPage.getContent());
 
@@ -120,10 +120,14 @@ public class UserReviewService {
     @Transactional
     public void delete( long id, long deletedBy ){
         reviewService.delete( id, deletedBy );
+        Review review = reviewService.findById( id );
+        Store store = storeService.findById( review.getStore().getId() );
+        storeService.decreaseReviewCount( store );
     }
 
     @Transactional
     public void update(long id, UpdateReviewRequest request){
+        // 리뷰 수정
         float totalScore = ( request.getMoodScore() + request.getServiceScore() + request.getTasteScore() ) / 3;
         ReviewScore score = ReviewScore.builder()
                             .mood( request.getMoodScore() )
@@ -132,5 +136,8 @@ public class UserReviewService {
                             .total( totalScore )
                             .build();
         reviewService.update( id, request.getContent(), request.getVisitPurposeType(), score );
+        // 리뷰 이미지 수정
+        Review review = reviewService.findById( id );
+        reviewImageService.update( review, request.getImageUrls() );
     }
 }

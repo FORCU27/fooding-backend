@@ -5,6 +5,8 @@ import im.fooding.core.model.review.VisitPurposeType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 public class UpdateReviewRequest {
@@ -13,4 +15,5 @@ public class UpdateReviewRequest {
     private float tasteScore;
     private float moodScore;
     private float serviceScore;
+    private List<String> imageUrls;
 }
