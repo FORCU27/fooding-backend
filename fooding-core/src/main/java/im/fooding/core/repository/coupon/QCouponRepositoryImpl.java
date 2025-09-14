@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static im.fooding.core.model.coupon.QCoupon.coupon;
+import static im.fooding.core.model.pointshop.QPointShop.pointShop;
 import static im.fooding.core.model.store.QStore.store;
 import static im.fooding.core.model.store.QStoreImage.storeImage;
 
@@ -79,6 +80,7 @@ public class QCouponRepositoryImpl implements QCouponRepository {
     }
 
     private BooleanExpression isIssuableAt(LocalDate now) {
-        return null != now ? coupon.issueStartOn.loe(now).and(coupon.issueEndOn.goe(now)) : null;
+        return now != null ? coupon.issueStartOn.isNull().or(coupon.issueStartOn.loe(now))
+                .and(coupon.issueEndOn.isNull().or(coupon.issueEndOn.goe(now))) : null;
     }
 }

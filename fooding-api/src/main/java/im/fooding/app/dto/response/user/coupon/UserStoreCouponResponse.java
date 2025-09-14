@@ -48,7 +48,7 @@ public class UserStoreCouponResponse {
     @Schema(description = "할인값(금액, 퍼센트)", example = "2000", requiredMode = RequiredMode.REQUIRED)
     private int discountValue;
 
-    @Schema(description = "발급시작일", example = "2025-05-01", requiredMode = RequiredMode.REQUIRED)
+    @Schema(description = "발급시작일", example = "2025-05-01", requiredMode = RequiredMode.NOT_REQUIRED)
     private LocalDate issueStartOn;
 
     @Schema(description = "발급마감일", example = "2025-05-31", requiredMode = RequiredMode.NOT_REQUIRED)
