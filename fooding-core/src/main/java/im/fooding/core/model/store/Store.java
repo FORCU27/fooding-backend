@@ -1,5 +1,7 @@
 package im.fooding.core.model.store;
 
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.subway.SubwayStation;
@@ -12,6 +14,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -179,6 +182,10 @@ public class Store extends BaseEntity {
     }
 
     public void approve() {
+        // 필수값(주소, 카테고리, 연락처, 위도, 경도)
+        if (!StringUtils.hasText(address) ||  null == category || !StringUtils.hasText(contactNumber) || null == latitude || null == longitude) {
+            throw new ApiException(ErrorCode.STORE_APPROVED_FAILED);
+        }
         this.status = StoreStatus.APPROVED;
     }
 
