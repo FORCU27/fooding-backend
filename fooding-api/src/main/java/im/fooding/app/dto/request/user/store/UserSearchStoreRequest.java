@@ -29,7 +29,7 @@ public class UserSearchStoreRequest extends BasicSearch {
     )
     private SortDirection sortDirection = SortDirection.DESCENDING;
 
-    @Schema(description = "지역 ids", example = "[KR-11,KR-11680101]")
+    @Schema(description = "지역 ids", example = "[\"KR-11\",\"KR-11680101\"]")
     private List<String> regionIds;
 
     @Schema(description = "카테고리", example = "KOREAN")

@@ -88,9 +88,19 @@ public class PointShop extends BaseEntity {
 
     public boolean availableIssueDate() {
         LocalDate today = LocalDate.now();
-        boolean started = !today.isBefore(this.issueStartOn);
-        boolean notEnded = (this.issueEndOn == null || !today.isAfter(this.issueEndOn));
-        return started && notEnded;
+
+        if (this.issueStartOn != null && this.issueEndOn != null) {
+            // 둘 다 있을 경우
+            return !today.isBefore(this.issueStartOn) && !today.isAfter(this.issueEndOn);
+        } else if (this.issueStartOn != null) {
+            // 시작일만 있을 경우
+            return !today.isBefore(this.issueStartOn);
+        } else if (this.issueEndOn != null) {
+            // 마감일만 있을 경우
+            return !today.isAfter(this.issueEndOn);
+        } else {
+            return true; // 모든 날짜 허용
+        }
     }
 
     public void active() {

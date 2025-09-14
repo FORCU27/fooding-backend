@@ -50,7 +50,6 @@ public class AdminCreateCouponRequest {
     @Schema(description = "할인값(금액, 퍼센트)", example = "2000")
     private int discountValue;
 
-    @NotNull
     @Schema(description = "발급시작일", example = "2025-05-01")
     private LocalDate issueStartOn;
 
