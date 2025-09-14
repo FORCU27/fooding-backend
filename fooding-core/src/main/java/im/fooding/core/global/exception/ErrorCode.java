@@ -100,8 +100,8 @@ public enum ErrorCode {
 
     // 쿠폰
     COUPON_NOT_FOUND(HttpStatus.BAD_REQUEST, "8000", "등록된 쿠폰이 없습니다."),
-    COUPON_ISSUE_QUANTITY_INVALID(HttpStatus.BAD_REQUEST, "8001", "쿠폰 발급 가능한 수량을 초과합니다"),
-    COUPON_ISSUE_DATE_INVALID(HttpStatus.BAD_REQUEST, "8002", "쿠폰 발급 가능한 일자가 아닙니다."),
+    COUPON_ISSUE_QUANTITY_INVALID(HttpStatus.BAD_REQUEST, "8001", "쿠폰 발급 가능한 수량을 초과했습니다."),
+    COUPON_ISSUE_DATE_INVALID(HttpStatus.BAD_REQUEST, "8002", "쿠폰 발급 가능한 기간이 아닙니다."),
     USER_COUPON_NOT_FOUND(HttpStatus.BAD_REQUEST, "8003", "발급 받은 쿠폰이 없습니다."),
     USER_COUPON_EXPIRED(HttpStatus.BAD_REQUEST, "8004", "쿠폰 사용 가능한 일자가 아닙니다."),
     USER_COUPON_ALREADY_USE(HttpStatus.BAD_REQUEST, "8005", "이미 사용된 쿠폰입니다."),
@@ -117,8 +117,8 @@ public enum ErrorCode {
 
     // 포인트샵
     POINT_SHOP_NOT_FOUND(HttpStatus.BAD_REQUEST, "11000", "등록된 포인트샵 상품이 아닙니다."),
-    POINT_SHOP_ISSUE_QUANTITY_INVALID(HttpStatus.BAD_REQUEST, "11001", "포인트샵 상품을 교환 가능한 수량을 초과합니다"),
-    POINT_SHOP_ISSUE_DATE_INVALID(HttpStatus.BAD_REQUEST, "11002", "포인트샵 상품을 교환 가능한 일자가 아닙니다."),
+    POINT_SHOP_ISSUE_QUANTITY_INVALID(HttpStatus.BAD_REQUEST, "11001", "해당 상품은 최대 교환 수량을 초과했습니다."),
+    POINT_SHOP_ISSUE_DATE_INVALID(HttpStatus.BAD_REQUEST, "11002", "해당 상품은 교환 가능한 기간이 아닙니다."),
 
     // 예약/웨이팅
     PLAN_NOT_FOUND(HttpStatus.BAD_REQUEST, "12000", "등록된 예약/웨이팅이 없습니다."),

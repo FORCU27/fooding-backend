@@ -63,6 +63,9 @@ public class UserStoreRewardService {
 
         //보유 포인트 조회
         RewardPoint rewardPoint = rewardService.findByUserIdAndStoreId(user.getId(), store.getId());
+        if (rewardPoint == null) {
+            throw new ApiException(ErrorCode.REWARD_POINT_NOT_ENOUGH);
+        }
 
         //구매 처리 및 포인트 사용
         pointShopService.issue(id);

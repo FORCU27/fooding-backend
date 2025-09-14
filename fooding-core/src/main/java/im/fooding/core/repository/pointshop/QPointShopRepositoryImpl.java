@@ -83,6 +83,7 @@ public class QPointShopRepositoryImpl implements QPointShopRepository {
     }
 
     private BooleanExpression isIssuableAt(LocalDate now) {
-        return null != now ? pointShop.issueStartOn.loe(now).and(pointShop.issueEndOn.goe(now)) : null;
+        return now != null ? pointShop.issueStartOn.isNull().or(pointShop.issueStartOn.loe(now))
+                        .and(pointShop.issueEndOn.isNull().or(pointShop.issueEndOn.goe(now))) : null;
     }
 }
