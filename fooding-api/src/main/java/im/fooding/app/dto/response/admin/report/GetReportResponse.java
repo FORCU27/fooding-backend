@@ -16,24 +16,24 @@ public class GetReportResponse {
     private ReportTargetType targetType;
     private String description;
     private String memo;
-    private long reporterId;
+    private Long reporterId;
     private String reporterName;
     private ReportStatus status;
-    private long chargerId;
+    private Long chargerId;
     private String chargerName;
 
     public static GetReportResponse of(Report report){
         return GetReportResponse.builder()
-                .id( report.getId() )
-                .referenceId( report.getReferenceId() )
-                .targetType( report.getTargetType() )
-                .description( report.getDescription() )
-                .memo( report.getMemo() )
-                .reporterId( report.getReporter().getId() )
-                .reporterName( report.getReporter().getName() )
-                .status( report.getStatus() )
-                .chargerId( report.getCharger().getId() )
-                .chargerName( report.getCharger().getName() )
+                .id(report.getId())
+                .referenceId(report.getReferenceId())
+                .targetType(report.getTargetType())
+                .description(report.getDescription())
+                .memo(report.getMemo())
+                .reporterId(report.getReporter() != null ? report.getReporter().getId() : null)
+                .reporterName(report.getReporter() != null ? report.getReporter().getName() : null)
+                .status(report.getStatus())
+                .chargerId(report.getCharger() != null ? report.getCharger().getId() : null)
+                .chargerName(report.getCharger() != null ? report.getCharger().getName() : null)
                 .build();
     }
 }
