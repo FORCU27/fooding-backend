@@ -59,4 +59,8 @@ public class PlanService {
                 .filter(plan -> !plan.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.PLAN_NOT_FOUND));
     }
+
+    public Plan findByUserIdAndStoreId( long userId, long storeId ){
+        return planRepository.findByUserIdAndStoreIdAndDeletedFalse( userId, storeId );
+    }
 }
