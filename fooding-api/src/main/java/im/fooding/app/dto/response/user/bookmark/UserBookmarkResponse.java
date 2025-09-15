@@ -3,6 +3,7 @@ package im.fooding.app.dto.response.user.bookmark;
 import im.fooding.app.dto.response.user.store.UserStoreImageResponse;
 import im.fooding.core.model.bookmark.Bookmark;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
@@ -46,8 +47,17 @@ public class UserBookmarkResponse {
     @Schema(description = "사진", requiredMode = RequiredMode.NOT_REQUIRED)
     private List<UserStoreImageResponse> images;
 
+    @Schema(description = "해당 가게의 카테고리")
+    private StoreCategory storeCategory;
+
+    @Schema(description = "해당 가게의 위치")
+    private String address;
+
     @Builder
-    private UserBookmarkResponse(Long id, Long storeId, String name, int visitCount, int reviewCount, int bookmarkCount, double averageRating, Integer estimatedWaitingTimeMinutes, List<UserStoreImageResponse> images) {
+    private UserBookmarkResponse(Long id, Long storeId, String name, int visitCount, int reviewCount, int bookmarkCount,
+                                 double averageRating, Integer estimatedWaitingTimeMinutes, List<UserStoreImageResponse> images,
+                                 StoreCategory storeCategory, String address
+    ) {
         this.id = id;
         this.storeId = storeId;
         this.name = name;
@@ -57,6 +67,8 @@ public class UserBookmarkResponse {
         this.averageRating = averageRating;
         this.estimatedWaitingTimeMinutes = estimatedWaitingTimeMinutes;
         this.images = images;
+        this.storeCategory = storeCategory;
+        this.address = address;
     }
 
     public static UserBookmarkResponse of(Bookmark bookmark, Integer estimatedWaitingTime) {
@@ -76,6 +88,8 @@ public class UserBookmarkResponse {
                 .averageRating(store.getAverageRating())
                 .estimatedWaitingTimeMinutes(estimatedWaitingTime)
                 .images(images)
+                .storeCategory(store.getCategory())
+                .address(store.getAddress())
                 .build();
     }
 
