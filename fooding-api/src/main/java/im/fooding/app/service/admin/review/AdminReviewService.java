@@ -26,7 +26,7 @@ public class AdminReviewService {
 
     public PageResponse<AdminReviewResponse> list( AdminReviewRequest request ){
         System.out.println( "ID: " + request.getStoreId() );
-        Page<Review> result = reviewService.list( request.getStoreId(), request.getPageable() );
+        Page<Review> result = reviewService.list( request.getStoreId(), request.getWriterId(), request.getPageable() );
         return PageResponse.of( result.map(AdminReviewResponse::of).stream().toList(), PageInfo.of( result ) );
     }
 
@@ -37,13 +37,14 @@ public class AdminReviewService {
     @Transactional
     public void update( Long id, AdminUpdateReviewRequest request){
         Review review = reviewService.findById( id );
-        review.getScore().update(
-                request.getTotalScore(),
-                request.getTasteScore(),
-                request.getMoodScore(),
-                request.getServiceScore()
-        );
-        review.update( request.getContent(), request.getVisitPurposeType() );
+        float totalScore = ( request.getMoodScore() + request.getTasteScore() + request.getServiceScore() ) / 3;
+        ReviewScore score = ReviewScore.builder()
+                                .mood( request.getMoodScore() )
+                                .taste( request.getTasteScore() )
+                                .service( request.getServiceScore() )
+                                .total( totalScore )
+                                .build();
+        review.update( request.getContent(), request.getVisitPurposeType(), score );
     }
 
     @Transactional

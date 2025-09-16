@@ -29,4 +29,6 @@ public class UserRetrieveReviewRequest extends BasicSearch {
             allowableValues = {"ASCENDING", "DESCENDING"}
     )
     private SortDirection sortDirection;
+
+    private Long writerId;
 }
