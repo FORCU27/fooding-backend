@@ -37,6 +37,7 @@ public class QStoreImageRepositoryImpl implements QStoreImageRepository {
         List<StoreImage> images = query
                 .selectFrom(storeImage)
                 .where(
+                        storeImage.deleted.isFalse(),
                         storeImage.store.id.eq(storeId),
                         searchTag(searchTag)
                 )
@@ -49,6 +50,7 @@ public class QStoreImageRepositoryImpl implements QStoreImageRepository {
                 .select(storeImage.count())
                 .from(storeImage)
                 .where(
+                        storeImage.deleted.isFalse(),
                         storeImage.store.id.eq(storeId),
                         searchTag(searchTag)
                 );
