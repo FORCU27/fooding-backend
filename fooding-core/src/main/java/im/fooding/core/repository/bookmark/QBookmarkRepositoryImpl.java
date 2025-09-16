@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 import static im.fooding.core.model.bookmark.QBookmark.bookmark;
+import static im.fooding.core.model.region.QRegion.region;
 import static im.fooding.core.model.store.QStore.store;
 import static im.fooding.core.model.store.QStoreImage.storeImage;
 import static im.fooding.core.model.user.QUser.user;
@@ -28,6 +29,7 @@ public class QBookmarkRepositoryImpl implements QBookmarkRepository {
                 .from(bookmark)
                 .innerJoin(bookmark.store, store).fetchJoin()
                 .innerJoin(bookmark.user, user).fetchJoin()
+                .leftJoin(store.region, region).fetchJoin()
                 .leftJoin(store.images, storeImage).fetchJoin()
                 .where(
                         bookmark.deleted.isFalse(),

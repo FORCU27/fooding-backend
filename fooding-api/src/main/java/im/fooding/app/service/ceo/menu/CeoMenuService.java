@@ -8,6 +8,8 @@ import im.fooding.app.dto.response.ceo.menu.CeoMenuResponse;
 import im.fooding.app.service.file.FileUploadService;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.event.store.StoreAveragePriceUpdatedEvent;
+import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.file.File;
 import im.fooding.core.model.menu.Menu;
 import im.fooding.core.model.menu.MenuCategory;
@@ -21,15 +23,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CeoMenuService {
-
     private final MenuService menuService;
     private final StoreService storeService;
     private final MenuCategoryService menuCategoryService;
     private final FileUploadService fileUploadService;
+    private final EventProducerService eventProducerService;
 
     @Transactional
     public void create(CeoMenuCreateRequest request) {
@@ -43,6 +47,7 @@ public class CeoMenuService {
         }
 
         menuService.create(request.toMenuCreateRequest(store, menuCategory, menuImageUrl));
+        updateStorageAveragePrice(store);
     }
 
     public CeoMenuResponse get(long id) {
@@ -66,10 +71,16 @@ public class CeoMenuService {
         }
 
         menuService.update(request.toMenuUpdateRequest(id, store, menuCategory, menuImageUrl));
+        updateStorageAveragePrice(store);
     }
 
     @Transactional
     public void delete(long id, long deletedBy) {
         menuService.delete(id, deletedBy);
+    }
+
+    private void updateStorageAveragePrice(Store store) {
+        int averagePrice = menuService.getAveragePrice(store.getId());
+        eventProducerService.publishEvent("StoreAveragePriceUpdatedEvent", new StoreAveragePriceUpdatedEvent(store.getId(), averagePrice));
     }
 }

@@ -19,6 +19,8 @@ public interface QStoreRepository {
             Pageable pageable,
             StoreSortType sortType,
             SortDirection sortDirection,
+            Double latitude,
+            Double longitude,
             List<String> regionIds,
             StoreCategory category,
             boolean includeDeleted,

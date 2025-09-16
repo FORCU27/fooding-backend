@@ -3,6 +3,7 @@ package im.fooding.core.service.store;
 import im.fooding.core.dto.request.store.StoreFilter;
 import im.fooding.core.event.store.StoreCreatedEvent;
 import im.fooding.core.event.store.StoreDeletedEvent;
+import im.fooding.core.event.store.StoreAveragePriceUpdatedEvent;
 import im.fooding.core.event.store.StoreUpdatedEvent;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -45,11 +47,11 @@ public class StoreService {
      * @param regionIds
      * @param category
      * @param includeDeleted
-     * @param statuses 조회할 상태들, null이면 모든 상태 조회
+     * @param statuses       조회할 상태들, null이면 모든 상태 조회
      * @param searchString
      */
-    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, List<String> regionIds, StoreCategory category, boolean includeDeleted, Set<StoreStatus> statuses, String searchString) {
-        return storeRepository.list(pageable, sortType, sortDirection, regionIds, category, includeDeleted, statuses, searchString);
+    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, Double latitude, Double longitude, List<String> regionIds, StoreCategory category, boolean includeDeleted, Set<StoreStatus> statuses, String searchString) {
+        return storeRepository.list(pageable, sortType, sortDirection, latitude, longitude, regionIds, category, includeDeleted, statuses, searchString);
     }
 
     public List<Store> list(List<Long> ids) {
@@ -180,12 +182,19 @@ public class StoreService {
         store.decreaseBookmarkCount();
     }
 
+    public List<Store> findAll() {
+        return storeRepository.findAll().stream()
+                .filter(it -> !it.isDeleted())
+                .toList();
+    }
+
     @KafkaEventHandler(StoreCreatedEvent.class)
     public void handleStoreCreatedEvent(StoreCreatedEvent storeCreatedEvent) {
         try {
             storeDocumentService.save(storeCreatedEvent.getId(), storeCreatedEvent.getName(), storeCreatedEvent.getCategory(),
                     storeCreatedEvent.getAddress(), storeCreatedEvent.getReviewCount(), storeCreatedEvent.getAverageRating(),
-                    storeCreatedEvent.getVisitCount(), storeCreatedEvent.getRegionId(), storeCreatedEvent.getStatus(), storeCreatedEvent.getCreatedAt()
+                    storeCreatedEvent.getVisitCount(), storeCreatedEvent.getRegionId(), storeCreatedEvent.getStatus(),
+                    storeCreatedEvent.getAveragePrice(), storeCreatedEvent.getLocation(), storeCreatedEvent.getCreatedAt()
             );
             slackClient.sendNotificationMessage("%s 가게 생성".formatted(storeCreatedEvent.getName()));
         } catch (Exception e) {
@@ -198,7 +207,8 @@ public class StoreService {
         try {
             storeDocumentService.save(storeUpdatedEvent.getId(), storeUpdatedEvent.getName(), storeUpdatedEvent.getCategory(),
                     storeUpdatedEvent.getAddress(), storeUpdatedEvent.getReviewCount(), storeUpdatedEvent.getAverageRating(),
-                    storeUpdatedEvent.getVisitCount(), storeUpdatedEvent.getRegionId(), storeUpdatedEvent.getStatus(), storeUpdatedEvent.getCreatedAt()
+                    storeUpdatedEvent.getVisitCount(), storeUpdatedEvent.getRegionId(), storeUpdatedEvent.getStatus(),
+                    storeUpdatedEvent.getAveragePrice(), storeUpdatedEvent.getLocation(), storeUpdatedEvent.getCreatedAt()
             );
         } catch (Exception e) {
             e.printStackTrace();
@@ -209,6 +219,18 @@ public class StoreService {
     public void handleStoreDeletedEvent(StoreDeletedEvent storeDeletedEvent) {
         try {
             storeDocumentService.delete(storeDeletedEvent.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @KafkaEventHandler(StoreAveragePriceUpdatedEvent.class)
+    public void handleStoreAveragePriceUpdatedEvent(StoreAveragePriceUpdatedEvent event) {
+        try {
+            storeRepository.findById(event.getId()).filter(it -> !it.isDeleted()).ifPresent(it -> {
+                it.updateAveragePrice(event.getAveragePrice());
+                storeRepository.save(it);
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

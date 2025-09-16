@@ -6,12 +6,14 @@ import im.fooding.app.dto.request.user.review.UserRetrieveReviewRequest;
 import im.fooding.app.dto.response.user.review.UserReviewResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.model.plan.Plan;
 import im.fooding.core.model.review.Review;
 import im.fooding.core.model.review.ReviewImage;
 import im.fooding.core.model.review.ReviewScore;
 import im.fooding.core.model.review.ReviewSortType;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
+import im.fooding.core.service.plan.PlanService;
 import im.fooding.core.service.review.ReviewImageService;
 import im.fooding.core.service.review.ReviewLikeService;
 import im.fooding.core.service.review.ReviewService;
@@ -39,6 +41,7 @@ public class UserReviewService {
     private final ReviewLikeService reviewLikeService;
     private final UserService userService;
     private final StoreService storeService;
+    private final PlanService planService;
 
     @Transactional( readOnly = true )
     public PageResponse<UserReviewResponse> list(Long storeId, UserRetrieveReviewRequest request) {
@@ -59,11 +62,14 @@ public class UserReviewService {
         Map<Long, List<ReviewImage>> imageMap = getReviewImageMap(reviewIds);
         Map<Long, Long> likeCountMap = getReviewLikeMap(reviewIds);
 
+        Plan plan = planService.findByUserIdAndStoreId( request.getWriterId(), storeId );
+
         List<UserReviewResponse> content = reviewPage.getContent().stream()
                 .map(review -> UserReviewResponse.of(
                         review,
                         imageMap.getOrDefault(review.getId(), List.of()),
-                        likeCountMap.getOrDefault(review.getId(), 0L)
+                        likeCountMap.getOrDefault(review.getId(), 0L),
+                        plan != null ? plan.getId() : null
                 ))
                 .toList();
 

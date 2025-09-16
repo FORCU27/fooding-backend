@@ -11,12 +11,14 @@ import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePosition;
+import im.fooding.core.model.store.document.GeoPoint;
 import im.fooding.core.model.store.information.StoreOperatingHour;
 import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.region.RegionService;
 import im.fooding.core.service.store.*;
+import im.fooding.core.service.store.document.StoreDocumentService;
 import im.fooding.core.service.store.subway.SubwayStationService;
 import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
@@ -46,6 +48,7 @@ public class AdminStoreService {
     private final StoreInformationService storeInformationService;
     private final StoreOperatingHourService storeOperatingHourService;
     private final StoreDailyOperatingTimeService storeDailyOperatingTimeService;
+    private final StoreDocumentService storeDocumentService;
 
     @Transactional(readOnly = true)
     public PageResponse<AdminStoreResponse> list(AdminSearchStoreRequest request) {
@@ -53,6 +56,8 @@ public class AdminStoreService {
                 request.getPageable(),
                 request.getSortType(),
                 request.getSortDirection(),
+                request.getLatitude(),
+                request.getLongitude(),
                 request.getRegionIds(),
                 request.getCategory(),
                 Boolean.TRUE.equals(request.getIncludeDeleted()),
@@ -85,7 +90,7 @@ public class AdminStoreService {
 
         initializeInformation(store);
 
-        eventProducerService.publishEvent("StoreCreatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getRegionId(), store.getStatus(), store.getCreatedAt()));
+        eventProducerService.publishEvent("StoreCreatedEvent", new StoreCreatedEvent(store));
         return store.getId();
     }
 
@@ -96,7 +101,7 @@ public class AdminStoreService {
         Store store = storeService.update(id, request.getName(), getRegion(request.getRegionId()), request.getAddress(), request.getAddressDetail(), request.getCategory(),
                 request.getDescription(), request.getContactNumber(), request.getDirection(), false, false, request.getLatitude(), request.getLongitude(), nearStations);
 
-        eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getRegionId(), store.getStatus(), store.getCreatedAt()));
+        eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store));
     }
 
     @Transactional
@@ -154,5 +159,24 @@ public class AdminStoreService {
         storeInformationService.initialize(store);
         StoreOperatingHour storeOperatingHour = storeOperatingHourService.initialize(store);
         storeDailyOperatingTimeService.initialize(storeOperatingHour);
+    }
+
+    public void syncToElasticsearch() {
+        List<Store> stores = storeService.findAll();
+        stores.forEach(store -> {
+            try {
+                GeoPoint geoPoint = null;
+                if (store.getLatitude() != null && store.getLatitude() != null) {
+                    geoPoint = new GeoPoint(store.getLatitude(), store.getLatitude());
+                }
+                storeDocumentService.save(store.getId(), store.getName(), store.getCategory(),
+                        store.getAddress(), store.getReviewCount(), store.getAverageRating(),
+                        store.getVisitCount(), store.getRegionId(), store.getStatus(),
+                        store.getAveragePrice(), geoPoint, store.getCreatedAt()
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

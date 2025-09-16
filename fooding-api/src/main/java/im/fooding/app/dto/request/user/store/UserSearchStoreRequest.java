@@ -4,6 +4,7 @@ import im.fooding.core.common.BasicSearch;
 import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StoreSortType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +19,7 @@ public class UserSearchStoreRequest extends BasicSearch {
     @Schema(
             description = "정렬 타입",
             example = "RECENT",
-            allowableValues = {"RECENT", "AVERAGE_RATING", "REVIEW", "POPULARITY"}
+            allowableValues = {"RECENT", "RECOMMENDED", "AVERAGE_RATING", "REVIEW",  "PRICE", "DISTANCE"}
     )
     private StoreSortType sortType = StoreSortType.RECENT;
 
@@ -34,4 +35,10 @@ public class UserSearchStoreRequest extends BasicSearch {
 
     @Schema(description = "카테고리", example = "KOREAN")
     private StoreCategory category;
+
+    @Schema(description = "위도", example = "36.40947226931638")
+    private Double latitude;
+
+    @Schema(description = "경도", example = "127.12345678901234")
+    private Double longitude;
 }

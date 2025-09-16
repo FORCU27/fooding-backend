@@ -34,6 +34,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,12 +70,13 @@ public class RewardApplicationService {
      * @return PageResponse<GetRewardPointResponse>
      */
     public PageResponse<GetRewardLogResponse> getUserRewardLog(long userId, GetUserRewardLogRequest request){
+        List<GetRewardLogResponse> response = new ArrayList<GetRewardLogResponse>();
         User user = userService.findById( userId );
         String phoneNumber = user.getPhoneNumber();
 
-        if( phoneNumber == null ) return null;
         Page<GetRewardLogResponse> result = logService.list( null, request.getPageable(), null, phoneNumber, request.getStatus() ).map( GetRewardLogResponse::of );
-        return PageResponse.of( result.stream().toList(), PageInfo.of( result ) );
+        if(!result.isEmpty() || result != null ) response = result.stream().toList();
+        return PageResponse.of( response, PageInfo.of( result ) );
     }
 
     /**

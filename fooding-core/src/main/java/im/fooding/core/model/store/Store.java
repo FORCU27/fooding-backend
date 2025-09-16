@@ -16,6 +16,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -68,6 +69,8 @@ public class Store extends BaseEntity {
     private int visitCount;
 
     private double averageRating;
+
+    private int averagePrice;
 
     @Column(nullable = false)
     @ManyToMany(fetch = FetchType.EAGER)
@@ -181,6 +184,10 @@ public class Store extends BaseEntity {
         this.status = status;
     }
 
+    public void updateAveragePrice(int averagePrice) {
+        this.averagePrice = averagePrice;
+    }
+
     public void approve() {
         // 필수값(주소, 카테고리, 연락처, 위도, 경도)
         if (!StringUtils.hasText(address) ||  null == category || !StringUtils.hasText(contactNumber) || null == latitude || null == longitude) {
@@ -234,5 +241,12 @@ public class Store extends BaseEntity {
             return null;
         }
         return region.getId();
+    }
+
+    public String getRegionName() {
+        if (region == null) {
+            return null;
+        }
+        return region.getName();
     }
 }

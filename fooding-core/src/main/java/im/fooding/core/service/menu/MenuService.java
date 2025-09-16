@@ -9,6 +9,7 @@ import im.fooding.core.model.menu.MenuCategory;
 import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.repository.menu.MenuRepository;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -86,5 +87,14 @@ public class MenuService {
      */
     public List<Menu> list(List<Long> categoryIds) {
         return menuRepository.list(categoryIds);
+    }
+
+    public int getAveragePrice(Long storeId) {
+        List<Menu> menus = menuRepository.findAllByStoreIdAndDeletedIsFalse(storeId);
+        return (int) menus.stream()
+                .mapToInt(Menu::getPrice)
+                .average()
+                .orElse(0);
+
     }
 }
