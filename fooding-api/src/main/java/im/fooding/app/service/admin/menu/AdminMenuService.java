@@ -9,6 +9,8 @@ import im.fooding.app.service.file.FileUploadService;
 import im.fooding.app.dto.request.admin.menu.AdminMenuListRequest;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.event.store.StoreAveragePriceUpdatedEvent;
+import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.file.File;
 import im.fooding.core.model.menu.Menu;
 import im.fooding.core.model.menu.MenuCategory;
@@ -28,11 +30,11 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AdminMenuService {
-
     private final MenuService menuService;
     private final StoreService storeService;
     private final MenuCategoryService menuCategoryService;
     private final FileUploadService fileUploadService;
+    private final EventProducerService eventProducerService;
 
     @Transactional
     public void create(AdminMenuCreateRequest request) {
@@ -46,6 +48,7 @@ public class AdminMenuService {
         }
 
         menuService.create(request.toMenuCreateRequest(store, menuCategory, menuImageUrl));
+        updateStorageAveragePrice(store);
     }
 
     public AdminMenuResponse get(long id) {
@@ -69,10 +72,16 @@ public class AdminMenuService {
         }
 
         menuService.update(request.toMenuUpdateRequest(id, store, menuCategory, menuImageUrl));
+        updateStorageAveragePrice(store);
     }
 
     @Transactional
     public void delete(long id, long deletedBy) {
         menuService.delete(id, deletedBy);
+    }
+
+    private void updateStorageAveragePrice(Store store) {
+        int averagePrice = menuService.getAveragePrice(store.getId());
+        eventProducerService.publishEvent("StoreAveragePriceUpdatedEvent", new StoreAveragePriceUpdatedEvent(store.getId(), averagePrice));
     }
 }
