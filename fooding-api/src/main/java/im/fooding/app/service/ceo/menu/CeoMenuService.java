@@ -81,6 +81,6 @@ public class CeoMenuService {
 
     private void updateStorageAveragePrice(Store store) {
         int averagePrice = menuService.getAveragePrice(store.getId());
-        eventProducerService.publishEvent("StorePriceUpdatedEvent", new StoreAveragePriceUpdatedEvent(store.getId(), averagePrice));
+        eventProducerService.publishEvent("StoreAveragePriceUpdatedEvent", new StoreAveragePriceUpdatedEvent(store.getId(), averagePrice));
     }
 }

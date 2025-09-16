@@ -182,6 +182,12 @@ public class StoreService {
         store.decreaseBookmarkCount();
     }
 
+    public List<Store> findAll() {
+        return storeRepository.findAll().stream()
+                .filter(it -> !it.isDeleted())
+                .toList();
+    }
+
     @KafkaEventHandler(StoreCreatedEvent.class)
     public void handleStoreCreatedEvent(StoreCreatedEvent storeCreatedEvent) {
         try {
@@ -217,11 +223,13 @@ public class StoreService {
             e.printStackTrace();
         }
     }
+
     @KafkaEventHandler(StoreAveragePriceUpdatedEvent.class)
     public void handleStoreAveragePriceUpdatedEvent(StoreAveragePriceUpdatedEvent event) {
         try {
             storeRepository.findById(event.getId()).filter(it -> !it.isDeleted()).ifPresent(it -> {
                 it.updateAveragePrice(event.getAveragePrice());
+                storeRepository.save(it);
             });
         } catch (Exception e) {
             e.printStackTrace();

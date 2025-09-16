@@ -82,7 +82,7 @@ public class StoreDocumentService {
             case RECOMMENDED -> "visitCount";
             case AVERAGE_RATING -> "averageRating";
             case REVIEW -> "reviewCount";
-            case PRICE -> "price";
+            case PRICE -> "averagePrice";
             case DISTANCE -> "location";
         };
 

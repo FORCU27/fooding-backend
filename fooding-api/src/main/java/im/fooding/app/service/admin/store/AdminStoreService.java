@@ -18,6 +18,7 @@ import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.region.RegionService;
 import im.fooding.core.service.store.*;
+import im.fooding.core.service.store.document.StoreDocumentService;
 import im.fooding.core.service.store.subway.SubwayStationService;
 import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
@@ -47,6 +48,7 @@ public class AdminStoreService {
     private final StoreInformationService storeInformationService;
     private final StoreOperatingHourService storeOperatingHourService;
     private final StoreDailyOperatingTimeService storeDailyOperatingTimeService;
+    private final StoreDocumentService storeDocumentService;
 
     @Transactional(readOnly = true)
     public PageResponse<AdminStoreResponse> list(AdminSearchStoreRequest request) {
@@ -157,5 +159,24 @@ public class AdminStoreService {
         storeInformationService.initialize(store);
         StoreOperatingHour storeOperatingHour = storeOperatingHourService.initialize(store);
         storeDailyOperatingTimeService.initialize(storeOperatingHour);
+    }
+
+    public void syncToElasticsearch() {
+        List<Store> stores = storeService.findAll();
+        stores.forEach(store -> {
+            try {
+                GeoPoint geoPoint = null;
+                if (store.getLatitude() != null && store.getLatitude() != null) {
+                    geoPoint = new GeoPoint(store.getLatitude(), store.getLatitude());
+                }
+                storeDocumentService.save(store.getId(), store.getName(), store.getCategory(),
+                        store.getAddress(), store.getReviewCount(), store.getAverageRating(),
+                        store.getVisitCount(), store.getRegionId(), store.getStatus(),
+                        store.getAveragePrice(), geoPoint, store.getCreatedAt()
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
