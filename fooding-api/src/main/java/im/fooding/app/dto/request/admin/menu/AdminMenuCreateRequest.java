@@ -5,6 +5,8 @@ import im.fooding.core.model.menu.MenuCategory;
 import im.fooding.core.model.store.Store;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+
 import java.math.BigDecimal;
 
 public record AdminMenuCreateRequest(
@@ -22,8 +24,8 @@ public record AdminMenuCreateRequest(
         String name,
 
         @Schema(description = "메뉴 가격")
-        @NotNull
-        BigDecimal price,
+        @PositiveOrZero
+        int price,
 
         @Schema(description = "메뉴 설명")
         @NotNull

@@ -61,7 +61,7 @@ public class MenuResponse {
                 .name(menu.getName())
                 .description(menu.getDescription())
                 .imageUrl(menu.getImageUrl())
-                .price(menu.getPrice().intValue())
+                .price(menu.getPrice())
                 .sortOrder(menu.getSortOrder())
                 .isSignature(menu.isSignature())
                 .isRecommend(menu.isRecommend())

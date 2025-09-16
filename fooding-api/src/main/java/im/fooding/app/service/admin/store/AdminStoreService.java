@@ -11,6 +11,7 @@ import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePosition;
+import im.fooding.core.model.store.document.GeoPoint;
 import im.fooding.core.model.store.information.StoreOperatingHour;
 import im.fooding.core.model.store.subway.SubwayStation;
 import im.fooding.core.model.user.Role;
@@ -53,6 +54,8 @@ public class AdminStoreService {
                 request.getPageable(),
                 request.getSortType(),
                 request.getSortDirection(),
+                request.getLatitude(),
+                request.getLongitude(),
                 request.getRegionIds(),
                 request.getCategory(),
                 Boolean.TRUE.equals(request.getIncludeDeleted()),
@@ -85,7 +88,7 @@ public class AdminStoreService {
 
         initializeInformation(store);
 
-        eventProducerService.publishEvent("StoreCreatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getRegionId(), store.getStatus(), store.getCreatedAt()));
+        eventProducerService.publishEvent("StoreCreatedEvent", new StoreCreatedEvent(store));
         return store.getId();
     }
 
@@ -96,7 +99,7 @@ public class AdminStoreService {
         Store store = storeService.update(id, request.getName(), getRegion(request.getRegionId()), request.getAddress(), request.getAddressDetail(), request.getCategory(),
                 request.getDescription(), request.getContactNumber(), request.getDirection(), false, false, request.getLatitude(), request.getLongitude(), nearStations);
 
-        eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store.getId(), store.getName(), store.getCategory(), store.getAddress(), store.getReviewCount(), store.getAverageRating(), store.getVisitCount(), store.getRegionId(), store.getStatus(), store.getCreatedAt()));
+        eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store));
     }
 
     @Transactional

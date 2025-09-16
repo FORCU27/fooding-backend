@@ -4,9 +4,12 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.dto.request.store.StoreFilter;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StoreSortType;
@@ -35,8 +38,8 @@ public class QStoreRepositoryImpl implements QStoreRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, List<String> regionIds, StoreCategory category, boolean includeDeleted, Set<StoreStatus> statuses, String searchString) {
-        OrderSpecifier<?> orderSpecifier = getOrderSpecifier(sortType, sortDirection);
+    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, Double latitude, Double longitude, List<String> regionIds, StoreCategory category, boolean includeDeleted, Set<StoreStatus> statuses, String searchString) {
+        OrderSpecifier<?> orderSpecifier = getOrderSpecifier(sortType, sortDirection, latitude, longitude);
 
         List<Store> content = query
                 .select(store)
@@ -126,14 +129,16 @@ public class QStoreRepositoryImpl implements QStoreRepository {
                 .fetch();
     }
 
-    private OrderSpecifier<?> getOrderSpecifier(StoreSortType sortType, SortDirection direction) {
+    private OrderSpecifier<?> getOrderSpecifier(StoreSortType sortType, SortDirection direction, Double latitude, Double longitude) {
         Order order = direction == SortDirection.ASCENDING ? ASC : DESC;
 
         return switch (sortType) {
-            case REVIEW -> new OrderSpecifier<>(order, store.reviewCount);
             case RECENT -> new OrderSpecifier<>(order, store.createdAt);
+            case RECOMMENDED -> new OrderSpecifier<>(order, store.visitCount);
             case AVERAGE_RATING -> new OrderSpecifier<>(order, store.averageRating);
-            case VISIT -> new OrderSpecifier<>(order, store.visitCount);
+            case REVIEW -> new OrderSpecifier<>(order, store.reviewCount);
+            case PRICE -> new OrderSpecifier<>(order, store.averageRating);
+            case DISTANCE -> orderDistance(order, latitude, longitude);
         };
     }
 
@@ -166,5 +171,19 @@ public class QStoreRepositoryImpl implements QStoreRepository {
 
     private BooleanExpression searchCategory(StoreCategory category) {
         return category != null ? store.category.eq(category) : null;
+    }
+
+    private OrderSpecifier<?> orderDistance(Order order, Double latitude, Double longitude) {
+        if (latitude == null || longitude == null) {
+            throw new ApiException(ErrorCode.METHOD_ARGUMENT_NOT_VALID);
+        }
+        NumberExpression<Double> distanceExpr = Expressions.numberTemplate(Double.class,
+                "6371 * acos(cos(radians({0})) * cos(radians({1})) * cos(radians({2}) - radians({3})) + sin(radians({0})) * sin(radians({1})))",
+                latitude,
+                store.latitude,
+                store.longitude,
+                longitude
+        );
+        return new OrderSpecifier<>(order, distanceExpr);
     }
 }

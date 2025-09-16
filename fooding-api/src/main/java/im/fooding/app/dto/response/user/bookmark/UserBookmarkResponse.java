@@ -2,7 +2,9 @@ package im.fooding.app.dto.response.user.bookmark;
 
 import im.fooding.app.dto.response.user.store.UserStoreImageResponse;
 import im.fooding.core.model.bookmark.Bookmark;
+import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
@@ -21,6 +23,15 @@ public class UserBookmarkResponse {
 
     @Schema(description = "가게 id", example = "1", requiredMode = RequiredMode.REQUIRED)
     private Long storeId;
+
+    @Schema(description = "업종", example = "KOREAN", requiredMode = RequiredMode.REQUIRED)
+    private StoreCategory category;
+
+    @Schema(description = "지역ID", example = "KR-11110101", requiredMode = RequiredMode.NOT_REQUIRED)
+    private String regionId;
+
+    @Schema(description = "지역명", example = "서울특별시 종로구 청운동", requiredMode = RequiredMode.NOT_REQUIRED)
+    private String regionName;
 
     @Schema(description = "가게명", example = "홍길동 식당", requiredMode = RequiredMode.REQUIRED)
     private String name;
@@ -47,9 +58,12 @@ public class UserBookmarkResponse {
     private List<UserStoreImageResponse> images;
 
     @Builder
-    private UserBookmarkResponse(Long id, Long storeId, String name, int visitCount, int reviewCount, int bookmarkCount, double averageRating, Integer estimatedWaitingTimeMinutes, List<UserStoreImageResponse> images) {
+    private UserBookmarkResponse(Long id, Long storeId, StoreCategory category, String regionId, String regionName, String name, int visitCount, int reviewCount, int bookmarkCount, double averageRating, Integer estimatedWaitingTimeMinutes, List<UserStoreImageResponse> images) {
         this.id = id;
         this.storeId = storeId;
+        this.category = category;
+        this.regionId = regionId;
+        this.regionName = regionName;
         this.name = name;
         this.visitCount = visitCount;
         this.reviewCount = reviewCount;
@@ -69,6 +83,9 @@ public class UserBookmarkResponse {
         return UserBookmarkResponse.builder()
                 .id(store.getId())
                 .storeId(store.getId())
+                .category(store.getCategory())
+                .regionId(store.getRegion() != null ? store.getRegion().getId() : null)
+                .regionName(store.getRegion() != null ? store.getRegion().getName() : null)
                 .name(store.getName())
                 .visitCount(store.getVisitCount())
                 .reviewCount(store.getReviewCount())

@@ -17,7 +17,7 @@ public class AdminSearchStoreRequest extends BasicSearch {
     @Schema(
             description = "정렬 타입",
             example = "RECENT",
-            allowableValues = {"RECENT", "AVERAGE_RATING", "REVIEW", "VISIT"}
+            allowableValues = {"RECENT", "RECOMMENDED", "AVERAGE_RATING", "REVIEW",  "PRICE", "DISTANCE"}
     )
     private StoreSortType sortType = StoreSortType.RECENT;
 
@@ -39,4 +39,10 @@ public class AdminSearchStoreRequest extends BasicSearch {
 
     @Schema(description = "삭제 포함 여부", example = "false")
     private Boolean includeDeleted = false;
+
+    @Schema(description = "위도", example = "36.40947226931638")
+    private Double latitude;
+
+    @Schema(description = "경도", example = "127.12345678901234")
+    private Double longitude;
 }
