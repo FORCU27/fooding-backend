@@ -23,7 +23,7 @@ public class UserReportController {
     public ApiResult<Void> report(
             @ModelAttribute CreateReportRequest request
     ){
-        service.createReport( request );
+        service.createReport(request.getReferenceId(), request );
         return ApiResult.ok();
     }
 }

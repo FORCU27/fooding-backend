@@ -9,4 +9,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface PlanRepository extends MongoRepository<Plan, ObjectId>, QPlanRepository {
 
     Page<Plan> findAllByUserIdAndDeletedFalse(long userId, Pageable pageable);
+    Plan findByUserIdAndStoreIdAndDeletedFalse( long userId, long storeId );
 }

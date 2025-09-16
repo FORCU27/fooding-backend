@@ -59,6 +59,9 @@ public class Review extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private VisitPurposeType visitPurposeType;
 
+    @Column(name = "isBlind", nullable = false)
+    private boolean isBlind;
+
     @Builder
     private Review(
             Store store,
@@ -72,11 +75,16 @@ public class Review extends BaseEntity {
         this.score = score;
         this.content = content;
         this.visitPurposeType = visitPurposeType;
+        this.isBlind = false;
     }
 
     @Transactional
-    public void update(String content, VisitPurposeType visitPurposeType) {
+    public void update(String content, VisitPurposeType visitPurposeType, ReviewScore score) {
         this.content = content;
         this.visitPurposeType = visitPurposeType;
+        this.score = score;
     }
+
+    @Transactional
+    public void setBlind( boolean isBlind ) { this.isBlind = isBlind; }
 }

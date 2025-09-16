@@ -7,12 +7,14 @@ import im.fooding.core.model.review.VisitPurposeType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 
 @Getter
 @NoArgsConstructor
@@ -51,6 +53,9 @@ public class UserReviewResponse {
     @Schema(description = "리뷰 수정일", example = "2023-10-02")
     private LocalDateTime updatedAt;
 
+    @Schema(description = "예약 ID", nullable = true)
+    private ObjectId planId;
+
     @Builder
     private UserReviewResponse(
             Long reviewId,
@@ -63,7 +68,8 @@ public class UserReviewResponse {
             Long likeCount,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
-            int userReviewCount
+            int userReviewCount,
+            ObjectId planId
     ) {
         this.reviewId = reviewId;
         this.nickname = nickname;
@@ -76,14 +82,16 @@ public class UserReviewResponse {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.userReviewCount = userReviewCount;
+        this.planId = planId;
     }
 
     public static UserReviewResponse of(
             Review review,
             List<ReviewImage> images,
-            Long likeCount
+            Long likeCount,
+            ObjectId planId
     ) {
-        return UserReviewResponse.builder()
+        UserReviewResponse.UserReviewResponseBuilder result = UserReviewResponse.builder()
                 .reviewId(review.getId())
                 .nickname(review.getWriter().getNickname())
                 .profileUrl(review.getWriter().getProfileImage())
@@ -94,8 +102,15 @@ public class UserReviewResponse {
                 .score(review.getScore())
                 .purpose(review.getVisitPurposeType())
                 .likeCount(likeCount)
+                .planId( planId )
                 .createdAt(review.getCreatedAt())
-                .updatedAt(review.getUpdatedAt())
-                .build();
+                .updatedAt(review.getUpdatedAt());
+        if( review.isBlind() ){
+            result.nickname( "블라인드 된 사용자" );
+            result.content( "블라인드 된 리뷰입니다." );
+            result.profileUrl( "" );
+            result.imageUrls( new ArrayList<>() );
+        }
+        return result.build();
     }
 }

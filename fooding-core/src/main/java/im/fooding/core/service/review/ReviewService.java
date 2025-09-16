@@ -3,7 +3,9 @@ package im.fooding.core.service.review;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.review.Review;
+import im.fooding.core.model.review.ReviewScore;
 import im.fooding.core.model.review.ReviewSortType;
+import im.fooding.core.model.review.VisitPurposeType;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.repository.review.ReviewRepository;
 import java.util.List;
@@ -25,14 +27,16 @@ public class ReviewService {
     /**
      * * 리뷰 목록 조회
      * @param storeId
+     * @param writerId
      * @param pageable
      * @return
      */
     public Page<Review> list(
             Long storeId,
+            Long writerId,
             Pageable pageable
     ) {
-        return reviewRepository.list(storeId, pageable);
+        return reviewRepository.list(storeId, writerId, pageable);
     }
 
     public Page<Review> list(Store store, Pageable pageable) {
@@ -71,6 +75,28 @@ public class ReviewService {
      */
     public int getReviewCount( Long id ){
         return 0;
+    }
+
+    /**
+     * * 리뷰 블라인드 여부 설정
+     * @param id
+     */
+    public void setBlind( long id, boolean isBlind ) {
+        Review review = reviewRepository.findById( id ).orElseThrow(
+                () -> new ApiException(ErrorCode.REVIEW_NOT_FOUND)
+        );
+        review.setBlind( isBlind );
+    }
+
+    /**
+     * * 리뷰 업데이트
+     * @param id, request
+     */
+    public void update(long id, String content, VisitPurposeType visitPurposeType, ReviewScore score){
+        Review review = reviewRepository.findById( id ).orElseThrow(
+                () -> new ApiException(ErrorCode.REVIEW_NOT_FOUND)
+        );
+        review.update( content, visitPurposeType, score );
     }
 
 }
