@@ -23,11 +23,11 @@ public class UserStoreSearchResponse {
     @Schema(description = "지역ID", example = "KR-11110101", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String regionId;
 
-    @Schema(description = "지역명", example = "서울특별시 종로구 청운동", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private String regionName;
-
     @Schema(description = "가게명", example = "홍길동 식당", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
+
+    @Schema(description = "주소", example = "경기 안양시 만안구 안양로", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String address;
 
     @Schema(description = "해당 가게의 총 방문수", example = "1000", requiredMode = Schema.RequiredMode.REQUIRED)
     private int visitCount;
@@ -54,14 +54,14 @@ public class UserStoreSearchResponse {
     private List<UserStoreImageResponse> images;
 
     @Builder
-    private UserStoreSearchResponse(Long id, StoreCategory category, String regionId, String regionName, String name, int visitCount,
+    private UserStoreSearchResponse(Long id, StoreCategory category, String regionId, String name, String address, int visitCount,
                                     int reviewCount, int bookmarkCount, double averageRating, Integer estimatedWaitingTimeMinutes,
                                     List<UserStoreImageResponse> images) {
         this.id = id;
         this.category = category;
         this.regionId = regionId;
-        this.regionName = regionName;
         this.name = name;
+        this.address = address;
         this.visitCount = visitCount;
         this.reviewCount = reviewCount;
         this.bookmarkCount = bookmarkCount;
@@ -80,8 +80,8 @@ public class UserStoreSearchResponse {
                 .id(store.getId())
                 .category(store.getCategory())
                 .regionId(store.getRegionId())
-                .regionName(store.getRegionName())
                 .name(store.getName())
+                .address(store.getAddress())
                 .visitCount(store.getVisitCount())
                 .reviewCount(store.getReviewCount())
                 .bookmarkCount(store.getBookmarkCount())
