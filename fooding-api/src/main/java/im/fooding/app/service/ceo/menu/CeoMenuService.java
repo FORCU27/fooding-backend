@@ -12,9 +12,11 @@ import im.fooding.core.model.file.File;
 import im.fooding.core.model.menu.Menu;
 import im.fooding.core.model.menu.MenuCategory;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.repository.menu.MenuFilter;
 import im.fooding.core.service.menu.MenuCategoryService;
 import im.fooding.core.service.menu.MenuService;
 import im.fooding.core.service.store.StoreService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -50,7 +52,11 @@ public class CeoMenuService {
     }
 
     public PageResponse<CeoMenuResponse> list(CeoMenuListRequest search) {
-        Page<Menu> menus = menuService.list(search.getStoreId(), search.getSearchString(), search.getPageable());
+        MenuFilter filter = MenuFilter.builder()
+                .storeId(search.getStoreId())
+                .menuCategoryIds(List.of(search.getCategoryId()))
+                .build();
+        Page<Menu> menus = menuService.list(filter, search.getPageable());
         return PageResponse.of(menus.stream().map(CeoMenuResponse::from).toList(), PageInfo.of(menus));
     }
 
