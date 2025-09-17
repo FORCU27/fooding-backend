@@ -4,6 +4,7 @@ import im.fooding.app.dto.request.user.store.UserImmediateEntryStoreRequest;
 import im.fooding.app.dto.request.user.store.UserSearchStoreRequest;
 import im.fooding.app.dto.response.user.store.UserStoreListResponse;
 import im.fooding.app.dto.response.user.store.UserStoreResponse;
+import im.fooding.app.dto.response.user.store.UserStoreSearchResponse;
 import im.fooding.app.service.user.store.UserStoreService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
@@ -34,8 +35,8 @@ public class UserStoreController {
     }
 
     @GetMapping("/elastic-search")
-    @Operation(summary = "가게 목록 조회")
-    public ApiResult<PageResponse<UserStoreListResponse>> list_v2(@Valid UserSearchStoreRequest request, @AuthenticationPrincipal UserInfo userInfo) {
+    @Operation(summary = "가게 목록 검색")
+    public ApiResult<PageResponse<UserStoreSearchResponse>> list_v2(@Valid UserSearchStoreRequest request, @AuthenticationPrincipal UserInfo userInfo) {
         return ApiResult.ok(service.list_v2(request, userInfo));
     }
 

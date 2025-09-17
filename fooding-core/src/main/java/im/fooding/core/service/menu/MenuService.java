@@ -89,4 +89,13 @@ public class MenuService {
     public List<Menu> list(List<Long> categoryIds) {
         return menuRepository.list(categoryIds);
     }
+
+    public int getAveragePrice(Long storeId) {
+        List<Menu> menus = menuRepository.findAllByStoreIdAndDeletedIsFalse(storeId);
+        return (int) menus.stream()
+                .mapToInt(Menu::getPrice)
+                .average()
+                .orElse(0);
+
+    }
 }

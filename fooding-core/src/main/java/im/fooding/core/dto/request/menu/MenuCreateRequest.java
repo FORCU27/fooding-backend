@@ -10,7 +10,7 @@ public record MenuCreateRequest(
         Store store,
         MenuCategory category,
         String name,
-        BigDecimal price,
+        int price,
         String description,
         String imageUrl,
         int sortOrder,

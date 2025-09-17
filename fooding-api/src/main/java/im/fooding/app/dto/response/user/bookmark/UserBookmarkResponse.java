@@ -47,16 +47,16 @@ public class UserBookmarkResponse {
     @Schema(description = "사진", requiredMode = RequiredMode.NOT_REQUIRED)
     private List<UserStoreImageResponse> images;
 
-    @Schema(description = "해당 가게의 카테고리")
-    private StoreCategory storeCategory;
+    @Schema(description = "해당 가게의 카테고리", requiredMode = RequiredMode.REQUIRED)
+    private StoreCategory category;
 
-    @Schema(description = "해당 가게의 위치")
+    @Schema(description = "해당 가게의 위치", requiredMode = RequiredMode.REQUIRED)
     private String address;
 
     @Builder
     private UserBookmarkResponse(Long id, Long storeId, String name, int visitCount, int reviewCount, int bookmarkCount,
                                  double averageRating, Integer estimatedWaitingTimeMinutes, List<UserStoreImageResponse> images,
-                                 StoreCategory storeCategory, String address
+                                 StoreCategory category, String address
     ) {
         this.id = id;
         this.storeId = storeId;
@@ -67,7 +67,7 @@ public class UserBookmarkResponse {
         this.averageRating = averageRating;
         this.estimatedWaitingTimeMinutes = estimatedWaitingTimeMinutes;
         this.images = images;
-        this.storeCategory = storeCategory;
+        this.category = category;
         this.address = address;
     }
 
@@ -88,7 +88,7 @@ public class UserBookmarkResponse {
                 .averageRating(store.getAverageRating())
                 .estimatedWaitingTimeMinutes(estimatedWaitingTime)
                 .images(images)
-                .storeCategory(store.getCategory())
+                .category(store.getCategory())
                 .address(store.getAddress())
                 .build();
     }
@@ -96,5 +96,4 @@ public class UserBookmarkResponse {
     public void setFinished(Boolean finished) {
         isFinished = finished;
     }
-
 }

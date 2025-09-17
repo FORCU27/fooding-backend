@@ -93,4 +93,11 @@ public class AdminStoreController {
         adminStoreService.setPending(id);
         return ApiResult.ok();
     }
+
+    @PutMapping("/sync")
+    @Operation(summary = "엘라스틱서치 동기화")
+    public ApiResult<Void> syncToElasticsearch() {
+        adminStoreService.syncToElasticsearch();
+        return ApiResult.ok();
+    }
 }

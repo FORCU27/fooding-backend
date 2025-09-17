@@ -6,6 +6,8 @@ import im.fooding.core.model.store.Store;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
@@ -26,8 +28,8 @@ public class CeoMenuCreateRequest {
     String name;
 
     @Schema(description = "메뉴 가격", example = "12000")
-    @NotNull
-    BigDecimal price;
+    @PositiveOrZero
+    int price;
 
     @Schema(description = "메뉴 설명", example = "맛있는 초밥")
     @NotNull
