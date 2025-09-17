@@ -5,10 +5,8 @@ import im.fooding.core.dto.request.menu.MenuUpdateRequest;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.menu.Menu;
-import im.fooding.core.model.menu.MenuCategory;
-import im.fooding.core.model.waiting.Waiting;
+import im.fooding.core.repository.menu.MenuFilter;
 import im.fooding.core.repository.menu.MenuRepository;
-import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +48,10 @@ public class MenuService {
 
     public Page<Menu> list(Pageable pageable) {
         return menuRepository.findAllByDeletedFalse(pageable);
+    }
+
+    public Page<Menu> list(MenuFilter filter, Pageable pageable) {
+        return menuRepository.list(filter, pageable);
     }
 
     public Page<Menu> list(Long storeId, String searchString, Pageable pageable) {
