@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                         .requestMatchers((this.getPermitUrls())).permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/store-coupons").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/user/banners/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/stores/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/store-posts/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/regions/**").permitAll()
