@@ -17,6 +17,9 @@ public class AdminSearchUserCouponRequest extends BasicSearch {
     @Schema(description = "가게 id", example = "1")
     private Long storeId;
 
+    @Schema(description = "쿠폰 id", example = "1")
+    private Long couponId;
+
     @Schema(description = "쿠폰 상태 (AVAILABLE, REQUESTED, USED)", example = "AVAILABLE")
     private UserCouponStatus status;
 }
