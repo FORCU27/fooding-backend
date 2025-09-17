@@ -2,6 +2,8 @@ package im.fooding.core.model.banner;
 
 import com.querydsl.core.annotations.QueryEntity;
 import im.fooding.core.model.BaseDocument;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,6 +33,14 @@ public class Banner extends BaseDocument {
 
     private LinkType linkType;
 
+    private String imageUrl;
+
+    private String service;
+
+    private String placement;
+
+    private Map<String, Object> parameters = new HashMap<>();
+
     public enum Type {
         MAIN,
     }
@@ -58,7 +68,11 @@ public class Banner extends BaseDocument {
             boolean active,
             int priority,
             String link,
-            LinkType linkType
+            LinkType linkType,
+            String imageUrl,
+            String service,
+            String placement,
+            Map<String, Object> parameters
     ) {
         this.name = name;
         this.description = description;
@@ -66,6 +80,10 @@ public class Banner extends BaseDocument {
         this.priority = priority;
         this.link = link;
         this.linkType = linkType;
+        this.imageUrl = imageUrl;
+        this.service = service;
+        this.placement = placement;
+        this.parameters = parameters != null ? new HashMap<>(parameters) : new HashMap<>();
     }
 
     public void update(
@@ -74,7 +92,11 @@ public class Banner extends BaseDocument {
             boolean active,
             int priority,
             String link,
-            LinkType linkType
+            LinkType linkType,
+            String imageUrl,
+            String service,
+            String placement,
+            Map<String, Object> parameters
     ) {
         this.name = name;
         this.description = description;
@@ -82,5 +104,9 @@ public class Banner extends BaseDocument {
         this.priority = priority;
         this.link = link;
         this.linkType = linkType;
+        this.imageUrl = imageUrl;
+        this.service = service;
+        this.placement = placement;
+        this.parameters = parameters != null ? new HashMap<>(parameters) : new HashMap<>();
     }
 }
