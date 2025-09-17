@@ -5,6 +5,7 @@ import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.banner.Banner;
 import im.fooding.core.repository.banner.BannerFilter;
 import im.fooding.core.repository.banner.BannerRepository;
+import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
@@ -27,7 +28,11 @@ public class BannerService {
             boolean active,
             int priority,
             String link,
-            Banner.LinkType linkType
+            Banner.LinkType linkType,
+            String imageUrl,
+            String service,
+            String placement,
+            Map<String, Object> parameters
     ) {
         Banner newBanner = Banner.builder()
                 .name(name)
@@ -36,6 +41,10 @@ public class BannerService {
                 .priority(priority)
                 .link(link)
                 .linkType(linkType)
+                .imageUrl(imageUrl)
+                .service(service)
+                .placement(placement)
+                .parameters(parameters)
                 .build();
 
         Banner savedBanner = bannerRepository.save(newBanner);
@@ -56,7 +65,7 @@ public class BannerService {
     }
 
     public Page<Banner> list(Pageable pageable) {
-        return bannerRepository.list(pageable);
+        return bannerRepository.list(BannerFilter.non(), pageable);
     }
 
     public Page<Banner> list(BannerFilter filter, Pageable pageable) {
@@ -71,7 +80,11 @@ public class BannerService {
             boolean active,
             int priority,
             String link,
-            Banner.LinkType linkType
+            Banner.LinkType linkType,
+            String imageUrl,
+            String service,
+            String placement,
+            Map<String, Object> parameters
     ) {
         Banner targetBanner = get(id);
 
@@ -81,7 +94,11 @@ public class BannerService {
                 active,
                 priority,
                 link,
-                linkType
+                linkType,
+                imageUrl,
+                service,
+                placement,
+                parameters
         );
 
         bannerRepository.save(targetBanner);

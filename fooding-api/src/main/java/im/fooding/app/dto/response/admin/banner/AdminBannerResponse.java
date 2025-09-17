@@ -33,6 +33,18 @@ public class AdminBannerResponse {
     @Schema(description = "링크 종류", requiredMode = REQUIRED, example = "INTERNAL")
     Banner.LinkType linkType;
 
+    @Schema(description = "이미지 URL", requiredMode = NOT_REQUIRED, example = "https://cdn.fooding.im/banners/sample.jpg")
+    String imageUrl;
+
+    @Schema(description = "서비스", requiredMode = NOT_REQUIRED, example = "HOME")
+    String service;
+
+    @Schema(description = "노출 위치", requiredMode = NOT_REQUIRED, example = "HEADER")
+    String placement;
+
+    @Schema(description = "추가 파라미터", requiredMode = NOT_REQUIRED)
+    Object parameters;
+
     public static AdminBannerResponse from(Banner banner) {
         return AdminBannerResponse.builder()
                 .id(banner.getId().toString())
@@ -42,6 +54,10 @@ public class AdminBannerResponse {
                 .priority(banner.getPriority())
                 .link(banner.getLink())
                 .linkType(banner.getLinkType())
+                .imageUrl(banner.getImageUrl())
+                .service(banner.getService())
+                .placement(banner.getPlacement())
+                .parameters(banner.getParameters())
                 .build();
     }
 }
