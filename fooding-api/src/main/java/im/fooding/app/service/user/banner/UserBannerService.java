@@ -27,6 +27,9 @@ public class UserBannerService {
     public PageResponse<UserBannerResponse> list(UserBannerPageRequest request) {
         BannerFilter filter = BannerFilter.builder()
                 .active(true)
+                .service(request.getService())
+                .placement(request.getPlacement())
+                .searchString(request.getSearchString())
                 .build();
 
         Page<Banner> banners = bannerService.list(filter, request.getPageable());
