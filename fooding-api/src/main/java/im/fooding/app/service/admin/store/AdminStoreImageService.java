@@ -6,8 +6,10 @@ import im.fooding.app.dto.request.admin.store.AdminUpdateStoreImageRequest;
 import im.fooding.app.dto.response.admin.store.AdminStoreImageResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.global.util.Util;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreImage;
+import im.fooding.core.model.store.StoreImageTag;
 import im.fooding.core.service.store.StoreImageService;
 import im.fooding.core.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +18,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AdminStoreImageService {
-    
+
     private final StoreImageService storeImageService;
     private final StoreService storeService;
 
@@ -32,18 +35,19 @@ public class AdminStoreImageService {
         if (storeId != null) {
             storeService.findById(storeId);
         }
-        
+
         Page<StoreImage> images = storeImageService.list(
-            storeId != null ? storeId : 0L, 
-            search.getSearchTag(), 
-            search.getPageable()
+                storeId != null ? storeId : 0L,
+                search.getTag(),
+                search.getIsMain(),
+                search.getPageable()
         );
-        
+
         return PageResponse.of(
-            images.getContent().stream()
-                .map(AdminStoreImageResponse::of)
-                .collect(Collectors.toList()),
-            PageInfo.of(images)
+                images.getContent().stream()
+                        .map(AdminStoreImageResponse::of)
+                        .collect(Collectors.toList()),
+                PageInfo.of(images)
         );
     }
 
@@ -57,10 +61,10 @@ public class AdminStoreImageService {
     public Long create(AdminCreateStoreImageRequest request) {
         Store store = storeService.findById(request.getStoreId());
         StoreImage storeImage = storeImageService.create(
-            store, 
-            request.getImageUrl(), 
-            request.getSortOrder(), 
-            request.getTags()
+                store,
+                request.getImageUrl(),
+                request.getSortOrder(),
+                generateTags(request.getTags())
         );
         return storeImage.getId();
     }
@@ -69,10 +73,10 @@ public class AdminStoreImageService {
     public void update(Long id, AdminUpdateStoreImageRequest request) {
         StoreImage storeImage = storeImageService.findById(id);
         storeImageService.update(
-            storeImage, 
-            request.getImageUrl(), 
-            request.getSortOrder(), 
-            request.getTags()
+                storeImage,
+                request.getImageUrl(),
+                request.getSortOrder(),
+                generateTags(request.getTags())
         );
     }
 
@@ -81,5 +85,17 @@ public class AdminStoreImageService {
         StoreImage storeImage = storeImageService.findById(id);
         // 관리자 권한으로 삭제하므로 deletedBy를 0으로 설정 (시스템 삭제)
         storeImageService.delete(storeImage, 0L);
+    }
+
+    @Transactional
+    public void updateMain(Long id) {
+        storeImageService.updateMain(id);
+    }
+
+    private String generateTags(List<StoreImageTag> tags) {
+        if (tags == null || tags.isEmpty()) {
+            return null;
+        }
+        return Util.generateListToString(tags.stream().map(StoreImageTag::name).toList());
     }
 }

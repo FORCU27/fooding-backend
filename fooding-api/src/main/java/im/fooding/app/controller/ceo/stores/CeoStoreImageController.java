@@ -51,4 +51,12 @@ public class CeoStoreImageController {
         service.delete(storeId, id, userInfo.getId());
         return ApiResult.ok();
     }
+
+    @PutMapping("/{storeId}/images/{id}/main")
+    @Operation(summary = "대표사진 설정")
+    public ApiResult<Void> updateMain(@PathVariable long storeId, @PathVariable long id,
+                                      @AuthenticationPrincipal UserInfo userInfo) {
+        service.updateMain(storeId, id, userInfo.getId());
+        return ApiResult.ok();
+    }
 }

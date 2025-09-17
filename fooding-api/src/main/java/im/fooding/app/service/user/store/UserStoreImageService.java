@@ -20,7 +20,7 @@ public class UserStoreImageService {
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreImageResponse> list(long storeId, UserSearchStoreImageRequest search) {
-        Page<StoreImage> images = storeImageService.list(storeId, search.getSearchTag(), search.getPageable());
+        Page<StoreImage> images = storeImageService.list(storeId, search.getTag(), search.getIsMain(), search.getPageable());
         return PageResponse.of(images.stream().map(UserStoreImageResponse::of).toList(), PageInfo.of(images));
     }
 }

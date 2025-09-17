@@ -15,6 +15,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
 
@@ -43,6 +44,9 @@ public class StoreImage extends BaseEntity {
 
     private String tags;
 
+    @ColumnDefault("false")
+    private boolean isMain;
+
     @Builder
     private StoreImage(Store store, String imageUrl, int sortOrder, String tags) {
         this.store = store;
@@ -54,6 +58,10 @@ public class StoreImage extends BaseEntity {
     public void update(String imageUrl, int sortOrder, String tags) {
         this.imageUrl = imageUrl;
         this.sortOrder = sortOrder;
-        this.tags = !StringUtils.hasText(tags) ? null : tags;;
+        this.tags = !StringUtils.hasText(tags) ? null : tags;
+    }
+
+    public void updateMain() {
+        this.isMain = !this.isMain;
     }
 }

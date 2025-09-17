@@ -59,4 +59,11 @@ public class AdminStoreImageController {
         service.delete(id);
         return ApiResult.ok();
     }
+
+    @PutMapping("/images/{id}/main")
+    @Operation(summary = "가게 이미지 대표이미지 설정")
+    public ApiResult<Void> updateMain(@PathVariable Long id) {
+        service.updateMain(id);
+        return ApiResult.ok();
+    }
 }
