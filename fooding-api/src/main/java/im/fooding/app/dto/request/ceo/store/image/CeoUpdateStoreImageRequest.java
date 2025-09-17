@@ -1,8 +1,11 @@
 package im.fooding.app.dto.request.ceo.store.image;
 
+import im.fooding.core.model.store.StoreImageTag;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -13,6 +16,6 @@ public class CeoUpdateStoreImageRequest {
     @Schema(description = "정렬 순서", example = "1")
     private int sortOrder;
 
-    @Schema(description = "태그", example = "업체,음식")
-    private String tags;
+    @Schema(description = "태그", example = "[\"PRICE_TAG\", \"FOOD\", \"BEVERAGE\", \"INTERIOR\", \"EXTERIOR\"]")
+    private List<StoreImageTag> tags;
 }

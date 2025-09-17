@@ -91,7 +91,7 @@ public class QStoreRepositoryImpl implements QStoreRepository {
     public Optional<Store> retrieve(long storeId, Set<StoreStatus> statuses) {
         return Optional.ofNullable(query
                 .selectFrom(store)
-                .leftJoin(store.images, storeImage).fetchJoin()
+                .leftJoin(store.images, storeImage)
                 .where(
                         store.id.eq(storeId),
                         store.deleted.isFalse(),

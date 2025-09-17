@@ -64,7 +64,11 @@ public class UserStoreListResponse {
     }
 
     public static UserStoreListResponse of(Store store, Integer estimatedWaitingTime) {
-        String imageUrl = store.getImages() != null ? store.getImages().stream().findFirst().map(StoreImage::getImageUrl).orElse(null) : null;
+        String imageUrl = store.getImages() != null ? store.getImages().stream()
+                .filter(it -> it.isMain() && !it.isDeleted())
+                .findFirst().map(StoreImage::getImageUrl)
+                .orElse(null) : null;
+
         return UserStoreListResponse.builder()
                 .id(store.getId())
                 .category(store.getCategory())

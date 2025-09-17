@@ -1,6 +1,7 @@
 package im.fooding.core.repository.store.image;
 
 import im.fooding.core.model.store.StoreImage;
+import im.fooding.core.model.store.StoreImageTag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,5 +11,5 @@ public interface QStoreImageRepository {
 
     Optional<StoreImage> findByStore(Long storeId);
 
-    Page<StoreImage> list(long storeId, String searchTag, Pageable pageable);
+    Page<StoreImage> list(long storeId, StoreImageTag tag, Boolean isMain, Pageable pageable);
 }
