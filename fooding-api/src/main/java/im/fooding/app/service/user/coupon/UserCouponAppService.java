@@ -31,7 +31,7 @@ public class UserCouponAppService {
 
     @Transactional(readOnly = true)
     public PageResponse<UserCouponResponse> list(UserSearchUserCouponRequest search, long userId) {
-        Page<UserCoupon> userCoupons = userCouponService.list(userId, search.getStoreId(), search.getUsed(), null, search.getPageable());
+        Page<UserCoupon> userCoupons = userCouponService.list(userId, search.getStoreId(), null, search.getUsed(), null, search.getPageable());
         return PageResponse.of(userCoupons.stream().map(UserCouponResponse::of).toList(), PageInfo.of(userCoupons));
     }
 

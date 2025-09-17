@@ -9,6 +9,8 @@ public interface QMenuRepository {
 
     List<Menu> list(List<Long> categoryIds);
 
+    Page<Menu> list(MenuFilter filter, Pageable pageable);
+
     Page<Menu> list(Long storeId, String searchString, Pageable pageable);
 
 }

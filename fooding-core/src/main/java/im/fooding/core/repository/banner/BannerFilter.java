@@ -4,10 +4,13 @@ import lombok.Builder;
 
 @Builder
 public record BannerFilter(
-        Boolean active
+        Boolean active,
+        String service,
+        String placement,
+        String searchString
 ) {
 
     public static BannerFilter non() {
-        return new BannerFilter(null);
+        return BannerFilter.builder().build();
     }
 }

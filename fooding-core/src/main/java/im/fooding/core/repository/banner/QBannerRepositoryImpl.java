@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.support.SpringDataMongodbQuery;
+import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor
 public class QBannerRepositoryImpl implements QBannerRepository {
@@ -28,6 +29,21 @@ public class QBannerRepositoryImpl implements QBannerRepository {
         BooleanExpression condition = banner.deleted.isFalse();
         if (filter.active() != null) {
             condition = condition.and(banner.active.eq(filter.active()));
+        }
+        if (StringUtils.hasText(filter.service())) {
+            condition = condition.and(banner.service.equalsIgnoreCase(filter.service()));
+        }
+        if (StringUtils.hasText(filter.placement())) {
+            condition = condition.and(banner.placement.equalsIgnoreCase(filter.placement()));
+        }
+        if (StringUtils.hasText(filter.searchString())) {
+            String keyword = filter.searchString();
+            condition = condition.and(
+                    banner.name.containsIgnoreCase(keyword)
+                            .or(banner.description.containsIgnoreCase(keyword))
+                            .or(banner.service.containsIgnoreCase(keyword))
+                            .or(banner.placement.containsIgnoreCase(keyword))
+            );
         }
 
         SpringDataMongodbQuery<Banner> query = new SpringDataMongodbQuery<>(mongoTemplate, Banner.class);
