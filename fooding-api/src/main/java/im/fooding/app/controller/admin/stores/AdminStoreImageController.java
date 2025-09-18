@@ -2,6 +2,7 @@ package im.fooding.app.controller.admin.stores;
 
 import im.fooding.app.dto.request.admin.store.AdminCreateStoreImageRequest;
 import im.fooding.app.dto.request.admin.store.AdminSearchStoreImageRequest;
+import im.fooding.app.dto.request.admin.store.AdminUpdateStoreImageMainRequest;
 import im.fooding.app.dto.request.admin.store.AdminUpdateStoreImageRequest;
 import im.fooding.app.dto.response.admin.store.AdminStoreImageResponse;
 import im.fooding.app.service.admin.store.AdminStoreImageService;
@@ -60,10 +61,10 @@ public class AdminStoreImageController {
         return ApiResult.ok();
     }
 
-    @PutMapping("/images/{id}/main")
+    @PostMapping("/images/{id}/main")
     @Operation(summary = "가게 이미지 대표이미지 설정")
-    public ApiResult<Void> updateMain(@PathVariable Long id) {
-        service.updateMain(id);
+    public ApiResult<Void> updateMain(@PathVariable Long id, @RequestBody @Valid AdminUpdateStoreImageMainRequest request) {
+        service.updateMain(id, request);
         return ApiResult.ok();
     }
 }

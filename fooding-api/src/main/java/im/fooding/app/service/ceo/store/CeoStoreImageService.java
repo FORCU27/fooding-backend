@@ -2,6 +2,7 @@ package im.fooding.app.service.ceo.store;
 
 import im.fooding.app.dto.request.ceo.store.image.CeoCreateStoreImageRequest;
 import im.fooding.app.dto.request.ceo.store.image.CeoSearchStoreImageRequest;
+import im.fooding.app.dto.request.ceo.store.image.CeoUpdateStoreImageMainRequest;
 import im.fooding.app.dto.request.ceo.store.image.CeoUpdateStoreImageRequest;
 import im.fooding.app.dto.response.ceo.store.CeoStoreImageResponse;
 import im.fooding.app.service.file.FileUploadService;
@@ -72,9 +73,9 @@ public class CeoStoreImageService {
     }
 
     @Transactional
-    public void updateMain(long storeId, long id, long userId) {
+    public void updateMain(long storeId, long id, CeoUpdateStoreImageMainRequest request, long userId) {
         checkMember(storeId, userId);
-        storeImageService.updateMain(id);
+        storeImageService.updateMain(id, request.getIsMain());
     }
 
     private void checkMember(long storeId, long userId) {

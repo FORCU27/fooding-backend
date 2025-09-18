@@ -2,6 +2,7 @@ package im.fooding.app.service.admin.store;
 
 import im.fooding.app.dto.request.admin.store.AdminCreateStoreImageRequest;
 import im.fooding.app.dto.request.admin.store.AdminSearchStoreImageRequest;
+import im.fooding.app.dto.request.admin.store.AdminUpdateStoreImageMainRequest;
 import im.fooding.app.dto.request.admin.store.AdminUpdateStoreImageRequest;
 import im.fooding.app.dto.response.admin.store.AdminStoreImageResponse;
 import im.fooding.core.common.PageInfo;
@@ -88,8 +89,8 @@ public class AdminStoreImageService {
     }
 
     @Transactional
-    public void updateMain(Long id) {
-        storeImageService.updateMain(id);
+    public void updateMain(Long id, AdminUpdateStoreImageMainRequest request) {
+        storeImageService.updateMain(id, request.getIsMain());
     }
 
     private String generateTags(List<StoreImageTag> tags) {
