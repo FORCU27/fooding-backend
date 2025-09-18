@@ -1,13 +1,17 @@
 package im.fooding.app.dto.response.admin.store;
 
+import im.fooding.core.global.util.Util;
 import im.fooding.core.model.store.StoreImage;
+import im.fooding.core.model.store.StoreImageTag;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -24,8 +28,8 @@ public class AdminStoreImageResponse {
     @Schema(description = "정렬순서", example = "1", requiredMode = RequiredMode.REQUIRED)
     private int sortOrder;
 
-    @Schema(description = "태그", example = "업체,음식", requiredMode = RequiredMode.NOT_REQUIRED)
-    private String tags;
+    @Schema(description = "태그", example = "[\"PRICE_TAG\", \"FOOD\", \"BEVERAGE\", \"INTERIOR\", \"EXTERIOR\"]", requiredMode = RequiredMode.NOT_REQUIRED)
+    private List<StoreImageTag> tags;
 
     @Schema(description = "생성일시")
     private LocalDateTime createdAt;
@@ -34,7 +38,7 @@ public class AdminStoreImageResponse {
     private LocalDateTime updatedAt;
 
     @Builder
-    private AdminStoreImageResponse(Long id, Long storeId, String imageUrl, int sortOrder, String tags, 
+    private AdminStoreImageResponse(Long id, Long storeId, String imageUrl, int sortOrder, List<StoreImageTag> tags,
                                  LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.storeId = storeId;
@@ -46,12 +50,18 @@ public class AdminStoreImageResponse {
     }
 
     public static AdminStoreImageResponse of(StoreImage storeImage) {
+        List<StoreImageTag> tags = null;
+        if (StringUtils.hasText(storeImage.getTags())) {
+            tags = Util.generateStringToList(storeImage.getTags()).stream()
+                    .map(StoreImageTag::valueOf)
+                    .toList();
+        }
         return AdminStoreImageResponse.builder()
                 .id(storeImage.getId())
                 .storeId(storeImage.getStore().getId())
                 .imageUrl(storeImage.getImageUrl())
                 .sortOrder(storeImage.getSortOrder())
-                .tags(storeImage.getTags())
+                .tags(tags)
                 .createdAt(storeImage.getCreatedAt())
                 .updatedAt(storeImage.getUpdatedAt())
                 .build();
