@@ -31,6 +31,9 @@ public class AdminStoreImageResponse {
     @Schema(description = "태그", example = "[\"PRICE_TAG\", \"FOOD\", \"BEVERAGE\", \"INTERIOR\", \"EXTERIOR\"]", requiredMode = RequiredMode.NOT_REQUIRED)
     private List<StoreImageTag> tags;
 
+    @Schema(description = "대표사진 여부", example = "false", requiredMode = RequiredMode.REQUIRED)
+    private Boolean isMain;
+
     @Schema(description = "생성일시")
     private LocalDateTime createdAt;
 
@@ -39,12 +42,13 @@ public class AdminStoreImageResponse {
 
     @Builder
     private AdminStoreImageResponse(Long id, Long storeId, String imageUrl, int sortOrder, List<StoreImageTag> tags,
-                                 LocalDateTime createdAt, LocalDateTime updatedAt) {
+                                 Boolean isMain, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.storeId = storeId;
         this.imageUrl = imageUrl;
         this.sortOrder = sortOrder;
         this.tags = tags;
+        this.isMain = isMain;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -62,9 +66,9 @@ public class AdminStoreImageResponse {
                 .imageUrl(storeImage.getImageUrl())
                 .sortOrder(storeImage.getSortOrder())
                 .tags(tags)
+                .isMain(storeImage.isMain())
                 .createdAt(storeImage.getCreatedAt())
                 .updatedAt(storeImage.getUpdatedAt())
                 .build();
     }
 }
-

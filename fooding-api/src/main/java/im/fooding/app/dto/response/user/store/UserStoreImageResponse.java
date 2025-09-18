@@ -27,12 +27,16 @@ public class UserStoreImageResponse {
     @Schema(description = "태그", example = "[\"PRICE_TAG\", \"FOOD\", \"BEVERAGE\", \"INTERIOR\", \"EXTERIOR\"]", requiredMode = RequiredMode.NOT_REQUIRED)
     private List<StoreImageTag> tags;
 
+    @Schema(description = "대표사진 여부", example = "false", requiredMode = RequiredMode.REQUIRED)
+    private Boolean isMain;
+
     @Builder
-    private UserStoreImageResponse(Long id, String imageUrl, int sortOrder, List<StoreImageTag> tags) {
+    private UserStoreImageResponse(Long id, String imageUrl, int sortOrder, List<StoreImageTag> tags, Boolean isMain) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.sortOrder = sortOrder;
         this.tags = tags;
+        this.isMain = isMain;
     }
 
     public static UserStoreImageResponse of(StoreImage storeImage) {
@@ -47,6 +51,7 @@ public class UserStoreImageResponse {
                 .imageUrl(storeImage.getImageUrl())
                 .sortOrder(storeImage.getSortOrder())
                 .tags(tags)
+                .isMain(storeImage.isMain())
                 .build();
     }
 }
