@@ -4,6 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.model.store.StoreService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,6 +45,24 @@ public class QStoreServiceRepositoryImpl implements QStoreServiceRepository{
                         serviceTypeFilter( serviceType )
                 );
         return PageableExecutionUtils.getPage( results, pageable, countQuery::fetchCount );
+    }
+
+    @Override
+    public Optional<StoreService> find(StoreServiceFilter filter) {
+        BooleanExpression predicate = storeService.deleted.isFalse();
+        if (filter.storeId() != null) {
+            predicate = predicate.and(storeService.store.id.eq(filter.storeId()));
+        }
+        if (filter.type() != null) {
+            predicate = predicate.and(storeService.type.eq(filter.type()));
+        }
+
+        return Optional.ofNullable(
+                query.select(storeService)
+                        .from(storeService)
+                        .where(predicate)
+                        .fetchOne()
+        );
     }
 
     private BooleanExpression search( String searchString ){

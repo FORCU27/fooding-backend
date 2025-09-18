@@ -17,14 +17,12 @@ import im.fooding.core.model.store.StoreStatus;
 import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.model.store.information.StoreDailyOperatingTime;
 import im.fooding.core.model.store.information.StoreOperatingHour;
-import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingStatus;
 import im.fooding.core.service.bookmark.BookmarkService;
 import im.fooding.core.service.store.StoreOperatingHourService;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.store.document.StoreDocumentService;
-import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +46,6 @@ public class UserStoreService {
     private final StoreService storeService;
     private final StoreOperatingHourService storeOperatingHourService;
     private final WaitingSettingService waitingSettingService;
-    private final WaitingService waitingService;
     private final BookmarkService bookmarkService;
     private final StoreDocumentService storeDocumentService;
 
@@ -127,14 +124,14 @@ public class UserStoreService {
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreListResponse> retrieveImmediateEntry(UserImmediateEntryStoreRequest request) {
-        Page<Waiting> waitings = waitingService.list(null, WaitingStatus.IMMEDIATE_ENTRY, request.getPageable());
+        Page<WaitingSetting> waitingSettings = waitingSettingService.list(null, WaitingStatus.IMMEDIATE_ENTRY, request.getPageable());
 
-        List<UserStoreListResponse> content = waitings.getContent().stream()
-                .map(Waiting::getStore)
+        List<UserStoreListResponse> content = waitingSettings.getContent().stream()
+                .map(waitingSetting -> waitingSetting.getStoreService().getStore())
                 .map(this::mapStoreToResponse)
                 .toList();
 
-        return PageResponse.of(content, PageInfo.of(waitings));
+        return PageResponse.of(content, PageInfo.of(waitingSettings));
     }
 
     private UserStoreListResponse mapStoreToResponse(Store store) {

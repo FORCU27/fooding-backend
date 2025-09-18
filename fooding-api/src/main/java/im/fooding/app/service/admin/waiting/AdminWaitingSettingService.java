@@ -4,14 +4,13 @@ package im.fooding.app.service.admin.waiting;
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingCreateRequest;
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingUpdateRequest;
 import im.fooding.app.dto.response.admin.waiting.AdminWaitingSettingResponse;
-import im.fooding.core.common.BasicSearch;
 import im.fooding.app.dto.request.admin.waiting.AdminWaitingSettingListRequest;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.WaitingSettingCreateRequest;
-import im.fooding.core.model.waiting.Waiting;
+import im.fooding.core.model.store.StoreService;
 import im.fooding.core.model.waiting.WaitingSetting;
-import im.fooding.core.service.waiting.WaitingService;
+import im.fooding.core.service.store.StoreServiceService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,14 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class AdminWaitingSettingService {
 
-    private final WaitingService waitingService;
     private final WaitingSettingService waitingSettingService;
+    private final StoreServiceService storeServiceService;
 
     @Transactional
     public void create(AdminWaitingSettingCreateRequest request) {
-        Waiting waiting = waitingService.get(request.waitingId());
+        StoreService storeService = storeServiceService.findById(request.storeServiceId());
 
-        WaitingSettingCreateRequest waitingSettingCreateRequest = request.toWaitingSettingCreateRequest(waiting);
+        WaitingSettingCreateRequest waitingSettingCreateRequest = request.toWaitingSettingCreateRequest(storeService);
         waitingSettingService.create(waitingSettingCreateRequest);
     }
 
@@ -39,14 +38,14 @@ public class AdminWaitingSettingService {
     }
 
     public PageResponse<AdminWaitingSettingResponse> list(AdminWaitingSettingListRequest search) {
-        Page<WaitingSetting> waitingSettings = waitingSettingService.list(search.getWaitingId(), search.getIsActive(), search.getPageable());
+        Page<WaitingSetting> waitingSettings = waitingSettingService.list(search.getStoreServiceId(), search.getIsActive(), search.getPageable());
         return PageResponse.of(waitingSettings.getContent().stream().map(AdminWaitingSettingResponse::from).toList(), PageInfo.of(waitingSettings));
     }
 
     @Transactional
     public void update(long id, AdminWaitingSettingUpdateRequest request) {
-        Waiting waiting = waitingService.get(request.waitingId());
-        waitingSettingService.update(request.toWaitingSettingUpdateRequest(id, waiting));
+        StoreService storeService = storeServiceService.findById(request.storeServiceId());
+        waitingSettingService.update(request.toWaitingSettingUpdateRequest(id, storeService));
     }
 
     @Transactional

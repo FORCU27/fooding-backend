@@ -5,6 +5,7 @@ import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreService;
 import im.fooding.core.model.store.StoreServiceType;
+import im.fooding.core.repository.store.StoreServiceFilter;
 import im.fooding.core.repository.store.StoreServiceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +28,12 @@ public class StoreServiceService {
      *
      * @param store
      */
-    public void create(Store store, StoreServiceType type){
+    public long create(Store store, StoreServiceType type){
         StoreService storeService = StoreService.builder()
                 .store( store )
                 .type( type )
                 .build();
-        repository.save( storeService );
+        return repository.save( storeService ).getId();
     }
 
     /**
@@ -67,6 +68,11 @@ public class StoreServiceService {
      */
     public List<StoreService> findByStoreId(Long storeId ) {
         return repository.findByStoreId( storeId ).stream().filter( storeService -> !storeService.isDeleted() ).collect(Collectors.toList());
+    }
+
+    public StoreService get(StoreServiceFilter filter) {
+        return repository.find(filter)
+                .orElseThrow(() -> new ApiException(ErrorCode.STORE_SERVICE_NOT_FOUND));
     }
 
     /**

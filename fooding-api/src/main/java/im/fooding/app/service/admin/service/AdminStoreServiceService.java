@@ -5,6 +5,9 @@ import im.fooding.app.dto.request.admin.service.RetrieveStoreServiceRequest;
 import im.fooding.app.dto.response.admin.service.StoreServiceResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.event.store.StoreWaitingServiceCreatedEvent;
+import im.fooding.core.global.kafka.EventProducerService;
+import im.fooding.core.model.store.StoreServiceType;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.store.StoreServiceService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 public class AdminStoreServiceService {
     private final StoreServiceService service;
     private final StoreService storeService;
+    private final EventProducerService eventProducerService;
 
     /**
      * 서비스 생성
@@ -26,10 +30,17 @@ public class AdminStoreServiceService {
      * @param request
      */
     public void create( CreateStoreServiceRequest request ){
-        service.create(
+        long createdStoreServiceId = service.create(
                 storeService.findById( request.getStoreId() ),
                 request.getType()
         );
+
+        if (request.getType() == StoreServiceType.WAITING) {
+            eventProducerService.publishEvent(
+                    StoreWaitingServiceCreatedEvent.class.getSimpleName(),
+                    new StoreWaitingServiceCreatedEvent(createdStoreServiceId)
+            );
+        }
     }
 
     /**

@@ -7,8 +7,8 @@ import lombok.Value;
 @Value
 public class AdminWaitingSettingListRequest extends BasicSearch {
 
-    @Schema(description = "웨이팅 ID로 필터", example = "1")
-    Long waitingId;
+    @Schema(description = "StoreService ID로 필터", example = "1")
+    Long storeServiceId;
 
     @Schema(description = "활성화 여부로 필터", example = "true")
     Boolean isActive;

@@ -14,8 +14,8 @@ import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingUser;
 import im.fooding.core.service.store.StoreService;
+import im.fooding.core.service.store.StoreServiceService;
 import im.fooding.core.service.waiting.StoreWaitingService;
-import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import im.fooding.core.service.waiting.WaitingUserService;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +31,8 @@ public class AdminStoreWaitingService {
     private final StoreWaitingService storeWaitingService;
     private final WaitingUserService waitingUserService;
     private final StoreService storeService;
-    private final WaitingService waitingService;
     private final WaitingSettingService waitingSettingService;
+    private final StoreServiceService storeServiceService;
 
     @Transactional
     public void create(AdminStoreWaitingCreateRequest request) {
@@ -73,7 +73,7 @@ public class AdminStoreWaitingService {
     }
 
     private void validateWaitingOpen(Store store) {
-        if (!waitingService.isOpen(store)) {
+        if (!waitingSettingService.getActiveSetting(store).isOpen()) {
             throw new ApiException(ErrorCode.WAITING_NOT_OPENED);
         }
     }
