@@ -4,16 +4,15 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.model.store.StoreImage;
+import im.fooding.core.model.store.StoreImageTag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
 
-import static im.fooding.core.model.store.QStore.store;
 import static im.fooding.core.model.store.QStoreImage.storeImage;
 
 @RequiredArgsConstructor
@@ -33,13 +32,14 @@ public class QStoreImageRepositoryImpl implements QStoreImageRepository {
     }
 
     @Override
-    public Page<StoreImage> list(long storeId, String searchTag, Pageable pageable) {
+    public Page<StoreImage> list(long storeId, StoreImageTag tag, Boolean isMain, Pageable pageable) {
         List<StoreImage> images = query
                 .selectFrom(storeImage)
                 .where(
                         storeImage.deleted.isFalse(),
                         storeImage.store.id.eq(storeId),
-                        searchTag(searchTag)
+                        searchTag(tag),
+                        searchMain(isMain)
                 )
                 .orderBy(storeImage.sortOrder.asc(), storeImage.id.desc())
                 .offset(pageable.getOffset())
@@ -52,16 +52,18 @@ public class QStoreImageRepositoryImpl implements QStoreImageRepository {
                 .where(
                         storeImage.deleted.isFalse(),
                         storeImage.store.id.eq(storeId),
-                        searchTag(searchTag)
+                        searchTag(tag),
+                        searchMain(isMain)
                 );
 
         return PageableExecutionUtils.getPage(images, pageable, countQuery::fetchOne);
     }
 
-    private BooleanExpression searchTag(String tag) {
-        if (!StringUtils.hasText(tag)) {
-            return null;
-        }
-        return storeImage.tags.contains(tag);
+    private BooleanExpression searchTag(StoreImageTag tag) {
+        return tag != null ? storeImage.tags.contains(tag.name()) : null;
+    }
+
+    private BooleanExpression searchMain(Boolean isMain) {
+        return isMain != null ? storeImage.isMain.eq(isMain) : null;
     }
 }

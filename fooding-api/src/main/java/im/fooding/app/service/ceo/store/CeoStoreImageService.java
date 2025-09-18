@@ -2,14 +2,17 @@ package im.fooding.app.service.ceo.store;
 
 import im.fooding.app.dto.request.ceo.store.image.CeoCreateStoreImageRequest;
 import im.fooding.app.dto.request.ceo.store.image.CeoSearchStoreImageRequest;
+import im.fooding.app.dto.request.ceo.store.image.CeoUpdateStoreImageMainRequest;
 import im.fooding.app.dto.request.ceo.store.image.CeoUpdateStoreImageRequest;
 import im.fooding.app.dto.response.ceo.store.CeoStoreImageResponse;
 import im.fooding.app.service.file.FileUploadService;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.global.util.Util;
 import im.fooding.core.model.file.File;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreImage;
+import im.fooding.core.model.store.StoreImageTag;
 import im.fooding.core.service.store.StoreImageService;
 import im.fooding.core.service.store.StoreMemberService;
 import im.fooding.core.service.store.StoreService;
@@ -19,6 +22,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,13 +40,13 @@ public class CeoStoreImageService {
         checkMember(store.getId(), userId);
 
         File file = fileUploadService.commit(request.getImageId());
-        return storeImageService.create(store, file.getUrl(), request.getSortOrder(), request.getTags()).getId();
+        return storeImageService.create(store, file.getUrl(), request.getSortOrder(), generateTags(request.getTags())).getId();
     }
 
     @Transactional(readOnly = true)
     public PageResponse<CeoStoreImageResponse> list(long storeId, CeoSearchStoreImageRequest search, long userId) {
         checkMember(storeId, userId);
-        Page<StoreImage> images = storeImageService.list(storeId, search.getSearchTag(), search.getPageable());
+        Page<StoreImage> images = storeImageService.list(storeId, search.getTag(), search.getIsMain(), search.getPageable());
         return PageResponse.of(images.stream().map(CeoStoreImageResponse::of).toList(), PageInfo.of(images));
     }
 
@@ -57,7 +62,7 @@ public class CeoStoreImageService {
             imageUrl = file.getUrl();
         }
 
-        storeImageService.update(storeImage, imageUrl, request.getSortOrder(), request.getTags());
+        storeImageService.update(storeImage, imageUrl, request.getSortOrder(), generateTags(request.getTags()));
     }
 
     @Transactional
@@ -67,7 +72,20 @@ public class CeoStoreImageService {
         storeImageService.delete(storeImage, userId);
     }
 
+    @Transactional
+    public void updateMain(long storeId, long id, CeoUpdateStoreImageMainRequest request, long userId) {
+        checkMember(storeId, userId);
+        storeImageService.updateMain(id, request.getIsMain());
+    }
+
     private void checkMember(long storeId, long userId) {
         storeMemberService.checkMember(storeId, userId);
+    }
+
+    private String generateTags(List<StoreImageTag> tags) {
+        if (tags == null || tags.isEmpty()) {
+            return null;
+        }
+        return Util.generateListToString(tags.stream().map(StoreImageTag::name).toList());
     }
 }

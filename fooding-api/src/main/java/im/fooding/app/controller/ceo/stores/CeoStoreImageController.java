@@ -2,6 +2,7 @@ package im.fooding.app.controller.ceo.stores;
 
 import im.fooding.app.dto.request.ceo.store.image.CeoCreateStoreImageRequest;
 import im.fooding.app.dto.request.ceo.store.image.CeoSearchStoreImageRequest;
+import im.fooding.app.dto.request.ceo.store.image.CeoUpdateStoreImageMainRequest;
 import im.fooding.app.dto.request.ceo.store.image.CeoUpdateStoreImageRequest;
 import im.fooding.app.dto.response.ceo.store.CeoStoreImageResponse;
 import im.fooding.app.service.ceo.store.CeoStoreImageService;
@@ -49,6 +50,15 @@ public class CeoStoreImageController {
     public ApiResult<Void> delete(@PathVariable long storeId, @PathVariable long id,
                                   @AuthenticationPrincipal UserInfo userInfo) {
         service.delete(storeId, id, userInfo.getId());
+        return ApiResult.ok();
+    }
+
+    @PutMapping("/{storeId}/images/{id}/main")
+    @Operation(summary = "대표사진 설정")
+    public ApiResult<Void> updateMain(@PathVariable long storeId, @PathVariable long id,
+                                      @RequestBody @Valid CeoUpdateStoreImageMainRequest request,
+                                      @AuthenticationPrincipal UserInfo userInfo) {
+        service.updateMain(storeId, id, request, userInfo.getId());
         return ApiResult.ok();
     }
 }

@@ -1,5 +1,6 @@
 package im.fooding.app.dto.request.admin.store;
 
+import im.fooding.core.model.store.StoreImageTag;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -7,6 +8,8 @@ import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,7 +28,7 @@ public class AdminCreateStoreImageRequest {
     @NotNull(message = "정렬순서는 필수입니다.")
     private Integer sortOrder;
 
-    @Schema(description = "태그", example = "업체,음식")
-    private String tags;
+    @Schema(description = "태그", example = "[\"PRICE_TAG\", \"FOOD\", \"BEVERAGE\", \"INTERIOR\", \"EXTERIOR\"]")
+    private List<StoreImageTag> tags;
 }
 

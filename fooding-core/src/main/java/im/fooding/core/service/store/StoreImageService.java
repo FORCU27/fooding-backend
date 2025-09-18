@@ -4,6 +4,7 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreImage;
+import im.fooding.core.model.store.StoreImageTag;
 import im.fooding.core.repository.store.image.StoreImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,8 +69,8 @@ public class StoreImageService {
      * @param pageable
      * @return Page<StoreImage>
      */
-    public Page<StoreImage> list(long storeId, String searchTag, Pageable pageable) {
-        return storeImageRepository.list(storeId, searchTag, pageable);
+    public Page<StoreImage> list(long storeId, StoreImageTag tag, Boolean isMain, Pageable pageable) {
+        return storeImageRepository.list(storeId, tag, isMain, pageable);
     }
 
     /**
@@ -92,5 +93,16 @@ public class StoreImageService {
      */
     public void update(StoreImage storeImage, String imageUrl, int sortOrder, String tags) {
         storeImage.update(imageUrl, sortOrder, tags);
+    }
+
+    /**
+     * 대표이미지 설정
+     *
+     * @param id
+     * @param isMain
+     */
+    public void updateMain(long id, boolean isMain) {
+        StoreImage storeImage = findById(id);
+        storeImage.updateMain(isMain);
     }
 }

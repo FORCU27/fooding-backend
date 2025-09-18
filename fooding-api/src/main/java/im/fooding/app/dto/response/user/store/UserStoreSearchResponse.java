@@ -72,6 +72,7 @@ public class UserStoreSearchResponse {
 
     public static UserStoreSearchResponse of(Store store, Integer estimatedWaitingTime) {
         List<UserStoreImageResponse> images = store.getImages() != null ? store.getImages().stream()
+                .filter(it -> it.isMain() && !it.isDeleted())
                 .sorted(Comparator.comparing(StoreImage::getSortOrder).thenComparing(Comparator.comparing(StoreImage::getId).reversed()))
                 .map(UserStoreImageResponse::of)
                 .toList() : null;
