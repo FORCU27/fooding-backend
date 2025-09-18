@@ -30,6 +30,7 @@ import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.app.dto.request.pos.waiting.PosWaitingOccupancyUpdateRequest;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -237,5 +238,10 @@ public class PosWaitingService {
         WaitingSetting activeSetting = waitingSettingService.get(waitingSettingId);
 
         activeSetting.updateWaitingTimeMinutes(estimatedWaitingTimeMinutes);
+    }
+
+    @Transactional
+    public void updateWaitingSettingActive(long waitingSettingId, boolean active) {
+        waitingSettingService.updateActive(waitingSettingId, active);
     }
 }

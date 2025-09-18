@@ -132,6 +132,16 @@ public class WaitingSettingService {
         }
     }
 
+    @Transactional
+    public void updateActive(long waitingSettingId, boolean active) {
+        WaitingSetting waitingSetting = get(waitingSettingId);
+        if (active) {
+            waitingSetting.activate();
+        } else {
+            waitingSetting.deactivate();
+        }
+    }
+
     private void validateAlreadyActive(StoreService storeService) {
         if (waitingSettingRepository.existsByStoreServiceAndIsActiveTrueAndDeletedFalse(storeService)) {
             throw new ApiException(ErrorCode.ALREADY_EXIST_ACTIVE_WAITING_SETTING);
