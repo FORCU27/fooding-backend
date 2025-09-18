@@ -28,7 +28,7 @@ public class AdminCreateStoreRequest {
     @Schema(description = "주소 상세", example = "마포빌딩 2층")
     private String addressDetail;
 
-    @NotBlank(message = "업종은 필수입니다.")
+    @NotNull(message = "업종은 필수입니다.")
     @Schema(description = "업종", example = "KOREAN")
     private StoreCategory category;
 
