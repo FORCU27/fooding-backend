@@ -1,24 +1,13 @@
 package im.fooding.app.dto.request.pos.waiting;
 
 import im.fooding.core.common.BasicSearch;
+import im.fooding.core.model.waiting.StoreWaitingStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.data.domain.Pageable;
+import lombok.Value;
 
-public record PosWaitingListRequest(
-        @Schema(description = "search 정보")
-        BasicSearch search,
+@Value
+public class PosWaitingListRequest extends BasicSearch {
 
-        @Schema(description = "상태 (WAITING, SEATED, CANCELLED)", example = "WAITING")
-        String status
-) {
-
-    public PosWaitingListRequest {
-        if (search == null) {
-            search = new BasicSearch();
-        }
-    }
-
-    public Pageable pageable() {
-        return search.getPageable();
-    }
+    @Schema(description = "상태 (WAITING, SEATED, CANCELLED)", example = "WAITING")
+    StoreWaitingStatus status;
 }

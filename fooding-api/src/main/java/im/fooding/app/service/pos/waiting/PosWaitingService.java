@@ -11,12 +11,16 @@ import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
 import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
 import im.fooding.core.global.kafka.EventProducerService;
+import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreServiceType;
 import im.fooding.core.model.user.User;
 import im.fooding.core.model.waiting.*;
+import im.fooding.core.repository.store.StoreServiceFilter;
 import im.fooding.core.service.plan.PlanService;
+import im.fooding.core.service.store.StoreService;
+import im.fooding.core.service.store.StoreServiceService;
 import im.fooding.core.service.user.UserService;
 import im.fooding.core.service.waiting.StoreWaitingService;
-import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import im.fooding.core.service.waiting.WaitingUserService;
 import im.fooding.core.common.BasicSearch;
@@ -41,7 +45,6 @@ import java.util.List;
 public class PosWaitingService {
 
     private final UserNotificationApplicationService userNotificationApplicationService;
-    private final WaitingService waitingService;
     private final StoreWaitingService storeWaitingService;
     private final WaitingSettingService waitingSettingService;
     private final WaitingUserService waitingUserService;
@@ -49,20 +52,20 @@ public class PosWaitingService {
     private final UserService userService;
     private final PlanService planService;
     private final EventProducerService eventProducerService;
+    private final StoreServiceService storeServiceService;
+    private final StoreService storeService;
 
     public PosStoreWaitingResponse details(long id) {
         return PosStoreWaitingResponse.from(storeWaitingService.get(id));
     }
 
-    public PageResponse<PosStoreWaitingResponse> list(long id, PosWaitingListRequest request) {
-
-        Waiting waiting = waitingService.get(id);
-
+    public PageResponse<PosStoreWaitingResponse> list(long storeId, PosWaitingListRequest request) {
         StoreWaitingFilter storeWaitingFilter = StoreWaitingFilter.builder()
-                .storeId(waiting.getStore().getId())
-                .status(StoreWaitingStatus.of(request.status()))
+                .storeId(storeId)
+                .status(request.getStatus())
                 .build();
-        Page<StoreWaiting> storeWaitings = storeWaitingService.list(storeWaitingFilter, request.pageable());
+
+        Page<StoreWaiting> storeWaitings = storeWaitingService.list(storeWaitingFilter, request.getPageable());
 
         List<PosStoreWaitingResponse> list = storeWaitings.getContent()
                 .stream()
@@ -73,19 +76,19 @@ public class PosWaitingService {
     }
 
     @Transactional
-    public void seat(long requestId) {
-        storeWaitingService.seat(requestId);
+    public void seat(long storeWaitingId) {
+        storeWaitingService.seat(storeWaitingId);
     }
 
     @Transactional
-    public void cancel(long requestId, String reason) {
-        StoreWaiting canceledWaiting = storeWaitingService.cancel(requestId);
+    public void cancel(long storeWaitingId, String reason) {
+        StoreWaiting canceledWaiting = storeWaitingService.cancel(storeWaitingId);
         userNotificationApplicationService.sendWaitingCancelMessage(canceledWaiting.getStoreName(), reason);
     }
 
     @Transactional
-    public void call(long requestId) {
-        StoreWaiting storeWaiting = storeWaitingService.call(requestId);
+    public void call(long storeWaitingId) {
+        StoreWaiting storeWaiting = storeWaitingService.call(storeWaitingId);
 
         WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(storeWaiting.getStore());
 
@@ -96,13 +99,13 @@ public class PosWaitingService {
         );
     }
 
-    public void revert(long requestId) {
-        storeWaitingService.revert(requestId);
+    public void revert(long storeWaitingId) {
+        storeWaitingService.revert(storeWaitingId);
     }
 
     @Transactional
-    public void updateContactInfo(long requestId, PosUpdateWaitingContactInfoRequest request) {
-        StoreWaiting storeWaiting = storeWaitingService.get(requestId);
+    public void updateContactInfo(long storeWaitingId, PosUpdateWaitingContactInfoRequest request) {
+        StoreWaiting storeWaiting = storeWaitingService.get(storeWaitingId);
 
         WaitingUser user = storeWaiting.getWaitingUser();
         if (user != null) {
@@ -125,9 +128,10 @@ public class PosWaitingService {
     }
 
     @Transactional
-    public void register(long id, PosWaitingRegisterRequest request) {
-        Waiting waiting = waitingService.get(id);
-        storeWaitingService.validate(waiting);
+    public void register(long storeId, PosWaitingRegisterRequest request) {
+        Store store = storeService.findById(storeId);
+        WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(store);
+        storeWaitingService.validate(waitingSetting);
 
         String name = request.name();
         String phoneNumber = request.phoneNumber();
@@ -138,10 +142,10 @@ public class PosWaitingService {
         if ((name != null && !name.isBlank())
                 || (phoneNumber != null && !phoneNumber.isBlank())
         ) {
-            waitingUser = getOrRegisterUser(request, phoneNumber, waiting);
+            waitingUser = getOrRegisterUser(request, phoneNumber, waitingSetting);
         }
 
-        StoreWaiting storeWaiting = registerStoreWaiting(request, waiting, user, waitingUser);
+        StoreWaiting storeWaiting = registerStoreWaiting(request, waitingSetting, user, waitingUser);
 
         waitingLogService.logRegister(storeWaiting);
 
@@ -155,9 +159,9 @@ public class PosWaitingService {
         );
     }
 
-    private WaitingUser getOrRegisterUser(PosWaitingRegisterRequest request, String phoneNumber, Waiting waiting) {
+    private WaitingUser getOrRegisterUser(PosWaitingRegisterRequest request, String phoneNumber, WaitingSetting waitingSetting) {
         WaitingUserRegisterRequest waitingUserRegisterRequest = WaitingUserRegisterRequest.builder()
-                .store(waiting.getStore())
+                .store(waitingSetting.getStoreService().getStore())
                 .name(request.name())
                 .phoneNumber(phoneNumber)
                 .termsAgreed(request.termsAgreed())
@@ -169,11 +173,11 @@ public class PosWaitingService {
         return waitingUserService.getOrElseRegister(waitingUserRegisterRequest);
     }
 
-    private StoreWaiting registerStoreWaiting(PosWaitingRegisterRequest request, Waiting waiting, User user, WaitingUser waitingUser) {
+    private StoreWaiting registerStoreWaiting(PosWaitingRegisterRequest request, WaitingSetting waitingSetting, User user, WaitingUser waitingUser) {
         StoreWaitingRegisterRequest storeWaitingRegisterRequest = StoreWaitingRegisterRequest.builder()
                 .user(user)
                 .waitingUser(waitingUser)
-                .store(waiting.getStore())
+                .store(waitingSetting.getStoreService().getStore())
                 .channel(StoreWaitingChannel.IN_PERSON.getValue())
                 .infantChairCount(request.infantChairCount())
                 .infantCount(request.infantCount())
@@ -184,26 +188,26 @@ public class PosWaitingService {
     }
 
     @Transactional
-    public void updateWaitingStatus(long id, String statusValue) {
-        Waiting waiting = waitingService.get(id);
+    public void updateWaitingStatus(long waitingSettingId, String statusValue) {
+        WaitingSetting waitingSetting = waitingSettingService.get(waitingSettingId);
         WaitingStatus updatedStatus = WaitingStatus.of(statusValue);
 
-        validateUpdateWaitingStatus(waiting, updatedStatus);
+        validateUpdateWaitingStatus(waitingSetting, updatedStatus);
 
-        waitingService.updateStatus(id, updatedStatus);
+        waitingSettingService.updateStatus(waitingSettingId, updatedStatus);
     }
 
-    private void validateUpdateWaitingStatus(Waiting waiting, WaitingStatus updatedStatus) {
-        if (!waiting.isOpen()
+    private void validateUpdateWaitingStatus(WaitingSetting waitingSetting, WaitingStatus updatedStatus) {
+        if (!waitingSetting.isOpen()
                 && updatedStatus == WaitingStatus.WAITING_OPEN
-                && storeWaitingService.exists(waiting.getStore(), StoreWaitingStatus.WAITING)
+                && storeWaitingService.exists(waitingSetting.getStoreService().getStore(), StoreWaitingStatus.WAITING)
         ) {
             throw new ApiException(ErrorCode.WAITING_STATUS_STORE_WAITING_EXIST);
         }
     }
 
-    public PageResponse<PosWaitingLogResponse> listLogs(long requestId, BasicSearch search) {
-        Page<WaitingLog> logs = waitingLogService.list(requestId, search.getPageable());
+    public PageResponse<PosWaitingLogResponse> listLogs(long storeWaitingId, BasicSearch search) {
+        Page<WaitingLog> logs = waitingLogService.list(storeWaitingId, search.getPageable());
 
         List<PosWaitingLogResponse> list = logs.getContent()
                 .stream()
@@ -214,13 +218,13 @@ public class PosWaitingService {
     }
 
     @Transactional
-    public void updateMemo(long requestId, String memo) {
-        storeWaitingService.get(requestId).updateMemo(memo);
+    public void updateMemo(long storeWaitingId, String memo) {
+        storeWaitingService.get(storeWaitingId).updateMemo(memo);
     }
 
     @Transactional
-    public void updateOccupancy(long requestId, PosWaitingOccupancyUpdateRequest request) {
-        StoreWaiting storeWaiting = storeWaitingService.get(requestId);
+    public void updateOccupancy(long storeWaitingId, PosWaitingOccupancyUpdateRequest request) {
+        StoreWaiting storeWaiting = storeWaitingService.get(storeWaitingId);
         storeWaiting.updateOccupancy(
                 request.adultCount(),
                 request.infantCount(),
@@ -229,9 +233,8 @@ public class PosWaitingService {
     }
 
     @Transactional
-    public void updateWaitingTime(long id, int estimatedWaitingTimeMinutes) {
-        Waiting waiting = waitingService.get(id);
-        WaitingSetting activeSetting = waitingSettingService.getActiveSetting(waiting.getStore());
+    public void updateWaitingTime(long waitingSettingId, int estimatedWaitingTimeMinutes) {
+        WaitingSetting activeSetting = waitingSettingService.get(waitingSettingId);
 
         activeSetting.updateWaitingTimeMinutes(estimatedWaitingTimeMinutes);
     }

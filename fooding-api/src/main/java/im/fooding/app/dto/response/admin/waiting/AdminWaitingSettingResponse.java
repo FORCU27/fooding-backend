@@ -1,6 +1,7 @@
 package im.fooding.app.dto.response.admin.waiting;
 
 import im.fooding.core.model.waiting.WaitingSetting;
+import im.fooding.core.model.waiting.WaitingStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record AdminWaitingSettingResponse(
@@ -8,8 +9,8 @@ public record AdminWaitingSettingResponse(
         @Schema(description = "ID", example = "1")
         Long id,
 
-        @Schema(description = "웨이팅 ID")
-        Long waitingId,
+        @Schema(description = "StoreService ID")
+        Long storeServiceId,
 
         @Schema(description = "라벨", example = "월요일 세팅")
         String label,
@@ -27,19 +28,23 @@ public record AdminWaitingSettingResponse(
         Boolean isActive,
 
         @Schema(description = "입장 시간 제한", example = "5")
-        Integer entryTimeLimitMinutes
+        Integer entryTimeLimitMinutes,
+
+        @Schema(description = "웨이팅 상태", example = "WAITING_CLOSE")
+        WaitingStatus status
 ) {
 
     public static AdminWaitingSettingResponse from(WaitingSetting waitingSetting) {
         return new AdminWaitingSettingResponse(
                 waitingSetting.getId(),
-                waitingSetting.getWaiting().getId(),
+                waitingSetting.getStoreService().getId(),
                 waitingSetting.getLabel(),
                 waitingSetting.getMinimumCapacity(),
                 waitingSetting.getMaximumCapacity(),
                 waitingSetting.getEstimatedWaitingTimeMinutes(),
                 waitingSetting.isActive(),
-                waitingSetting.getEntryTimeLimitMinutes()
+                waitingSetting.getEntryTimeLimitMinutes(),
+                waitingSetting.getStatus()
         );
     }
 }

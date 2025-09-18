@@ -25,156 +25,156 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/pos/waitings")
+@RequestMapping("/pos/stores/{storeId}/waitings")
 @Tag(name = "PosWaitingController", description = "웨이팅 관리 컨트롤러")
 @Slf4j
 public class PosWaitingController {
 
     private final PosWaitingService posWaitingService;
 
-    @GetMapping("/{id}/requests")
+    @GetMapping
     @Operation(summary = "웨이팅 목록 조회")
     ApiResult<PageResponse<PosStoreWaitingResponse>> list(
-            @Parameter(description = "웨이팅 id", example = "1")
-            @PathVariable long id,
+            @Parameter(description = "가게 ID", example = "1")
+            @PathVariable long storeId,
 
             @ModelAttribute PosWaitingListRequest request
     ) {
-        return ApiResult.ok(posWaitingService.list(id, request));
+        return ApiResult.ok(posWaitingService.list(storeId, request));
     }
 
-    @GetMapping("/requests/{requestId}")
+    @GetMapping("/{storeWaitingId}")
     @Operation(summary = "웨이팅 상세 조회")
     public ApiResult<PosStoreWaitingResponse> details(
             @Parameter(description = "웨이팅 id", example = "1")
-            @PathVariable long requestId
+            @PathVariable long storeWaitingId
     ) {
-        return ApiResult.ok(posWaitingService.details(requestId));
+        return ApiResult.ok(posWaitingService.details(storeWaitingId));
     }
 
-    @GetMapping("/requests/{requestId}/logs")
+    @GetMapping("/{storeWaitingId}/logs")
     @Operation(summary = "웨이팅 로그 리스트 조회")
     public ApiResult<PageResponse<PosWaitingLogResponse>> listLogs(
             @Parameter(description = "웨이팅 id", example = "1")
-            @PathVariable long requestId,
+            @PathVariable long storeWaitingId,
 
             @Parameter(description = "검색 및 페이징 조건")
             @ModelAttribute BasicSearch search
     ) {
-        return ApiResult.ok(posWaitingService.listLogs(requestId, search));
+        return ApiResult.ok(posWaitingService.listLogs(storeWaitingId, search));
     }
 
-    @PostMapping("/requests/{requestId}/cancel")
+    @PostMapping("/{storeWaitingId}/cancel")
     @Operation(summary = "웨이팅 취소")
     ApiResult<Void> cancel(
             @Parameter(description = "웨이팅 id", example = "1")
-            @PathVariable long requestId,
+            @PathVariable long storeWaitingId,
 
             @RequestBody @Validated PosWaitingCancelRequest request
     ) {
-        posWaitingService.cancel(requestId, request.reason());
+        posWaitingService.cancel(storeWaitingId, request.reason());
         return ApiResult.ok();
     }
 
-    @PostMapping("/requests/{requestId}/call")
+    @PostMapping("/{storeWaitingId}/call")
     @Operation(summary = "웨이팅 호출")
     ApiResult<Void> call(
             @Parameter(description = "가게 웨이팅 id", example = "1")
-            @PathVariable long requestId
+            @PathVariable long storeWaitingId
     ) {
-        posWaitingService.call(requestId);
+        posWaitingService.call(storeWaitingId);
         return ApiResult.ok();
     }
 
-    @PatchMapping("/{id}/status")
+    @PatchMapping("/settings/{waitingSettingId}/status")
     @Operation(summary = "웨이팅 상태 변경")
     ApiResult<Void> updateWaitingStatus(
-            @Parameter(description = "웨이팅 id", example = "1")
-            @PathVariable long id,
+            @Parameter(description = "웨이팅 세팅 ID", example = "1")
+            @PathVariable long waitingSettingId,
 
             @RequestBody @Valid PosWaitingStatusUpdateRequest request
     ) {
-        posWaitingService.updateWaitingStatus(id, request.status());
+        posWaitingService.updateWaitingStatus(waitingSettingId, request.status());
         return ApiResult.ok();
     }
 
-    @PostMapping("/requests/{requestId}/revert")
+    @PostMapping("/{storeWaitingId}/revert")
     @Operation(summary = "웨이팅 되돌리기")
     ApiResult<Void> revert(
             @Parameter(description = "가게 웨이팅 id", example = "1")
-            @PathVariable long requestId
+            @PathVariable long storeWaitingId
     ) {
-        posWaitingService.revert(requestId);
+        posWaitingService.revert(storeWaitingId);
         return ApiResult.ok();
     }
 
-    @PostMapping("/requests/{requestId}/seat")
+    @PostMapping("/{storeWaitingId}/seat")
     @Operation(summary = "웨이팅 착석")
     ApiResult<Void> seat(
             @Parameter(description = "가게 웨이팅 id", example = "1")
-            @PathVariable long requestId
+            @PathVariable long storeWaitingId
     ) {
-        posWaitingService.seat(requestId);
+        posWaitingService.seat(storeWaitingId);
         return ApiResult.ok();
     }
 
-    @PostMapping("/{id}/requests")
+    @PostMapping
     @Operation(summary = "웨이팅 등록")
     ApiResult<Void> register(
-            @Parameter(description = "웨이팅 id", example = "1")
-            @PathVariable long id,
+            @Parameter(description = "가게 ID", example = "1")
+            @PathVariable long storeId,
 
             @RequestBody @Valid PosWaitingRegisterRequest request
     ) {
-        posWaitingService.register(id, request);
+        posWaitingService.register(storeId, request);
         return ApiResult.ok();
     }
 
-    @PatchMapping("/requests/{requestId}/contact-info")
+    @PatchMapping("/{storeWaitingId}/contact-info")
     @Operation(summary = "웨이팅 사용자 정보 수정")
     ApiResult<Void> updateContactInfo(
             @Parameter(description = "가게 웨이팅 id", example = "1")
-            @PathVariable long requestId,
+            @PathVariable long storeWaitingId,
 
             @RequestBody PosUpdateWaitingContactInfoRequest request
     ) {
-        posWaitingService.updateContactInfo(requestId, request);
+        posWaitingService.updateContactInfo(storeWaitingId, request);
         return ApiResult.ok();
     }
 
-    @PatchMapping("/requests/{requestId}/memo")
+    @PatchMapping("/{storeWaitingId}/memo")
     @Operation(summary = "웨이팅 메모 업데이트")
     ApiResult<Void> updateMemo(
             @Parameter(description = "가게 웨이팅 id", example = "1")
-            @PathVariable long requestId,
+            @PathVariable long storeWaitingId,
 
             @RequestBody @Valid PosWaitingMemoUpdateRequest request
     ) {
-        posWaitingService.updateMemo(requestId, request.memo());
+        posWaitingService.updateMemo(storeWaitingId, request.memo());
         return ApiResult.ok();
     }
 
-    @PatchMapping("/requests/{requestId}/occupancy")
+    @PatchMapping("/{storeWaitingId}/occupancy")
     @Operation(summary = "웨이팅 인원 변경")
     ApiResult<Void> updateOccupancy(
             @Parameter(description = "가게 웨이팅 id", example = "1")
-            @PathVariable long requestId,
+            @PathVariable long storeWaitingId,
 
             @RequestBody @Valid PosWaitingOccupancyUpdateRequest request
     ) {
-        posWaitingService.updateOccupancy(requestId, request);
+        posWaitingService.updateOccupancy(storeWaitingId, request);
         return ApiResult.ok();
     }
 
-    @PatchMapping("/{id}/waiting-time")
+    @PatchMapping("/settings/{waitingSettingId}/status/waiting-time")
     @Operation(summary = "웨이팅 대기 시간 조정")
     ApiResult<Void> updateWaitingTime(
             @Parameter(description = "웨이팅 id", example = "1")
-            @PathVariable long id,
+            @PathVariable long waitingSettingId,
 
             @RequestBody @Valid PosUpdateWaitingTimeRequest request
     ) {
-        posWaitingService.updateWaitingTime(id, request.estimatedWaitingTimeMinutes());
+        posWaitingService.updateWaitingTime(waitingSettingId, request.estimatedWaitingTimeMinutes());
         return ApiResult.ok();
     }
 }
