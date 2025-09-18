@@ -199,7 +199,7 @@ public class PosWaitingService {
 
     private void validateUpdateWaitingStatus(WaitingSetting waitingSetting, WaitingStatus updatedStatus) {
         if (!waitingSetting.isOpen()
-                && updatedStatus == WaitingStatus.WAITING_OPEN
+                && updatedStatus == WaitingStatus.WAITING_CLOSE
                 && storeWaitingService.exists(waitingSetting.getStoreService().getStore(), StoreWaitingStatus.WAITING)
         ) {
             throw new ApiException(ErrorCode.WAITING_STATUS_STORE_WAITING_EXIST);
