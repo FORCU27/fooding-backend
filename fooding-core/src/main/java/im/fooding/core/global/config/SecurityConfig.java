@@ -48,8 +48,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/user/regions/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/app/rewards/**").permitAll()
                         .requestMatchers("/user/**").hasAnyRole("USER")
-                        // TODO: 추후 백오피스 로그인 생기면 주석 해제
-                        //.requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                         .requestMatchers("/ceo/**", "/app/**", "/pos/**").hasAnyRole("CEO")
                         .requestMatchers(HttpMethod.POST, "/file-upload").hasAnyRole("USER", "ADMIN", "CEO")
                         .anyRequest().permitAll());

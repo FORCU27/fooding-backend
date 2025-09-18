@@ -23,7 +23,7 @@ public class QWaitingSettingRepositoryImpl implements QWaitingSettingRepository 
                 query
                         .selectFrom(waitingSetting)
                         .where(
-                                waitingSetting.waiting.store.eq(store),
+                                waitingSetting.storeService.store.eq(store),
                                 waitingSetting.isActive.isTrue()
                         )
                         .fetchOne()
@@ -31,14 +31,42 @@ public class QWaitingSettingRepositoryImpl implements QWaitingSettingRepository 
     }
 
     @Override
-    public Page<WaitingSetting> list(Long waitingId, Boolean isActive, Pageable pageable) {
+    public Page<WaitingSetting> list(Long storeServiceId, Boolean isActive, Pageable pageable) {
         BooleanExpression whereClause = waitingSetting.deleted.isFalse();
 
-        if (waitingId != null) {
-            whereClause = whereClause.and(waitingSetting.waiting.id.eq(waitingId));
+        if (storeServiceId != null) {
+            whereClause = whereClause.and(waitingSetting.storeService.id.eq(storeServiceId));
         }
         if (isActive != null) {
             whereClause = whereClause.and(waitingSetting.isActive.eq(isActive));
+        }
+
+        var content = query
+                .selectFrom(waitingSetting)
+                .where(whereClause)
+                .orderBy(waitingSetting.createdAt.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        Long total = query
+                .select(waitingSetting.count())
+                .from(waitingSetting)
+                .where(whereClause)
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total != null ? total : 0L);
+    }
+
+    @Override
+    public Page<WaitingSetting> list(WaitingSettingFilter filter, Pageable pageable) {
+        BooleanExpression whereClause = waitingSetting.deleted.isFalse();
+
+        if (filter.storeServiceId() != null) {
+            whereClause = whereClause.and(waitingSetting.storeService.id.eq(filter.storeServiceId()));
+        }
+        if (filter.status() != null) {
+            whereClause = whereClause.and(waitingSetting.status.eq(filter.status()));
         }
 
         var content = query

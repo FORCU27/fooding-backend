@@ -10,14 +10,12 @@ import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
-import im.fooding.core.model.waiting.Waiting;
 import im.fooding.core.model.waiting.WaitingLog;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingUser;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingLogService;
-import im.fooding.core.service.waiting.WaitingService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import im.fooding.core.service.waiting.WaitingUserService;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +38,6 @@ import org.springframework.util.StringUtils;
 @Slf4j
 public class AppWaitingApplicationService {
 
-    private final WaitingService waitingService;
     private final WaitingUserService waitingUserService;
     private final StoreWaitingService storeWaitingService;
     private final WaitingLogService waitingLogService;
@@ -73,16 +70,15 @@ public class AppWaitingApplicationService {
 
         Store store = storeService.findById(storeId);
         WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(store);
-        Waiting waiting = waitingSetting.getWaiting();
-        storeWaitingService.validate(waiting);
+        storeWaitingService.validate(waitingSetting);
 
-        WaitingUser waitingUser = getOrRegisterUser(request, phoneNumber, waiting);
-        StoreWaiting storeWaiting = registerStoreWaiting(request, waiting, waitingUser);
+        WaitingUser waitingUser = getOrRegisterUser(request, phoneNumber, store);
+        StoreWaiting storeWaiting = registerStoreWaiting(request, store, waitingUser);
 
         waitingLogService.logRegister(storeWaiting);
 
         if (StringUtils.hasText(phoneNumber)) {
-            sendNotification(waiting, storeWaiting, phoneNumber);
+            sendNotification(store, storeWaiting, phoneNumber);
         }
 
         long callNumber = storeWaiting.getCallNumber();
@@ -98,9 +94,9 @@ public class AppWaitingApplicationService {
         );
     }
 
-    private WaitingUser getOrRegisterUser(AppWaitingRegisterRequest request, String phoneNumber, Waiting waiting) {
+    private WaitingUser getOrRegisterUser(AppWaitingRegisterRequest request, String phoneNumber, Store store) {
         WaitingUserRegisterRequest waitingUserRegisterRequest = WaitingUserRegisterRequest.builder()
-                .store(waiting.getStore())
+                .store(store)
                 .name(request.name())
                 .phoneNumber(phoneNumber)
                 .termsAgreed(request.termsAgreed())
@@ -112,10 +108,10 @@ public class AppWaitingApplicationService {
         return waitingUserService.getOrElseRegister(waitingUserRegisterRequest);
     }
 
-    private StoreWaiting registerStoreWaiting(AppWaitingRegisterRequest request, Waiting waiting, WaitingUser waitingUser) {
+    private StoreWaiting registerStoreWaiting(AppWaitingRegisterRequest request, Store store, WaitingUser waitingUser) {
         StoreWaitingRegisterRequest storeWaitingRegisterRequest = StoreWaitingRegisterRequest.builder()
                 .waitingUser(waitingUser)
-                .store(waiting.getStore())
+                .store(store)
                 .channel(StoreWaitingChannel.IN_PERSON.getValue())
                 .infantChairCount(request.infantChairCount())
                 .infantCount(request.infantCount())
@@ -125,11 +121,10 @@ public class AppWaitingApplicationService {
         return storeWaitingService.register(storeWaitingRegisterRequest);
     }
 
-    private void sendNotification(Waiting waiting, StoreWaiting storeWaiting, String phoneNumber) {
+    private void sendNotification(Store store, StoreWaiting storeWaiting, String phoneNumber) {
         int order = storeWaitingService.getOrder(storeWaiting.getId());
         int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
 
-        Store store = waiting.getStore();
         userNotificationApplicationService.sendSmsWaitingRegisterMessage(
                 store.getName(),
                 personnel,

@@ -1,7 +1,8 @@
 package im.fooding.app.dto.request.admin.waiting;
 
 import im.fooding.core.dto.request.waiting.WaitingSettingCreateRequest;
-import im.fooding.core.model.waiting.Waiting;
+import im.fooding.core.model.store.StoreService;
+import im.fooding.core.model.waiting.WaitingStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +12,7 @@ public record AdminWaitingSettingCreateRequest(
 
         @Schema(description = "웨이팅 아이디")
         @NotNull
-        Long waitingId,
+        Long storeServiceId,
 
         @Schema(description = "라벨", example = "월요일 세팅")
         @NotBlank
@@ -35,18 +36,22 @@ public record AdminWaitingSettingCreateRequest(
 
         @Schema(description = "입장 시간 제한", example = "5")
         @Min(0)
-        Integer entryTimeLimitMinutes
+        Integer entryTimeLimitMinutes,
+
+        @Schema(description = "웨이팅 상태", example = "WAITING_CLOSE")
+        WaitingStatus status
 ) {
 
-        public WaitingSettingCreateRequest toWaitingSettingCreateRequest(Waiting waiting) {
+        public WaitingSettingCreateRequest toWaitingSettingCreateRequest(StoreService storeService) {
                 return  WaitingSettingCreateRequest.builder()
-                        .waiting(waiting)
+                        .storeService(storeService)
                         .label(label)
                         .minimumCapacity(minimumCapacity)
                         .maximumCapacity(maximumCapacity)
                         .estimatedWaitingTimeMinutes(estimatedWaitingTimeMinutes)
                         .isActive(isActive)
                         .entryTimeLimitMinutes(entryTimeLimitMinutes)
+                        .status(status)
                         .build();
         }
 }

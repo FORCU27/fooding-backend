@@ -1,17 +1,19 @@
 package im.fooding.core.dto.request.waiting;
 
-import im.fooding.core.model.waiting.Waiting;
+import im.fooding.core.model.store.StoreService;
+import im.fooding.core.model.waiting.WaitingStatus;
 import lombok.Builder;
 
 @Builder
 public record WaitingSettingCreateRequest(
 
-        Waiting waiting,
+        StoreService storeService,
         String label,
         Integer minimumCapacity,
         Integer maximumCapacity,
         Integer estimatedWaitingTimeMinutes,
         Boolean isActive,
-        Integer entryTimeLimitMinutes
+        Integer entryTimeLimitMinutes,
+        WaitingStatus status
 ) {
 }

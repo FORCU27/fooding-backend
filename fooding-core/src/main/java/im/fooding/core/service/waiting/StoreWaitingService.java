@@ -9,7 +9,7 @@ import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
 import im.fooding.core.model.waiting.StoreWaitingStatus;
-import im.fooding.core.model.waiting.Waiting;
+import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingStatus;
 import im.fooding.core.repository.waiting.StoreWaitingRepository;
 import java.time.LocalDate;
@@ -106,8 +106,8 @@ public class StoreWaitingService {
         return storeWaitingRepository.save(storeWaiting);
     }
 
-    public void validate(Waiting waiting) {
-        if (waiting.getStatus() != WaitingStatus.WAITING_OPEN) {
+    public void validate(WaitingSetting waitingSetting) {
+        if (waitingSetting.getStatus() != WaitingStatus.WAITING_OPEN) {
             throw new ApiException(ErrorCode.WAITING_NOT_OPENED);
         }
     }

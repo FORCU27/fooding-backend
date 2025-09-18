@@ -6,17 +6,19 @@ import im.fooding.app.dto.response.user.waiting.UserStoreWaitingResponse;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreService;
+import im.fooding.core.model.store.StoreServiceType;
 import im.fooding.core.model.user.User;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
-import im.fooding.core.model.waiting.Waiting;
+import im.fooding.core.model.waiting.WaitingSetting;
+import im.fooding.core.repository.store.StoreServiceFilter;
 import im.fooding.core.service.plan.PlanService;
-import im.fooding.core.service.store.StoreService;
+import im.fooding.core.service.store.StoreServiceService;
 import im.fooding.core.service.user.UserService;
 import im.fooding.core.service.waiting.StoreWaitingService;
 import im.fooding.core.service.waiting.WaitingLogService;
-import im.fooding.core.service.waiting.WaitingService;
-import java.util.Optional;
+import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -29,12 +31,12 @@ import org.springframework.util.StringUtils;
 public class UserStoreWaitingService {
 
     private final StoreWaitingService storeWaitingService;
-    private final StoreService storeService;
-    private final WaitingService waitingService;
+    private final StoreServiceService storeServiceService;
     private final WaitingLogService waitingLogService;
     private final UserService userService;
     private final PlanService planService;
     private final UserNotificationApplicationService userNotificationApplicationService;
+    private final WaitingSettingService waitingSettingService;
 
     public UserStoreWaitingResponse getStoreWaiting(long id) {
         return UserStoreWaitingResponse.from(storeWaitingService.get(id));
@@ -42,16 +44,20 @@ public class UserStoreWaitingService {
 
     @Transactional
     public UserStoreWaitingCreateResponse registerStoreWaiting(UserStoreWaitingRegisterRequest request, long userId) {
-        Store store = storeService.findById(request.getStoreId());
-        Waiting waiting = waitingService.getByStore(store);
-        storeWaitingService.validate(waiting);
+        StoreServiceFilter filter = StoreServiceFilter.builder()
+                .storeId(request.getStoreId())
+                .type(StoreServiceType.WAITING)
+                .build();
+        StoreService storeService = storeServiceService.get(filter);
+        WaitingSetting waitingSetting = waitingSettingService.getByStoreService(storeService);
+        storeWaitingService.validate(waitingSetting);
 
         User user = userService.findById(userId);
 
         StoreWaitingRegisterRequest storeWaitingRegisterRequest = StoreWaitingRegisterRequest.builder()
                 .user(user)
                 .waitingUser(null)
-                .store(waiting.getStore())
+                .store(waitingSetting.getStoreService().getStore())
                 .channel(StoreWaitingChannel.IN_PERSON.getValue())
                 .infantChairCount(request.getInfantChairCount())
                 .infantCount(request.getInfantCount())
@@ -65,20 +71,20 @@ public class UserStoreWaitingService {
         ObjectId planId = planService.create(storeWaiting);
 
         if (StringUtils.hasText(user.getPhoneNumber())) {
-            sendSmsNotification(waiting, storeWaiting, user.getPhoneNumber());
+            sendSmsNotification(waitingSetting, storeWaiting, user.getPhoneNumber());
         }
         if (StringUtils.hasText(user.getEmail())) {
-            sendEmailNotification(waiting, storeWaiting, user.getEmail());
+            sendEmailNotification(waitingSetting, storeWaiting, user.getEmail());
         }
 
         return new UserStoreWaitingCreateResponse(storeWaiting.getId(), planId.toString());
     }
 
-    private void sendSmsNotification(Waiting waiting, StoreWaiting storeWaiting, String phoneNumber) {
+    private void sendSmsNotification(WaitingSetting waitingSetting, StoreWaiting storeWaiting, String phoneNumber) {
         int order = storeWaitingService.getOrder(storeWaiting.getId());
         int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
 
-        Store store = waiting.getStore();
+        Store store = waitingSetting.getStoreService().getStore();
         userNotificationApplicationService.sendSmsWaitingRegisterMessage(
                 store.getName(),
                 personnel,
@@ -88,11 +94,11 @@ public class UserStoreWaitingService {
         );
     }
 
-    private void sendEmailNotification(Waiting waiting, StoreWaiting storeWaiting, String email) {
+    private void sendEmailNotification(WaitingSetting waitingSetting, StoreWaiting storeWaiting, String email) {
         int order = storeWaitingService.getOrder(storeWaiting.getId());
         int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
 
-        Store store = waiting.getStore();
+        Store store = waitingSetting.getStoreService().getStore();
         userNotificationApplicationService.sendSmsWaitingRegisterMessage(
                 store.getName(),
                 personnel,
