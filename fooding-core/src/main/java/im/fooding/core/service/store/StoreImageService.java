@@ -97,10 +97,12 @@ public class StoreImageService {
 
     /**
      * 대표이미지 설정
+     *
      * @param id
+     * @param isMain
      */
-    public void updateMain(long id) {
+    public void updateMain(long id, boolean isMain) {
         StoreImage storeImage = findById(id);
-        storeImage.updateMain();
+        storeImage.updateMain(isMain);
     }
 }

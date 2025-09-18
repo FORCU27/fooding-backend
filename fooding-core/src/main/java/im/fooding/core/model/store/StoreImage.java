@@ -61,7 +61,7 @@ public class StoreImage extends BaseEntity {
         this.tags = !StringUtils.hasText(tags) ? null : tags;
     }
 
-    public void updateMain() {
-        this.isMain = !this.isMain;
+    public void updateMain(boolean isMain) {
+        this.isMain = isMain;
     }
 }
