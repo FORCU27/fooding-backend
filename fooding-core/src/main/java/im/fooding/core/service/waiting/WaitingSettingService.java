@@ -2,14 +2,17 @@ package im.fooding.core.service.waiting;
 
 import im.fooding.core.dto.request.waiting.WaitingSettingCreateRequest;
 import im.fooding.core.dto.request.waiting.WaitingSettingUpdateRequest;
+import im.fooding.core.event.store.StoreWaitingServiceCreatedEvent;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.global.kafka.KafkaEventHandler;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreService;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingStatus;
 import im.fooding.core.repository.waiting.WaitingSettingFilter;
 import im.fooding.core.repository.waiting.WaitingSettingRepository;
+import im.fooding.core.service.store.StoreServiceService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class WaitingSettingService {
 
     private final WaitingSettingRepository waitingSettingRepository;
+    private final StoreServiceService storeServiceService;
 
     @Transactional
     public void create(WaitingSettingCreateRequest request) {
@@ -115,6 +119,17 @@ public class WaitingSettingService {
     public Optional<WaitingSetting> findActiveSetting(Store store) {
         return waitingSettingRepository.findActive(store)
                 .filter(it -> !it.isDeleted());
+    }
+
+    @Transactional
+    @KafkaEventHandler(StoreWaitingServiceCreatedEvent.class)
+    public void handleStoreWaitingRegisteredEvent(StoreWaitingServiceCreatedEvent event) {
+        try {
+            StoreService storeService = storeServiceService.findById(event.id());
+            waitingSettingRepository.save(WaitingSetting.generateDefaultSetting(storeService));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void validateAlreadyActive(StoreService storeService) {

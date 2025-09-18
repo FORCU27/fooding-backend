@@ -28,12 +28,12 @@ public class StoreServiceService {
      *
      * @param store
      */
-    public void create(Store store, StoreServiceType type){
+    public long create(Store store, StoreServiceType type){
         StoreService storeService = StoreService.builder()
                 .store( store )
                 .type( type )
                 .build();
-        repository.save( storeService );
+        return repository.save( storeService ).getId();
     }
 
     /**

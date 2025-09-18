@@ -87,6 +87,20 @@ public class WaitingSetting extends BaseEntity {
         this.status = status;
     }
 
+    public static WaitingSetting generateDefaultSetting(StoreService storeService) {
+        return WaitingSetting.builder()
+                .storeService(storeService)
+                .label("label")
+                .minimumCapacity(1)
+                .maximumCapacity(10)
+                .estimatedWaitingTimeMinutes(10)
+                .isActive(false)
+                .entryTimeLimitMinutes(10)
+                .status(WaitingStatus.WAITING_CLOSE)
+                .build();
+
+    }
+
     public void activate() {
         this.isActive = true;
     }
