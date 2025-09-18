@@ -53,7 +53,7 @@ public class CeoStoreImageController {
         return ApiResult.ok();
     }
 
-    @PostMapping("/{storeId}/images/{id}/main")
+    @PutMapping("/{storeId}/images/{id}/main")
     @Operation(summary = "대표사진 설정")
     public ApiResult<Void> updateMain(@PathVariable long storeId, @PathVariable long id,
                                       @RequestBody @Valid CeoUpdateStoreImageMainRequest request,

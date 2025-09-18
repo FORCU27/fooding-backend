@@ -61,7 +61,7 @@ public class AdminStoreImageController {
         return ApiResult.ok();
     }
 
-    @PostMapping("/images/{id}/main")
+    @PutMapping("/images/{id}/main")
     @Operation(summary = "가게 이미지 대표이미지 설정")
     public ApiResult<Void> updateMain(@PathVariable Long id, @RequestBody @Valid AdminUpdateStoreImageMainRequest request) {
         service.updateMain(id, request);
