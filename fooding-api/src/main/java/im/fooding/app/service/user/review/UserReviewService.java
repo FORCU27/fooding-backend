@@ -55,14 +55,15 @@ public class UserReviewService {
         if( sortInformation != null )pageable = PageRequest.of( request.getPageNum() - 1, request.getPageSize(), sortInformation );
         else pageable = PageRequest.of(request.getPageNum() - 1, request.getPageSize() );
 
-        Page<Review> reviewPage = reviewService.list(storeId, request.getWriterId(), pageable );
+        Long writerId = request.getWriterId();
+        Page<Review> reviewPage = reviewService.list(storeId, writerId, pageable );
 
         List<Long> reviewIds = getReviewIds(reviewPage.getContent());
 
         Map<Long, List<ReviewImage>> imageMap = getReviewImageMap(reviewIds);
         Map<Long, Long> likeCountMap = getReviewLikeMap(reviewIds);
 
-        Plan plan = planService.findByUserIdAndStoreId( request.getWriterId(), storeId );
+        Plan plan = writerId != null ? planService.findByUserIdAndStoreId(writerId, storeId) : null;
 
         List<UserReviewResponse> content = reviewPage.getContent().stream()
                 .map(review -> UserReviewResponse.of(

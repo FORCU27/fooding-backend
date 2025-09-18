@@ -25,7 +25,7 @@ public class CeoMenuResponse {
     String name;
 
     @Schema(description = "메뉴 가격", requiredMode = REQUIRED, example = "12000")
-    BigDecimal price;
+    int price;
 
     @Schema(description = "메뉴 설명", requiredMode = REQUIRED, example = "맛있는 초밥")
     String description;

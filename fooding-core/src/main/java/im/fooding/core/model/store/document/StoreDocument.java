@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -29,12 +30,16 @@ public class StoreDocument {
 
     private String status;
 
+    private int averagePrice;
+
+    private GeoPoint location;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private LocalDateTime createdAt;
 
     @Builder
-    private StoreDocument(Long id, String name, String category, String address, int reviewCount, double averageRating,
-                          int visitCount, String regionId, String status, LocalDateTime createdAt) {
+    private StoreDocument(Long id, String name, String category, String address, int reviewCount, double averageRating, int visitCount,
+                          String regionId, String status, int averagePrice, GeoPoint location, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -44,6 +49,8 @@ public class StoreDocument {
         this.visitCount = visitCount;
         this.regionId = regionId;
         this.status = status;
+        this.averagePrice = averagePrice;
+        this.location = location;
         this.createdAt = createdAt;
     }
 
@@ -51,3 +58,4 @@ public class StoreDocument {
         return "stores_v1";
     }
 }
+

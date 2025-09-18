@@ -4,6 +4,7 @@ import im.fooding.app.dto.request.user.store.UserImmediateEntryStoreRequest;
 import im.fooding.app.dto.request.user.store.UserSearchStoreRequest;
 import im.fooding.app.dto.response.user.store.UserStoreListResponse;
 import im.fooding.app.dto.response.user.store.UserStoreResponse;
+import im.fooding.app.dto.response.user.store.UserStoreSearchResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.UserInfo;
@@ -34,6 +35,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -53,39 +55,39 @@ public class UserStoreService {
                 StoreStatus.APPROVED
         );
 
-        Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), request.getRegionIds(), request.getCategory(), false, userVisibleStatuses, null);
+        Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), request.getLatitude(), request.getLongitude(), request.getRegionIds(), request.getCategory(), false, userVisibleStatuses, null);
         List<UserStoreListResponse> list = stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList();
 
         if (list != null && !list.isEmpty()) {
             // 영업상태 세팅
-            setOperatingStatus(list);
+            setOperatingStatus(list, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
 
             // 북마크 여부 세팅
             if (userInfo != null) {
-                setBookmarked(list, userInfo.getId());
+                setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setFinished);
             }
         }
         return PageResponse.of(list, PageInfo.of(stores));
     }
 
     @Transactional(readOnly = true)
-    public PageResponse<UserStoreListResponse> list_v2(UserSearchStoreRequest request, UserInfo userInfo) {
+    public PageResponse<UserStoreSearchResponse> list_v2(UserSearchStoreRequest request, UserInfo userInfo) {
         try {
-            Page<StoreDocument> stores = storeDocumentService.fullTextSearch(request.getSearchString(), request.getSortType(), request.getSortDirection(), request.getRegionIds(), request.getCategory(), request.getPageable());
+            Page<StoreDocument> stores = storeDocumentService.fullTextSearch(request.getSearchString(), request.getSortType(), request.getSortDirection(), request.getRegionIds(), request.getCategory(), request.getLatitude(), request.getLongitude(), request.getPageable());
 
             List<Long> ids = stores.getContent().stream().map(StoreDocument::getId).toList();
 
-            List<UserStoreListResponse> list = storeService.list(ids).stream()
-                    .map(store -> UserStoreListResponse.of(store, null))
+            List<UserStoreSearchResponse> list = storeService.list(ids).stream()
+                    .map(store -> UserStoreSearchResponse.of(store, null))
                     .toList();
 
             if (list != null && !list.isEmpty()) {
                 // 영업상태 세팅
-                setOperatingStatus(list);
+                setOperatingStatus(list, UserStoreSearchResponse::getId, UserStoreSearchResponse::setFinished);
 
                 // 북마크 여부 세팅
                 if (userInfo != null) {
-                    setBookmarked(list, userInfo.getId());
+                    setBookmarked(list, userInfo.getId(), UserStoreSearchResponse::getId, UserStoreSearchResponse::setFinished);
                 }
             }
 
@@ -159,9 +161,26 @@ public class UserStoreService {
         }
     }
 
-    private void setOperatingStatus(List<UserStoreListResponse> list) {
+    private void setBookmarked(UserStoreResponse userStoreResponse, Long userId) {
+        List<Bookmark> userBookmarks = bookmarkService.findAllByUserId(userId);
+        Set<Long> bookmarkedStoreIds = userBookmarks.stream().map(bookmark -> bookmark.getStore().getId()).collect(Collectors.toSet());
+        userStoreResponse.setBookmarked(bookmarkedStoreIds.contains(userId));
+    }
+
+    private <T> void setBookmarked(List<T> list, Long userId, Function<T, Long> idExtractor, BiConsumer<T, Boolean> bookmarkedSetter) {
+        List<Bookmark> userBookmarks = bookmarkService.findAllByUserId(userId);
+        Set<Long> bookmarkedStoreIds = userBookmarks.stream()
+                .map(bookmark -> bookmark.getStore().getId())
+                .collect(Collectors.toSet());
+
+        list.forEach(response ->
+                bookmarkedSetter.accept(response, bookmarkedStoreIds.contains(idExtractor.apply(response)))
+        );
+    }
+
+    private <T> void setOperatingStatus(List<T> list, Function<T, Long> idExtractor, BiConsumer<T, Boolean> finishedSetter) {
         List<Long> storeIds = list.stream()
-                .map(UserStoreListResponse::getId)
+                .map(idExtractor)
                 .toList();
 
         Map<Long, StoreOperatingHour> operatingHourMap = storeOperatingHourService
@@ -172,24 +191,15 @@ public class UserStoreService {
                         Function.identity()
                 ));
 
-        for (UserStoreListResponse store : list) {
-            StoreOperatingHour operatingHour = operatingHourMap.get(store.getId());
+        for (T store : list) {
+            StoreOperatingHour operatingHour = operatingHourMap.get(idExtractor.apply(store));
+            boolean finished = true;
             if (operatingHour != null && !operatingHour.getDailyOperatingTimes().isEmpty()) {
                 StoreDailyOperatingTime time = operatingHour.getDailyOperatingTimes().get(0);
-                store.setFinished(!time.isOperatingNow());
+                finished = !time.isOperatingNow();
             }
+            finishedSetter.accept(store, finished);
         }
     }
-
-    private void setBookmarked(List<UserStoreListResponse> list, Long userId) {
-        List<Bookmark> userBookmarks = bookmarkService.findAllByUserId(userId);
-        Set<Long> bookmarkedStoreIds = userBookmarks.stream().map(bookmark -> bookmark.getStore().getId()).collect(Collectors.toSet());
-        list.forEach(response -> response.setBookmarked(bookmarkedStoreIds.contains(response.getId())));
-    }
-
-    private void setBookmarked(UserStoreResponse userStoreResponse, Long userId) {
-        List<Bookmark> userBookmarks = bookmarkService.findAllByUserId(userId);
-        Set<Long> bookmarkedStoreIds = userBookmarks.stream().map(bookmark -> bookmark.getStore().getId()).collect(Collectors.toSet());
-        userStoreResponse.setBookmarked(bookmarkedStoreIds.contains(userId));
-    }
 }
+

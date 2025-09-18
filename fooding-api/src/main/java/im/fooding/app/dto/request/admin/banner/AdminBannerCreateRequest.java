@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Value;
 
+import java.util.Map;
+
 @Value
 public class AdminBannerCreateRequest {
 
@@ -31,4 +33,16 @@ public class AdminBannerCreateRequest {
     @Schema(description = "링크 종류", example = "INTERNAL")
     @NotNull
     Banner.LinkType linkType;
+
+    @Schema(description = "이미지 업로드 ID", example = "e4b7f1a2-...", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    String imageId;
+
+    @Schema(description = "서비스", example = "HOME", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    String service;
+
+    @Schema(description = "노출 위치", example = "HEADER", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    String placement;
+
+    @Schema(description = "추가 파라미터(JSON)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    Map<String, Object> parameters;
 }

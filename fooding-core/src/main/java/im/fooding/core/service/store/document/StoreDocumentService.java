@@ -1,16 +1,19 @@
 package im.fooding.core.service.store.document;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch._types.FieldValue;
-import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch._types.*;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
+import co.elastic.clients.elasticsearch.indices.SegmentSortMissing;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.StoreCategory;
 import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.store.StoreStatus;
+import im.fooding.core.model.store.document.GeoPoint;
 import im.fooding.core.model.store.document.StoreDocument;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +38,8 @@ public class StoreDocumentService {
     private final ElasticsearchClient client;
     private final ObjectMapper objectMapper;
 
-    public void save(Long id, String name, StoreCategory category, String address, int reviewCount, double averageRating, int visitCount, String regionId, StoreStatus status, LocalDateTime createdAt) throws IOException {
+    public void save(Long id, String name, StoreCategory category, String address, int reviewCount, double averageRating, int visitCount,
+                     String regionId, StoreStatus status, int averagePrice, GeoPoint location, LocalDateTime createdAt) throws IOException {
         StoreDocument storeDocument = StoreDocument.builder()
                 .id(id)
                 .name(name)
@@ -45,6 +50,8 @@ public class StoreDocumentService {
                 .visitCount(visitCount)
                 .regionId(regionId)
                 .status(status.name())
+                .averagePrice(averagePrice)
+                .location(location)
                 .createdAt(createdAt)
                 .build();
 
@@ -66,14 +73,17 @@ public class StoreDocumentService {
         );
     }
 
-    public Page<StoreDocument> fullTextSearch(String searchString, StoreSortType sortType, SortDirection direction, List<String> regionIds, StoreCategory category, Pageable pageable) throws IOException {
+    public Page<StoreDocument> fullTextSearch(String searchString, StoreSortType sortType, SortDirection direction, List<String> regionIds,
+                                              StoreCategory category, Double latitude, Double longitude, Pageable pageable) throws IOException {
         SortOrder sortOrder = (direction == SortDirection.ASCENDING) ? SortOrder.Asc : SortOrder.Desc;
 
         String sortField = switch (sortType) {
-            case REVIEW -> "reviewCount";
             case RECENT -> "createdAt";
+            case RECOMMENDED -> "visitCount";
             case AVERAGE_RATING -> "averageRating";
-            case VISIT -> "visitCount";
+            case REVIEW -> "reviewCount";
+            case PRICE -> "averagePrice";
+            case DISTANCE -> "location";
         };
 
         // 향후 확장 가능한 검색 필드
@@ -122,11 +132,27 @@ public class StoreDocumentService {
         SearchRequest request = SearchRequest.of(s -> s
                 .index("stores_v1")
                 .query(boolBuilder.build()._toQuery())
-                .sort(sort -> sort
-                        .field(f -> f
-                                .field(sortField)
-                                .order(sortOrder)
-                        )
+                .sort(sort -> {
+                            if (sortType == StoreSortType.DISTANCE) {
+                                if (latitude == null || longitude == null) {
+                                    throw new ApiException(ErrorCode.LOCATION_NOT_FOUND);
+                                }
+                                LatLonGeoLocation location = LatLonGeoLocation.of(l -> l.lat(latitude).lon(longitude));
+                                return sort.geoDistance(g -> g
+                                        .field("location") // geo_point 필드
+                                        .location(GeoLocation.of(l -> l.latlon(location)))
+                                        .unit(DistanceUnit.Kilometers)
+                                        .distanceType(GeoDistanceType.Arc)
+                                        .order(sortOrder)
+                                );
+                            } else {
+                                // 기존 필드 기반 정렬
+                                return sort.field(f -> f
+                                        .field(sortField)
+                                        .order(sortOrder)
+                                );
+                            }
+                        }
                 )
                 .from((int) pageable.getOffset())
                 .size(pageable.getPageSize())

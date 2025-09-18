@@ -21,7 +21,7 @@ public record AdminMenuResponse(
         String name,
 
         @Schema(description = "메뉴 가격")
-        BigDecimal price,
+        int price,
 
         @Schema(description = "메뉴 설명")
         String description,

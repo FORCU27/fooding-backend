@@ -50,7 +50,7 @@ public class Menu extends BaseEntity {
     private String name;
 
     @Column(name = "price", nullable = false)
-    private BigDecimal price;
+    private int price;
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -72,7 +72,7 @@ public class Menu extends BaseEntity {
             Store store,
             MenuCategory category,
             String name,
-            BigDecimal price,
+            int price,
             String description,
             String imageUrl,
             int sortOrder,
@@ -98,7 +98,7 @@ public class Menu extends BaseEntity {
         this.name = name;
     }
 
-    public void updatePrice(BigDecimal price) {
+    public void updatePrice(int price) {
         this.price = price;
     }
 

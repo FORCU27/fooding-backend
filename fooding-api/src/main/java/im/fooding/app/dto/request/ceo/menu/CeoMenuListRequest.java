@@ -9,5 +9,7 @@ public class CeoMenuListRequest extends BasicSearch {
 
     @Schema(description = "가게 ID로 필터", example = "1")
     Long storeId;
+
+    Long categoryId;
 }
 

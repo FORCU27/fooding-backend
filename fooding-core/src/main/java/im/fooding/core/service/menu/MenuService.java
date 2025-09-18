@@ -5,6 +5,7 @@ import im.fooding.core.dto.request.menu.MenuUpdateRequest;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.menu.Menu;
+import im.fooding.core.repository.menu.MenuFilter;
 import im.fooding.core.repository.menu.MenuRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,10 @@ public class MenuService {
         return menuRepository.findAllByDeletedFalse(pageable);
     }
 
+    public Page<Menu> list(MenuFilter filter, Pageable pageable) {
+        return menuRepository.list(filter, pageable);
+    }
+
     public Page<Menu> list(Long storeId, String searchString, Pageable pageable) {
         return menuRepository.list(storeId, searchString, pageable);
     }
@@ -83,5 +88,14 @@ public class MenuService {
      */
     public List<Menu> list(List<Long> categoryIds) {
         return menuRepository.list(categoryIds);
+    }
+
+    public int getAveragePrice(Long storeId) {
+        List<Menu> menus = menuRepository.findAllByStoreIdAndDeletedIsFalse(storeId);
+        return (int) menus.stream()
+                .mapToInt(Menu::getPrice)
+                .average()
+                .orElse(0);
+
     }
 }

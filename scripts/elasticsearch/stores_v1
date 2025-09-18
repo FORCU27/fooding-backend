@@ -55,10 +55,16 @@ PUT /stores_v1
       },
       "regionId" : {
         "type" : "keyword"
-      }
+      },
       "status" : {
         "type" : "keyword"
-      }
+      },
+      "averagePrice" : {
+        "type" : "integer"
+      },
+      "location": {
+        "type": "geo_point"
+      },
       "createdAt": {
         "type": "date",
         "format": "yyyy-MM-dd'T'HH:mm:ss.SSS||epoch_millis"
