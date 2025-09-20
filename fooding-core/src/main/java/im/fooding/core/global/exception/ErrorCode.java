@@ -79,6 +79,7 @@ public enum ErrorCode {
     WAITING_LOG_NOT_FOUND(HttpStatus.BAD_REQUEST, "3016", "기록된 웨이팅 로그 정보가 없습니다."),
     STORE_WAITING_EXCEEDS_MAXIMUM_CAPACITY(HttpStatus.BAD_REQUEST, "3017", "허용된 최대 인원을 초과했습니다."),
     STORE_WAITING_BELOW_MINIMUM_CAPACITY(HttpStatus.BAD_REQUEST, "3018", "허용된 최소 인원보다 적습니다."),
+    WAITING_NUMBER_GENERATOR_NOT_FOUND(HttpStatus.BAD_REQUEST, "3019", "웨이팅 숫자 생성기를 찾을 수 없습니다."),
 
     // 리워드
     REWARD_NOT_FOUND( HttpStatus.BAD_REQUEST, "4000", "해당 리워드 정보가 없습니다." ),

@@ -190,4 +190,14 @@ public class PosWaitingController {
         posWaitingService.updateWaitingSettingActive(waitingSettingId, request.active());
         return ApiResult.ok();
     }
+
+    @PostMapping("/call-number/reset")
+    @Operation(summary = "웨이팅 호출 번호 초기화")
+    ApiResult<Void> resetWaitingCallNumber(
+            @Parameter(description = "가게 ID", example = "1")
+            @PathVariable long storeId
+    ) {
+        posWaitingService.resetWaitingCallNumber(storeId);
+        return ApiResult.ok();
+    }
 }

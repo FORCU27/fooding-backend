@@ -12,15 +12,13 @@ import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
 import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
 import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.store.Store;
-import im.fooding.core.model.store.StoreServiceType;
 import im.fooding.core.model.user.User;
 import im.fooding.core.model.waiting.*;
-import im.fooding.core.repository.store.StoreServiceFilter;
 import im.fooding.core.service.plan.PlanService;
 import im.fooding.core.service.store.StoreService;
-import im.fooding.core.service.store.StoreServiceService;
 import im.fooding.core.service.user.UserService;
 import im.fooding.core.service.waiting.StoreWaitingService;
+import im.fooding.core.service.waiting.WaitingNumberGeneratorService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import im.fooding.core.service.waiting.WaitingUserService;
 import im.fooding.core.common.BasicSearch;
@@ -30,7 +28,6 @@ import im.fooding.core.service.waiting.WaitingLogService;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.app.dto.request.pos.waiting.PosWaitingOccupancyUpdateRequest;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -53,8 +50,8 @@ public class PosWaitingService {
     private final UserService userService;
     private final PlanService planService;
     private final EventProducerService eventProducerService;
-    private final StoreServiceService storeServiceService;
     private final StoreService storeService;
+    private final WaitingNumberGeneratorService waitingNumberGeneratorService;
 
     public PosStoreWaitingResponse details(long id) {
         return PosStoreWaitingResponse.from(storeWaitingService.get(id));
@@ -243,5 +240,10 @@ public class PosWaitingService {
     @Transactional
     public void updateWaitingSettingActive(long waitingSettingId, boolean active) {
         waitingSettingService.updateActive(waitingSettingId, active);
+    }
+
+    @Transactional
+    public void resetWaitingCallNumber(long storeId) {
+        waitingNumberGeneratorService.resetNumber(storeId);
     }
 }

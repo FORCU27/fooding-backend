@@ -28,10 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class StoreWaitingService {
 
     private final StoreWaitingRepository storeWaitingRepository;
+    private final WaitingNumberGeneratorService waitingNumberGeneratorService;
 
     @Transactional
     public void create(StoreWaitingCreateRequest request) {
-        StoreWaiting storeWaiting = request.toStoreWaiting(generateCallNumber());
+        StoreWaiting storeWaiting = request.toStoreWaiting(generateCallNumber(request.store().getId()));
         storeWaitingRepository.save(storeWaiting);
     }
 
@@ -88,7 +89,7 @@ public class StoreWaitingService {
 
     @Transactional
     public StoreWaiting register(StoreWaitingRegisterRequest request) {
-        int callNumber = generateCallNumber();
+        int callNumber = generateCallNumber(request.store().getId());
 
         StoreWaiting storeWaiting = StoreWaiting.builder()
                 .user(request.user())
@@ -152,8 +153,7 @@ public class StoreWaitingService {
         return storeWaitingRepository.countByStoreAndStatusAndDeletedFalse(store, StoreWaitingStatus.WAITING);
     }
 
-    // TODO: 추후에 redis 로 개선
-    private int generateCallNumber() {
-        return (int) storeWaitingRepository.countCreatedOnAndDeletedFalse(LocalDate.now()) + 1;
+    private int generateCallNumber(long storeId) {
+        return waitingNumberGeneratorService.issueNumber(storeId);
     }
 }
