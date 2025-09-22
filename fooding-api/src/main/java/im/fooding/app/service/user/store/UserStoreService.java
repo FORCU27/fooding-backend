@@ -64,7 +64,7 @@ public class UserStoreService {
 
             // 북마크 여부 세팅
             if (userInfo != null) {
-                setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setFinished);
+                setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
             }
         }
         return PageResponse.of(list, PageInfo.of(stores));
@@ -87,7 +87,7 @@ public class UserStoreService {
 
                 // 북마크 여부 세팅
                 if (userInfo != null) {
-                    setBookmarked(list, userInfo.getId(), UserStoreSearchResponse::getId, UserStoreSearchResponse::setFinished);
+                    setBookmarked(list, userInfo.getId(), UserStoreSearchResponse::getId, UserStoreSearchResponse::setBookmarked);
                 }
             }
 
