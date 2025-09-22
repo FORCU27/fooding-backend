@@ -5,6 +5,7 @@ import im.fooding.app.dto.request.user.review.CreateReviewRequest;
 import im.fooding.app.dto.request.user.review.UpdateReviewRequest;
 import im.fooding.app.dto.request.user.review.UserRetrieveReviewRequest;
 import im.fooding.app.dto.response.user.review.UserReviewResponse;
+import im.fooding.app.dto.response.user.review.UserStoreReviewResponse;
 import im.fooding.app.service.user.report.UserReportService;
 import im.fooding.app.service.user.review.UserReviewService;
 import im.fooding.core.common.ApiResult;
@@ -17,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -74,6 +77,14 @@ public class UserReviewController {
     ){
         userReviewService.delete( reviewId, userInfo.getId() );
         return ApiResult.ok();
+    }
+
+    @GetMapping("/user/{memberId}/review")
+    @Operation(summary = "사용자 작성 리뷰 조회", description = "특정 사용자가 작성한 리뷰들을 조회합니다." )
+    public ApiResult<List<UserStoreReviewResponse>> getUserReview(
+            @PathVariable long memberId
+    ){
+        return ApiResult.ok( userReviewService.getUserReviews( memberId ) );
     }
 
 }

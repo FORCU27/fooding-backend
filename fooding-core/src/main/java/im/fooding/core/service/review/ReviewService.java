@@ -99,4 +99,12 @@ public class ReviewService {
         review.update( content, visitPurposeType, score );
     }
 
+    /**
+     * * 특정 사용자의 리뷰 조회하기
+     * @param userId
+     */
+    public List<Review> findUserReviews( long userId ){
+        return reviewRepository.findAllByWriterId( userId );
+    }
+
 }

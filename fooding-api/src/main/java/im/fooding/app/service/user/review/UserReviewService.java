@@ -4,6 +4,7 @@ import im.fooding.app.dto.request.user.review.CreateReviewRequest;
 import im.fooding.app.dto.request.user.review.UpdateReviewRequest;
 import im.fooding.app.dto.request.user.review.UserRetrieveReviewRequest;
 import im.fooding.app.dto.response.user.review.UserReviewResponse;
+import im.fooding.app.dto.response.user.review.UserStoreReviewResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.plan.Plan;
@@ -42,6 +43,24 @@ public class UserReviewService {
     private final UserService userService;
     private final StoreService storeService;
     private final PlanService planService;
+
+    @Transactional( readOnly = true )
+    public List<UserStoreReviewResponse> getUserReviews( long userId ){
+        List<Review> reviews = reviewService.findUserReviews( userId );
+        List<Long> reviewIds = getReviewIds(reviews);
+
+        Map<Long, List<ReviewImage>> imageMap = getReviewImageMap(reviewIds);
+        Map<Long, Long> likeCountMap = getReviewLikeMap(reviewIds);
+
+        return reviews.stream()
+                .map(review -> UserStoreReviewResponse.of(
+                        review,
+                        imageMap.getOrDefault(review.getId(), List.of()),
+                        likeCountMap.getOrDefault(review.getId(), 0L),
+                        planService.findByUserIdAndStoreId(userId, review.getStore().getId()).getId()
+                ))
+                .toList();
+    }
 
     @Transactional( readOnly = true )
     public PageResponse<UserReviewResponse> list(Long storeId, UserRetrieveReviewRequest request) {
