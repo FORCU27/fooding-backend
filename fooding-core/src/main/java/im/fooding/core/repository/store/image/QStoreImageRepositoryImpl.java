@@ -4,6 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.model.store.StoreImage;
+import im.fooding.core.model.store.StoreImageSortType;
 import im.fooding.core.model.store.StoreImageTag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,7 +33,7 @@ public class QStoreImageRepositoryImpl implements QStoreImageRepository {
     }
 
     @Override
-    public Page<StoreImage> list(long storeId, StoreImageTag tag, Boolean isMain, Pageable pageable) {
+    public Page<StoreImage> list(long storeId, StoreImageTag tag, Boolean isMain, StoreImageSortType sortType, Pageable pageable) {
         List<StoreImage> images = query
                 .selectFrom(storeImage)
                 .where(
@@ -41,7 +42,7 @@ public class QStoreImageRepositoryImpl implements QStoreImageRepository {
                         searchTag(tag),
                         searchMain(isMain)
                 )
-                .orderBy(storeImage.sortOrder.asc(), storeImage.id.desc())
+                .orderBy(sortType.getOrder(storeImage))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

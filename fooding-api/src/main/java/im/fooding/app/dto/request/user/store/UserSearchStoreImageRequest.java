@@ -1,9 +1,9 @@
 package im.fooding.app.dto.request.user.store;
 
 import im.fooding.core.common.BasicSearch;
+import im.fooding.core.model.store.StoreImageSortType;
 import im.fooding.core.model.store.StoreImageTag;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,4 +17,11 @@ public class UserSearchStoreImageRequest extends BasicSearch {
 
     @Schema(description = "대표사진 여부", example = "false")
     private Boolean isMain;
+
+    @Schema(
+            description = "정렬 타입",
+            example = "RECENT",
+            allowableValues = {"RECENT"}
+    )
+    private StoreImageSortType sortType = StoreImageSortType.RECENT;
 }

@@ -1,10 +1,10 @@
 package im.fooding.app.controller.user.store;
 
 import im.fooding.app.dto.request.user.store.UserSearchStoreImageRequest;
-import im.fooding.app.dto.response.user.store.UserStoreImageResponse;
 import im.fooding.app.service.user.store.UserStoreImageService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.dto.response.StoreImageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -25,7 +25,7 @@ public class UserStoreImageController {
 
     @GetMapping("/{storeId}/images")
     @Operation(summary = "사진 리스트 조회")
-    public ApiResult<PageResponse<UserStoreImageResponse>> list(@PathVariable long storeId, @Valid UserSearchStoreImageRequest search) {
+    public ApiResult<PageResponse<StoreImageResponse>> list(@PathVariable long storeId, @Valid UserSearchStoreImageRequest search) {
         return ApiResult.ok(service.list(storeId, search));
     }
 }

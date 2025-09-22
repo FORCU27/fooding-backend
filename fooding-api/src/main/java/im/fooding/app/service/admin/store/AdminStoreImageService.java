@@ -41,6 +41,7 @@ public class AdminStoreImageService {
                 storeId != null ? storeId : 0L,
                 search.getTag(),
                 search.getIsMain(),
+                search.getSortType(),
                 search.getPageable()
         );
 
