@@ -1,6 +1,7 @@
 package im.fooding.app.service.user.store;
 
 import im.fooding.app.dto.response.user.reward.UserStoreRewardResponse;
+import im.fooding.core.global.UserInfo;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.coupon.BenefitType;
@@ -41,9 +42,12 @@ public class UserStoreRewardService {
     private final BookmarkService bookmarkService;
 
     @Transactional(readOnly = true)
-    public UserStoreRewardResponse list(long storeId, long userId) {
+    public UserStoreRewardResponse list(long storeId, UserInfo userInfo) {
         List<PointShop> list = pointShopService.list(storeId, true, LocalDate.now());
-        RewardPoint rewardPoint = rewardService.findByUserIdAndStoreId(userId, storeId);
+        RewardPoint rewardPoint = null;
+        if (userInfo != null) {
+            rewardService.findByUserIdAndStoreId(userInfo.getId(), storeId);
+        }
         return UserStoreRewardResponse.of(rewardPoint != null ? rewardPoint.getPoint() : 0, list);
     }
 
