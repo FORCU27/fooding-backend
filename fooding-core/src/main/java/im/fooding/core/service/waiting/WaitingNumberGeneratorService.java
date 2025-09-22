@@ -21,12 +21,7 @@ public class WaitingNumberGeneratorService {
 
     @Transactional
     public int issueNumber(long storeId) {
-        WaitingNumberGenerator waitingNumberGenerator = getByStoreId(storeId);
-        int issuedCallNumber = waitingNumberGenerator.issueCallNumber();
-
-        waitingNumberGeneratorRepository.save(waitingNumberGenerator);
-
-        return issuedCallNumber;
+        return waitingNumberGeneratorRepository.issueNumberByStoreId(storeId);
     }
 
     @Transactional

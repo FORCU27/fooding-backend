@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface WaitingNumberGeneratorRepository extends MongoRepository<WaitingNumberGenerator, ObjectId> {
+public interface WaitingNumberGeneratorRepository extends MongoRepository<WaitingNumberGenerator, ObjectId>, QWaitingNumberRepository {
 
     Optional<WaitingNumberGenerator> findByStoreId(long storeId);
 }
