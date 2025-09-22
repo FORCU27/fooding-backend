@@ -22,7 +22,7 @@ public class UserStoreRewardController {
     @GetMapping("/{storeId}/rewards")
     @Operation(summary = "스토어 리워드 상품 조회")
     public ApiResult<UserStoreRewardResponse> list(@PathVariable Long storeId, @AuthenticationPrincipal UserInfo userInfo) {
-        return ApiResult.ok(service.list(storeId, userInfo.getId()));
+        return ApiResult.ok(service.list(storeId, userInfo));
     }
 
     @PostMapping("/{storeId}/rewards/{id}")
