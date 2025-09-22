@@ -4,7 +4,6 @@ import im.fooding.app.dto.request.user.store.UserImmediateEntryStoreRequest;
 import im.fooding.app.dto.request.user.store.UserSearchStoreRequest;
 import im.fooding.app.dto.response.user.store.UserStoreListResponse;
 import im.fooding.app.dto.response.user.store.UserStoreResponse;
-import im.fooding.app.dto.response.user.store.UserStoreSearchResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.UserInfo;
@@ -71,23 +70,23 @@ public class UserStoreService {
     }
 
     @Transactional(readOnly = true)
-    public PageResponse<UserStoreSearchResponse> list_v2(UserSearchStoreRequest request, UserInfo userInfo) {
+    public PageResponse<UserStoreListResponse> list_v2(UserSearchStoreRequest request, UserInfo userInfo) {
         try {
             Page<StoreDocument> stores = storeDocumentService.fullTextSearch(request.getSearchString(), request.getSortType(), request.getSortDirection(), request.getRegionIds(), request.getCategory(), request.getLatitude(), request.getLongitude(), request.getPageable());
 
             List<Long> ids = stores.getContent().stream().map(StoreDocument::getId).toList();
 
-            List<UserStoreSearchResponse> list = storeService.list(ids).stream()
-                    .map(store -> UserStoreSearchResponse.of(store, null))
+            List<UserStoreListResponse> list = storeService.list(ids).stream()
+                    .map(store -> UserStoreListResponse.of(store, null))
                     .toList();
 
             if (list != null && !list.isEmpty()) {
                 // 영업상태 세팅
-                setOperatingStatus(list, UserStoreSearchResponse::getId, UserStoreSearchResponse::setFinished);
+                setOperatingStatus(list, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
 
                 // 북마크 여부 세팅
                 if (userInfo != null) {
-                    setBookmarked(list, userInfo.getId(), UserStoreSearchResponse::getId, UserStoreSearchResponse::setBookmarked);
+                    setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
                 }
             }
 

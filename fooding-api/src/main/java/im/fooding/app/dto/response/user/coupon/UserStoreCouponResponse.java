@@ -1,8 +1,8 @@
 package im.fooding.app.dto.response.user.coupon;
 
+import im.fooding.core.dto.response.StoreImageResponse;
 import im.fooding.core.model.coupon.*;
 import im.fooding.core.model.store.Store;
-import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Builder;
@@ -60,13 +60,13 @@ public class UserStoreCouponResponse {
     @Schema(description = "쿠폰 발급 여부", example = "true", requiredMode = RequiredMode.REQUIRED)
     private Boolean isCouponIssued = false;
 
-    @Schema(description = "가게 이미지 URL", example = "https://example.com/store.jpg", requiredMode = RequiredMode.NOT_REQUIRED)
-    private String mainImage;
+    @Schema(description = "가게 이미지", requiredMode = RequiredMode.NOT_REQUIRED)
+    private List<StoreImageResponse> images;
 
     @Builder
     private UserStoreCouponResponse(Long id, Long storeId, BenefitType benefitType, CouponType type, DiscountType discountType,
                                     ProvideType provideType, String name, String conditions, Integer totalQuantity, int issuedQuantity,
-                                    int discountValue, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn, String mainImage) {
+                                    int discountValue, LocalDate issueStartOn, LocalDate issueEndOn, LocalDate expiredOn, List<StoreImageResponse> images) {
         this.id = id;
         this.storeId = storeId;
         this.benefitType = benefitType;
@@ -81,16 +81,12 @@ public class UserStoreCouponResponse {
         this.issueStartOn = issueStartOn;
         this.issueEndOn = issueEndOn;
         this.expiredOn = expiredOn;
-        this.mainImage = mainImage;
+        this.images = images;
     }
 
     public static UserStoreCouponResponse of(Coupon coupon) {
         Store store = coupon.getStore();
         Long storeId = store != null ? store.getId() : null;
-
-        List<StoreImage> images =  store != null ? store.getImages() : null;
-        String mainImage = images != null ? images.stream().findFirst().map(StoreImage::getImageUrl).orElse(null) : null;
-
 
         return UserStoreCouponResponse.builder()
                 .id(coupon.getId())
@@ -107,7 +103,7 @@ public class UserStoreCouponResponse {
                 .issueStartOn(coupon.getIssueStartOn())
                 .issueEndOn(coupon.getIssueEndOn())
                 .expiredOn(coupon.getExpiredOn())
-                .mainImage(mainImage)
+                .images(store.getImages())
                 .build();
     }
 

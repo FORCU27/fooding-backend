@@ -1,11 +1,11 @@
 package im.fooding.app.dto.response.user.coupon;
 
+import im.fooding.core.dto.response.StoreImageResponse;
 import im.fooding.core.model.coupon.BenefitType;
 import im.fooding.core.model.coupon.DiscountType;
 import im.fooding.core.model.coupon.UserCoupon;
 import im.fooding.core.model.coupon.UserCouponStatus;
 import im.fooding.core.model.store.Store;
-import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Builder;
@@ -61,13 +61,13 @@ public class UserCouponResponse {
     @Schema(description = "사용 포인트", example = "20", requiredMode = RequiredMode.NOT_REQUIRED)
     private Integer point;
 
-    @Schema(description = "가게 이미지 URL", example = "https://example.com/store.jpg", requiredMode = RequiredMode.NOT_REQUIRED)
-    private String mainImage;
+    @Schema(description = "가게 이미지", requiredMode = RequiredMode.NOT_REQUIRED)
+    private List<StoreImageResponse> images;
 
     @Builder
     private UserCouponResponse(Long id, Long storeId, String storeName, String name, String conditions, BenefitType benefitType,
                                DiscountType discountType, int discountValue, UserCouponStatus status, LocalDateTime usedAt,
-                               LocalDate expiredOn, LocalDateTime createdDateAt, String tableNumber, Integer point, String mainImage) {
+                               LocalDate expiredOn, LocalDateTime createdDateAt, String tableNumber, Integer point, List<StoreImageResponse> images) {
         this.id = id;
         this.storeId = storeId;
         this.storeName = storeName;
@@ -82,16 +82,13 @@ public class UserCouponResponse {
         this.createdDateAt = createdDateAt;
         this.tableNumber = tableNumber;
         this.point = point;
-        this.mainImage = mainImage;
+        this.images = images;
     }
 
     public static UserCouponResponse of(UserCoupon userCoupon) {
         Store store = userCoupon.getStore();
         Long storeId = store != null ? store.getId() : null;
         String storeName = store != null ? store.getName() : null;
-
-        List<StoreImage> images =  store != null ? store.getImages() : null;
-        String mainImage = images != null ? images.stream().findFirst().map(StoreImage::getImageUrl).orElse(null) : null;
 
         return UserCouponResponse.builder()
                 .id(userCoupon.getId())
@@ -108,7 +105,7 @@ public class UserCouponResponse {
                 .createdDateAt(userCoupon.getCreatedAt())
                 .tableNumber(userCoupon.getTableNumber())
                 .point(userCoupon.getPoint())
-                .mainImage(mainImage)
+                .images(store.getImages())
                 .build();
     }
 }
