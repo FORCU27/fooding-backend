@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -23,6 +24,13 @@ public class PageResponse<T> {
         return PageResponse.<T>builder()
                 .list(list)
                 .pageInfo(pageInfo)
+                .build();
+    }
+
+    public static PageResponse empty() {
+        return PageResponse.builder()
+                .list(new ArrayList<>())
+                .pageInfo(new PageInfo())
                 .build();
     }
 }
