@@ -39,6 +39,11 @@
         "analyzer": "ngram_index_analyzer",
         "search_analyzer": "ngram_search_analyzer"
       },
+      "initials": {
+        "type": "text",
+        "analyzer": "ngram_index_analyzer",
+        "search_analyzer": "ngram_search_analyzer"
+      },
       "count": {
         "type": "integer"
       }

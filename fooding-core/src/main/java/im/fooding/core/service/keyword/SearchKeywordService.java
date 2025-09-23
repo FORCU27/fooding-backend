@@ -60,23 +60,44 @@ public class SearchKeywordService {
 
     public List<String> recommendKeywords(String keyword) {
         try {
-            SearchResponse<Map> response = client.search(s -> s
-                            .index("search_keywords_v1")
-                            .query(q -> q
-                                    .prefix(p -> p
-                                            .field("keyword")
-                                            .value(keyword)
-                                    )
-                            )
-                            .sort(sort -> sort
-                                    .field(f -> f
-                                            .field("count")
-                                            .order(SortOrder.Desc)
-                                    )
-                            )
-                            .size(20),
-                    Map.class
-            );
+            SearchResponse<Map> response = client.search(s -> {
+                s.index("search_keywords_v1");
+
+                // 입력 키워드 분석
+                String input = keyword.strip();
+                String normalPart = input.replaceAll("[ㄱ-ㅎ]", ""); // 완성형 한글/영문/숫자
+                String initialPart = input.replaceAll("[^ㄱ-ㅎ]", ""); // 초성만 추출
+
+                // Bool Query
+                s.query(q -> q
+                        .bool(b -> {
+                            if (!normalPart.isEmpty()) {
+                                b.must(m -> m.match(mt -> mt
+                                        .field("keyword")
+                                        .query(normalPart)
+                                ));
+                            }
+                            if (!initialPart.isEmpty()) {
+                                b.must(m -> m.match(mt -> mt
+                                        .field("initials")
+                                        .query(initialPart)
+                                ));
+                            }
+                            return b;
+                        })
+                );
+
+                // count 내림차순 정렬
+                s.sort(sort -> sort
+                        .field(f -> f
+                                .field("count")
+                                .order(SortOrder.Desc)
+                        )
+                );
+
+                s.size(20);
+                return s;
+            }, Map.class);
 
             return response.hits().hits().stream()
                     .map(hit -> (String) hit.source().get("keyword"))
