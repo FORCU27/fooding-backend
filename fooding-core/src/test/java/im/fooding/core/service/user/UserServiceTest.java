@@ -80,15 +80,16 @@ class UserServiceTest extends TestConfig {
         String phoneNumber = "01000000000";
         Role role = Role.ADMIN;
         saveUser(email, nickname, role);
+
         String name = "홍길동";
         String description = "반갑습니다 1년차 CEO입니다";
-
         String email2 = "admin2@gmail.com";
+        String nickname2 = " 관리자 ";
 
         // when && then
         ApiException apiException =
                 assertThrows(ApiException.class, () -> {
-                    userService.create(email2, nickname, password, phoneNumber, Gender.NONE, name, description, null, false);
+                    userService.create(email2, nickname2, password, phoneNumber, Gender.NONE, name, description, null, false);
                 });
         assertEquals(ErrorCode.DUPLICATED_NICKNAME, apiException.getErrorCode());
     }
