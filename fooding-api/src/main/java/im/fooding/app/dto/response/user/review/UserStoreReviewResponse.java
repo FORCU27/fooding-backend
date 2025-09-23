@@ -80,6 +80,8 @@ public class UserStoreReviewResponse {
                         .collect(Collectors.toList()))
                 .content( review.getContent() )
                 .score( review.getScore() )
+                .createdAt( review.getCreatedAt() )
+                .updatedAt( review.getUpdatedAt() )
                 .purpose( review.getVisitPurposeType() )
                 .likeCount( likeCount )
                 .planId( planId );

@@ -57,7 +57,7 @@ public class UserReviewService {
                         review,
                         imageMap.getOrDefault(review.getId(), List.of()),
                         likeCountMap.getOrDefault(review.getId(), 0L),
-                        planService.findByUserIdAndStoreId(userId, review.getStore().getId()).getId()
+                        planService.findByUserIdAndStoreId(userId, review.getStore().getId()) == null ? null : planService.findByUserIdAndStoreId(userId, review.getStore().getId()).getId()
                 ))
                 .toList();
     }
