@@ -1,15 +1,15 @@
 package im.fooding.app.dto.response.user.store;
 
+import im.fooding.core.dto.request.store.SubwayStationDto;
+import im.fooding.core.dto.response.StoreImageResponse;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreCategory;
-import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -70,12 +70,15 @@ public class UserStoreResponse {
     private Boolean isBookmarked = false;
 
     @Schema(description = "사진", requiredMode = RequiredMode.NOT_REQUIRED)
-    private List<UserStoreImageResponse> images;
+    private List<StoreImageResponse> images;
+
+    @Schema(description = "인근 지하철역", requiredMode = RequiredMode.NOT_REQUIRED)
+    private List<SubwayStationDto> stations;
 
     @Builder
     private UserStoreResponse(Long id, String name, String address, String addressDetail, StoreCategory category, String regionId, String description,
                               String contactNumber, String direction, int visitCount, int reviewCount, int bookmarkCount, double averageRating,
-                              Integer estimatedWaitingTimeMinutes, Double latitude, Double longitude, List<UserStoreImageResponse> images) {
+                              Integer estimatedWaitingTimeMinutes, Double latitude, Double longitude, List<StoreImageResponse> images, List<SubwayStationDto> stations) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -93,14 +96,12 @@ public class UserStoreResponse {
         this.latitude = latitude;
         this.longitude = longitude;
         this.images = images;
+        this.stations = stations;
     }
 
     public static UserStoreResponse of(Store store, Integer estimatedWaitingTime) {
-        List<UserStoreImageResponse> images = store.getImages() != null ? store.getImages().stream()
-                .filter(it -> it.isMain() && !it.isDeleted())
-                .sorted(Comparator.comparing(StoreImage::getSortOrder).thenComparing(Comparator.comparing(StoreImage::getId).reversed()))
-                .map(UserStoreImageResponse::of)
-                .toList() : null;
+        List<SubwayStationDto> stations = store.getSubwayStations() != null ?
+                store.getSubwayStations().stream().map(it -> SubwayStationDto.of(it)).toList() : null;
 
         return UserStoreResponse.builder()
                 .id(store.getId())
@@ -119,7 +120,8 @@ public class UserStoreResponse {
                 .estimatedWaitingTimeMinutes(estimatedWaitingTime)
                 .latitude(store.getLatitude())
                 .longitude(store.getLongitude())
-                .images(images)
+                .images(store.getImages())
+                .stations(stations)
                 .build();
     }
 

@@ -1,5 +1,6 @@
 package im.fooding.core.model.store;
 
+import im.fooding.core.dto.response.StoreImageResponse;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.BaseEntity;
@@ -16,7 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -190,7 +191,7 @@ public class Store extends BaseEntity {
 
     public void approve() {
         // 필수값(주소, 카테고리, 연락처, 위도, 경도)
-        if (!StringUtils.hasText(address) ||  null == category || !StringUtils.hasText(contactNumber) || null == latitude || null == longitude) {
+        if (!StringUtils.hasText(address) || null == category || !StringUtils.hasText(contactNumber) || null == latitude || null == longitude) {
             throw new ApiException(ErrorCode.STORE_APPROVED_FAILED);
         }
         this.status = StoreStatus.APPROVED;
@@ -248,5 +249,21 @@ public class Store extends BaseEntity {
             return null;
         }
         return region.getName();
+    }
+
+    public List<StoreImageResponse> getImages() {
+        if (this.images == null || this.images.isEmpty()) {
+            return null;
+        }
+        return this.images.stream()
+                .filter(it -> !it.isDeleted())
+                .sorted(
+                        Comparator.comparing(StoreImage::isMain).reversed()
+                                .thenComparing(StoreImage::getSortOrder)
+                                .thenComparing(Comparator.comparing(StoreImage::getId).reversed())
+                )
+                .limit(8)
+                .map(StoreImageResponse::of)
+                .toList();
     }
 }

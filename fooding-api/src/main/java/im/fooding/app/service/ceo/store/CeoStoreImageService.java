@@ -46,7 +46,7 @@ public class CeoStoreImageService {
     @Transactional(readOnly = true)
     public PageResponse<CeoStoreImageResponse> list(long storeId, CeoSearchStoreImageRequest search, long userId) {
         checkMember(storeId, userId);
-        Page<StoreImage> images = storeImageService.list(storeId, search.getTag(), search.getIsMain(), search.getPageable());
+        Page<StoreImage> images = storeImageService.list(storeId, search.getTag(), search.getIsMain(), search.getSortType(), search.getPageable());
         return PageResponse.of(images.stream().map(CeoStoreImageResponse::of).toList(), PageInfo.of(images));
     }
 

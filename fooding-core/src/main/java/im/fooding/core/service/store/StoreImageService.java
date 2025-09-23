@@ -4,6 +4,7 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreImage;
+import im.fooding.core.model.store.StoreImageSortType;
 import im.fooding.core.model.store.StoreImageTag;
 import im.fooding.core.repository.store.image.StoreImageRepository;
 import lombok.RequiredArgsConstructor;
@@ -69,8 +70,8 @@ public class StoreImageService {
      * @param pageable
      * @return Page<StoreImage>
      */
-    public Page<StoreImage> list(long storeId, StoreImageTag tag, Boolean isMain, Pageable pageable) {
-        return storeImageRepository.list(storeId, tag, isMain, pageable);
+    public Page<StoreImage> list(long storeId, StoreImageTag tag, Boolean isMain, StoreImageSortType sortType, Pageable pageable) {
+        return storeImageRepository.list(storeId, tag, isMain, sortType, pageable);
     }
 
     /**

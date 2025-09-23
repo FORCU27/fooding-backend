@@ -1,17 +1,15 @@
 package im.fooding.app.dto.response.user.bookmark;
 
-import im.fooding.app.dto.response.user.store.UserStoreImageResponse;
+import im.fooding.core.dto.response.StoreImageResponse;
 import im.fooding.core.model.bookmark.Bookmark;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreCategory;
-import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Comparator;
 import java.util.List;
 
 @Getter
@@ -45,7 +43,7 @@ public class UserBookmarkResponse {
     private Boolean isFinished = true;
 
     @Schema(description = "사진", requiredMode = RequiredMode.NOT_REQUIRED)
-    private List<UserStoreImageResponse> images;
+    private List<StoreImageResponse> images;
 
     @Schema(description = "해당 가게의 카테고리", requiredMode = RequiredMode.REQUIRED)
     private StoreCategory category;
@@ -55,7 +53,7 @@ public class UserBookmarkResponse {
 
     @Builder
     private UserBookmarkResponse(Long id, Long storeId, String name, int visitCount, int reviewCount, int bookmarkCount,
-                                 double averageRating, Integer estimatedWaitingTimeMinutes, List<UserStoreImageResponse> images,
+                                 double averageRating, Integer estimatedWaitingTimeMinutes, List<StoreImageResponse> images,
                                  StoreCategory category, String address
     ) {
         this.id = id;
@@ -73,11 +71,6 @@ public class UserBookmarkResponse {
 
     public static UserBookmarkResponse of(Bookmark bookmark, Integer estimatedWaitingTime) {
         Store store = bookmark.getStore();
-        List<UserStoreImageResponse> images = store.getImages() != null ? store.getImages().stream()
-                .sorted(Comparator.comparing(StoreImage::getSortOrder).thenComparing(Comparator.comparing(StoreImage::getId).reversed()))
-                .map(UserStoreImageResponse::of)
-                .toList() : null;
-
         return UserBookmarkResponse.builder()
                 .id(store.getId())
                 .storeId(store.getId())
@@ -87,7 +80,7 @@ public class UserBookmarkResponse {
                 .bookmarkCount(store.getBookmarkCount())
                 .averageRating(store.getAverageRating())
                 .estimatedWaitingTimeMinutes(estimatedWaitingTime)
-                .images(images)
+                .images(store.getImages())
                 .category(store.getCategory())
                 .address(store.getAddress())
                 .build();

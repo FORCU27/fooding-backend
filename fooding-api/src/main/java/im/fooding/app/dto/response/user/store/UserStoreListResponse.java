@@ -1,13 +1,15 @@
 package im.fooding.app.dto.response.user.store;
 
+import im.fooding.core.dto.response.StoreImageResponse;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreCategory;
-import im.fooding.core.model.store.StoreImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -23,9 +25,6 @@ public class UserStoreListResponse {
 
     @Schema(description = "가게명", example = "홍길동 식당", requiredMode = RequiredMode.REQUIRED)
     private String name;
-
-    @Schema(description = "가게 이미지 URL", example = "https://example.com/store.jpg", requiredMode = RequiredMode.NOT_REQUIRED)
-    private String mainImage;
 
     @Schema(description = "해당 가게의 총 방문수", example = "1000", requiredMode = RequiredMode.REQUIRED)
     private int visitCount;
@@ -48,38 +47,36 @@ public class UserStoreListResponse {
     @Schema(description = "관심 여부", example = "false", requiredMode = RequiredMode.REQUIRED)
     private Boolean isBookmarked = false;
 
+    @Schema(description = "사진", requiredMode = RequiredMode.NOT_REQUIRED)
+    private List<StoreImageResponse> images;
+
     @Builder
-    private UserStoreListResponse(Long id, StoreCategory category, String regionId, String name, String image, double averageRating, int visitCount,
-                                  int reviewCount, int bookmarkCount, Integer estimatedWaitingTimeMinutes) {
+    private UserStoreListResponse(Long id, StoreCategory category, String regionId, String name, double averageRating, int visitCount,
+                                  int reviewCount, int bookmarkCount, Integer estimatedWaitingTimeMinutes, List<StoreImageResponse> images) {
         this.id = id;
         this.category = category;
         this.regionId = regionId;
         this.name = name;
-        this.mainImage = image;
         this.visitCount = visitCount;
         this.reviewCount = reviewCount;
         this.bookmarkCount = bookmarkCount;
         this.averageRating = averageRating;
         this.estimatedWaitingTimeMinutes = estimatedWaitingTimeMinutes;
+        this.images = images;
     }
 
     public static UserStoreListResponse of(Store store, Integer estimatedWaitingTime) {
-        String imageUrl = store.getImages() != null ? store.getImages().stream()
-                .filter(it -> it.isMain() && !it.isDeleted())
-                .findFirst().map(StoreImage::getImageUrl)
-                .orElse(null) : null;
-
         return UserStoreListResponse.builder()
                 .id(store.getId())
                 .category(store.getCategory())
                 .regionId(store.getRegionId())
                 .name(store.getName())
-                .image(imageUrl)
                 .visitCount(store.getVisitCount())
                 .reviewCount(store.getReviewCount())
                 .bookmarkCount(store.getBookmarkCount())
                 .averageRating(store.getAverageRating())
                 .estimatedWaitingTimeMinutes(estimatedWaitingTime)
+                .images(store.getImages())
                 .build();
     }
 
