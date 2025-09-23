@@ -1,6 +1,7 @@
 package im.fooding.app.service.user.waiting;
 
 import im.fooding.app.dto.response.user.waiting.UserWaitingAvailableResponse;
+import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.service.store.StoreService;
@@ -19,9 +20,8 @@ public class UserWaitingService {
 
     public UserWaitingAvailableResponse checkAvailability(long storeId) {
         Store store = storeService.findById(storeId);
-        WaitingSetting activeSetting = waitingSettingService.getActiveSetting(store);
-        boolean isWaitingOpen = activeSetting.isOpen();
-
-        return new UserWaitingAvailableResponse(isWaitingOpen);
+        return waitingSettingService.findActiveSetting(store)
+                .map(activeSetting -> new UserWaitingAvailableResponse(activeSetting.isOpen()))
+                .orElse(new UserWaitingAvailableResponse(false));
     }
 }
