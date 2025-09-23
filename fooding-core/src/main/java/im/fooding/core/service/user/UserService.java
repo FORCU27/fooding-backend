@@ -8,13 +8,14 @@ import im.fooding.core.model.user.Gender;
 import im.fooding.core.model.user.Role;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.user.UserRepository;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,10 +34,12 @@ public class UserService {
      */
     public User create(String email, String nickname, String password, String phoneNumber, Gender gender, String name, String description, String referralCode, boolean marketingConsent) {
         checkDuplicateEmail(email, AuthProvider.FOODING);
-        if (checkDuplicatedNickname(nickname)) {
+        if (StringUtils.hasText(nickname)) {
+            nickname = nickname.strip();
+            checkDuplicatedNickname(nickname);
             throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
         }
-        if(StringUtils.hasText(phoneNumber)) {
+        if (StringUtils.hasText(phoneNumber)) {
             checkDuplicatePhoneNumber(phoneNumber);
         }
 
@@ -47,8 +50,8 @@ public class UserService {
                 .phoneNumber(phoneNumber)
                 .provider(AuthProvider.FOODING)
                 .gender(gender)
-                .name( name )
-                .description( description )
+                .name(name)
+                .description(description)
                 .referralCode(referralCode)
                 .marketingConsent(marketingConsent)
                 .build();
@@ -120,17 +123,18 @@ public class UserService {
 
     public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description, boolean pushAgreed, String name) {
         User user = findById(id);
-        if( nickname != null ){
+        if (StringUtils.hasText(nickname)) {
+            nickname = nickname.strip();
             if (!nickname.equals(user.getNickname()) && checkDuplicatedNickname(nickname)) {
                 throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
             }
         }
-        if( phoneNumber != null ){
+        if (StringUtils.hasText(phoneNumber)) {
             if (StringUtils.hasText(phoneNumber) && !phoneNumber.equals(user.getPhoneNumber())) {
                 checkDuplicatePhoneNumber(phoneNumber);
             }
         }
-        user.updateDescription( description );
+        user.updateDescription(description);
         user.update(nickname, phoneNumber, gender, referralCode, marketingConsent, pushAgreed, name);
     }
 
