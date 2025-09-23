@@ -7,9 +7,11 @@ import im.fooding.app.dto.response.user.store.UserStoreResponse;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.event.keyword.SearchKeywordSavedEvent;
 import im.fooding.core.global.UserInfo;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.global.util.Util;
 import im.fooding.core.model.bookmark.Bookmark;
 import im.fooding.core.model.store.Store;
@@ -31,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.EnumSet;
@@ -52,6 +55,7 @@ public class UserStoreService {
     private final StoreDocumentService storeDocumentService;
     private final RecentStoreService recentStoreService;
     private final UserRepository userRepository;
+    private final EventProducerService eventProducerService;
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreListResponse> list(UserSearchStoreRequest request, UserInfo userInfo) {
@@ -74,7 +78,7 @@ public class UserStoreService {
         return PageResponse.of(list, PageInfo.of(stores));
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public PageResponse<UserStoreListResponse> list_v2(UserSearchStoreRequest request, UserInfo userInfo) {
         try {
             Page<StoreDocument> stores = storeDocumentService.fullTextSearch(request.getSearchString(), request.getSortType(), request.getSortDirection(), request.getRegionIds(), request.getCategory(), request.getLatitude(), request.getLongitude(), request.getPageable());
@@ -95,8 +99,11 @@ public class UserStoreService {
                 }
             }
 
-            return PageResponse.of(list, PageInfo.of(stores));
+            if (StringUtils.hasText(request.getSearchString())) {
+                eventProducerService.publishEvent("SearchKeywordSavedEvent", new SearchKeywordSavedEvent(request.getSearchString()));
+            }
 
+            return PageResponse.of(list, PageInfo.of(stores));
         } catch (IOException e) {
             e.printStackTrace();
             throw new ApiException(ErrorCode.ELASTICSEARCH_SEARCH_FAILED);
