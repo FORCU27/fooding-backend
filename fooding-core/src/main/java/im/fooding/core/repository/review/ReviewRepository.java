@@ -11,4 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ReviewRepository extends JpaRepository<Review, Long>, QReviewRepository {
 
     Page<Review> findAllByStore(Store store, Pageable pageable);
+    List<Review> findAllByWriterId( long writerId );
 }
