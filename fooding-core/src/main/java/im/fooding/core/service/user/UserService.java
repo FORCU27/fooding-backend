@@ -36,8 +36,9 @@ public class UserService {
         checkDuplicateEmail(email, AuthProvider.FOODING);
         if (StringUtils.hasText(nickname)) {
             nickname = nickname.strip();
-            checkDuplicatedNickname(nickname);
-            throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
+            if (checkDuplicatedNickname(nickname)) {
+                throw new ApiException(ErrorCode.DUPLICATED_NICKNAME);
+            }
         }
         if (StringUtils.hasText(phoneNumber)) {
             checkDuplicatePhoneNumber(phoneNumber);
