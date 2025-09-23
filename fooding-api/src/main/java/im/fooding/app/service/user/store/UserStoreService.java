@@ -142,26 +142,25 @@ public class UserStoreService {
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreListResponse> retrieveRecentStores(UserInfo userInfo) {
-        Set<StoreStatus> userVisibleStatuses = EnumSet.of(
-                StoreStatus.APPROVED
-        );
-        BasicSearch search = new BasicSearch();
+        if (userInfo != null) {
+            Set<StoreStatus> userVisibleStatuses = EnumSet.of(
+                    StoreStatus.APPROVED
+            );
+            BasicSearch search = new BasicSearch();
+            Page<Store> stores = recentStoreService.findRecentStores(userInfo.getId(), userVisibleStatuses, search.getPageable());
+            List<UserStoreListResponse> list = stores.getContent().stream()
+                    .map(store -> UserStoreListResponse.of(store, null))
+                    .toList();
 
-        if (userInfo == null) {
-            return PageResponse.empty();
+            if (list != null && !list.isEmpty()) {
+                setOperatingStatus(list, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
+                setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
+            }
+
+            return PageResponse.of(list, PageInfo.of(stores));
         }
 
-        Page<Store> stores = recentStoreService.findRecentStores(userInfo.getId(), userVisibleStatuses, search.getPageable());
-        List<UserStoreListResponse> list = stores.getContent().stream()
-                .map(store -> UserStoreListResponse.of(store, null))
-                .toList();
-
-        if (list != null && !list.isEmpty()) {
-            setOperatingStatus(list, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
-            setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
-        }
-
-        return PageResponse.of(list, PageInfo.of(stores));
+        return PageResponse.empty();
     }
 
     private UserStoreListResponse mapStoreToResponse(Store store) {
