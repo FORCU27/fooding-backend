@@ -13,25 +13,29 @@ import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.file.File;
 import im.fooding.core.model.menu.Menu;
 import im.fooding.core.model.menu.MenuCategory;
+import im.fooding.core.model.menu.MenuImage;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.repository.menu.MenuFilter;
 import im.fooding.core.service.menu.MenuCategoryService;
+import im.fooding.core.service.menu.MenuImageService;
 import im.fooding.core.service.menu.MenuService;
 import im.fooding.core.service.store.StoreService;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.math.BigDecimal;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CeoMenuService {
     private final MenuService menuService;
+    private final MenuImageService menuImageService;
     private final StoreService storeService;
     private final MenuCategoryService menuCategoryService;
     private final FileUploadService fileUploadService;
@@ -42,18 +46,26 @@ public class CeoMenuService {
         Store store = storeService.findById(request.getStoreId());
         MenuCategory menuCategory = menuCategoryService.get(request.getCategoryId());
 
-        String menuImageUrl = null;
-        if (StringUtils.hasText(request.getImageId())) {
-            File file = fileUploadService.commit(request.getImageId());
-            menuImageUrl = file.getUrl();
-        }
+        List<String> menuImageUrls = new ArrayList<>();
+        request.getImageIds().forEach(imageId -> {
+            if (StringUtils.hasText(imageId)) {
+                File file = fileUploadService.commit(imageId);
+                menuImageUrls.add(file.getUrl());
+            }
+        });
 
-        menuService.create(request.toMenuCreateRequest(store, menuCategory, menuImageUrl));
+        long menuId = menuService.create(request.toMenuCreateRequest(store, menuCategory));
+        Menu menu = menuService.get(menuId);
+        menuImageUrls.forEach(imageUrl -> menuImageService.create(menu, imageUrl));
+
         updateStorageAveragePrice(store);
     }
 
     public CeoMenuResponse get(long id) {
-        return CeoMenuResponse.from(menuService.get(id));
+        Menu menu = menuService.get(id);
+        List<MenuImage> menuImages = menuImageService.listByMenuId(id);
+
+        return CeoMenuResponse.of(menu, menuImages);
     }
 
     public PageResponse<CeoMenuResponse> list(CeoMenuListRequest search) {
@@ -62,21 +74,36 @@ public class CeoMenuService {
                 .menuCategoryIds(List.of(search.getCategoryId()))
                 .build();
         Page<Menu> menus = menuService.list(filter, search.getPageable());
-        return PageResponse.of(menus.stream().map(CeoMenuResponse::from).toList(), PageInfo.of(menus));
+        Map<Menu, List<MenuImage>> menuImages = new HashMap<>();
+
+        menus.forEach(menu -> menuImages.put(menu, menuImageService.listByMenuId(menu.getId())));
+        List<CeoMenuResponse> menuResponses = menus.stream().map(
+                menu -> CeoMenuResponse.of(menu, menuImages.get(menu))
+        ).toList();
+
+        return PageResponse.of(menuResponses, PageInfo.of(menus));
     }
 
     @Transactional
-    public void update(long id, CeoMenuUpdateRequest request) {
+    public void update(long id, CeoMenuUpdateRequest request, long updatedBy) {
         Store store = storeService.findById(request.getStoreId());
         MenuCategory menuCategory = menuCategoryService.get(request.getCategoryId());
 
-        String menuImageUrl = null;
-        if (StringUtils.hasText(request.getImageId())) {
-            File file = fileUploadService.commit(request.getImageId());
-            menuImageUrl = file.getUrl();
-        }
+        List<String> menuImageUrls = new ArrayList<>();
+        request.getImageIds().forEach(imageId -> {
+            if (StringUtils.hasText(imageId)) {
+                File file = fileUploadService.commit(imageId);
+                menuImageUrls.add(file.getUrl());
+            }
+        });
+        Menu menu = menuService.get(id);
+        List<MenuImage> menuImages = menuImageService.listByMenuId(id);
+        menuImages.stream().filter(menuImage -> !menuImageUrls.contains(menuImage.getImageUrl()))
+                .forEach(menuImage -> menuImage.delete(updatedBy));
+        menuImageUrls.stream().filter(menuImageUrl -> !menuImages.contains(menuImageUrl))
+                .forEach(menuImageUrl -> menuImageService.create(menu, menuImageUrl));
 
-        menuService.update(request.toMenuUpdateRequest(id, store, menuCategory, menuImageUrl));
+        menuService.update(request.toMenuUpdateRequest(id, store, menuCategory));
         updateStorageAveragePrice(store);
     }
 

@@ -63,9 +63,10 @@ public class CeoMenuController {
     public ApiResult<CeoMenuResponse> update(
             @PathVariable long id,
 
+            @AuthenticationPrincipal UserInfo userInfo,
             @RequestBody @Valid CeoMenuUpdateRequest request
     ) {
-        ceoMenuService.update(id, request);
+        ceoMenuService.update(id, request, userInfo.getId());
         return ApiResult.ok();
     }
 

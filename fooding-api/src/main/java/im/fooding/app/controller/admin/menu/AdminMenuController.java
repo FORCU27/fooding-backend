@@ -65,9 +65,10 @@ public class AdminMenuController {
     public ApiResult<AdminMenuResponse> update(
             @PathVariable long id,
 
+            @AuthenticationPrincipal UserInfo userInfo,
             @RequestBody @Valid AdminMenuUpdateRequest request
     ) {
-        adminMenuService.update(id, request);
+        adminMenuService.update(id, request, userInfo.getId());
         return ApiResult.ok();
     }
 

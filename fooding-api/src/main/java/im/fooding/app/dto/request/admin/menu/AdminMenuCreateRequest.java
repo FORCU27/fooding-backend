@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 public record AdminMenuCreateRequest(
 
@@ -31,9 +31,9 @@ public record AdminMenuCreateRequest(
         @NotNull
         String description,
 
-        @Schema(description = "이미지 업로드 후 받은 id", example = "819f4bca-2739-46ca-9156-332c86eda619")
+        @Schema(description = "이미지 업로드 후 받은 id", example = "[\"id1\", \"id2\"]")
         @NotNull
-        String imageId,
+        List<String> imageIds,
 
         @Schema(description = "카테고리 정렬")
         @NotNull
@@ -48,14 +48,13 @@ public record AdminMenuCreateRequest(
         Boolean isRecommend
 ) {
 
-    public MenuCreateRequest toMenuCreateRequest(Store store, MenuCategory category, String imageUrl) {
+    public MenuCreateRequest toMenuCreateRequest(Store store, MenuCategory category) {
         return MenuCreateRequest.builder()
                 .store(store)
                 .category(category)
                 .name(name)
                 .price(price)
                 .description(description)
-                .imageUrl(imageUrl)
                 .sortOrder(sortOrder)
                 .isSignature(isSignature)
                 .isRecommend(isRecommend)

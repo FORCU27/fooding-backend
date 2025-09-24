@@ -5,10 +5,9 @@ import im.fooding.core.model.menu.MenuCategory;
 import im.fooding.core.model.store.Store;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import java.math.BigDecimal;
 
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
@@ -36,9 +35,9 @@ public class CeoMenuUpdateRequest {
     @NotNull
     String description;
 
-    @Schema(description = "이미지 업로드 후 받은 id", example = "819f4bca-2739-46ca-9156-332c86eda619")
+    @Schema(description = "이미지 업로드 후 받은 id", example = "[\"id1\", \"id2\"]")
     @NotNull
-    String imageId;
+    List<String> imageIds;
 
     @Schema(description = "카테고리 정렬", example = "1")
     @NotNull
@@ -52,7 +51,7 @@ public class CeoMenuUpdateRequest {
     @NotNull
     Boolean isRecommend;
 
-    public MenuUpdateRequest toMenuUpdateRequest(long id, Store store, MenuCategory category, String imageUrl) {
+    public MenuUpdateRequest toMenuUpdateRequest(long id, Store store, MenuCategory category) {
         return MenuUpdateRequest.builder()
                 .store(store)
                 .id(id)
@@ -60,7 +59,6 @@ public class CeoMenuUpdateRequest {
                 .name(name)
                 .price(price)
                 .description(description)
-                .imageUrl(imageUrl)
                 .sortOrder(sortOrder)
                 .isSignature(isSignature)
                 .isRecommend(isRecommend)

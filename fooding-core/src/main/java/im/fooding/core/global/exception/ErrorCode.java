@@ -89,7 +89,7 @@ public enum ErrorCode {
 
     // 디바이스
     DEVICE_NOT_FOUND(HttpStatus.BAD_REQUEST, "7000", "등록된 디바이스가 없습니다."),
-    
+
     // 알림
     NOTIFICATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "5000", "등록된 알림이 없습니다."),
     USER_NOTIFICATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "5001", "사용자 알림을 찾을 수 없습니다."),
@@ -100,6 +100,7 @@ public enum ErrorCode {
     MENUCATEGORY_NOT_FOUND(HttpStatus.BAD_REQUEST, "6000", "등록된 메뉴 카테고리가 없습니다."),
     MENU_NOT_FOUND(HttpStatus.BAD_REQUEST, "6001", "등록된 메뉴가 없습니다."),
     MENU_BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST, "6002", "등록된 메뉴판이 없습니다."),
+    MENU_IMAGE_COUNT_OVER_LIMIT(HttpStatus.BAD_REQUEST, "6003", "메뉴 이미지가 제한 개수를 넘었습니다."),
 
     // 쿠폰
     COUPON_NOT_FOUND(HttpStatus.BAD_REQUEST, "8000", "등록된 쿠폰이 없습니다."),

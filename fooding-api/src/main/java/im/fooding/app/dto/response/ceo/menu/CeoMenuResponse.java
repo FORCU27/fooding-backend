@@ -3,8 +3,9 @@ package im.fooding.app.dto.response.ceo.menu;
 import static io.swagger.v3.oas.annotations.media.Schema.RequiredMode.REQUIRED;
 
 import im.fooding.core.model.menu.Menu;
+import im.fooding.core.model.menu.MenuImage;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.math.BigDecimal;
+import java.util.List;
 import lombok.Builder;
 import lombok.Value;
 
@@ -31,7 +32,7 @@ public class CeoMenuResponse {
     String description;
 
     @Schema(description = "메뉴 사진", requiredMode = REQUIRED, example = "https://d27gz6v6wvae1d.cloudfront.net/fooding/gigs/...")
-    String imageUrl;
+    List<String> imageUrls;
 
     @Schema(description = "카테고리 정렬", requiredMode = REQUIRED, example = "1")
     int sortOrder;
@@ -42,7 +43,10 @@ public class CeoMenuResponse {
     @Schema(description = "메뉴 추천 여부", requiredMode = REQUIRED, example = "true")
     Boolean isRecommend;
 
-    public static CeoMenuResponse from(Menu menu) {
+    public static CeoMenuResponse of(Menu menu, List<MenuImage> images) {
+        List<String> imageUrls = images.stream().map(MenuImage::getImageUrl)
+                .toList();
+
         return CeoMenuResponse.builder()
                 .id(menu.getId())
                 .storeId(menu.getStore().getId())
@@ -50,7 +54,7 @@ public class CeoMenuResponse {
                 .name(menu.getName())
                 .price(menu.getPrice())
                 .description(menu.getDescription())
-                .imageUrl(menu.getImageUrl())
+                .imageUrls(imageUrls)
                 .sortOrder(menu.getSortOrder())
                 .isSignature(menu.isSignature())
                 .isRecommend(menu.isRecommend())

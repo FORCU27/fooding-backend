@@ -2,7 +2,6 @@ package im.fooding.core.model.menu;
 
 import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
-import im.fooding.core.model.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -13,7 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,9 +53,6 @@ public class Menu extends BaseEntity {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "image_url", nullable = false)
-    private String imageUrl;
-
     @Column(name = "sort_order", nullable = false)
     private int sortOrder;
 
@@ -74,7 +69,6 @@ public class Menu extends BaseEntity {
             String name,
             int price,
             String description,
-            String imageUrl,
             int sortOrder,
             boolean isSignature,
             boolean isRecommend
@@ -84,7 +78,6 @@ public class Menu extends BaseEntity {
         this.name = name;
         this.price = price;
         this.description = description;
-        this.imageUrl = imageUrl;
         this.sortOrder = sortOrder;
         this.isSignature = isSignature;
         this.isRecommend = isRecommend;
@@ -104,10 +97,6 @@ public class Menu extends BaseEntity {
 
     public void updateDescription(String description) {
         this.description = description;
-    }
-
-    public void updateImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public void updateSortOrder(int sortOrder) {
