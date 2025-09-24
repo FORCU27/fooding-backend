@@ -2,8 +2,10 @@ package im.fooding.app.dto.response.user.menu;
 
 import im.fooding.core.model.menu.Menu;
 import im.fooding.core.model.menu.MenuCategory;
+import im.fooding.core.model.menu.MenuImage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
+import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,11 +34,15 @@ public class UserMenuResponse {
         this.menu = menu;
     }
 
-    public static UserMenuResponse of(MenuCategory category, List<Menu> menus) {
+    public static UserMenuResponse of(MenuCategory category, List<Menu> menus, Map<Menu, List<MenuImage>> menuImages) {
+        List<MenuResponse> menuResponses = menus.stream().map(
+                menu -> MenuResponse.of(menu, menuImages.get(menu))
+        ).toList();
+
         return UserMenuResponse.builder()
                 .id(category.getId())
                 .categoryName(category.getName())
-                .menu(menus.stream().map(MenuResponse::of).toList())
+                .menu(menuResponses)
                 .build();
     }
 }

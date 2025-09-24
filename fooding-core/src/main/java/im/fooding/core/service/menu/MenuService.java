@@ -24,20 +24,19 @@ public class MenuService {
     private final MenuRepository menuRepository;
 
     @Transactional
-    public void create(MenuCreateRequest request) {
+    public long create(MenuCreateRequest request) {
         Menu menu = Menu.builder()
                 .store(request.store())
                 .category(request.category())
                 .name(request.name())
                 .price(request.price())
                 .description(request.description())
-                .imageUrl(request.imageUrl())
                 .sortOrder(request.sortOrder())
                 .isSignature(request.isSignature())
                 .isRecommend(request.isRecommend())
                 .build();
 
-        menuRepository.save(menu);
+        return menuRepository.save(menu).getId();
     }
 
     public Menu get(Long id) {
@@ -68,7 +67,6 @@ public class MenuService {
         menu.updateName(request.name());
         menu.updatePrice(request.price());
         menu.updateDescription(request.description());
-        menu.updateImageUrl(request.imageUrl());
         menu.updateSortOrder(request.sortOrder());
         menu.updateIsSignature(request.isSignature());
         menu.updateIsRecommend(request.isRecommend());
@@ -96,6 +94,5 @@ public class MenuService {
                 .mapToInt(Menu::getPrice)
                 .average()
                 .orElse(0);
-
     }
 }

@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 public record AdminMenuUpdateRequest(
 
@@ -33,7 +33,7 @@ public record AdminMenuUpdateRequest(
 
         @Schema(description = "메뉴 사진")
         @NotNull
-        String imageId,
+        List<String> imageIds,
 
         @Schema(description = "카테고리 정렬")
         @NotNull
@@ -48,7 +48,7 @@ public record AdminMenuUpdateRequest(
         Boolean isRecommend
 ) {
 
-    public MenuUpdateRequest toMenuUpdateRequest(long id, Store store, MenuCategory category, String imageUrl) {
+    public MenuUpdateRequest toMenuUpdateRequest(long id, Store store, MenuCategory category) {
         return MenuUpdateRequest.builder()
                 .store(store)
                 .id(id)
@@ -56,7 +56,6 @@ public record AdminMenuUpdateRequest(
                 .name(name)
                 .price(price)
                 .description(description)
-                .imageUrl(imageUrl)
                 .sortOrder(sortOrder)
                 .isSignature(isSignature)
                 .isRecommend(isRecommend)

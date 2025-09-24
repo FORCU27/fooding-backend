@@ -1,8 +1,9 @@
 package im.fooding.app.dto.response.admin.menu;
 
 import im.fooding.core.model.menu.Menu;
+import im.fooding.core.model.menu.MenuImage;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.math.BigDecimal;
+import java.util.List;
 import lombok.Builder;
 
 @Builder
@@ -27,7 +28,7 @@ public record AdminMenuResponse(
         String description,
 
         @Schema(description = "메뉴 사진")
-        String imageUrl,
+        List<String> imageUrls,
 
         @Schema(description = "카테고리 정렬")
         int sortOrder,
@@ -39,7 +40,10 @@ public record AdminMenuResponse(
         Boolean isRecommend
 ) {
 
-    public static AdminMenuResponse from(Menu menu) {
+    public static AdminMenuResponse of(Menu menu, List<MenuImage> images) {
+        List<String> imageUrls = images.stream().map(MenuImage::getImageUrl)
+                .toList();
+
         return AdminMenuResponse.builder()
                 .id(menu.getId())
                 .storeId(menu.getStore().getId())
@@ -47,7 +51,7 @@ public record AdminMenuResponse(
                 .name(menu.getName())
                 .price(menu.getPrice())
                 .description(menu.getDescription())
-                .imageUrl(menu.getImageUrl())
+                .imageUrls(imageUrls)
                 .sortOrder(menu.getSortOrder())
                 .isSignature(menu.isSignature())
                 .isRecommend(menu.isRecommend())
