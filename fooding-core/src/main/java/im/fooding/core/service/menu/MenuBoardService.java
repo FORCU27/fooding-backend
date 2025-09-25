@@ -16,10 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MenuBoardService {
 
+    static final long MAX_MENU_BOARD_PER_STORE = 8L;
+
     private final MenuBoardRepository menuBoardRepository;
 
     @Transactional
     public void create(MenuBoardCreateRequest request) {
+        if (menuBoardRepository.countByStoreId(request.getStore().getId()) > MAX_MENU_BOARD_PER_STORE) {
+            throw new ApiException(ErrorCode.MENU_BOARD_COUNT_OVER_LIMIT);
+        }
+
         MenuBoard menuBoard = MenuBoard.builder()
                 .store(request.getStore())
                 .title(request.getTitle())
@@ -37,6 +43,10 @@ public class MenuBoardService {
 
     public Page<MenuBoard> list(Pageable pageable) {
         return menuBoardRepository.findAllByDeletedFalse(pageable);
+    }
+
+    public Page<MenuBoard> listByStoreId(long storeId, Pageable pageable) {
+        return menuBoardRepository.listByStoreId(storeId, pageable);
     }
 
     @Transactional
