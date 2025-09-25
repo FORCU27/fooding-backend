@@ -26,6 +26,9 @@ public class UserStoreListResponse {
     @Schema(description = "가게명", example = "홍길동 식당", requiredMode = RequiredMode.REQUIRED)
     private String name;
 
+    @Schema(description = "주소", example = "서울특별시 마포구", requiredMode = RequiredMode.REQUIRED)
+    private String address;
+
     @Schema(description = "해당 가게의 총 방문수", example = "1000", requiredMode = RequiredMode.REQUIRED)
     private int visitCount;
 
@@ -51,12 +54,13 @@ public class UserStoreListResponse {
     private List<StoreImageResponse> images;
 
     @Builder
-    private UserStoreListResponse(Long id, StoreCategory category, String regionId, String name, double averageRating, int visitCount,
+    private UserStoreListResponse(Long id, StoreCategory category, String regionId, String name, String address, double averageRating, int visitCount,
                                   int reviewCount, int bookmarkCount, Integer estimatedWaitingTimeMinutes, List<StoreImageResponse> images) {
         this.id = id;
         this.category = category;
         this.regionId = regionId;
         this.name = name;
+        this.address = address;
         this.visitCount = visitCount;
         this.reviewCount = reviewCount;
         this.bookmarkCount = bookmarkCount;
@@ -71,6 +75,7 @@ public class UserStoreListResponse {
                 .category(store.getCategory())
                 .regionId(store.getRegionId())
                 .name(store.getName())
+                .address(store.getAddress())
                 .visitCount(store.getVisitCount())
                 .reviewCount(store.getReviewCount())
                 .bookmarkCount(store.getBookmarkCount())
