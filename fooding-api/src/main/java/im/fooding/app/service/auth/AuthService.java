@@ -346,8 +346,8 @@ public class AuthService {
      * @return String
      */
     public String findUserEmail( String name, String phoneNumber ){
-
-        return null;
+        String email = this.userService.findEmailByPhoneNumberAndName( phoneNumber, name );
+        return email;
     }
 
     /**
@@ -374,7 +374,7 @@ public class AuthService {
      * @param phoneNumber
      * @return boolean
      */
-    public boolean certifyUser( String email, String phoneNumber ){
+    private boolean certifyUser( String email, String phoneNumber ){
         // 이메일 인증의 경우
 
         // 전화번호 인증의 경우 --> Pass 인증 등

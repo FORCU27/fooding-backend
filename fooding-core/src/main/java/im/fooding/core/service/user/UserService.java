@@ -214,4 +214,17 @@ public class UserService {
         return userRepository.findByPhoneNumber(phoneNumber)
                 .filter(it -> !it.isDeleted());
     }
+
+    /**
+     * 이름 + 전화번호로 이메일 조회
+     *
+     * @param phoneNumber
+     * @param name
+     */
+    public String findEmailByPhoneNumberAndName( String phoneNumber, String name) {
+        User user = userRepository.findByPhoneNumberAndName( phoneNumber, name ).orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
+        // Role에 따른 로직이 필요할 경우 구현
+
+        return user.getEmail();
+    }
 }
