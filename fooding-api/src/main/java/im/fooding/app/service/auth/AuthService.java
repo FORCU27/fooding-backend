@@ -337,4 +337,48 @@ public class AuthService {
         user.updatedRefreshToken(tokenResponse.getRefreshToken());
         return tokenResponse;
     }
+
+    /**
+     * 아이디 찾기
+     *
+     * @param name
+     * @param phoneNumber
+     * @return String
+     */
+    public String findUserEmail( String name, String phoneNumber ){
+
+        return null;
+    }
+
+    /**
+     * 비밀번호 찾기
+     * @param email
+     * @param name
+     * @param phoneNumber
+     */
+    public void findUserPassword( String email, String name, String phoneNumber ){
+        // 해당 사용자가 있는지 확인
+
+        // 해당 사용자가 있는 경우 본인 인증 진행
+
+        // 임시 비밀번호 생성
+        
+        // 임시 비밀번호 이메일로 전달
+        
+        // 임시 비밀번호 전달 여부 공지
+    }
+
+    /**
+     * 본인 인증
+     * @param email
+     * @param phoneNumber
+     * @return boolean
+     */
+    public boolean certifyUser( String email, String phoneNumber ){
+        // 이메일 인증의 경우
+
+        // 전화번호 인증의 경우 --> Pass 인증 등
+
+        return false;
+    }
 }
