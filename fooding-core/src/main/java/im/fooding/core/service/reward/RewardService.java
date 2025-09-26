@@ -19,6 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class RewardService {
     private final RewardPointRepository repository;
 
+    public RewardPoint get(long id) {
+        return repository.findById(id)
+                .filter(it -> !it.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.REWARD_NOT_FOUND));
+    }
+
     /**
      * 리워드 조회
      *

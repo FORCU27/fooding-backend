@@ -2,6 +2,7 @@ package im.fooding.app.service.user.notification;
 
 import im.fooding.app.dto.response.user.notification.UserNotificationResponse;
 import im.fooding.core.event.reward.RewardEarnEvent;
+import im.fooding.core.event.reward.RewardUseEvent;
 import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
 import im.fooding.core.global.infra.slack.SlackClient;
 import im.fooding.core.global.kafka.KafkaEventHandler;
@@ -10,10 +11,12 @@ import im.fooding.core.global.util.WaitingMessageBuilder;
 import im.fooding.core.model.notification.NotificationTemplate;
 import im.fooding.core.model.notification.NotificationTemplate.Type;
 import im.fooding.core.model.notification.UserNotification;
+import im.fooding.core.model.reward.RewardPoint;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.WaitingUser;
 import im.fooding.core.service.notification.NotificationTemplateService;
 import im.fooding.core.service.notification.UserNotificationService;
+import im.fooding.core.service.reward.RewardService;
 import im.fooding.core.service.waiting.StoreWaitingService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +39,7 @@ public class UserNotificationApplicationService {
     private final UserNotificationService userNotificationService;
     private final NotificationTemplateService notificationTemplateService;
     private final StoreWaitingService storeWaitingService;
+    private final RewardService rewardService;
 
     @Value("${message.sender}")
     private String SENDER;
@@ -147,6 +151,24 @@ public class UserNotificationApplicationService {
                 event.storeName(),
                 event.point()
         );
+        String message = RewardMessageBuilder.buildMessage(subject, content);
+        slackClient.sendNotificationMessage(message);
+    }
+
+    @KafkaEventHandler(RewardUseEvent.class)
+    public void sendRewardUseMessage(RewardUseEvent event) {
+        RewardPoint rewardPoint = rewardService.get(event.rewardId());
+
+        String storeName = rewardPoint.getStore().getName();
+
+        // 리워드 사용 템플릿
+        String subject = "푸딩 리워드 사용 완료";
+        String content = "[푸딩]\n%s에 %d 포인트가 사용되었어요.\n잔여 포인트 : %d".formatted(
+                storeName,
+                event.usePoint(),
+                event.remainPoint()
+        );
+
         String message = RewardMessageBuilder.buildMessage(subject, content);
         slackClient.sendNotificationMessage(message);
     }
