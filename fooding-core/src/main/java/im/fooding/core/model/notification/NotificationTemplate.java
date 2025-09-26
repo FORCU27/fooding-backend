@@ -26,7 +26,8 @@ public class NotificationTemplate extends BaseDocument {
     public enum Type {
         WaitingCreatedEmail,
         WaitingCreatedSms,
-        RewardEarnSms
+        RewardEarnSms,
+        RewardUseSms
     }
 
     public NotificationTemplate(Type type, String subject, String content) {

@@ -157,13 +157,13 @@ public class UserNotificationApplicationService {
 
     @KafkaEventHandler(RewardUseEvent.class)
     public void sendRewardUseMessage(RewardUseEvent event) {
-        RewardPoint rewardPoint = rewardService.get(event.rewardId());
+        NotificationTemplate template = notificationTemplateService.getByType(Type.RewardUseSms);
 
+        RewardPoint rewardPoint = rewardService.get(event.rewardId());
         String storeName = rewardPoint.getStore().getName();
 
-        // 리워드 사용 템플릿
-        String subject = "푸딩 리워드 사용 완료";
-        String content = "[푸딩]\n%s에 %d 포인트가 사용되었어요.\n잔여 포인트 : %d".formatted(
+        String subject = template.getSubject();
+        String content = template.getContent().formatted(
                 storeName,
                 event.usePoint(),
                 event.remainPoint()
