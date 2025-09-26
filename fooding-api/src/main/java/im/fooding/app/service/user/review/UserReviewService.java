@@ -144,7 +144,7 @@ public class UserReviewService {
                             .taste( request.getTasteScore() )
                             .total( totalScore )
                             .build();
-        reviewService.update( id, request.getContent(), request.getVisitPurposeType(), score );
+        reviewService.update( id, request.getContent(), request.getVisitPurpose(), score );
         // 리뷰 이미지 수정
         Review review = reviewService.findById( id );
         reviewImageService.update( review, request.getImageUrls() );
