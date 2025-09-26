@@ -6,6 +6,8 @@ import im.fooding.app.dto.request.admin.reward.AdminUpdateRewardPointRequest;
 import im.fooding.app.dto.response.admin.reward.AdminRewardPointResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.event.reward.RewardUseEvent;
+import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.reward.RewardPoint;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
@@ -27,6 +29,7 @@ public class AdminRewardPointService {
     private final RewardPointRepository rewardPointRepository;
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
+    private final EventProducerService eventProducerService;
 
     @Transactional(readOnly = true)
     public PageResponse<AdminRewardPointResponse> list(AdminSearchRewardPointRequest request) {
@@ -123,6 +126,11 @@ public class AdminRewardPointService {
                 .orElseThrow(() -> new RuntimeException("리워드 포인트를 찾을 수 없습니다: " + id));
         
         rewardPoint.usePoint(point);
+
+        eventProducerService.publishEvent(
+                RewardUseEvent.class.getSimpleName(),
+                new RewardUseEvent(id, point, rewardPoint.getPoint())
+        );
     }
 
     private AdminRewardPointResponse toResponse(RewardPoint rewardPoint) {
