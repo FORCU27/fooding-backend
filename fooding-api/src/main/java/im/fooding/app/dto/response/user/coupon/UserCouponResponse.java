@@ -105,7 +105,7 @@ public class UserCouponResponse {
                 .createdDateAt(userCoupon.getCreatedAt())
                 .tableNumber(userCoupon.getTableNumber())
                 .point(userCoupon.getPoint())
-                .images(store.getImages())
+                .images(store != null ? store.getImages() : null)
                 .build();
     }
 }
