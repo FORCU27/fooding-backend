@@ -63,7 +63,9 @@ public class UserReviewService {
         Map<Long, List<ReviewImage>> imageMap = getReviewImageMap(reviewIds);
         Map<Long, Long> likeCountMap = getReviewLikeMap(reviewIds);
 
-        Plan plan = writerId != null ? planService.findByUserIdAndStoreId(writerId, storeId) : null;
+        Plan plan = (writerId != null && storeId != null)
+                ? planService.findByUserIdAndStoreId(writerId, storeId)
+                : null;
 
         List<UserReviewResponse> content = reviewPage.getContent().stream()
                 .map(review -> UserReviewResponse.of(
