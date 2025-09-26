@@ -27,6 +27,9 @@ public record AdminMenuResponse(
         @Schema(description = "메뉴 설명")
         String description,
 
+        @Schema(description = "메뉴 이미지 ID 목록")
+        List<String> imageIds,
+
         @Schema(description = "메뉴 사진")
         List<String> imageUrls,
 
@@ -41,7 +44,11 @@ public record AdminMenuResponse(
 ) {
 
     public static AdminMenuResponse of(Menu menu, List<MenuImage> images) {
-        List<String> imageUrls = images.stream().map(MenuImage::getImageUrl)
+        List<String> imageUrls = images.stream()
+                .map(MenuImage::getImageUrl)
+                .toList();
+        List<String> imageIds = images.stream()
+                .map(image -> String.valueOf(image.getId()))
                 .toList();
 
         return AdminMenuResponse.builder()
@@ -51,6 +58,7 @@ public record AdminMenuResponse(
                 .name(menu.getName())
                 .price(menu.getPrice())
                 .description(menu.getDescription())
+                .imageIds(imageIds)
                 .imageUrls(imageUrls)
                 .sortOrder(menu.getSortOrder())
                 .isSignature(menu.isSignature())

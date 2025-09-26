@@ -27,10 +27,10 @@ public class QWaitingNumberRepositoryImpl implements QWaitingNumberRepository {
         WaitingNumberGenerator updated = mongoTemplate.findAndModify(
                 Query.query(Criteria.where("storeId").is(storeId)),
                 new Update().inc("lastAssignedNumber", 1),
-                FindAndModifyOptions.options().returnNew(true),
+                FindAndModifyOptions.options().returnNew(true).upsert(true),
                 WaitingNumberGenerator.class
         );
 
-        return updated.getLastAssignedNumber();
+        return updated != null ? updated.getLastAssignedNumber() : 1;
     }
 }
