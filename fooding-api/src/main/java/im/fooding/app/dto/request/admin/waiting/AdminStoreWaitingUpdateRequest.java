@@ -16,6 +16,10 @@ public record AdminStoreWaitingUpdateRequest(
         @NotNull
         Long storeId,
 
+        @Schema(description = "웨이팅 상태(WAITING, SEATED, CANCELLED)", example = "WAITING")
+        @NotNull
+        String status,
+
         @Schema(description = "등록 방법(IN_PERSON, ONLINE)", example = "IN_PERSON")
         @NotNull
         String channel,
@@ -42,6 +46,7 @@ public record AdminStoreWaitingUpdateRequest(
                 .id(id)
                 .user(user)
                 .store(store)
+                .status(status)
                 .channel(channel)
                 .infantChairCount(infantChairCount)
                 .infantCount(infantCount)

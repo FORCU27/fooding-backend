@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -49,7 +52,9 @@ public class AdminMenuService {
         request.imageIds().forEach(imageId -> {
             if (StringUtils.hasText(imageId)) {
                 File file = fileUploadService.commit(imageId);
-                menuImageUrls.add(file.getUrl());
+                if (file != null) {
+                    menuImageUrls.add(file.getUrl());
+                }
             }
         });
 
@@ -84,19 +89,28 @@ public class AdminMenuService {
         Store store = storeService.findById(request.storeId());
         MenuCategory menuCategory = menuCategoryService.get(request.categoryId());
 
-        List<String> menuImageUrls = new ArrayList<>();
-        request.imageIds().forEach(imageId -> {
-            if (StringUtils.hasText(imageId)) {
-                File file = fileUploadService.commit(imageId);
-                menuImageUrls.add(file.getUrl());
-            }
-        });
         Menu menu = menuService.get(id);
         List<MenuImage> menuImages = menuImageService.listByMenuId(id);
-        menuImages.stream().filter(menuImage -> !menuImageUrls.contains(menuImage.getImageUrl()))
+
+        Set<Long> requestedExistingIds = request.imageIds().stream()
+                .filter(StringUtils::hasText)
+                .filter(this::isNumeric)
+                .map(Long::parseLong)
+                .collect(Collectors.toSet());
+
+        menuImages.stream()
+                .filter(menuImage -> !requestedExistingIds.contains(menuImage.getId()))
                 .forEach(menuImage -> menuImage.delete(updatedBy));
-        menuImageUrls.stream().filter(menuImageUrl -> !menuImages.contains(menuImageUrl))
-                .forEach(menuImageUrl -> menuImageService.create(menu, menuImageUrl));
+
+        request.imageIds().stream()
+                .filter(StringUtils::hasText)
+                .filter(imageId -> !isNumeric(imageId))
+                .map(fileId -> {
+                    File file = fileUploadService.commit(fileId);
+                    return file != null ? file.getUrl() : null;
+                })
+                .filter(Objects::nonNull)
+                .forEach(imageUrl -> menuImageService.create(menu, imageUrl));
 
         menuService.update(request.toMenuUpdateRequest(id, store, menuCategory));
         updateStorageAveragePrice(store);
@@ -110,5 +124,17 @@ public class AdminMenuService {
     private void updateStorageAveragePrice(Store store) {
         int averagePrice = menuService.getAveragePrice(store.getId());
         eventProducerService.publishEvent("StoreAveragePriceUpdatedEvent", new StoreAveragePriceUpdatedEvent(store.getId(), averagePrice));
+    }
+
+    private boolean isNumeric(String value) {
+        if (!StringUtils.hasText(value)) {
+            return false;
+        }
+        for (int i = 0; i < value.length(); i++) {
+            if (!Character.isDigit(value.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }

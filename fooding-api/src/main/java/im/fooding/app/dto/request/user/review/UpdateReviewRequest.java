@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UpdateReviewRequest {
     private String content;
-    private VisitPurposeType visitPurposeType;
+    private VisitPurposeType visitPurpose;
     private float tasteScore;
     private float moodScore;
     private float serviceScore;
