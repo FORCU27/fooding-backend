@@ -4,11 +4,14 @@ import im.fooding.app.dto.request.user.store.UserImmediateEntryStoreRequest;
 import im.fooding.app.dto.request.user.store.UserSearchStoreRequest;
 import im.fooding.app.dto.response.user.store.UserStoreListResponse;
 import im.fooding.app.dto.response.user.store.UserStoreResponse;
+import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.event.keyword.SearchKeywordSavedEvent;
 import im.fooding.core.global.UserInfo;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.global.util.Util;
 import im.fooding.core.model.bookmark.Bookmark;
 import im.fooding.core.model.store.Store;
@@ -18,7 +21,9 @@ import im.fooding.core.model.store.information.StoreDailyOperatingTime;
 import im.fooding.core.model.store.information.StoreOperatingHour;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingStatus;
+import im.fooding.core.repository.user.UserRepository;
 import im.fooding.core.service.bookmark.BookmarkService;
+import im.fooding.core.service.store.RecentStoreService;
 import im.fooding.core.service.store.StoreOperatingHourService;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.store.document.StoreDocumentService;
@@ -28,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.EnumSet;
@@ -47,6 +53,9 @@ public class UserStoreService {
     private final WaitingSettingService waitingSettingService;
     private final BookmarkService bookmarkService;
     private final StoreDocumentService storeDocumentService;
+    private final RecentStoreService recentStoreService;
+    private final UserRepository userRepository;
+    private final EventProducerService eventProducerService;
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreListResponse> list(UserSearchStoreRequest request, UserInfo userInfo) {
@@ -69,7 +78,7 @@ public class UserStoreService {
         return PageResponse.of(list, PageInfo.of(stores));
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public PageResponse<UserStoreListResponse> list_v2(UserSearchStoreRequest request, UserInfo userInfo) {
         try {
             Page<StoreDocument> stores = storeDocumentService.fullTextSearch(request.getSearchString(), request.getSortType(), request.getSortDirection(), request.getRegionIds(), request.getCategory(), request.getLatitude(), request.getLongitude(), request.getPageable());
@@ -90,8 +99,11 @@ public class UserStoreService {
                 }
             }
 
-            return PageResponse.of(list, PageInfo.of(stores));
+            if (StringUtils.hasText(request.getSearchString())) {
+                eventProducerService.publishEvent("SearchKeywordSavedEvent", new SearchKeywordSavedEvent(request.getSearchString()));
+            }
 
+            return PageResponse.of(list, PageInfo.of(stores));
         } catch (IOException e) {
             e.printStackTrace();
             throw new ApiException(ErrorCode.ELASTICSEARCH_SEARCH_FAILED);
@@ -101,11 +113,9 @@ public class UserStoreService {
     @Transactional
     public UserStoreResponse retrieve(Long id, UserInfo userInfo) {
         Set<StoreStatus> userVisibleStatuses = EnumSet.of(
-                StoreStatus.APPROVED,
-                StoreStatus.REJECTED,
-                StoreStatus.SUSPENDED,
-                StoreStatus.CLOSED
+                StoreStatus.APPROVED
         );
+
         Store store = storeService.retrieve(id, userVisibleStatuses);
         storeService.increaseVisitCount(store);
         UserStoreResponse userStoreResponse = UserStoreResponse.of(store, null);
@@ -116,6 +126,10 @@ public class UserStoreService {
         // 북마크 여부 세팅
         if (userInfo != null) {
             setBookmarked(userStoreResponse, userInfo.getId());
+            userRepository.findById(userInfo.getId()).ifPresent(user -> {
+                //최근에 본 식당 update
+                recentStoreService.update(user, store);
+            });
         }
 
         return userStoreResponse;
@@ -131,6 +145,29 @@ public class UserStoreService {
                 .toList();
 
         return PageResponse.of(content, PageInfo.of(waitingSettings));
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<UserStoreListResponse> retrieveRecentStores(UserInfo userInfo) {
+        if (userInfo != null) {
+            Set<StoreStatus> userVisibleStatuses = EnumSet.of(
+                    StoreStatus.APPROVED
+            );
+            BasicSearch search = new BasicSearch();
+            Page<Store> stores = recentStoreService.findRecentStores(userInfo.getId(), userVisibleStatuses, search.getPageable());
+            List<UserStoreListResponse> list = stores.getContent().stream()
+                    .map(store -> UserStoreListResponse.of(store, null))
+                    .toList();
+
+            if (list != null && !list.isEmpty()) {
+                setOperatingStatus(list, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
+                setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
+            }
+
+            return PageResponse.of(list, PageInfo.of(stores));
+        }
+
+        return PageResponse.empty();
     }
 
     private UserStoreListResponse mapStoreToResponse(Store store) {

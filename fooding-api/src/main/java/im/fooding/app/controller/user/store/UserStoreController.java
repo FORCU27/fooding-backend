@@ -52,4 +52,10 @@ public class UserStoreController {
     ) {
         return ApiResult.ok(service.retrieveImmediateEntry(request));
     }
+
+    @GetMapping("/recent")
+    @Operation(summary = "최근 본 식당 조회")
+    public ApiResult<PageResponse<UserStoreListResponse>> retrieveRecentStores(@AuthenticationPrincipal UserInfo userInfo) {
+        return ApiResult.ok(service.retrieveRecentStores(userInfo));
+    }
 }

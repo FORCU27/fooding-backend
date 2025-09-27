@@ -48,7 +48,7 @@ public class UserBookmarkResponse {
     @Schema(description = "해당 가게의 카테고리", requiredMode = RequiredMode.REQUIRED)
     private StoreCategory category;
 
-    @Schema(description = "해당 가게의 위치", requiredMode = RequiredMode.REQUIRED)
+    @Schema(description = "주소", example = "서울특별시 마포구", requiredMode = RequiredMode.NOT_REQUIRED)
     private String address;
 
     @Builder

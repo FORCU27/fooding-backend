@@ -63,7 +63,9 @@ public class UserReviewService {
         Map<Long, List<ReviewImage>> imageMap = getReviewImageMap(reviewIds);
         Map<Long, Long> likeCountMap = getReviewLikeMap(reviewIds);
 
-        Plan plan = writerId != null ? planService.findByUserIdAndStoreId(writerId, storeId) : null;
+        Plan plan = (writerId != null && storeId != null)
+                ? planService.findByUserIdAndStoreId(writerId, storeId)
+                : null;
 
         List<UserReviewResponse> content = reviewPage.getContent().stream()
                 .map(review -> UserReviewResponse.of(
@@ -142,7 +144,7 @@ public class UserReviewService {
                             .taste( request.getTasteScore() )
                             .total( totalScore )
                             .build();
-        reviewService.update( id, request.getContent(), request.getVisitPurposeType(), score );
+        reviewService.update( id, request.getContent(), request.getVisitPurpose(), score );
         // 리뷰 이미지 수정
         Review review = reviewService.findById( id );
         reviewImageService.update( review, request.getImageUrls() );

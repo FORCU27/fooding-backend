@@ -1,12 +1,12 @@
 package im.fooding.core.model.store.document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -54,6 +54,7 @@ public class StoreDocument {
         this.createdAt = createdAt;
     }
 
+    @JsonIgnore
     public String getIndex() {
         return "stores_v1";
     }

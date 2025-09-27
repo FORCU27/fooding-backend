@@ -13,11 +13,13 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.event.coupon.RequestCouponEvent;
 import im.fooding.core.event.reward.RewardEarnEvent;
+import im.fooding.core.event.reward.RewardUseEvent;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.coupon.UserCoupon;
 import im.fooding.core.model.notification.NotificationChannel;
+import im.fooding.core.model.reward.RewardPoint;
 import im.fooding.core.model.reward.RewardStatus;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.coupon.UserCouponService;
@@ -125,14 +127,17 @@ public class RewardApplicationService {
      *
      * @param request
      */
+    @Transactional
     public void usePoint(UpdateRewardPointRequest request){
         // Point가 있는지 확인
         //  데이터가 존재하는지 확인
         Pageable pageable = PageRequest.of(0, 5);
-        List<GetRewardPointResponse> result = pointService.list( null, request.getStoreId(), request.getPhoneNumber(), pageable ).map(GetRewardPointResponse::of).stream().collect(Collectors.toList());
+        Page<RewardPoint> rewardPoints = pointService.list(null, request.getStoreId(), request.getPhoneNumber(), pageable);
+        List<GetRewardPointResponse> result = rewardPoints.map(GetRewardPointResponse::of).stream().collect(Collectors.toList());
         if( result.size() == 0 ) throw new ApiException(ErrorCode.REWARD_NOT_FOUND);
         //  잔여 포인트가 있는지 확인
-        if( result.get(0).getPoint() < request.getPoint() )  throw new ApiException(ErrorCode.REWARD_POINT_NOT_ENOUGH);
+        RewardPoint rewardPoint = rewardPoints.stream().findFirst().get();
+        if( rewardPoint.getPoint() < request.getPoint() )  throw new ApiException(ErrorCode.REWARD_POINT_NOT_ENOUGH);
         // Point가 있는 경우 소비
         pointService.usePoint( request.getPhoneNumber(), request.getStoreId(), request.getPoint() );
         logService.create(
@@ -142,6 +147,11 @@ public class RewardApplicationService {
                 RewardStatus.USED,
                 request.getType(),
                 request.getChannel()
+        );
+
+        eventProducerService.publishEvent(
+                RewardUseEvent.class.getSimpleName(),
+                new RewardUseEvent(rewardPoint.getId(), request.getPoint(), rewardPoint.getPoint())
         );
     }
 
