@@ -19,6 +19,7 @@ import java.util.Map;
 public class CeoAuthController {
     private final AuthService authService;
 
+    // 이메일( 아이디 ) 찾기 API
     @GetMapping( "/find/email" )
     public ApiResult<Map<String, String>> findEmail(
             @RequestParam String name,
@@ -28,13 +29,13 @@ public class CeoAuthController {
         return ApiResult.ok( Map.of( "email", email ) );
     }
 
+    // 비밀번호 찾기 API
     @GetMapping( "/find/password" )
     public ApiResult<Void> findPassword(
-            @RequestParam String email,
             @RequestParam String name,
             @RequestParam String phoneNumber
     ){
-        authService.findUserPassword( email, name, phoneNumber);
+        authService.findUserPassword( name, phoneNumber);
         return ApiResult.ok();
     }
 }

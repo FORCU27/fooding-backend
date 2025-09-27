@@ -94,6 +94,13 @@ webhook:
   slack:
     url: ${WEBHOOK_SLACK_URL:}
 
+email:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+  username: foodinghelper@fooding.im
+  password: kzptuibhpdhlgpnb
+
 message:
   sender: 02-1234-5678
 

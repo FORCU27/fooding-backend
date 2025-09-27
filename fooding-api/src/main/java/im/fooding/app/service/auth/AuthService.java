@@ -5,6 +5,8 @@ import im.fooding.app.dto.request.auth.*;
 import im.fooding.app.dto.response.auth.AuthCheckNicknameResponse;
 import im.fooding.app.dto.response.auth.AuthUserResponse;
 import im.fooding.app.service.file.FileUploadService;
+import im.fooding.core.event.auth.AuthGetResetUrlByPhoneEvent;
+import im.fooding.core.event.auth.AuthPhoneAuthenticateEvent;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.global.feign.client.SocialLoginClient;
@@ -18,11 +20,16 @@ import im.fooding.core.global.jwt.dto.TokenResponse;
 import im.fooding.core.global.jwt.service.JwtService;
 import im.fooding.core.global.util.AppleLoginUtil;
 import im.fooding.core.model.file.File;
+import im.fooding.core.model.notification.NotificationChannel;
 import im.fooding.core.model.user.*;
+import im.fooding.core.service.user.AuthenticationService;
 import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +37,7 @@ import org.springframework.util.StringUtils;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Random;
 
 import static im.fooding.core.global.util.Util.isAllowedBackofficeEmails;
 
@@ -44,6 +52,11 @@ public class AuthService {
     private final UserAuthorityService userAuthorityService;
     private final PasswordEncoder passwordEncoder;
     private final FileUploadService fileUploadService;
+
+    @Value("${message.sender}")
+    private String SENDER;
+    private final ApplicationEventPublisher publisher;
+    private final AuthenticationService authenticationService;
 
     /**
      * user id로 조회
@@ -346,39 +359,129 @@ public class AuthService {
      * @return String
      */
     public String findUserEmail( String name, String phoneNumber ){
-        String email = this.userService.findEmailByPhoneNumberAndName( phoneNumber, name );
-        return email;
+        // 전화번호를 통한 휴대폰 인증 ( 이 때 필요한 이메일 정보는 사용자 정보를 미리 가져와서 저장 )
+        int code = createAuthCode( phoneNumber );
+        sendPhoneAuthentication( name, code, phoneNumber );
+        // 인증번호 확인
+        if( !isCorrectCode( "01000000000", 0 ) ) return null;
+        // 이메일 전달
+        getEmail( name, phoneNumber );
+        return null;
     }
 
     /**
      * 비밀번호 찾기
-     * @param email
      * @param name
      * @param phoneNumber
      */
-    public void findUserPassword( String email, String name, String phoneNumber ){
-        // 해당 사용자가 있는지 확인
-
-        // 해당 사용자가 있는 경우 본인 인증 진행
-
-        // 임시 비밀번호 생성
-        
-        // 임시 비밀번호 이메일로 전달
-        
-        // 임시 비밀번호 전달 여부 공지
+    public void findUserPassword( String name, String phoneNumber ){
+        // 전화번호를 통한 휴대폰 인증
+        int code = createAuthCode( phoneNumber );
+        sendPhoneAuthentication( name, code, phoneNumber );
+        // 인증번호 확인
+        if( !isCorrectCode( "전화번호", 0 ) ) return;
+        // 비밀번호 재설정 링크 생성
+        String url = "";
+        // 이메일 or 전화번호 비밀번호 재설정 링크 전달 수단 선택
+        boolean isEmail = false;
+        User user = userService.findByPhoneNumber( phoneNumber );
+        if( isEmail ){
+            // 이메일로 전달
+            sendEmail( user.getEmail(), url );
+        }
+        else {
+            // 전화번호로 전달
+            sendSms( name, phoneNumber, url );
+        }
     }
 
     /**
-     * 본인 인증
+     * 비밀번호 재설정
      * @param email
-     * @param phoneNumber
-     * @return boolean
+     * @param verificationCode
      */
-    private boolean certifyUser( String email, String phoneNumber ){
-        // 이메일 인증의 경우
+    public void resetPassword( String email, String verificationCode, String password  ){
+        // 전달한 링크에 담겨 있는 인증 코드 확인
 
-        // 전화번호 인증의 경우 --> Pass 인증 등
+        // 비밀번호 암호화
 
-        return false;
+        // 비밀번호 변경
+
     }
+
+    /**
+     * 휴대폰 인증 코드 생성
+     */
+    private int createAuthCode( String phoneNumber ){
+        Random random = new Random();
+        int code = 100000 + random.nextInt(900000);
+        User user = userService.findByPhoneNumber( phoneNumber );
+        if( user == null ) throw new ApiException( ErrorCode.USER_NOT_FOUND, "가입 정보가 없습니다" );
+        authenticationService.create( user.getEmail(), phoneNumber, code );
+        return code;
+    }
+
+    /**
+     * 휴대폰 인증 번호 전달
+     * @param phoneNumber
+     * return String
+     */
+    public void sendPhoneAuthentication( String name, int code, String phoneNumber ){
+        publisher.publishEvent( new AuthPhoneAuthenticateEvent( name, code, phoneNumber, SENDER, NotificationChannel.SMS ) );
+    }
+
+    /**
+     * 휴대폰 인증 번호 확인
+     * @param phoneNumber
+     * @param code
+     * return boolean
+     */
+    public boolean isCorrectCode( String phoneNumber, int code ){
+        return authenticationService.checkCodeAvailable( phoneNumber, code );
+    }
+
+    /**
+     * 사용자 이메일 전달
+     * @param name
+     * @param phoneNumber
+     * return String
+     */
+    public String getEmail( String name, String phoneNumber ){
+        User user = userService.findByPhoneNumber( phoneNumber );
+        if( user.getName().equals( name ) ) return user.getEmail();
+        return null;
+    }
+
+    /**
+     * 비밀번호 재설정 URL 생성
+     * @param name
+     * @param code
+     * @param email
+     * return String
+     */
+    public String createResetUrl( String name, String code, String email ){
+
+        return null;
+    }
+
+    /**
+     * 이메일 전송
+     * @param email
+     * @param url
+     */
+    public void sendEmail( String email, String url ){
+        // Google SMTP 활용
+    }
+
+    /**
+     * SMS 전송
+     * @param phoneNumber
+     * @param url
+     */
+    public void sendSms( String name, String phoneNumber, String url ){
+        // 모든 서비스가 유료. Slack으로 대체
+        publisher.publishEvent( new AuthGetResetUrlByPhoneEvent( name, phoneNumber, url, SENDER, NotificationChannel.SMS ) );
+    }
+
+
 }
