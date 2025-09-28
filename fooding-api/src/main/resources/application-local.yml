@@ -97,7 +97,7 @@ webhook:
 email:
   smtp:
     host: ${SMTP_HOST}
-    port: ${SMPT_PORT}
+    port: ${SMTP_PORT}
   username: ${SMTP_USERNAME}
   password: ${SMTP_PASSWORD}
 
