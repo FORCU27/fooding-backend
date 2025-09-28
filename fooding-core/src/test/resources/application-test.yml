@@ -52,3 +52,10 @@ kafka:
   internal:
     topic: __topic__
     groupId: __groupId__
+
+email:
+  smtp:
+    host: ${SMTP_HOST}
+    port: ${SMPT_PORT}
+  username: ${SMTP_USERNAME}
+  password: ${SMTP_PASSWORD}
