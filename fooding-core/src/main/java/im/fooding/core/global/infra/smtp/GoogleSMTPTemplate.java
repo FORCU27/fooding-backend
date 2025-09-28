@@ -4,7 +4,9 @@ import jakarta.mail.Message;
 import jakarta.mail.Session;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GoogleSMTPTemplate {
 
     public Message createMessage(Session session, String sender, String receiver, String title, String url ){
@@ -36,9 +38,9 @@ public class GoogleSMTPTemplate {
                         비밀번호 재설정을 위한 URL을 전달드립니다.
                     </p>
                     <div style='background-color: #f8f9fa; padding: 20px; border-radius: 5px; text-align: center; margin: 20px 0;'>
-                        <h1 style='color: #007bff; font-size: 32px; margin: 0; letter-spacing: 5px;'>
-                            %s
-                        </h1>
+                        <a style='color: #007bff; font-size: 20px; margin: 0; letter-spacing: 5px;'>
+                            https://fooding.im/%s
+                        </a>
                     </div>
                     <p style='color: #666; font-size: 14px;'>
                         • 인증번호는 <strong>20분간</strong> 유효합니다.<br>
