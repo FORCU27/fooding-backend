@@ -4,7 +4,9 @@ import feign.FeignException;
 import im.fooding.app.dto.request.auth.*;
 import im.fooding.app.dto.response.auth.AuthCheckNicknameResponse;
 import im.fooding.app.dto.response.auth.AuthUserResponse;
+import im.fooding.app.dto.response.ceo.auth.CeoAuthenticatePhoneResponse;
 import im.fooding.app.service.file.FileUploadService;
+import im.fooding.core.event.auth.AuthGetResetUrlByEmailEvent;
 import im.fooding.core.event.auth.AuthGetResetUrlByPhoneEvent;
 import im.fooding.core.event.auth.AuthPhoneAuthenticateEvent;
 import im.fooding.core.global.exception.ApiException;
@@ -36,6 +38,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
 import java.util.Random;
 
@@ -352,61 +357,48 @@ public class AuthService {
     }
 
     /**
-     * 아이디 찾기
-     *
+     * 휴대폰으로 인증번호 전송
      * @param name
      * @param phoneNumber
-     * @return String
      */
-    public String findUserEmail( String name, String phoneNumber ){
-        // 전화번호를 통한 휴대폰 인증 ( 이 때 필요한 이메일 정보는 사용자 정보를 미리 가져와서 저장 )
+    public void sendAuthenticateCode( String name, String phoneNumber ){
         int code = createAuthCode( phoneNumber );
         sendPhoneAuthentication( name, code, phoneNumber );
-        // 인증번호 확인
-        if( !isCorrectCode( "01000000000", 0 ) ) return null;
-        // 이메일 전달
-        getEmail( name, phoneNumber );
-        return null;
     }
 
-    /**
-     * 비밀번호 찾기
-     * @param name
-     * @param phoneNumber
-     */
-    public void findUserPassword( String name, String phoneNumber ){
-        // 전화번호를 통한 휴대폰 인증
-        int code = createAuthCode( phoneNumber );
-        sendPhoneAuthentication( name, code, phoneNumber );
-        // 인증번호 확인
-        if( !isCorrectCode( "전화번호", 0 ) ) return;
-        // 비밀번호 재설정 링크 생성
-        String url = "";
-        // 이메일 or 전화번호 비밀번호 재설정 링크 전달 수단 선택
-        boolean isEmail = false;
-        User user = userService.findByPhoneNumber( phoneNumber );
-        if( isEmail ){
-            // 이메일로 전달
-            sendEmail( user.getEmail(), url );
-        }
-        else {
-            // 전화번호로 전달
-            sendSms( name, phoneNumber, url );
-        }
-    }
 
     /**
      * 비밀번호 재설정
-     * @param email
-     * @param verificationCode
+     * @param encodedLine
+     * @param password
      */
-    public void resetPassword( String email, String verificationCode, String password  ){
+    @Transactional
+    public void resetPassword( String encodedLine, String password  ){
         // 전달한 링크에 담겨 있는 인증 코드 확인
+        // Base64로 인코딩한 정보 디코딩
+        try{
+            byte[] decodedBytes = Base64.getDecoder().decode(encodedLine);
+            String decoded = new String(decodedBytes, StandardCharsets.UTF_8);
+            System.out.println( decoded );
+            String[] valueArray = decoded.split("_");
+            String phoneNumber = valueArray[3];
+            int code = Integer.parseInt( valueArray[4] );
+            User user = userService.findByPhoneNumber( phoneNumber );
+            Authentication authentication = authenticationService.findAuthenticationByEmailAndCode( user.getEmail(), code );
+            if( authentication == null ) return;
+            // 기간 만료 확인
+            // code를 발급 받고 1시간이 지났다면 기간 만료
+            if( LocalDateTime.now().isAfter( authentication.getExpiredAt().plusMinutes(40) ) ) return;
 
-        // 비밀번호 암호화
+            // 비밀번호 암호화
+            String encodedPassword = passwordEncoder.encode( password );
 
-        // 비밀번호 변경
-
+            // 비밀번호 변경
+            user.updatePassword( encodedPassword );
+        }
+        catch( Exception e ){
+            System.out.println( e.getMessage() );
+        }
     }
 
     /**
@@ -426,7 +418,8 @@ public class AuthService {
      * @param phoneNumber
      * return String
      */
-    public void sendPhoneAuthentication( String name, int code, String phoneNumber ){
+    private void sendPhoneAuthentication( String name, int code, String phoneNumber ){
+        System.out.println( code );
         publisher.publishEvent( new AuthPhoneAuthenticateEvent( name, code, phoneNumber, SENDER, NotificationChannel.SMS ) );
     }
 
@@ -436,31 +429,52 @@ public class AuthService {
      * @param code
      * return boolean
      */
-    public boolean isCorrectCode( String phoneNumber, int code ){
-        return authenticationService.checkCodeAvailable( phoneNumber, code );
+    public CeoAuthenticatePhoneResponse isCorrectCode(String phoneNumber, int code ){
+        boolean result = authenticationService.checkCodeAvailable( phoneNumber, code );
+        CeoAuthenticatePhoneResponse.CeoAuthenticatePhoneResponseBuilder builder = CeoAuthenticatePhoneResponse.builder();
+        if( !result ) return builder.isSuccess( false ).build();
+        User user = userService.findByPhoneNumber( phoneNumber );
+        return builder.isSuccess( true ).email( user.getEmail() ).phoneNumber( user.getPhoneNumber() ).code( code ).build();
     }
 
     /**
      * 사용자 이메일 전달
-     * @param name
+     * @param code
      * @param phoneNumber
      * return String
      */
-    public String getEmail( String name, String phoneNumber ){
+    public String getEmail( String phoneNumber, int code ){
         User user = userService.findByPhoneNumber( phoneNumber );
-        if( user.getName().equals( name ) ) return user.getEmail();
-        return null;
+        Authentication auth = authenticationService.findAuthenticationByEmailAndCode( user.getEmail(), code );
+        if( auth == null ) return null;
+        return user.getEmail();
+    }
+
+    public void sendPasswordResetUrl( String name, String phoneNumber, int code, boolean isEmail ){
+        String url = this.createResetUrl( phoneNumber, code );
+        User user = userService.findByPhoneNumber( phoneNumber );
+        if( !user.getName().equals( name ) ) throw new ApiException( ErrorCode.AUTHENTICATION_NOT_FOUND, "잘못된 요청입니다" );
+        if( isEmail ) this.sendEmail( name, user.getEmail(), url );
+        else this.sendSms( name, user.getPhoneNumber(), url );
     }
 
     /**
      * 비밀번호 재설정 URL 생성
-     * @param name
-     * @param code
-     * @param email
+     * @param phoneNumber       // 전화번호
+     * @param code              // 휴대폰 인증시 사용했던 6자리 숫자
      * return String
      */
-    public String createResetUrl( String name, String code, String email ){
-
+    private String createResetUrl( String phoneNumber, int code  ){
+        // Base64를 통한 사용자 ID + 만료날짜가 담긴 문자열 암호화
+        // 임시로 아래처럼 문자열을 사용하지만 자세한 구조는 상의 필요
+        String userInformation = "password_reset_url_" + phoneNumber + "_" + code;
+        try{
+            byte[] bytes = userInformation.getBytes(StandardCharsets.UTF_8);
+            return Base64.getEncoder().encodeToString(bytes);
+        }
+        catch( Exception e ){
+            System.out.println( e.getMessage() );
+        }
         return null;
     }
 
@@ -469,8 +483,10 @@ public class AuthService {
      * @param email
      * @param url
      */
-    public void sendEmail( String email, String url ){
+    private void sendEmail( String name, String email, String url ){
         // Google SMTP 활용
+        System.out.println( url );
+        publisher.publishEvent( new AuthGetResetUrlByEmailEvent( name, email, url, SENDER, NotificationChannel.MAIL ) );
     }
 
     /**
@@ -478,8 +494,9 @@ public class AuthService {
      * @param phoneNumber
      * @param url
      */
-    public void sendSms( String name, String phoneNumber, String url ){
+    private void sendSms( String name, String phoneNumber, String url ){
         // 모든 서비스가 유료. Slack으로 대체
+        System.out.println( url );
         publisher.publishEvent( new AuthGetResetUrlByPhoneEvent( name, phoneNumber, url, SENDER, NotificationChannel.SMS ) );
     }
 

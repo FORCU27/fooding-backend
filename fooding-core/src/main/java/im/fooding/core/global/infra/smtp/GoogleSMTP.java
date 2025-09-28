@@ -1,9 +1,12 @@
 package im.fooding.core.global.infra.smtp;
 
 
+import jakarta.mail.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Properties;
 
 @Service
 @Slf4j
@@ -17,8 +20,31 @@ public class GoogleSMTP {
     @Value("${email.password}")
     private String PASSWORD;
 
-    public static boolean sendEmail( String targetEmail, GoogleSMTPTemplate template ){
+    private GoogleSMTPTemplate  smtpTemplate;
 
-        return true;
+    public boolean sendEmail( String targetEmail, String url){
+        try{
+            Properties props = new Properties();
+            props.put( "mail.smtp.host", SMTP_HOST );
+            props.put( "mail.smtp.post", SMTP_PORT );
+            props.put( "mail.smtp.auth", "true" );
+            props.put( "mail.smtp.starttls.enable", "true" );
+            props.put( "mail.smtp.ssl.trust", SMTP_HOST );
+
+            Authenticator auth = new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication( USERNAME, PASSWORD );
+                }
+            };
+            Session session = Session.getInstance( props, auth );
+            Message message = smtpTemplate.createMessage( session, USERNAME, targetEmail, "[Fooding] 비밀번호 재설정", url );
+            Transport.send( message );
+            return true;
+        }
+        catch( Exception e ){
+            System.out.println( e.getMessage() );
+        }
+        return false;
     }
 }

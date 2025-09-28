@@ -18,13 +18,15 @@ import java.util.List;
 public class AuthenticationService {
     private final AuthenticationRepository repository;
 
+    @Transactional
     public void create( String email, String phoneNumber, int code ){
         // 진행되지 않은 인증 or 만료되지 않은 인증 모두 삭제
-        List<Authentication> expiredAuthentications = repository.findAllByEmailAndPhoneNumber( email, phoneNumber );
+        List<Authentication> expiredAuthentications = repository.list( email, phoneNumber, 0, false );
         expiredAuthentications.forEach(Authentication::success);
         // 새로운 인증 생성
         Authentication authentication = Authentication.builder()
                 .email( email )
+                .phoneNumber( phoneNumber )
                 .code( code )
                 .build();
         repository.save( authentication );
@@ -33,14 +35,18 @@ public class AuthenticationService {
     @Transactional
     public boolean checkCodeAvailable( String phoneNumber, int code ){
         // 인증 정보 확인
-        Authentication authentication = repository.findByPhoneNumberAndCodeAndIsSuccessFalse( phoneNumber, code ).orElseThrow(
-                () -> new ApiException(ErrorCode.AUTHENTICATION_NOT_FOUND, "인증 정보가 올바르지 않습니다." )
-        );
+        Authentication authentication = repository.list( null, phoneNumber, code, false ).get(0);
+        if( authentication == null ) return false;
         // 만료 시간 확인
         if( authentication.getExpiredAt().isBefore(LocalDateTime.now() ) ) return false;
         // 인증 정보 확인 완료 표시
         authentication.success();
 
         return true;
+    }
+
+    public Authentication findAuthenticationByEmailAndCode( String email, int code ){
+        List<Authentication> result = repository.list( email, null, code, true );
+        return result.get( result.size() - 1 );
     }
 }

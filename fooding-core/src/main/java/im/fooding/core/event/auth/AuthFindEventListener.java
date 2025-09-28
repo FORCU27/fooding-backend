@@ -1,6 +1,7 @@
 package im.fooding.core.event.auth;
 
 import im.fooding.core.global.infra.slack.SlackClient;
+import im.fooding.core.global.infra.smtp.GoogleSMTP;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AuthFindEventListener {
     private final SlackClient slackClient;
+    private final GoogleSMTP googleSMTP;
 
     // 휴대폰 6자리 코드 인증
     @EventListener
@@ -39,4 +41,8 @@ public class AuthFindEventListener {
     }
     
     // 이메일로 비밀번호 재설정 링크 전달
+    @EventListener
+    public void handleSendUrlByEmailEvent( AuthGetResetUrlByEmailEvent event ){
+        googleSMTP.sendEmail( event.email(), event.resetUrl() );
+    }
 }

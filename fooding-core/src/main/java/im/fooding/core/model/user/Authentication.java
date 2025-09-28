@@ -21,6 +21,9 @@ public class Authentication {
     private String email;
 
     @Column( nullable = false )
+    private String phoneNumber;
+
+    @Column( nullable = false )
     private int code;
 
     @Column( nullable = false )
@@ -33,9 +36,10 @@ public class Authentication {
     private boolean isSuccess;
 
     @Builder
-    public Authentication( String email, int code ){
+    public Authentication( String email, String phoneNumber, int code ){
         this.email = email;
         this.code = code;
+        this.phoneNumber = phoneNumber;
         this.requestedAt = LocalDateTime.now();
         this.expiredAt = LocalDateTime.now().plusMinutes( 20 );     // 현재 제한 시간을 20분으로 제한
         this.isSuccess = false;
