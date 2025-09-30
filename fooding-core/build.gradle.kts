@@ -24,6 +24,9 @@ dependencies {
     //slack
     implementation("com.slack.api:slack-api-client:1.29.2")
 
+    // Google SMTP
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+
     //feign
     implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2023.0.3"))
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
