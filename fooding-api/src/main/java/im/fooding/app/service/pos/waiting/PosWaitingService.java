@@ -87,7 +87,7 @@ public class PosWaitingService {
 
     @Transactional
     public void call(long storeWaitingId) {
-        StoreWaiting storeWaiting = storeWaitingService.call(storeWaitingId);
+        storeWaitingService.call(storeWaitingId);
 
         eventProducerService.publishEvent(
                 StoreWaitingCallEvent.class.getSimpleName(),
