@@ -3,6 +3,7 @@ package im.fooding.app.service.user.notification;
 import im.fooding.app.dto.response.user.notification.UserNotificationResponse;
 import im.fooding.core.event.reward.RewardEarnEvent;
 import im.fooding.core.event.reward.RewardUseEvent;
+import im.fooding.core.event.waiting.StoreWaitingCanceledEvent;
 import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
 import im.fooding.core.global.infra.slack.SlackClient;
 import im.fooding.core.global.kafka.KafkaEventHandler;
@@ -120,8 +121,14 @@ public class UserNotificationApplicationService {
         slackClient.sendNotificationMessage(message);
     }
 
-    public void sendWaitingCancelMessage(String store, String reason) {
-        String message = WaitingMessageBuilder.buildCancel(store, reason);
+    @KafkaEventHandler(StoreWaitingCanceledEvent.class)
+    public void sendWaitingCancelMessage(StoreWaitingCanceledEvent event) {
+        String storeName = storeWaitingService.get(event.storeWaitingId())
+                .getStoreName();
+        String message = WaitingMessageBuilder.buildCancel(
+                storeName,
+                event.reason()
+        );
         slackClient.sendNotificationMessage(message);
     }
 
