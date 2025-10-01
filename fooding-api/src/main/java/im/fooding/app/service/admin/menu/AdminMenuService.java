@@ -48,19 +48,17 @@ public class AdminMenuService {
         Store store = storeService.findById(request.storeId());
         MenuCategory menuCategory = menuCategoryService.get(request.categoryId());
 
-        List<String> menuImageUrls = new ArrayList<>();
+        long menuId = menuService.create(request.toMenuCreateRequest(store, menuCategory));
+        Menu menu = menuService.get(menuId);
+
         request.imageIds().forEach(imageId -> {
             if (StringUtils.hasText(imageId)) {
                 File file = fileUploadService.commit(imageId);
                 if (file != null) {
-                    menuImageUrls.add(file.getUrl());
+                    menuImageService.create(menu, imageId, file.getUrl());
                 }
             }
         });
-
-        long menuId = menuService.create(request.toMenuCreateRequest(store, menuCategory));
-        Menu menu = menuService.get(menuId);
-        menuImageUrls.forEach(imageUrl -> menuImageService.create(menu, imageUrl));
 
         updateStorageAveragePrice(store);
     }
@@ -105,12 +103,9 @@ public class AdminMenuService {
         request.imageIds().stream()
                 .filter(StringUtils::hasText)
                 .filter(imageId -> !isNumeric(imageId))
-                .map(fileId -> {
-                    File file = fileUploadService.commit(fileId);
-                    return file != null ? file.getUrl() : null;
-                })
+                .map(fileUploadService::commit)
                 .filter(Objects::nonNull)
-                .forEach(imageUrl -> menuImageService.create(menu, imageUrl));
+                .forEach(file -> menuImageService.create(menu, file.getId(), file.getUrl()));
 
         menuService.update(request.toMenuUpdateRequest(id, store, menuCategory));
         updateStorageAveragePrice(store);

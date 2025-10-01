@@ -20,12 +20,12 @@ public class MenuImageService {
     private final MenuImageRepository menuImageRepository;
 
     @Transactional
-    public long create(Menu menu, String url) {
+    public long create(Menu menu, String imageId, String url) {
         if (listByMenuId(menu.getId()).size() >= 3) {
             throw new ApiException(ErrorCode.MENU_IMAGE_COUNT_OVER_LIMIT);
         }
 
-        MenuImage menuImage = new MenuImage(menu, url);
+        MenuImage menuImage = new MenuImage(menu, imageId, url);
         menuImageRepository.save(menuImage);
 
         return menuImage.getId();

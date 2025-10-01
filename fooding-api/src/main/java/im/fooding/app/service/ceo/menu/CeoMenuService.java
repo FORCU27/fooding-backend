@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -46,17 +48,15 @@ public class CeoMenuService {
         Store store = storeService.findById(request.getStoreId());
         MenuCategory menuCategory = menuCategoryService.get(request.getCategoryId());
 
-        List<String> menuImageUrls = new ArrayList<>();
+        long menuId = menuService.create(request.toMenuCreateRequest(store, menuCategory));
+        Menu menu = menuService.get(menuId);
+
         request.getImageIds().forEach(imageId -> {
             if (StringUtils.hasText(imageId)) {
                 File file = fileUploadService.commit(imageId);
-                menuImageUrls.add(file.getUrl());
+                menuImageService.create(menu, file.getId(), file.getUrl());
             }
         });
-
-        long menuId = menuService.create(request.toMenuCreateRequest(store, menuCategory));
-        Menu menu = menuService.get(menuId);
-        menuImageUrls.forEach(imageUrl -> menuImageService.create(menu, imageUrl));
 
         updateStorageAveragePrice(store);
     }
@@ -89,19 +89,31 @@ public class CeoMenuService {
         Store store = storeService.findById(request.getStoreId());
         MenuCategory menuCategory = menuCategoryService.get(request.getCategoryId());
 
-        List<String> menuImageUrls = new ArrayList<>();
-        request.getImageIds().forEach(imageId -> {
-            if (StringUtils.hasText(imageId)) {
-                File file = fileUploadService.commit(imageId);
-                menuImageUrls.add(file.getUrl());
-            }
-        });
+        List<File> files = request.getImageIds().stream()
+                .filter(StringUtils::hasText)
+                .map(fileUploadService::commit)
+                .toList();
+
         Menu menu = menuService.get(id);
         List<MenuImage> menuImages = menuImageService.listByMenuId(id);
-        menuImages.stream().filter(menuImage -> !menuImageUrls.contains(menuImage.getImageUrl()))
+
+        Set<String> requestedImageIds = files.stream()
+                .map(File::getId)
+                .collect(Collectors.toSet());
+
+        Set<String> existingImageIds = menuImages.stream()
+                .map(MenuImage::getImageId)
+                .collect(Collectors.toSet());
+
+        // 기존 image에서 요청된 이미지를 제외한 이미지 삭제
+        menuImages.stream()
+                .filter(menuImage -> !requestedImageIds.contains(menuImage.getImageId()))
                 .forEach(menuImage -> menuImage.delete(updatedBy));
-        menuImageUrls.stream().filter(menuImageUrl -> !menuImages.contains(menuImageUrl))
-                .forEach(menuImageUrl -> menuImageService.create(menu, menuImageUrl));
+
+        // 기존에 없던 이미지 추가
+        files.stream()
+                .filter(file -> !existingImageIds.contains(file.getId()))
+                .forEach(file -> menuImageService.create(menu, file.getId(), file.getUrl()));
 
         menuService.update(request.toMenuUpdateRequest(id, store, menuCategory));
         updateStorageAveragePrice(store);

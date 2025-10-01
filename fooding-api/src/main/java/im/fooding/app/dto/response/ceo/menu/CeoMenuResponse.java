@@ -31,8 +31,8 @@ public class CeoMenuResponse {
     @Schema(description = "메뉴 설명", requiredMode = REQUIRED, example = "맛있는 초밥")
     String description;
 
-    @Schema(description = "메뉴 사진", requiredMode = REQUIRED, example = "https://d27gz6v6wvae1d.cloudfront.net/fooding/gigs/...")
-    List<String> imageUrls;
+    @Schema(description = "메뉴 사진", requiredMode = REQUIRED)
+    List<CeoMenuImageResponse> images;
 
     @Schema(description = "카테고리 정렬", requiredMode = REQUIRED, example = "1")
     int sortOrder;
@@ -44,7 +44,8 @@ public class CeoMenuResponse {
     Boolean isRecommend;
 
     public static CeoMenuResponse of(Menu menu, List<MenuImage> images) {
-        List<String> imageUrls = images.stream().map(MenuImage::getImageUrl)
+        List<CeoMenuImageResponse> imageResponses = images.stream()
+                .map(menuImage -> new CeoMenuImageResponse(menuImage.getImageId(), menuImage.getImageUrl()))
                 .toList();
 
         return CeoMenuResponse.builder()
@@ -54,7 +55,7 @@ public class CeoMenuResponse {
                 .name(menu.getName())
                 .price(menu.getPrice())
                 .description(menu.getDescription())
-                .imageUrls(imageUrls)
+                .images(imageResponses)
                 .sortOrder(menu.getSortOrder())
                 .isSignature(menu.isSignature())
                 .isRecommend(menu.isRecommend())
