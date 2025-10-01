@@ -109,11 +109,17 @@ public class UserNotificationApplicationService {
         StoreWaiting storeWaiting = storeWaitingService.get(event.storeWaitingId());
         WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(storeWaiting.getStore());
 
-        String message = WaitingMessageBuilder.buildWaitingCallMessage(
-                storeWaiting.getStoreName(),
+        NotificationTemplate template = notificationTemplateService.getByType(Type.WaitingCallSms);
+
+        String subject = template.getSubject();
+        String content = template.getContent().formatted(
                 storeWaiting.getCallNumber(),
+                storeWaiting.getStoreName(),
                 waitingSetting.getEntryTimeLimitMinutes()
         );
+
+        String message = WaitingMessageBuilder.buildMessage(subject, content);
+
         slackClient.sendNotificationMessage(message);
     }
 
