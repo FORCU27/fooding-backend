@@ -9,6 +9,7 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
+import im.fooding.core.event.waiting.StoreWaitingCanceledEvent;
 import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
 import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.store.Store;
@@ -80,8 +81,12 @@ public class PosWaitingService {
 
     @Transactional
     public void cancel(long storeWaitingId, String reason) {
-        StoreWaiting canceledWaiting = storeWaitingService.cancel(storeWaitingId);
-        userNotificationApplicationService.sendWaitingCancelMessage(canceledWaiting.getStoreName(), reason);
+        storeWaitingService.cancel(storeWaitingId);
+
+        eventProducerService.publishEvent(
+                StoreWaitingCanceledEvent.class.getSimpleName(),
+                new StoreWaitingCanceledEvent(storeWaitingId, reason)
+        );
     }
 
     @Transactional
