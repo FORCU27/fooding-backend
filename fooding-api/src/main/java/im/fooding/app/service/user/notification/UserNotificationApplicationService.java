@@ -123,12 +123,17 @@ public class UserNotificationApplicationService {
 
     @KafkaEventHandler(StoreWaitingCanceledEvent.class)
     public void sendWaitingCancelMessage(StoreWaitingCanceledEvent event) {
+        NotificationTemplate template = notificationTemplateService.getByType(Type.WaitingCancelSms);
+
         String storeName = storeWaitingService.get(event.storeWaitingId())
                 .getStoreName();
-        String message = WaitingMessageBuilder.buildCancel(
+
+        String subject = template.getSubject();
+        String content = template.getContent().formatted(
                 storeName,
                 event.reason()
         );
+        String message = WaitingMessageBuilder.buildMessage(subject, content);
         slackClient.sendNotificationMessage(message);
     }
 
