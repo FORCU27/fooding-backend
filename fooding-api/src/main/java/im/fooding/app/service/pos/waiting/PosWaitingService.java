@@ -9,6 +9,7 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
+import im.fooding.core.event.waiting.StoreWaitingCallEvent;
 import im.fooding.core.event.waiting.StoreWaitingCanceledEvent;
 import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
 import im.fooding.core.global.kafka.EventProducerService;
@@ -91,14 +92,11 @@ public class PosWaitingService {
 
     @Transactional
     public void call(long storeWaitingId) {
-        StoreWaiting storeWaiting = storeWaitingService.call(storeWaitingId);
+        storeWaitingService.call(storeWaitingId);
 
-        WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(storeWaiting.getStore());
-
-        userNotificationApplicationService.sendWaitingCallMessage(
-                storeWaiting.getStoreName(),
-                storeWaiting.getCallNumber(),
-                waitingSetting.getEntryTimeLimitMinutes()
+        eventProducerService.publishEvent(
+                StoreWaitingCallEvent.class.getSimpleName(),
+                new StoreWaitingCallEvent(storeWaitingId)
         );
     }
 
