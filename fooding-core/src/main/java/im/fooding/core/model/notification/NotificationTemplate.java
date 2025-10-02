@@ -27,6 +27,7 @@ public class NotificationTemplate extends BaseDocument {
         WaitingCreatedEmail,
         WaitingCreatedSms,
         WaitingCallSms,
+        WaitingCancelSms,
         RewardEarnSms,
         RewardUseSms
     }
