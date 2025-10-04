@@ -21,5 +21,5 @@ public class CreateReportRequest {
     private String description;
 
     @Schema( description = "신고자 ID" )
-    private long reporterId;
+    private Long reporterId;
 }

@@ -6,10 +6,7 @@ import im.fooding.core.common.ApiResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserReportController {
     private final UserReportService service;
 
-    @PostMapping( "" )
+    @PostMapping()
     @Operation( summary = "User가 신고하는 API" )
     public ApiResult<Void> report(
-            @ModelAttribute CreateReportRequest request
+            @RequestBody CreateReportRequest request
     ){
         service.createReport(request.getReferenceId(), request );
         return ApiResult.ok();
