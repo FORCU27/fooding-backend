@@ -11,11 +11,13 @@ import im.fooding.core.service.report.ReportService;
 import im.fooding.core.service.review.ReviewService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserReportService {
     private final ReportService reportService;
@@ -27,7 +29,7 @@ public class UserReportService {
     private final ApplicationEventPublisher publisher;
 
     public void createReport( long id, CreateReportRequest request ){
-        System.out.println( request.getReporterId() );
+        log.info( "Input User Name: {}", request.getReporterId() );
         User reporter = userService.findById( request.getReporterId() );
         reportService.create(
                 request.getTargetType(),

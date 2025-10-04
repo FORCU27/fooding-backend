@@ -69,7 +69,7 @@ public class AdminReportService {
 
     private void sendNotification(ReportStatus status, LocalDateTime reportedAt, String reporter, String phoneNumber ){
         publisher.publishEvent(
-                new ReportUpdateStatusEvent( status, reportedAt, reporter, phoneNumber, SENDER );
+                new ReportUpdateStatusEvent( status, reportedAt, reporter, phoneNumber, SENDER )
         );
     }
 

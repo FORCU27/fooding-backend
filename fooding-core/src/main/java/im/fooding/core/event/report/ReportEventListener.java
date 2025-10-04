@@ -79,8 +79,10 @@ public class ReportEventListener {
                         "- 신고일시: %s\n" +
                         "발송 번호: %s",
                 event.reporterName(),
+                event.status(),
                 event.phoneNumber(),
-                event.reportedAt()
+                event.reportedAt(),
+                event.sender()
         );
         slackClient.sendNotificationMessage(reporterMessage);
 
