@@ -7,4 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface QPostRepository {
     Page<Post> list(String searchString, Pageable pageable, PostType type);
+
+    Page<Post> list(String searchString, Pageable pageable, PostType type, Boolean isVisibleOnCeo);
 }
