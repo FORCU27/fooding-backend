@@ -7,6 +7,7 @@ import im.fooding.core.model.post.PostType;
 import im.fooding.core.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,11 @@ public class PostService {
     private final PostRepository postRepository;
 
     public List<Post> list(String searchString, Pageable pageable, PostType type) {
-        return postRepository.list(searchString, pageable, type).getContent();
+        return list(searchString, pageable, type, null).getContent();
+    }
+
+    public Page<Post> list(String searchString, Pageable pageable, PostType type, Boolean isVisibleOnCeo) {
+        return postRepository.list(searchString, pageable, type, isVisibleOnCeo);
     }
 
     public Post findById(Long id) {
