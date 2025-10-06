@@ -3,6 +3,7 @@ package im.fooding.app.service.user.notification;
 import im.fooding.app.dto.response.user.notification.UserNotificationResponse;
 import im.fooding.core.event.reward.RewardEarnEvent;
 import im.fooding.core.event.reward.RewardUseEvent;
+import im.fooding.core.event.waiting.StoreWaitingCallEvent;
 import im.fooding.core.event.waiting.StoreWaitingCanceledEvent;
 import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
 import im.fooding.core.global.infra.slack.SlackClient;
@@ -14,11 +15,13 @@ import im.fooding.core.model.notification.NotificationTemplate.Type;
 import im.fooding.core.model.notification.UserNotification;
 import im.fooding.core.model.reward.RewardPoint;
 import im.fooding.core.model.waiting.StoreWaiting;
+import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingUser;
 import im.fooding.core.service.notification.NotificationTemplateService;
 import im.fooding.core.service.notification.UserNotificationService;
 import im.fooding.core.service.reward.RewardService;
 import im.fooding.core.service.waiting.StoreWaitingService;
+import im.fooding.core.service.waiting.WaitingSettingService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +43,7 @@ public class UserNotificationApplicationService {
     private final UserNotificationService userNotificationService;
     private final NotificationTemplateService notificationTemplateService;
     private final StoreWaitingService storeWaitingService;
+    private final WaitingSettingService waitingSettingService;
     private final RewardService rewardService;
 
     @Value("${message.sender}")
@@ -101,8 +105,22 @@ public class UserNotificationApplicationService {
                 });
     }
 
-    public void sendWaitingCallMessage(String store, int callNumber, int entryTimeLimit) {
-        String message = WaitingMessageBuilder.buildWaitingCallMessage(store, callNumber, entryTimeLimit);
+    @KafkaEventHandler(StoreWaitingCallEvent.class)
+    public void sendWaitingCallMessage(StoreWaitingCallEvent event) {
+        StoreWaiting storeWaiting = storeWaitingService.get(event.storeWaitingId());
+        WaitingSetting waitingSetting = waitingSettingService.getActiveSetting(storeWaiting.getStore());
+
+        NotificationTemplate template = notificationTemplateService.getByType(Type.WaitingCallSms);
+
+        String subject = template.getSubject();
+        String content = template.getContent().formatted(
+                storeWaiting.getCallNumber(),
+                storeWaiting.getStoreName(),
+                waitingSetting.getEntryTimeLimitMinutes()
+        );
+
+        String message = WaitingMessageBuilder.buildMessage(subject, content);
+
         slackClient.sendNotificationMessage(message);
     }
 
