@@ -48,6 +48,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/user/regions/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/stores/*/rewards").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/recommend-keywords").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/ceo/posts", "/ceo/posts/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/app/rewards/**").permitAll()
                         .requestMatchers("/user/**").hasAnyRole("USER")
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN")
