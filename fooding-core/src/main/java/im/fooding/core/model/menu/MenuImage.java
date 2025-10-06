@@ -34,11 +34,15 @@ public class MenuImage extends BaseEntity {
     )
     private Menu menu;
 
+    @Column(name = "image_id", nullable = false)
+    private String imageId;
+
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-    public MenuImage(Menu menu, String imageUrl) {
+    public MenuImage(Menu menu, String imageId, String imageUrl) {
         this.menu = menu;
+        this.imageId = imageId;
         this.imageUrl = imageUrl;
     }
 }
