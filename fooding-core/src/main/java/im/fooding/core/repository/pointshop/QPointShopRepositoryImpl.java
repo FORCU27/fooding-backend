@@ -14,6 +14,7 @@ import java.util.List;
 
 import static im.fooding.core.model.pointshop.QPointShop.pointShop;
 import static im.fooding.core.model.store.QStore.store;
+import static im.fooding.core.model.file.QFile.file;
 
 @RequiredArgsConstructor
 public class QPointShopRepositoryImpl implements QPointShopRepository {
@@ -25,6 +26,7 @@ public class QPointShopRepositoryImpl implements QPointShopRepository {
                 .select(pointShop)
                 .from(pointShop)
                 .leftJoin(pointShop.store, store).fetchJoin()
+                .leftJoin(pointShop.image, file).fetchJoin()
                 .where(
                         pointShop.deleted.isFalse(),
                         pointShop.isActive.eq(isActive),
@@ -59,6 +61,7 @@ public class QPointShopRepositoryImpl implements QPointShopRepository {
                 .select(pointShop)
                 .from(pointShop)
                 .leftJoin(pointShop.store, store).fetchJoin()
+                .leftJoin(pointShop.image, file).fetchJoin()
                 .where(
                         pointShop.deleted.isFalse(),
                         pointShop.isActive.eq(isActive),

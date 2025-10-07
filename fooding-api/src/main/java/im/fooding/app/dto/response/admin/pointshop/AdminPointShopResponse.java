@@ -1,5 +1,6 @@
 package im.fooding.app.dto.response.admin.pointshop;
 
+import im.fooding.app.dto.response.file.FileResponse;
 import im.fooding.core.model.coupon.ProvideType;
 import im.fooding.core.model.pointshop.PointShop;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -49,8 +50,12 @@ public class AdminPointShopResponse {
     @Schema(description = "교환 가능 마감일", example = "2030-07-01", requiredMode = RequiredMode.NOT_REQUIRED)
     private LocalDate issueEndOn;
 
+    @Schema(description = "이미지", requiredMode = RequiredMode.NOT_REQUIRED)
+    private FileResponse image;
+
     @Builder
-    private AdminPointShopResponse(Long id, Long storeId, String storeName, String name, int point, ProvideType provideType, String conditions, Boolean isActive, Integer totalQuantity, Integer issuedQuantity, LocalDate issueStartOn, LocalDate issueEndOn) {
+    private AdminPointShopResponse(Long id, Long storeId, String storeName, String name, int point, ProvideType provideType, String conditions,
+                                   Boolean isActive, Integer totalQuantity, Integer issuedQuantity, LocalDate issueStartOn, LocalDate issueEndOn, FileResponse image) {
         this.id = id;
         this.storeId = storeId;
         this.storeName = storeName;
@@ -63,6 +68,7 @@ public class AdminPointShopResponse {
         this.issuedQuantity = issuedQuantity;
         this.issueStartOn = issueStartOn;
         this.issueEndOn = issueEndOn;
+        this.image = image;
     }
 
     public static AdminPointShopResponse of(PointShop pointShop) {
@@ -79,6 +85,7 @@ public class AdminPointShopResponse {
                 .issuedQuantity(pointShop.getIssuedQuantity())
                 .issueStartOn(pointShop.getIssueStartOn())
                 .issueEndOn(pointShop.getIssueEndOn())
+                .image(pointShop.getImage() != null ? FileResponse.of(pointShop.getImage()) : null)
                 .build();
     }
 }

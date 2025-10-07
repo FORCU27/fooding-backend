@@ -3,6 +3,7 @@ package im.fooding.core.service.pointshop;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.coupon.ProvideType;
+import im.fooding.core.model.file.File;
 import im.fooding.core.model.pointshop.PointShop;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.repository.pointshop.PointShopRepository;
@@ -21,7 +22,8 @@ import java.util.List;
 public class PointShopService {
     private final PointShopRepository repository;
 
-    public PointShop create(Store store, String name, int point, ProvideType provideType, String conditions, Integer totalQuantity, LocalDate issueStartOn, LocalDate issueEndOn) {
+    public PointShop create(Store store, String name, int point, ProvideType provideType, String conditions, Integer totalQuantity,
+                            LocalDate issueStartOn, LocalDate issueEndOn, File image) {
         PointShop pointShop = PointShop.builder()
                 .store(store)
                 .name(name)
@@ -31,13 +33,14 @@ public class PointShopService {
                 .totalQuantity(totalQuantity)
                 .issueStartOn(issueStartOn)
                 .issueEndOn(issueEndOn)
+                .image(image)
                 .build();
         return repository.save(pointShop);
     }
 
-    public void update(long id, String name, int point, ProvideType provideType, String conditions, Integer totalQuantity, LocalDate issueStartOn, LocalDate issueEndOn) {
-        PointShop pointShop = findById(id);
-        pointShop.update(name, point, provideType, conditions, totalQuantity, issueStartOn, issueEndOn);
+    public void update(PointShop pointShop, String name, int point, ProvideType provideType, String conditions, Integer totalQuantity,
+                       LocalDate issueStartOn, LocalDate issueEndOn, File image) {
+        pointShop.update(name, point, provideType, conditions, totalQuantity, issueStartOn, issueEndOn, image);
     }
 
     public PointShop findById(long id) {

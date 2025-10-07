@@ -40,4 +40,7 @@ public class AdminCreatePointShopRequest {
 
     @Schema(description = "교환 가능 마감일", example = "2030-07-01")
     private LocalDate issueEndOn;
+
+    @Schema(description = "이미지 id", example = "uuid")
+    private String imageId;
 }

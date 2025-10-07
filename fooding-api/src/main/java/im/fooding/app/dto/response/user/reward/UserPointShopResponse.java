@@ -1,5 +1,6 @@
 package im.fooding.app.dto.response.user.reward;
 
+import im.fooding.app.dto.response.file.FileResponse;
 import im.fooding.core.model.coupon.ProvideType;
 import im.fooding.core.model.pointshop.PointShop;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,14 +30,18 @@ public class UserPointShopResponse {
     @Schema(description = "남은 수량 null 이면 제한 없음", example = "10", requiredMode = RequiredMode.NOT_REQUIRED)
     private Integer quantity;
 
+    @Schema(description = "이미지", requiredMode = RequiredMode.NOT_REQUIRED)
+    private FileResponse image;
+
     @Builder
-    private UserPointShopResponse(Long id, String name, int point, ProvideType provideType, String conditions, Integer quantity) {
+    private UserPointShopResponse(Long id, String name, int point, ProvideType provideType, String conditions, Integer quantity, FileResponse image) {
         this.id = id;
         this.name = name;
         this.point = point;
         this.provideType = provideType;
         this.conditions = conditions;
         this.quantity = quantity;
+        this.image = image;
     }
 
     public static UserPointShopResponse of(PointShop pointShop) {
@@ -52,6 +57,7 @@ public class UserPointShopResponse {
                 .provideType(pointShop.getProvideType())
                 .conditions(pointShop.getConditions())
                 .quantity(quantity)
+                .image(pointShop.getImage() != null ? FileResponse.of(pointShop.getImage()) : null)
                 .build();
     }
 }
