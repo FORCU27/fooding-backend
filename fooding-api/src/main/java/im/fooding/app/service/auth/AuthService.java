@@ -4,7 +4,11 @@ import feign.FeignException;
 import im.fooding.app.dto.request.auth.*;
 import im.fooding.app.dto.response.auth.AuthCheckNicknameResponse;
 import im.fooding.app.dto.response.auth.AuthUserResponse;
+import im.fooding.app.dto.response.ceo.auth.CeoAuthenticatePhoneResponse;
 import im.fooding.app.service.file.FileUploadService;
+import im.fooding.core.event.auth.AuthGetResetUrlByEmailEvent;
+import im.fooding.core.event.auth.AuthGetResetUrlByPhoneEvent;
+import im.fooding.core.event.auth.AuthPhoneAuthenticateEvent;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.global.feign.client.SocialLoginClient;
@@ -18,18 +22,27 @@ import im.fooding.core.global.jwt.dto.TokenResponse;
 import im.fooding.core.global.jwt.service.JwtService;
 import im.fooding.core.global.util.AppleLoginUtil;
 import im.fooding.core.model.file.File;
+import im.fooding.core.model.notification.NotificationChannel;
 import im.fooding.core.model.user.*;
+import im.fooding.core.service.user.AuthenticationService;
 import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
+import java.util.Random;
 
 import static im.fooding.core.global.util.Util.isAllowedBackofficeEmails;
 
@@ -44,6 +57,11 @@ public class AuthService {
     private final UserAuthorityService userAuthorityService;
     private final PasswordEncoder passwordEncoder;
     private final FileUploadService fileUploadService;
+
+    @Value("${message.sender}")
+    private String SENDER;
+    private final ApplicationEventPublisher publisher;
+    private final AuthenticationService authenticationService;
 
     /**
      * user id로 조회
@@ -337,4 +355,150 @@ public class AuthService {
         user.updatedRefreshToken(tokenResponse.getRefreshToken());
         return tokenResponse;
     }
+
+    /**
+     * 휴대폰으로 인증번호 전송
+     * @param name
+     * @param phoneNumber
+     */
+    public void sendAuthenticateCode( String name, String phoneNumber ){
+        int code = createAuthCode( phoneNumber );
+        sendPhoneAuthentication( name, code, phoneNumber );
+    }
+
+
+    /**
+     * 비밀번호 재설정
+     * @param encodedLine
+     * @param password
+     */
+    @Transactional
+    public void resetPassword( String encodedLine, String password  ){
+        // 전달한 링크에 담겨 있는 인증 코드 확인
+        // Base64로 인코딩한 정보 디코딩
+        try{
+            byte[] decodedBytes = Base64.getDecoder().decode(encodedLine);
+            String decoded = new String(decodedBytes, StandardCharsets.UTF_8);
+            System.out.println( decoded );
+            String[] valueArray = decoded.split("_");
+            String phoneNumber = valueArray[3];
+            int code = Integer.parseInt( valueArray[4] );
+            User user = userService.findByPhoneNumber( phoneNumber );
+            Authentication authentication = authenticationService.findAuthenticationByEmailAndCode( user.getEmail(), code );
+            if( authentication == null ) return;
+            // 기간 만료 확인
+            // code를 발급 받고 1시간이 지났다면 기간 만료
+            if( LocalDateTime.now().isAfter( authentication.getExpiredAt().plusMinutes(40) ) ) return;
+
+            // 비밀번호 암호화
+            String encodedPassword = passwordEncoder.encode( password );
+
+            // 비밀번호 변경
+            user.updatePassword( encodedPassword );
+        }
+        catch( Exception e ){
+            System.out.println( e.getMessage() );
+        }
+    }
+
+    /**
+     * 휴대폰 인증 코드 생성
+     */
+    private int createAuthCode( String phoneNumber ){
+        Random random = new Random();
+        int code = 100000 + random.nextInt(900000);
+        User user = userService.findByPhoneNumber( phoneNumber );
+        if( user == null ) throw new ApiException( ErrorCode.USER_NOT_FOUND, "가입 정보가 없습니다" );
+        authenticationService.create( user.getEmail(), phoneNumber, code );
+        return code;
+    }
+
+    /**
+     * 휴대폰 인증 번호 전달
+     * @param phoneNumber
+     * return String
+     */
+    private void sendPhoneAuthentication( String name, int code, String phoneNumber ){
+        System.out.println( code );
+        publisher.publishEvent( new AuthPhoneAuthenticateEvent( name, code, phoneNumber, SENDER, NotificationChannel.SMS ) );
+    }
+
+    /**
+     * 휴대폰 인증 번호 확인
+     * @param phoneNumber
+     * @param code
+     * return boolean
+     */
+    public CeoAuthenticatePhoneResponse isCorrectCode(String phoneNumber, int code ){
+        boolean result = authenticationService.checkCodeAvailable( phoneNumber, code );
+        CeoAuthenticatePhoneResponse.CeoAuthenticatePhoneResponseBuilder builder = CeoAuthenticatePhoneResponse.builder();
+        if( !result ) return builder.isSuccess( false ).build();
+        User user = userService.findByPhoneNumber( phoneNumber );
+        return builder.isSuccess( true ).email( user.getEmail() ).phoneNumber( user.getPhoneNumber() ).code( code ).build();
+    }
+
+    /**
+     * 사용자 이메일 전달
+     * @param code
+     * @param phoneNumber
+     * return String
+     */
+    public String getEmail( String phoneNumber, int code ){
+        User user = userService.findByPhoneNumber( phoneNumber );
+        Authentication auth = authenticationService.findAuthenticationByEmailAndCode( user.getEmail(), code );
+        if( auth == null ) return null;
+        return user.getEmail();
+    }
+
+    public void sendPasswordResetUrl( String name, String phoneNumber, int code, boolean isEmail ){
+        String url = this.createResetUrl( phoneNumber, code );
+        User user = userService.findByPhoneNumber( phoneNumber );
+        if( !user.getName().equals( name ) ) throw new ApiException( ErrorCode.AUTHENTICATION_NOT_FOUND, "잘못된 요청입니다" );
+        if( isEmail ) this.sendEmail( name, user.getEmail(), url );
+        else this.sendSms( name, user.getPhoneNumber(), url );
+    }
+
+    /**
+     * 비밀번호 재설정 URL 생성
+     * @param phoneNumber       // 전화번호
+     * @param code              // 휴대폰 인증시 사용했던 6자리 숫자
+     * return String
+     */
+    private String createResetUrl( String phoneNumber, int code  ){
+        // Base64를 통한 사용자 ID + 만료날짜가 담긴 문자열 암호화
+        // 임시로 아래처럼 문자열을 사용하지만 자세한 구조는 상의 필요
+        String userInformation = "password_reset_url_" + phoneNumber + "_" + code;
+        try{
+            byte[] bytes = userInformation.getBytes(StandardCharsets.UTF_8);
+            return Base64.getEncoder().encodeToString(bytes);
+        }
+        catch( Exception e ){
+            System.out.println( e.getMessage() );
+        }
+        return null;
+    }
+
+    /**
+     * 이메일 전송
+     * @param email
+     * @param url
+     */
+    private void sendEmail( String name, String email, String url ){
+        // Google SMTP 활용
+        System.out.println( url );
+        publisher.publishEvent( new AuthGetResetUrlByEmailEvent( name, email, url, SENDER, NotificationChannel.MAIL ) );
+    }
+
+    /**
+     * SMS 전송
+     * @param phoneNumber
+     * @param url
+     */
+    private void sendSms( String name, String phoneNumber, String url ){
+        // 모든 서비스가 유료. Slack으로 대체
+        System.out.println( url );
+        publisher.publishEvent( new AuthGetResetUrlByPhoneEvent( name, phoneNumber, url, SENDER, NotificationChannel.SMS ) );
+    }
+
+
 }

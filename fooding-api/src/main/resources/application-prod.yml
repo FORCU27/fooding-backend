@@ -138,6 +138,13 @@ management:
     prometheus:
       enabled: true
 
+email:
+  smtp:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:4042}
+  username: ${SMTP_USERNAME:root}
+  password: ${SMTP_PASSWORD:1234}
+
 kafka:
   internal:
     topic: fooding.event.internal.production

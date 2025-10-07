@@ -20,4 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long>, QUserReposito
     @Override
     @EntityGraph(attributePaths = {"authorities"})
     Optional<User> findById(Long id);
+
+    Optional<User> findByPhoneNumberAndName(String phoneNumber, String name);
 }
