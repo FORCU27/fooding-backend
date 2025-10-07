@@ -65,7 +65,7 @@ public class AdminStorePointShopService {
 
     @Transactional(readOnly = true)
     public PageResponse<AdminPointShopResponse> list(AdminSearchPointShopRequest search) {
-        Page<PointShop> list = pointShopService.list(search.getStoreId(), search.getIsActive(), null, search.getSearchString(), search.getPageable());
+        Page<PointShop> list = pointShopService.list(search.getStoreId(), search.getIsActive(), null, search.getSortType(), search.getSearchString(), search.getPageable());
         return PageResponse.of(list.stream().map(AdminPointShopResponse::of).toList(), PageInfo.of(list));
     }
 

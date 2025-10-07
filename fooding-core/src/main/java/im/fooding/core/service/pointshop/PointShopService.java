@@ -5,6 +5,7 @@ import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.coupon.ProvideType;
 import im.fooding.core.model.file.File;
 import im.fooding.core.model.pointshop.PointShop;
+import im.fooding.core.model.pointshop.PointShopSortType;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.repository.pointshop.PointShopRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,12 +50,12 @@ public class PointShopService {
                 .orElseThrow(() -> new ApiException(ErrorCode.POINT_SHOP_NOT_FOUND));
     }
 
-    public Page<PointShop> list(Long storeId, boolean isActive, LocalDate now, String searchString, Pageable pageable) {
-        return repository.list(storeId, isActive, now, searchString, pageable);
+    public Page<PointShop> list(Long storeId, boolean isActive, LocalDate now, PointShopSortType sortType, String searchString, Pageable pageable) {
+        return repository.list(storeId, isActive, now, sortType, searchString, pageable);
     }
 
-    public List<PointShop> list(Long storeId, boolean isActive, LocalDate now) {
-        return repository.list(storeId, isActive, now);
+    public List<PointShop> list(Long storeId, boolean isActive, LocalDate now, PointShopSortType sortType) {
+        return repository.list(storeId, isActive, now, sortType);
     }
 
     public void issue(long id) {

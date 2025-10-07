@@ -74,7 +74,7 @@ public class CeoStorePointShopService {
     public PageResponse<CeoPointShopResponse> list(long storeId, CeoSearchPointShopRequest search, long ceoId) {
         Store store = storeService.findById(storeId);
         storeMemberService.checkMember(store.getId(), ceoId);
-        Page<PointShop> list = pointShopService.list(store.getId(), search.getIsActive(), null, search.getSearchString(), search.getPageable());
+        Page<PointShop> list = pointShopService.list(store.getId(), search.getIsActive(), null, search.getSortType(), search.getSearchString(), search.getPageable());
         return PageResponse.of(list.stream().map(CeoPointShopResponse::of).toList(), PageInfo.of(list));
     }
 
