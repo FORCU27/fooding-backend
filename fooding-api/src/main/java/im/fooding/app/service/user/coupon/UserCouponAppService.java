@@ -9,6 +9,7 @@ import im.fooding.core.event.coupon.RequestCouponEvent;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.coupon.UserCoupon;
+import im.fooding.core.model.coupon.UserCouponSortType;
 import im.fooding.core.model.notification.NotificationChannel;
 import im.fooding.core.service.coupon.UserCouponService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class UserCouponAppService {
 
     @Transactional(readOnly = true)
     public PageResponse<UserCouponResponse> list(UserSearchUserCouponRequest search, long userId) {
-        Page<UserCoupon> userCoupons = userCouponService.list(userId, search.getStoreId(), null, search.getUsed(), null, search.getPageable());
+        Page<UserCoupon> userCoupons = userCouponService.list(userId, search.getStoreId(), null, search.getUsed(), null, UserCouponSortType.RECENT, search.getPageable());
         return PageResponse.of(userCoupons.stream().map(UserCouponResponse::of).toList(), PageInfo.of(userCoupons));
     }
 

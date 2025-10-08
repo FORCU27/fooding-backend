@@ -76,6 +76,7 @@ public class AdminUserCouponService {
                 search.getCouponId(),
                 null,
                 search.getStatus(),
+                search.getSortType(),
                 search.getPageable()
         );
         List<AdminUserCouponResponse> list = userCoupons.getContent().stream().map(AdminUserCouponResponse::of).toList();
