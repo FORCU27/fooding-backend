@@ -1,6 +1,7 @@
 package im.fooding.app.dto.request.admin.coupon;
 
 import im.fooding.core.common.BasicSearch;
+import im.fooding.core.model.coupon.UserCouponSortType;
 import im.fooding.core.model.coupon.UserCouponStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -22,4 +23,11 @@ public class AdminSearchUserCouponRequest extends BasicSearch {
 
     @Schema(description = "쿠폰 상태 (AVAILABLE, REQUESTED, USED)", example = "AVAILABLE")
     private UserCouponStatus status;
+
+    @Schema(
+            description = "정렬 타입(RECENT, OLD)",
+            example = "RECENT",
+            allowableValues = {"RECENT", "OLD"}
+    )
+    private UserCouponSortType sortType = UserCouponSortType.RECENT;
 }

@@ -42,8 +42,8 @@ public class UserCouponService {
         return repository.save(userCoupon);
     }
 
-    public Page<UserCoupon> list(Long userId, Long storeId, Long couponId, Boolean used, UserCouponStatus status, Pageable pageable) {
-        return repository.list(userId, storeId, couponId, used, status, pageable);
+    public Page<UserCoupon> list(Long userId, Long storeId, Long couponId, Boolean used, UserCouponStatus status, UserCouponSortType sortType, Pageable pageable) {
+        return repository.list(userId, storeId, couponId, used, status, sortType, pageable);
     }
 
     public UserCoupon findById(long id) {

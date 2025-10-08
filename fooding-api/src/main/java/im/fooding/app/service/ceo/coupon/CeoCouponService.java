@@ -2,13 +2,17 @@ package im.fooding.app.service.ceo.coupon;
 
 import im.fooding.app.dto.request.ceo.coupon.CeoCreateCouponRequest;
 import im.fooding.app.dto.request.ceo.coupon.CeoSearchCouponRequest;
+import im.fooding.app.dto.request.ceo.coupon.CeoSearchUserCouponRequest;
 import im.fooding.app.dto.request.ceo.coupon.CeoUpdateCouponRequest;
 import im.fooding.app.dto.response.ceo.coupon.CeoCouponResponse;
+import im.fooding.app.dto.response.ceo.coupon.CeoUserCouponResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.coupon.Coupon;
+import im.fooding.core.model.coupon.UserCoupon;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.service.coupon.CouponService;
+import im.fooding.core.service.coupon.UserCouponService;
 import im.fooding.core.service.store.StoreMemberService;
 import im.fooding.core.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +30,7 @@ public class CeoCouponService {
     private final CouponService couponService;
     private final StoreService storeService;
     private final StoreMemberService storeMemberService;
+    private final UserCouponService userCouponService;
 
     @Transactional
     public Long create(CeoCreateCouponRequest request, long userId) {
@@ -69,6 +74,15 @@ public class CeoCouponService {
         Coupon coupon = couponService.findById(id);
         checkMember(coupon.getStore().getId(), userId);
         return CeoCouponResponse.of(coupon);
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<CeoUserCouponResponse> getUsages(long id, long userId, CeoSearchUserCouponRequest search) {
+        Coupon coupon = couponService.findById(id);
+        checkMember(coupon.getStore().getId(), userId);
+        Page<UserCoupon> userCoupons = userCouponService.list(null, coupon.getStore().getId(), coupon.getId(), null, null, search.getSortType(), search.getPageable());
+        List<CeoUserCouponResponse> list = userCoupons.getContent().stream().map(CeoUserCouponResponse::of).toList();
+        return PageResponse.of(list, PageInfo.of(userCoupons));
     }
 
     private void checkMember(long storeId, long ceoId) {
