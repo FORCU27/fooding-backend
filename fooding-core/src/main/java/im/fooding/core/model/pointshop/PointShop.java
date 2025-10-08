@@ -4,6 +4,7 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.coupon.ProvideType;
+import im.fooding.core.model.file.File;
 import im.fooding.core.model.store.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -46,8 +47,13 @@ public class PointShop extends BaseEntity {
 
     private LocalDate issueEndOn;
 
+    @ManyToOne
+    @JoinColumn(name = "image_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private File image;
+
     @Builder
-    public PointShop(Store store, String name, int point, ProvideType provideType, String conditions, Integer totalQuantity, LocalDate issueStartOn, LocalDate issueEndOn) {
+    public PointShop(Store store, String name, int point, ProvideType provideType, String conditions, Integer totalQuantity,
+                     LocalDate issueStartOn, LocalDate issueEndOn, File image) {
         this.store = store;
         this.name = name;
         this.point = point;
@@ -57,9 +63,11 @@ public class PointShop extends BaseEntity {
         this.isActive = true;
         this.issueStartOn = issueStartOn;
         this.issueEndOn = issueEndOn;
+        this.image = image;
     }
 
-    public void update(String name, int point, ProvideType provideType, String conditions, Integer totalQuantity, LocalDate issueStartOn, LocalDate issueEndOn) {
+    public void update(String name, int point, ProvideType provideType, String conditions, Integer totalQuantity,
+                       LocalDate issueStartOn, LocalDate issueEndOn, File image) {
         this.name = name;
         this.point = point;
         this.provideType = provideType;
@@ -67,6 +75,7 @@ public class PointShop extends BaseEntity {
         this.totalQuantity = totalQuantity;
         this.issueStartOn = issueStartOn;
         this.issueEndOn = issueEndOn;
+        this.image = image;
     }
 
     public void issue() {
