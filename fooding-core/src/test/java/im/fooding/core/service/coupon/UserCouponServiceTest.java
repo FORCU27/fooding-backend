@@ -84,7 +84,7 @@ class UserCouponServiceTest extends TestConfig {
         BasicSearch search = new BasicSearch();
 
         // when
-        Page<UserCoupon> userCoupons = userCouponService.list(null, null, null, null, null, search.getPageable());
+        Page<UserCoupon> userCoupons = userCouponService.list(null, null, null, null, null, UserCouponSortType.RECENT, search.getPageable());
 
         // then
         assertThat(userCoupons.getContent()).hasSize(2)
