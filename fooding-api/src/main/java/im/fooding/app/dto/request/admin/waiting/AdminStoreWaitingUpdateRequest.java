@@ -1,15 +1,14 @@
 package im.fooding.app.dto.request.admin.waiting;
 
-import im.fooding.core.dto.request.waiting.StoreWaitingUpdateRequest;
-import im.fooding.core.model.store.Store;
-import im.fooding.core.model.waiting.WaitingUser;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record AdminStoreWaitingUpdateRequest(
 
         @Schema(description = "웨이팅 유저 id", example = "1")
+        Long waitingUserId,
+
+        @Schema(description = "유저 ID", example = "1")
         Long userId,
 
         @Schema(description = "가게 id", example = "1")
@@ -40,18 +39,4 @@ public record AdminStoreWaitingUpdateRequest(
         @NotNull
         String memo
 ) {
-
-    public StoreWaitingUpdateRequest toStoreWaitingUpdateRequest(Long id, WaitingUser user, Store store) {
-        return StoreWaitingUpdateRequest.builder()
-                .id(id)
-                .user(user)
-                .store(store)
-                .status(status)
-                .channel(channel)
-                .infantChairCount(infantChairCount)
-                .infantCount(infantCount)
-                .adultCount(adultCount)
-                .memo(memo)
-                .build();
-    }
 }

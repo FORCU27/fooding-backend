@@ -10,6 +10,9 @@ import jakarta.validation.constraints.NotNull;
 public record AdminStoreWaitingCreateRequest(
 
         @Schema(description = "웨이팅 유저 id", example = "1")
+        Long waitingUserId,
+
+        @Schema(description = "유저 ID", example = "1")
         Long userId,
 
         @Schema(description = "가게 id", example = "1")
@@ -40,17 +43,4 @@ public record AdminStoreWaitingCreateRequest(
         @NotNull
         String memo
 ) {
-
-        public StoreWaitingCreateRequest toStoreWaitingCreateRequest(WaitingUser user, Store store) {
-                return StoreWaitingCreateRequest.builder()
-                        .user(user)
-                        .store(store)
-                        .status(status)
-                        .channel(channel)
-                        .infantChairCount(infantChairCount)
-                        .infantCount(infantCount)
-                        .adultCount(adultCount)
-                        .memo(memo)
-                        .build();
-        }
 }
