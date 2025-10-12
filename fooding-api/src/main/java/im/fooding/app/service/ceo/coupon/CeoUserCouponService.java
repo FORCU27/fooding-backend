@@ -2,10 +2,7 @@ package im.fooding.app.service.ceo.coupon;
 
 import im.fooding.app.dto.request.ceo.coupon.CeoGiftCouponRequest;
 import im.fooding.app.dto.request.ceo.coupon.CeoIssueCouponRequest;
-import im.fooding.app.dto.request.ceo.coupon.CeoSearchUserCouponRequest;
 import im.fooding.app.dto.response.ceo.coupon.CeoUserCouponResponse;
-import im.fooding.core.common.PageInfo;
-import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.coupon.Coupon;
@@ -21,11 +18,8 @@ import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -55,7 +49,7 @@ public class CeoUserCouponService {
         couponService.issue(coupon);
 
         return userCouponService.create(coupon, user, coupon.getStore(), coupon.getBenefitType(), coupon.getDiscountType(),
-                coupon.getDiscountValue(), coupon.getName(), coupon.getConditions(), coupon.getExpiredOn(), null).getId();
+                coupon.getDiscountValue(), coupon.getName(), coupon.getConditions(), coupon.getExpiredOn(), null, null).getId();
     }
 
     @Transactional
@@ -66,7 +60,7 @@ public class CeoUserCouponService {
         checkMember(store.getId(), ceoId);
 
         return userCouponService.create(null, user, store, request.getBenefitType(),
-                request.getDiscountType(), request.getDiscountValue(), request.getName(), request.getConditions(), request.getExpiredOn(), null).getId();
+                request.getDiscountType(), request.getDiscountValue(), request.getName(), request.getConditions(), request.getExpiredOn(), null, null).getId();
     }
 
     @Transactional
@@ -74,14 +68,6 @@ public class CeoUserCouponService {
         UserCoupon userCoupon = userCouponService.findById(id);
         checkMember(userCoupon.getStore().getId(), deletedBy);
         userCouponService.delete(userCoupon, deletedBy);
-    }
-
-    @Transactional(readOnly = true)
-    public PageResponse<CeoUserCouponResponse> list(CeoSearchUserCouponRequest search, long ceoId) {
-        checkMember(search.getStoreId(), ceoId);
-        Page<UserCoupon> userCoupons = userCouponService.list(search.getUserId(), search.getStoreId(), null, null, search.getStatus(), search.getPageable());
-        List<CeoUserCouponResponse> list = userCoupons.getContent().stream().map(CeoUserCouponResponse::of).toList();
-        return PageResponse.of(list, PageInfo.of(userCoupons));
     }
 
     @Transactional(readOnly = true)

@@ -18,6 +18,7 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.coupon.UserCoupon;
+import im.fooding.core.model.coupon.UserCouponSortType;
 import im.fooding.core.model.notification.NotificationChannel;
 import im.fooding.core.model.reward.RewardPoint;
 import im.fooding.core.model.reward.RewardStatus;
@@ -158,7 +159,7 @@ public class RewardApplicationService {
     @Transactional(readOnly = true)
     public PageResponse<AppUserCouponResponse> getRewardCoupons(AppSearchCouponRequest search) {
         User user = userService.findByPhoneNumber(search.getPhoneNumber());
-        Page<UserCoupon> coupons = userCouponService.list(user.getId(), search.getStoreId(), null, search.getUsed(), null, search.getPageable());
+        Page<UserCoupon> coupons = userCouponService.list(user.getId(), search.getStoreId(), null, search.getUsed(), null, UserCouponSortType.RECENT, search.getPageable());
         List<AppUserCouponResponse> list = coupons.getContent().stream().map(AppUserCouponResponse::of).toList();
         return PageResponse.of(list, PageInfo.of(coupons));
     }
