@@ -52,14 +52,14 @@ public class AdminUserCouponService {
         couponService.issue(coupon);
 
         userCouponService.create(coupon, user, coupon.getStore(), coupon.getBenefitType(), coupon.getDiscountType(),
-                coupon.getDiscountValue(), coupon.getName(), coupon.getConditions(), coupon.getExpiredOn(), null);
+                coupon.getDiscountValue(), coupon.getName(), coupon.getConditions(), coupon.getExpiredOn(), null, null);
     }
 
     @Transactional
     public void issueByGift(AdminGiftCouponRequest request) {
         User user = userService.findById(request.getUserId());
         userCouponService.create(null, user, getStore(request.getStoreId()), request.getBenefitType(),
-                request.getDiscountType(), request.getDiscountValue(), request.getName(), request.getConditions(), request.getExpiredOn(), null);
+                request.getDiscountType(), request.getDiscountValue(), request.getName(), request.getConditions(), request.getExpiredOn(), null, null);
     }
 
     @Transactional

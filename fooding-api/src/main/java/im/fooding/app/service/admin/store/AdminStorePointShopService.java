@@ -7,9 +7,11 @@ import im.fooding.app.dto.response.admin.pointshop.AdminPointShopResponse;
 import im.fooding.app.service.file.FileUploadService;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.model.coupon.UserCouponStatus;
 import im.fooding.core.model.file.File;
 import im.fooding.core.model.pointshop.PointShop;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.service.coupon.UserCouponService;
 import im.fooding.core.service.pointshop.PointShopService;
 import im.fooding.core.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class AdminStorePointShopService {
     private final PointShopService pointShopService;
     private final StoreService storeService;
     private final FileUploadService fileUploadService;
+    private final UserCouponService userCouponService;
 
     @Transactional
     public Long create(AdminCreatePointShopRequest request) {
@@ -60,7 +63,10 @@ public class AdminStorePointShopService {
     @Transactional(readOnly = true)
     public AdminPointShopResponse retrieve(long id) {
         PointShop pointShop = pointShopService.findById(id);
-        return AdminPointShopResponse.of(pointShop);
+        Integer usedCount = (int) userCouponService.findByPointShopId(pointShop.getId()).stream()
+                .filter(it -> it.getStatus() != UserCouponStatus.AVAILABLE)
+                .count();
+        return AdminPointShopResponse.of(pointShop, usedCount);
     }
 
     @Transactional(readOnly = true)

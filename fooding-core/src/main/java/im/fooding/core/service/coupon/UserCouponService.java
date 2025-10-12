@@ -22,7 +22,7 @@ public class UserCouponService {
     private final UserCouponRepository repository;
 
     public UserCoupon create(Coupon coupon, User user, Store store, BenefitType benefitType, DiscountType discountType,
-                             int discountValue, String name, String conditions, LocalDate expiredOn, Integer point) {
+                             int discountValue, String name, String conditions, LocalDate expiredOn, Integer point, Long pointShopId) {
         if (null != coupon) {
             checkExistsCoupon(coupon.getId(), user.getId());
         }
@@ -38,6 +38,7 @@ public class UserCouponService {
                 .conditions(conditions)
                 .expiredOn(expiredOn)
                 .point(point)
+                .pointShopId(pointShopId)
                 .build();
         return repository.save(userCoupon);
     }
@@ -72,5 +73,11 @@ public class UserCouponService {
 
     public List<UserCoupon> findByUserIdAndCouponIds(Long userId, List<Long> couponIds) {
         return repository.findByUserIdAndCouponIdIn(userId, couponIds);
+    }
+
+    public List<UserCoupon> findByPointShopId(Long pointShopId) {
+        return repository.findByPointShopId(pointShopId).stream()
+                .filter(it -> !it.isDeleted())
+                .toList();
     }
 }
