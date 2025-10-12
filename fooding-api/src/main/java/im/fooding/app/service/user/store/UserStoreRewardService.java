@@ -81,6 +81,6 @@ public class UserStoreRewardService {
 
         //쿠폰지급
         userCouponService.create(null, user, store, BenefitType.GIFT, DiscountType.FIXED, 0, pointShop.getName(),
-                pointShop.getConditions(), null, pointShop.getPoint());
+                pointShop.getConditions(), null, pointShop.getPoint(), pointShop.getId());
     }
 }

@@ -63,9 +63,11 @@ public class UserCoupon extends BaseEntity {
 
     private Integer point;
 
+    private Long pointShopId;
+
     @Builder
     public UserCoupon(Coupon coupon, User user, Store store, BenefitType benefitType, DiscountType discountType, int discountValue,
-                      String name, String conditions, LocalDate expiredOn, String tableNumber, Integer point) {
+                      String name, String conditions, LocalDate expiredOn, String tableNumber, Integer point, Long pointShopId) {
         this.coupon = coupon;
         this.user = user;
         this.store = store;
@@ -78,6 +80,7 @@ public class UserCoupon extends BaseEntity {
         this.status = UserCouponStatus.AVAILABLE;
         this.tableNumber = tableNumber;
         this.point = point;
+        this.pointShopId = pointShopId;
     }
 
     public void request(String tableNumber) {
