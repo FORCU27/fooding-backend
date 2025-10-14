@@ -8,8 +8,6 @@ import im.fooding.core.event.waiting.StoreWaitingCanceledEvent;
 import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
 import im.fooding.core.global.infra.slack.SlackClient;
 import im.fooding.core.global.kafka.KafkaEventHandler;
-import im.fooding.core.global.util.RewardMessageBuilder;
-import im.fooding.core.global.util.WaitingMessageBuilder;
 import im.fooding.core.model.notification.NotificationTemplate;
 import im.fooding.core.model.notification.NotificationTemplate.Type;
 import im.fooding.core.model.notification.UserNotification;
@@ -58,7 +56,7 @@ public class UserNotificationApplicationService {
                 order,
                 callNumber
         );
-        String message = WaitingMessageBuilder.buildMessage(subject, content);
+        String message = buildMessage(subject, content);
         slackClient.sendNotificationMessage(message);
     }
 
@@ -71,7 +69,7 @@ public class UserNotificationApplicationService {
                 order,
                 callNumber
         );
-        String message = WaitingMessageBuilder.buildMessage(subject, content);
+        String message = buildMessage(subject, content);
         slackClient.sendNotificationMessage(message);
     }
 
@@ -119,7 +117,7 @@ public class UserNotificationApplicationService {
                 waitingSetting.getEntryTimeLimitMinutes()
         );
 
-        String message = WaitingMessageBuilder.buildMessage(subject, content);
+        String message = buildMessage(subject, content);
 
         slackClient.sendNotificationMessage(message);
     }
@@ -136,7 +134,7 @@ public class UserNotificationApplicationService {
                 storeName,
                 event.reason()
         );
-        String message = WaitingMessageBuilder.buildMessage(subject, content);
+        String message = buildMessage(subject, content);
         slackClient.sendNotificationMessage(message);
     }
 
@@ -166,7 +164,7 @@ public class UserNotificationApplicationService {
                 event.storeName(),
                 event.point()
         );
-        String message = RewardMessageBuilder.buildMessage(subject, content);
+        String message = buildMessage(subject, content);
         slackClient.sendNotificationMessage(message);
     }
 
@@ -184,7 +182,16 @@ public class UserNotificationApplicationService {
                 event.remainPoint()
         );
 
-        String message = RewardMessageBuilder.buildMessage(subject, content);
+        String message = buildMessage(subject, content);
         slackClient.sendNotificationMessage(message);
+    }
+
+    private String buildMessage(String subject, String content) {
+        return """
+                title
+                %s
+                body
+                %s
+                """.formatted(subject, content);
     }
 }
