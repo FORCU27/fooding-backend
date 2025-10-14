@@ -124,21 +124,6 @@ public class UserNotificationApplicationService {
         slackClient.sendNotificationMessage(message);
     }
 
-    /**
-     * 입장 메세지 발송(슬랙으로 대체) 예시 추후 삭제 요망
-     *
-     * @param receiver
-     * @param store
-     * @param notice
-     * @param waitingNumber
-     * @param limitTime
-     */
-    public void sendEnterStoreMessage(String receiver, String store, String notice, int waitingNumber, int limitTime) {
-        String message = WaitingMessageBuilder.buildEnterStoreMessage(SENDER, receiver, store, notice, waitingNumber,
-                limitTime);
-        slackClient.sendNotificationMessage(message);
-    }
-
     @KafkaEventHandler(StoreWaitingCanceledEvent.class)
     public void sendWaitingCancelMessage(StoreWaitingCanceledEvent event) {
         NotificationTemplate template = notificationTemplateService.getByType(Type.WaitingCancelSms);
