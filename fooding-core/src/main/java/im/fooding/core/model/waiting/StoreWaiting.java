@@ -160,6 +160,7 @@ public class StoreWaiting extends BaseEntity {
 
     public void update(
             WaitingUser waitingUser,
+            User user,
             Store store,
             StoreWaitingStatus status,
             StoreWaitingChannel channel,
@@ -169,6 +170,7 @@ public class StoreWaiting extends BaseEntity {
             String memo
     ) {
         this.waitingUser = waitingUser;
+        this.user = user;
         this.store = store;
         this.status = status;
         this.channel = channel;

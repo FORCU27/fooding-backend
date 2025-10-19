@@ -7,8 +7,11 @@ public record AdminStoreWaitingResponse(
         @Schema(description = "웨이팅 id", example = "1")
         Long id,
 
-        @Schema(description = "웨이팅 유저 id", example = "1")
+        @Schema(description = "유저 id", example = "1")
         Long userId,
+
+        @Schema(description = "웨이팅 유저 id", example = "1")
+        Long waitingUserId,
 
         @Schema(description = "가게 id", example = "1")
         Long storeId,
@@ -40,12 +43,17 @@ public record AdminStoreWaitingResponse(
 
     public static AdminStoreWaitingResponse from(StoreWaiting waiting) {
             Long userId = null;
+            Long waitingUserId = null;
+            if (waiting.getUser() != null) {
+                    userId = waiting.getUser().getId();
+            }
             if (waiting.getWaitingUser() != null) {
-                    userId = waiting.getWaitingUser().getId();
+                    waitingUserId = waiting.getWaitingUser().getId();
             }
             return new AdminStoreWaitingResponse(
                     waiting.getId(),
                     userId,
+                    waitingUserId,
                     waiting.getStoreId(),
                     waiting.getStatus().name(),
                     waiting.getChannel().name(),
