@@ -61,7 +61,7 @@ class UserCouponServiceTest extends TestConfig {
         User user = saveUser();
 
         // when
-        userCouponService.create(savedCoupon, user, savedCoupon.getStore(), savedCoupon.getBenefitType(), savedCoupon.getDiscountType(), savedCoupon.getDiscountValue(), savedCoupon.getName(), savedCoupon.getConditions(), savedCoupon.getExpiredOn(), null);
+        userCouponService.create(savedCoupon, user, savedCoupon.getStore(), savedCoupon.getBenefitType(), savedCoupon.getDiscountType(), savedCoupon.getDiscountValue(), savedCoupon.getName(), savedCoupon.getConditions(), savedCoupon.getExpiredOn(), null, null);
 
         // then
         assertTrue(userCouponRepository.findById(id).isPresent());
@@ -84,7 +84,7 @@ class UserCouponServiceTest extends TestConfig {
         BasicSearch search = new BasicSearch();
 
         // when
-        Page<UserCoupon> userCoupons = userCouponService.list(null, null, null, null, null, search.getPageable());
+        Page<UserCoupon> userCoupons = userCouponService.list(null, null, null, null, null, UserCouponSortType.RECENT, search.getPageable());
 
         // then
         assertThat(userCoupons.getContent()).hasSize(2)

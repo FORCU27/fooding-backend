@@ -8,6 +8,7 @@ import im.fooding.core.model.coupon.BenefitType;
 import im.fooding.core.model.coupon.DiscountType;
 import im.fooding.core.model.coupon.ProvideType;
 import im.fooding.core.model.pointshop.PointShop;
+import im.fooding.core.model.pointshop.PointShopSortType;
 import im.fooding.core.model.reward.RewardChannel;
 import im.fooding.core.model.reward.RewardPoint;
 import im.fooding.core.model.reward.RewardStatus;
@@ -43,7 +44,7 @@ public class UserStoreRewardService {
 
     @Transactional(readOnly = true)
     public UserStoreRewardResponse list(long storeId, UserInfo userInfo) {
-        List<PointShop> list = pointShopService.list(storeId, true, LocalDate.now());
+        List<PointShop> list = pointShopService.list(storeId, true, LocalDate.now(), PointShopSortType.RECENT);
         RewardPoint rewardPoint = null;
         if (userInfo != null) {
             rewardService.findByUserIdAndStoreId(userInfo.getId(), storeId);
@@ -80,6 +81,6 @@ public class UserStoreRewardService {
 
         //쿠폰지급
         userCouponService.create(null, user, store, BenefitType.GIFT, DiscountType.FIXED, 0, pointShop.getName(),
-                pointShop.getConditions(), null, pointShop.getPoint());
+                pointShop.getConditions(), null, pointShop.getPoint(), pointShop.getId());
     }
 }

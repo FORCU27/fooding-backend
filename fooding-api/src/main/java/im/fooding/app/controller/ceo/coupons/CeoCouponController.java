@@ -2,8 +2,10 @@ package im.fooding.app.controller.ceo.coupons;
 
 import im.fooding.app.dto.request.ceo.coupon.CeoCreateCouponRequest;
 import im.fooding.app.dto.request.ceo.coupon.CeoSearchCouponRequest;
+import im.fooding.app.dto.request.ceo.coupon.CeoSearchUserCouponRequest;
 import im.fooding.app.dto.request.ceo.coupon.CeoUpdateCouponRequest;
 import im.fooding.app.dto.response.ceo.coupon.CeoCouponResponse;
+import im.fooding.app.dto.response.ceo.coupon.CeoUserCouponResponse;
 import im.fooding.app.service.ceo.coupon.CeoCouponService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
@@ -52,5 +54,11 @@ public class CeoCouponController {
     public ApiResult<Void> delete(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo) {
         service.delete(id, userInfo.getId());
         return ApiResult.ok();
+    }
+
+    @GetMapping("/{id}/usages")
+    @Operation(summary = "쿠폰 사용내역 조회")
+    public ApiResult<PageResponse<CeoUserCouponResponse>> getUsages(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo, @Valid CeoSearchUserCouponRequest search) {
+        return ApiResult.ok(service.getUsages(id, userInfo.getId(), search));
     }
 }

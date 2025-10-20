@@ -1,5 +1,6 @@
 package im.fooding.app.dto.response.file;
 
+import im.fooding.core.model.file.File;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,5 +27,14 @@ public class FileResponse {
         this.name = name;
         this.url = url;
         this.size = size;
+    }
+
+    public static FileResponse of(File file) {
+        return FileResponse.builder()
+                .id(file.getId())
+                .name(file.getName())
+                .url(file.getUrl())
+                .size(file.getSize())
+                .build();
     }
 }

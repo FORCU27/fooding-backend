@@ -1,5 +1,7 @@
 package im.fooding.app.dto.response.ceo.store;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import im.fooding.app.dto.response.file.FileResponse;
 import im.fooding.core.model.coupon.ProvideType;
 import im.fooding.core.model.pointshop.PointShop;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -34,8 +37,12 @@ public class CeoPointShopResponse {
     @Schema(description = "총 수량", example = "100", requiredMode = RequiredMode.NOT_REQUIRED)
     private Integer totalQuantity;
 
-    @Schema(description = "발급 수량", example = "10", requiredMode = RequiredMode.REQUIRED)
+    @Schema(description = "구매 수량", example = "10", requiredMode = RequiredMode.NOT_REQUIRED)
     private Integer issuedQuantity;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Schema(description = "사용 수량", example = "5", requiredMode = RequiredMode.NOT_REQUIRED)
+    private Integer usedQuantity;
 
     @Schema(description = "교환 가능 시작일", example = "2025-07-01", requiredMode = RequiredMode.NOT_REQUIRED)
     private LocalDate issueStartOn;
@@ -43,8 +50,15 @@ public class CeoPointShopResponse {
     @Schema(description = "교환 가능 마감일", example = "2030-07-01", requiredMode = RequiredMode.NOT_REQUIRED)
     private LocalDate issueEndOn;
 
+    @Schema(description = "이미지", requiredMode = RequiredMode.NOT_REQUIRED)
+    private FileResponse image;
+
+    @Schema(description = "등록일", example = "2025-03-16T05:17:04.069", requiredMode = RequiredMode.REQUIRED)
+    private LocalDateTime createdAt;
+
     @Builder
-    private CeoPointShopResponse(Long id, String name, int point, ProvideType provideType, String conditions, Boolean isActive, Integer totalQuantity, Integer issuedQuantity, LocalDate issueStartOn, LocalDate issueEndOn) {
+    private CeoPointShopResponse(Long id, String name, int point, ProvideType provideType, String conditions, Boolean isActive, Integer totalQuantity,
+                                 Integer issuedQuantity, Integer usedQuantity, LocalDate issueStartOn, LocalDate issueEndOn, FileResponse image, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.point = point;
@@ -53,11 +67,14 @@ public class CeoPointShopResponse {
         this.isActive = isActive;
         this.totalQuantity = totalQuantity;
         this.issuedQuantity = issuedQuantity;
+        this.usedQuantity = usedQuantity;
         this.issueStartOn = issueStartOn;
         this.issueEndOn = issueEndOn;
+        this.image = image;
+        this.createdAt = createdAt;
     }
 
-    public static CeoPointShopResponse of(PointShop pointShop) {
+    public static CeoPointShopResponse of(PointShop pointShop, Integer usedQuantity) {
         return CeoPointShopResponse.builder()
                 .id(pointShop.getId())
                 .name(pointShop.getName())
@@ -67,8 +84,15 @@ public class CeoPointShopResponse {
                 .isActive(pointShop.isActive())
                 .totalQuantity(pointShop.getTotalQuantity())
                 .issuedQuantity(pointShop.getIssuedQuantity())
+                .usedQuantity(usedQuantity)
                 .issueStartOn(pointShop.getIssueStartOn())
                 .issueEndOn(pointShop.getIssueEndOn())
+                .image(pointShop.getImage() != null ? FileResponse.of(pointShop.getImage()) : null)
+                .createdAt(pointShop.getCreatedAt())
                 .build();
+    }
+
+    public static CeoPointShopResponse of(PointShop pointShop) {
+        return of(pointShop, null);
     }
 }

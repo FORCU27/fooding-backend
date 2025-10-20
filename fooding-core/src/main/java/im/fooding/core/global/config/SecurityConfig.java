@@ -46,7 +46,6 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/user/stores/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/store-posts/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/regions/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/user/stores/*/rewards").permitAll()
                         .requestMatchers(HttpMethod.GET, "/user/recommend-keywords").permitAll()
                         .requestMatchers(HttpMethod.GET, "/ceo/posts", "/ceo/posts/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/app/rewards/**").permitAll()
@@ -54,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                         .requestMatchers("/ceo/**", "/app/**", "/pos/**").hasAnyRole("CEO")
                         .requestMatchers(HttpMethod.POST, "/file-upload").hasAnyRole("USER", "ADMIN", "CEO")
+                        .requestMatchers("/auth/**").hasAnyRole("USER", "ADMIN", "CEO")
                         .anyRequest().permitAll());
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

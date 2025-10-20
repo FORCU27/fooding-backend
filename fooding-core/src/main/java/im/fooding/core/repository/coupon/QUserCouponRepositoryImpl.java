@@ -3,8 +3,8 @@ package im.fooding.core.repository.coupon;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import im.fooding.core.model.coupon.CouponStatus;
 import im.fooding.core.model.coupon.UserCoupon;
+import im.fooding.core.model.coupon.UserCouponSortType;
 import im.fooding.core.model.coupon.UserCouponStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,7 +24,7 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<UserCoupon> list(Long userId, Long storeId, Long couponId, Boolean used, UserCouponStatus status, Pageable pageable) {
+    public Page<UserCoupon> list(Long userId, Long storeId, Long couponId, Boolean used, UserCouponStatus status, UserCouponSortType sortType, Pageable pageable) {
         List<UserCoupon> results = query
                 .select(userCoupon)
                 .from(userCoupon)
@@ -44,7 +44,7 @@ public class QUserCouponRepositoryImpl implements QUserCouponRepository {
                         searchUsed(used),
                         searchStatus(status)
                 )
-                .orderBy(userCoupon.id.desc())
+                .orderBy(sortType.getOrder(userCoupon))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
