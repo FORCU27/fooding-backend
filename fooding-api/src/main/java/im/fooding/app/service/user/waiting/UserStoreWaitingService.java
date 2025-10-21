@@ -3,9 +3,9 @@ package im.fooding.app.service.user.waiting;
 import im.fooding.app.dto.request.user.waiting.UserStoreWaitingRegisterRequest;
 import im.fooding.app.dto.response.user.waiting.UserStoreWaitingCreateResponse;
 import im.fooding.app.dto.response.user.waiting.UserStoreWaitingResponse;
-import im.fooding.app.service.user.notification.UserNotificationApplicationService;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
-import im.fooding.core.model.store.Store;
+import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
+import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.store.StoreService;
 import im.fooding.core.model.store.StoreServiceType;
 import im.fooding.core.model.user.User;
@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +34,8 @@ public class UserStoreWaitingService {
     private final WaitingLogService waitingLogService;
     private final UserService userService;
     private final PlanService planService;
-    private final UserNotificationApplicationService userNotificationApplicationService;
     private final WaitingSettingService waitingSettingService;
+    private final EventProducerService eventProducerService;
 
     public UserStoreWaitingResponse getStoreWaiting(long id) {
         return UserStoreWaitingResponse.from(storeWaitingService.get(id));
@@ -70,41 +69,11 @@ public class UserStoreWaitingService {
 
         ObjectId planId = planService.create(storeWaiting);
 
-        if (StringUtils.hasText(user.getPhoneNumber())) {
-            sendSmsNotification(waitingSetting, storeWaiting, user.getPhoneNumber());
-        }
-        if (StringUtils.hasText(user.getEmail())) {
-            sendEmailNotification(waitingSetting, storeWaiting, user.getEmail());
-        }
+        eventProducerService.publishEvent(
+                StoreWaitingRegisterRequest.class.getSimpleName(),
+                new StoreWaitingRegisteredEvent(storeWaiting.getId())
+        );
 
         return new UserStoreWaitingCreateResponse(storeWaiting.getId(), planId.toString());
-    }
-
-    private void sendSmsNotification(WaitingSetting waitingSetting, StoreWaiting storeWaiting, String phoneNumber) {
-        int order = storeWaitingService.getOrder(storeWaiting.getId());
-        int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
-
-        Store store = waitingSetting.getStoreService().getStore();
-        userNotificationApplicationService.sendSmsWaitingRegisterMessage(
-                store.getName(),
-                personnel,
-                order,
-                storeWaiting.getCallNumber(),
-                phoneNumber
-        );
-    }
-
-    private void sendEmailNotification(WaitingSetting waitingSetting, StoreWaiting storeWaiting, String email) {
-        int order = storeWaitingService.getOrder(storeWaiting.getId());
-        int personnel = storeWaiting.getAdultCount() + storeWaiting.getInfantCount();
-
-        Store store = waitingSetting.getStoreService().getStore();
-        userNotificationApplicationService.sendSmsWaitingRegisterMessage(
-                store.getName(),
-                personnel,
-                order,
-                storeWaiting.getCallNumber(),
-                email
-        );
     }
 }
