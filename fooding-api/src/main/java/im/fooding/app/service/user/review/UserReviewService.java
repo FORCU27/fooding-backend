@@ -13,6 +13,7 @@ import im.fooding.core.model.review.ReviewScore;
 import im.fooding.core.model.review.ReviewSortType;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
+import im.fooding.core.repository.review.ReviewRepository;
 import im.fooding.core.service.plan.PlanService;
 import im.fooding.core.service.review.ReviewImageService;
 import im.fooding.core.service.review.ReviewLikeService;
@@ -42,6 +43,7 @@ public class UserReviewService {
     private final UserService userService;
     private final StoreService storeService;
     private final PlanService planService;
+    private final ReviewRepository reviewRepository;
 
     @Transactional( readOnly = true )
     public PageResponse<UserReviewResponse> list(Long storeId, UserRetrieveReviewRequest request) {
@@ -55,8 +57,16 @@ public class UserReviewService {
         if( sortInformation != null )pageable = PageRequest.of( request.getPageNum() - 1, request.getPageSize(), sortInformation );
         else pageable = PageRequest.of(request.getPageNum() - 1, request.getPageSize() );
 
+        // 답글의 경우
+        Long reviewId = null;
+        if( request.getReviewId() != null ) {
+            Pageable pga = PageRequest.of( 0, 40 );
+            Review replyReview = reviewRepository.findById( request.getReviewId() ).orElseThrow();
+            reviewId = replyReview.getId();
+        }
+
         Long writerId = request.getWriterId();
-        Page<Review> reviewPage = reviewService.list(storeId, writerId, pageable );
+        Page<Review> reviewPage = reviewService.list(storeId, writerId, reviewId, pageable );
 
         List<Long> reviewIds = getReviewIds(reviewPage.getContent());
 

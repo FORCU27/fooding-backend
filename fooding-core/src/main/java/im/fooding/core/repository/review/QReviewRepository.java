@@ -11,6 +11,7 @@ public interface QReviewRepository {
     Page<Review> list(
             Long storeId,
             Long writerId,
+            Long reviewId,
             Pageable pageable
     );
 }

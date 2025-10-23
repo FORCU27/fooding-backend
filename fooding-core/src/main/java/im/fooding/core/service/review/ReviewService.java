@@ -34,9 +34,10 @@ public class ReviewService {
     public Page<Review> list(
             Long storeId,
             Long writerId,
+            Long reviewId,
             Pageable pageable
     ) {
-        return reviewRepository.list(storeId, writerId, pageable);
+        return reviewRepository.list(storeId, writerId, reviewId, pageable);
     }
 
     public Page<Review> list(Store store, Pageable pageable) {
