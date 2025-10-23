@@ -25,13 +25,12 @@ public class DeviceService {
      * 디바이스 목록 조회
      *
      * @param searchString 검색어
-     * @param storeId 스토어 ID
      * @param userId 유저 ID
      * @param pageable 페이지 정보
      * @return Page<Device>
      */
-    public Page<Device> list(String searchString, Long storeId, Long userId, Pageable pageable) {
-        return deviceRepository.list(searchString, storeId, userId, pageable);
+    public Page<Device> list(String searchString, Long userId, Pageable pageable) {
+        return deviceRepository.list(searchString, userId, pageable);
     }
 
     /**
@@ -42,14 +41,13 @@ public class DeviceService {
      * @param osVersion
      * @return deviceId
      */
-    public Device create(String uuid, String name, DevicePlatform type, String osVersion, String packageName, Store store){
+    public Device create(String uuid, String name, DevicePlatform type, String osVersion, String packageName){
         Device device = Device.builder()
                 .uuid(uuid)
                 .name(name)
                 .type(type)
                 .osVersion(osVersion)
                 .packageName(packageName)
-                .store(store)
                 .build();
 
         return deviceRepository.save(device);
@@ -69,6 +67,22 @@ public class DeviceService {
     }
 
     /**
+     * 디바이스 정보 업데이트
+     *
+     * @param name
+     * @param osVersion
+     * @param appVersion
+     * @param deviceId
+     */
+    @Transactional( readOnly = false )
+    public void updateDevice( String name, String osVersion, String appVersion, long deviceId ){
+        Device device = deviceRepository.findById(deviceId).orElseThrow();
+        if( name != null ) device.updateName( name );
+        if( osVersion != null ) device.updateOsVersion( osVersion );
+        if( appVersion != null ) device.updateAppVersion( appVersion );
+    }
+
+    /**
      * 디바이스 삭제
      *
      * @param deviceId
@@ -80,7 +94,9 @@ public class DeviceService {
         device.delete(deletedBy);
     }
 
-    public Device findByUuidAndStoreAndPackageName(String uuid, Store store, String packageName) {
-        return deviceRepository.findByUuidAndStoreAndPackageName(uuid, store, packageName);
+    public Device findByUuidAndPackageName(String uuid, String packageName) {
+        return deviceRepository.findByUuidAndPackageName(uuid, packageName);
     }
+
+    public Device findById( long id ){ return deviceRepository.findById( id ).orElseThrow(); }
 }

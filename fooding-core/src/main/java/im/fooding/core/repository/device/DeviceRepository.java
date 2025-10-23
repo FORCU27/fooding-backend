@@ -9,7 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DeviceRepository extends JpaRepository<Device, Long>, QDeviceRepository {
-    Device findByUuidAndStoreAndPackageName(String uuid, Store store, String packageName);
-    
-    Page<Device> findAllByUserIdOrStoreId(Long userId, Long storeId, Pageable pageable);
+    Device findByUuidAndPackageName(String uuid, String packageName);
 }
