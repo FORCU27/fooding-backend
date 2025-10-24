@@ -28,16 +28,17 @@ public class ReviewService {
      * * 리뷰 목록 조회
      * @param storeId
      * @param writerId
+     * @param parentId
      * @param pageable
      * @return
      */
     public Page<Review> list(
             Long storeId,
             Long writerId,
-            Long reviewId,
+            Long parentId,
             Pageable pageable
     ) {
-        return reviewRepository.list(storeId, writerId, reviewId, pageable);
+        return reviewRepository.list(storeId, writerId, parentId, pageable);
     }
 
     public Page<Review> list(Store store, Pageable pageable) {

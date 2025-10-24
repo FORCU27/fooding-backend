@@ -59,13 +59,12 @@ public class UserReviewService {
 
         // 답글의 경우
         Long reviewId = null;
-        if( request.getReviewId() != null ) {
-            Pageable pga = PageRequest.of( 0, 40 );
-            Review replyReview = reviewRepository.findById( request.getReviewId() ).orElseThrow();
-            reviewId = replyReview.getId();
+        if( request.getReviewId() != null && request.getReviewId() != 0 ) {
+            Review parentReview = reviewService.findById( request.getReviewId() );
+            reviewId = parentReview.getId();
         }
 
-        Long writerId = request.getWriterId();
+        Long writerId = request.getWriterId() > 0 ? request.getWriterId() : null;
         Page<Review> reviewPage = reviewService.list(storeId, writerId, reviewId, pageable );
 
         List<Long> reviewIds = getReviewIds(reviewPage.getContent());
@@ -122,14 +121,17 @@ public class UserReviewService {
                 .total( totalScore )
                 .build();
         // 리뷰 추가
-        Review review = Review.builder()
+        Review.ReviewBuilder review = Review.builder()
                 .store( store )
                 .writer( user )
                 .score( score )
                 .content( request.getContent() )
-                .visitPurposeType( request.getVisitPurpose() )
-                .build();
-        Review result = reviewService.create( review );
+                .visitPurposeType( request.getVisitPurpose() );
+        if( request.getReviewId() != null && request.getReviewId() != 0 ) {
+            Review parent = reviewService.findById( request.getReviewId() );
+            review.parent( parent );
+        }
+        Review result = reviewService.create( review.build() );
         // 리뷰 이미지 추가
         reviewImageService.create( result, request.getImageUrls() );
         // 리뷰 수 추가
