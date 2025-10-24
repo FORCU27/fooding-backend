@@ -13,6 +13,7 @@ import im.fooding.core.model.review.ReviewScore;
 import im.fooding.core.model.review.ReviewSortType;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
+import im.fooding.core.repository.review.ReviewRepository;
 import im.fooding.core.service.plan.PlanService;
 import im.fooding.core.service.review.ReviewImageService;
 import im.fooding.core.service.review.ReviewLikeService;
@@ -42,6 +43,7 @@ public class UserReviewService {
     private final UserService userService;
     private final StoreService storeService;
     private final PlanService planService;
+    private final ReviewRepository reviewRepository;
 
     @Transactional( readOnly = true )
     public PageResponse<UserReviewResponse> list(Long storeId, UserRetrieveReviewRequest request) {
@@ -55,8 +57,15 @@ public class UserReviewService {
         if( sortInformation != null )pageable = PageRequest.of( request.getPageNum() - 1, request.getPageSize(), sortInformation );
         else pageable = PageRequest.of(request.getPageNum() - 1, request.getPageSize() );
 
-        Long writerId = request.getWriterId();
-        Page<Review> reviewPage = reviewService.list(storeId, writerId, pageable );
+        // 답글의 경우
+        Long reviewId = null;
+        if( request.getReviewId() != null && request.getReviewId() != 0 ) {
+            Review parentReview = reviewService.findById( request.getReviewId() );
+            reviewId = parentReview.getId();
+        }
+
+        Long writerId = request.getWriterId() > 0 ? request.getWriterId() : null;
+        Page<Review> reviewPage = reviewService.list(storeId, writerId, reviewId, pageable );
 
         List<Long> reviewIds = getReviewIds(reviewPage.getContent());
 
@@ -112,14 +121,17 @@ public class UserReviewService {
                 .total( totalScore )
                 .build();
         // 리뷰 추가
-        Review review = Review.builder()
+        Review.ReviewBuilder review = Review.builder()
                 .store( store )
                 .writer( user )
                 .score( score )
                 .content( request.getContent() )
-                .visitPurposeType( request.getVisitPurpose() )
-                .build();
-        Review result = reviewService.create( review );
+                .visitPurposeType( request.getVisitPurpose() );
+        if( request.getReviewId() != null && request.getReviewId() != 0 ) {
+            Review parent = reviewService.findById( request.getReviewId() );
+            review.parent( parent );
+        }
+        Review result = reviewService.create( review.build() );
         // 리뷰 이미지 추가
         reviewImageService.create( result, request.getImageUrls() );
         // 리뷰 수 추가

@@ -15,6 +15,9 @@ public class CreateReviewRequest {
 
     @NotNull
     private Long userId;
+    
+    // 답글의 경우 존재
+    private Long reviewId;
 
     @NotNull
     private String content;
