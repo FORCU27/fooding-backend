@@ -1,5 +1,6 @@
 package im.fooding.app.service.ceo.device;
 
+import im.fooding.core.model.device.Device;
 import im.fooding.core.model.device.DeviceLogType;
 import im.fooding.core.model.device.ServiceType;
 import im.fooding.core.model.device.StoreDevice;
@@ -33,7 +34,7 @@ public class CeoDeviceService {
         deviceService.updateUser( null, deviceId );
         // 유저와 연결이 해제될 때, 가게가 연결되어 있으면 가게도 제거
         StoreDevice storeDevice = storeDeviceService.findByDeviceId( deviceId );
-        if( storeDevice != null ) storeDeviceService.delete( deviceId, deletedBy );
+        if( storeDevice != null ) storeDeviceService.delete( storeDevice.getId(), deletedBy );
 
         // 로그 기록
         logService.logging( deviceId, DeviceLogType.DISCONNECTED );
@@ -47,11 +48,13 @@ public class CeoDeviceService {
      */
     @Transactional( readOnly = false )
     public void updateDeviceServiceType( long id, ServiceType serviceType ) {
-        storeDeviceService.updateServiceType( id, serviceType );
+        Device device = deviceService.findById( id );
+        StoreDevice storeDevice = storeDeviceService.findByDeviceId( device.getId() );
+        storeDeviceService.updateServiceType( storeDevice.getId(), serviceType );
 
         // 로그 기록
-        if( serviceType == ServiceType.REWARD_MANAGEMENT || serviceType == ServiceType.REWARD_RECEIPT ) logService.logging( id, DeviceLogType.SERVICE_REWARD )
-        else logService.logging( id, DeviceLogType.SERVICE_REWARD );
+        if( serviceType == ServiceType.REWARD_MANAGEMENT || serviceType == ServiceType.REWARD_RECEIPT ) logService.logging( storeDevice.getId(), DeviceLogType.SERVICE_REWARD );
+        else logService.logging( storeDevice.getId(), DeviceLogType.SERVICE_REWARD );
     }
 
     /**

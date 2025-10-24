@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface StoreDeviceRepository extends JpaRepository<StoreDevice, Long> {
     Optional<StoreDevice> findByDeviceId( long deviceId );
+    Optional<StoreDevice> findByDeviceIdAndStoreId( long deviceId, long storeId );
 }

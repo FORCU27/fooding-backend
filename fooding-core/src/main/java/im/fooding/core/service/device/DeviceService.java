@@ -59,6 +59,7 @@ public class DeviceService {
      * @param user
      * @param deviceId
      */
+    @Transactional( readOnly = false )
     public void updateUser(User user, Long deviceId){
         Device device = deviceRepository.findById(deviceId).orElseThrow(
                 () -> new ApiException(ErrorCode.DEVICE_NOT_FOUND)

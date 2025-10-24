@@ -7,6 +7,7 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.device.Device;
 import im.fooding.core.model.device.DeviceApp;
+import im.fooding.core.model.device.StoreDevice;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.device.DeviceAppService;
@@ -54,6 +55,7 @@ public class AppDeviceService {
      */
     @Transactional
     public void connect(ConnectDeviceRequest request, Long userId) {
+        log.info( "--------------------------- user Id: {}", userId );
         // uuid + packageName을 통해 디바이스 정보 존재 여부 확인
         Device existedDevice = deviceService.findByUuidAndPackageName( request.uuid(), request.packageName() );
         // 디바이스가 존재한다면 입력받은 정보로 업데이트
@@ -73,17 +75,21 @@ public class AppDeviceService {
             existedDevice = newDevice;
         }
 
+        if( userId == null ) return;
+
         // 해당 기기와 User를 연결
-        if( userId != null ) {
+        if( userId != 0 ) {
             User user = userService.findById(userId);
             deviceService.updateUser( user, existedDevice.getId() );
         }
 
         // 해당 기기와 Store를 연결
-        if( request.storeId() != null ){
-            Store store = storeService.findById(request.storeId());
-            storeDeviceService.create( store, existedDevice, null );
+        if( request.storeId() != 0 ) {
+            StoreDevice storeDevice = storeDeviceService.findByStoreIdAndDeviceId(request.storeId(), request.deviceId());
+            if (storeDevice == null) {
+                Store store = storeService.findById(request.storeId());
+                storeDeviceService.create(store, existedDevice, null);
+            }
         }
-
     }
 }
