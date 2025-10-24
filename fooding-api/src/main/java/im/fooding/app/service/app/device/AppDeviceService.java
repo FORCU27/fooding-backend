@@ -7,10 +7,12 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.device.Device;
 import im.fooding.core.model.device.DeviceApp;
+import im.fooding.core.model.device.DeviceLogType;
 import im.fooding.core.model.device.StoreDevice;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.device.DeviceAppService;
+import im.fooding.core.service.device.DeviceLogService;
 import im.fooding.core.service.device.DeviceService;
 import im.fooding.core.service.device.StoreDeviceService;
 import im.fooding.core.service.store.StoreService;
@@ -33,6 +35,7 @@ public class AppDeviceService {
     private final StoreService storeService;
     private final DeviceAppService deviceAppService;
     private final StoreDeviceService storeDeviceService;
+    private final DeviceLogService logService;
 
     /**
      * 디바이스 목록 조회
@@ -91,5 +94,8 @@ public class AppDeviceService {
                 storeDeviceService.create(store, existedDevice, null);
             }
         }
+
+        // 로그 등록
+        logService.logging(existedDevice.getId(), DeviceLogType.CONNECTED );
     }
 }

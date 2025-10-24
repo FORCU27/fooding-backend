@@ -1,15 +1,19 @@
 package im.fooding.app.service.ceo.device;
 
-import im.fooding.core.model.device.Device;
-import im.fooding.core.model.device.DeviceLogType;
-import im.fooding.core.model.device.ServiceType;
-import im.fooding.core.model.device.StoreDevice;
+import im.fooding.app.dto.request.ceo.device.GetDeviceLogsRequest;
+import im.fooding.app.dto.response.ceo.device.GetDeviceLogsResponse;
+import im.fooding.core.common.PageInfo;
+import im.fooding.core.common.PageResponse;
+import im.fooding.core.model.device.*;
 import im.fooding.core.service.device.DeviceAppService;
 import im.fooding.core.service.device.DeviceLogService;
 import im.fooding.core.service.device.DeviceService;
 import im.fooding.core.service.device.StoreDeviceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,13 +58,27 @@ public class CeoDeviceService {
 
         // 로그 기록
         if( serviceType == ServiceType.REWARD_MANAGEMENT || serviceType == ServiceType.REWARD_RECEIPT ) logService.logging( storeDevice.getId(), DeviceLogType.SERVICE_REWARD );
-        else logService.logging( storeDevice.getId(), DeviceLogType.SERVICE_REWARD );
+        else logService.logging( device.getId(), DeviceLogType.SERVICE_REWARD );
     }
 
     /**
      * 디바이스 로그 조회
      *
      * @param request
-     * @return StoreDeviceResponse
+     * @param userId
      */
+    public PageResponse<GetDeviceLogsResponse> retrieveLogs( GetDeviceLogsRequest request, Long userId ) {
+        // 요청 받은 디바이스 소유자인지 확인
+        Device device = deviceService.findById( request.getDeviceId() );
+        if( userId == null ) throw new IllegalArgumentException( "잘못된 요청입니다." );
+        if( device.getUser().getId() != userId ) throw new IllegalArgumentException( "잘못된 요청입니다." );
+
+        // 로그 전달
+        Pageable pageable = PageRequest.of( request.getPageNum()-1, request.getPageSize() );
+        Page<DeviceLog> result = logService.getDeviceLogs( request.getDeviceId(), pageable );
+        log.info( "--------------------- result.get(0): {}", result.getContent().get(0) );
+
+        return PageResponse.of( result.stream().map(GetDeviceLogsResponse::of).toList(), PageInfo.of( result ) );
+    }
+
 }
