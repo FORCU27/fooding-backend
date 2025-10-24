@@ -4,6 +4,7 @@ import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
@@ -33,6 +34,22 @@ public class StoreDevice extends BaseEntity {
 
     @Column( name = "last_connected_at" )
     private LocalDateTime lastConnectedAt;
+
+    @Builder
+    public StoreDevice(
+        Store store,
+        Device device,
+        ServiceType type
+    ){
+        this.store = store;
+        this.device = device;
+        this.serviceType = type;
+        this.lastConnectedAt = LocalDateTime.now();
+    }
+
+    public void updateServiceType( ServiceType type ){
+        this.serviceType = type;
+    }
 
     public void connectDevice(){
         this.lastConnectedAt = LocalDateTime.now();

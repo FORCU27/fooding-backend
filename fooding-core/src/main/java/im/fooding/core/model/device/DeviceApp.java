@@ -36,9 +36,6 @@ public class DeviceApp extends BaseEntity {
     @Column( name="last_connected_at" )
     private LocalDateTime lastConnectedAt;
 
-    @Column( name="service_type" )
-    private ServiceType serviceType;
-
     @Builder
     public DeviceApp(
             Device device,
