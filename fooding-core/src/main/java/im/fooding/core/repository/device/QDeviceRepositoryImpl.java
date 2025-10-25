@@ -19,7 +19,7 @@ public class QDeviceRepositoryImpl implements QDeviceRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Device> list(String searchString, Long storeId, Long userId, Pageable pageable) {
+    public Page<Device> list(String searchString, Long userId, Pageable pageable) {
         QDevice device = QDevice.device;
 
         BooleanExpression whereClause = device.deleted.isFalse();
