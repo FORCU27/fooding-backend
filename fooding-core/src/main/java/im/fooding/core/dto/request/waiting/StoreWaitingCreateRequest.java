@@ -1,6 +1,7 @@
 package im.fooding.core.dto.request.waiting;
 
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.user.User;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
 import im.fooding.core.model.waiting.StoreWaitingStatus;
@@ -9,7 +10,8 @@ import lombok.Builder;
 
 @Builder
 public record StoreWaitingCreateRequest(
-        WaitingUser user,
+        WaitingUser waitingUser,
+        User user,
         Store store,
         String status,
         String channel,
@@ -20,7 +22,8 @@ public record StoreWaitingCreateRequest(
 ) {
     public StoreWaiting toStoreWaiting(Integer callNumber) {
         return StoreWaiting.builder()
-                .waitingUser(user)
+                .waitingUser(waitingUser)
+                .user(user)
                 .store(store)
                 .callNumber(callNumber)
                 .status(StoreWaitingStatus.of(status))

@@ -12,7 +12,6 @@ import im.fooding.core.model.waiting.StoreWaitingStatus;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingStatus;
 import im.fooding.core.repository.waiting.StoreWaitingRepository;
-import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
@@ -50,6 +49,7 @@ public class StoreWaitingService {
     public void update(StoreWaitingUpdateRequest request) {
         StoreWaiting storeWaiting = get(request.id());
         storeWaiting.update(
+                request.waitingUser(),
                 request.user(),
                 request.store(),
                 StoreWaitingStatus.of(request.status()),
