@@ -76,7 +76,7 @@ public class ReviewService {
      * @param id
      */
     public int getReviewCount( Long id ){
-        return 0;
+        return reviewRepository.findAllByWriterId( id ).size();
     }
 
     /**
@@ -99,6 +99,18 @@ public class ReviewService {
                 () -> new ApiException(ErrorCode.REVIEW_NOT_FOUND)
         );
         review.update( content, visitPurposeType, score );
+    }
+
+    /**
+     * * 답글 업데이트
+     * @param id, comment
+     */
+    @Transactional( readOnly = false )
+    public void updateReply( long id, String comment ){
+        Review review = reviewRepository.findById( id ).orElseThrow(
+                () -> new ApiException(ErrorCode.REVIEW_NOT_FOUND)
+        );
+        review.updateComment( comment );
     }
 
 }

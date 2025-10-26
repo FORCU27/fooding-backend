@@ -63,7 +63,7 @@ public class Review extends BaseEntity {
     @Column(name = "content", nullable = false, columnDefinition = "LONGTEXT")
     private String content;
 
-    @Column(name = "purpose_type", nullable = false)
+    @Column(name = "purpose_type")
     @Enumerated(EnumType.STRING)
     private VisitPurposeType visitPurposeType;
 
@@ -88,12 +88,13 @@ public class Review extends BaseEntity {
         this.isBlind = false;
     }
 
-    @Transactional
     public void update(String content, VisitPurposeType visitPurposeType, ReviewScore score) {
         this.content = content;
         this.visitPurposeType = visitPurposeType;
         this.score = score;
     }
+
+    public void updateComment( String comment ){ this.content = comment; }
 
     @Transactional
     public void setBlind( boolean isBlind ) { this.isBlind = isBlind; }
