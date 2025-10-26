@@ -28,16 +28,21 @@ public class CeoStoreBookmarkResponse {
     @Schema(description = "인증", example = "1", requiredMode = RequiredMode.REQUIRED)
     private int verifiedCount;
 
+    @Schema(description = "별표 표시", example = "true", requiredMode = RequiredMode.REQUIRED)
+    private Boolean isStarred;
+
     @Schema(description = "등록일", example = "2025-04-25 12:00:00", requiredMode = RequiredMode.REQUIRED)
     private LocalDateTime createdAt;
 
     @Builder
-    private CeoStoreBookmarkResponse(Long id, Long userId, String profileImage, String nickname, int verifiedCount, LocalDateTime createdAt) {
+    private CeoStoreBookmarkResponse(Long id, Long userId, String profileImage, String nickname, int verifiedCount,
+                                     Boolean isStarred, LocalDateTime createdAt) {
         this.id = id;
         this.userId = userId;
         this.profileImage = profileImage;
         this.nickname = nickname;
         this.verifiedCount = verifiedCount;
+        this.isStarred = isStarred;
         this.createdAt = createdAt;
     }
 
@@ -49,6 +54,7 @@ public class CeoStoreBookmarkResponse {
                 .profileImage(user.getProfileImage())
                 .nickname(user.getNickname())
                 .verifiedCount(bookmark.getVerifiedCount())
+                .isStarred(bookmark.getIsStarred())
                 .createdAt(bookmark.getCreatedAt())
                 .build();
     }
