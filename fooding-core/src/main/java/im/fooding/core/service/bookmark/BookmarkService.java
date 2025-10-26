@@ -3,6 +3,7 @@ package im.fooding.core.service.bookmark;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.bookmark.Bookmark;
+import im.fooding.core.model.bookmark.BookmarkSortType;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.bookmark.BookmarkRepository;
@@ -37,8 +38,8 @@ public class BookmarkService {
         bookmark.delete(deletedBy);
     }
 
-    public Page<Bookmark> list(Long storeId, Long userId, String searchString, Pageable pageable) {
-        return repository.list(storeId, userId, searchString, pageable);
+    public Page<Bookmark> list(Long storeId, Long userId, BookmarkSortType sortType, String searchString, Pageable pageable) {
+        return repository.list(storeId, userId, sortType, searchString, pageable);
     }
 
     public List<Bookmark> findAllByUserId(Long userId) {
@@ -61,5 +62,10 @@ public class BookmarkService {
 
     public boolean existsByStoreIdAndUserId(Long storeId, Long userId) {
         return repository.existsByStoreIdAndUserIdAndDeletedIsFalse(storeId, userId);
+    }
+
+    public void updateStarred(long id, boolean isStarred) {
+        Bookmark bookmark = findById(id);
+        bookmark.updateStarred(isStarred);
     }
 }

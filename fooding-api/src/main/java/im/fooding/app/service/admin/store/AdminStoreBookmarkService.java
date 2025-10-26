@@ -5,6 +5,7 @@ import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.bookmark.Bookmark;
+import im.fooding.core.model.bookmark.BookmarkSortType;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.service.bookmark.BookmarkService;
 import im.fooding.core.service.store.StoreService;
@@ -20,10 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminStoreBookmarkService {
     private final BookmarkService bookmarkService;
     private final StoreService storeService;
-    
+
     @Transactional(readOnly = true)
     public PageResponse<AdminStoreBookmarkResponse> list(Long storeId, BasicSearch search) {
-        Page<Bookmark> list = bookmarkService.list(storeId, null, search.getSearchString(), search.getPageable());
+        Page<Bookmark> list = bookmarkService.list(storeId, null, BookmarkSortType.RECENT, search.getSearchString(), search.getPageable());
         return PageResponse.of(list.stream().map(AdminStoreBookmarkResponse::of).toList(), PageInfo.of(list));
     }
 

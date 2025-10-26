@@ -91,6 +91,10 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private Gender gender;
 
+    private String address;
+
+    private String addressDetail;
+
     @OneToMany(mappedBy = "user")
     List<UserAuthority> authorities;
 
@@ -125,12 +129,15 @@ public class User extends BaseEntity {
         this.lastLoggedInAt = LocalDateTime.now();
     }
 
-    public void update(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, boolean pushAgreed, String name) {
+    public void update(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent,
+                       boolean pushAgreed, String name, String address, String addressDetail) {
         if (StringUtils.hasText(nickname)) this.nickname = nickname;
         if (StringUtils.hasText(phoneNumber)) this.phoneNumber = phoneNumber;
         if (gender != null) this.gender = gender;
         if (StringUtils.hasText(referralCode)) this.referralCode = referralCode;
         if (StringUtils.hasText(name)) this.name = name;
+        if (StringUtils.hasText(address)) this.address = address;
+        if (StringUtils.hasText(addressDetail)) this.address = addressDetail;
         if (marketingConsent) {
             this.marketingConsent = true;
             this.marketingConsentAt = this.marketingConsentAt == null ? LocalDateTime.now() : this.marketingConsentAt;

@@ -1,7 +1,7 @@
 package im.fooding.app.service.ceo.store;
 
+import im.fooding.app.dto.request.ceo.store.bookmark.CeoSearchStoreBookmarkRequest;
 import im.fooding.app.dto.response.ceo.store.CeoStoreBookmarkResponse;
-import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.bookmark.Bookmark;
@@ -24,9 +24,9 @@ public class CeoStoreBookmarkService {
     private final StoreService storeService;
 
     @Transactional(readOnly = true)
-    public PageResponse<CeoStoreBookmarkResponse> list(Long storeId, BasicSearch search, long ceoId) {
+    public PageResponse<CeoStoreBookmarkResponse> list(Long storeId, CeoSearchStoreBookmarkRequest search, long ceoId) {
         storeMemberService.checkMember(storeId, ceoId);
-        Page<Bookmark> list = bookmarkService.list(storeId, null, search.getSearchString(), search.getPageable());
+        Page<Bookmark> list = bookmarkService.list(storeId, null, search.getSortType(), search.getSearchString(), search.getPageable());
         return PageResponse.of(list.stream().map(CeoStoreBookmarkResponse::of).toList(), PageInfo.of(list));
     }
 
@@ -38,5 +38,11 @@ public class CeoStoreBookmarkService {
 
         Bookmark bookmark = bookmarkService.findById(id);
         bookmarkService.delete(bookmark, ceoId);
+    }
+
+    @Transactional
+    public void updateStarred(long storeId, long id, long ceoId, boolean isStarred) {
+        storeMemberService.checkMember(storeId, ceoId);
+        bookmarkService.updateStarred(id, isStarred);
     }
 }
