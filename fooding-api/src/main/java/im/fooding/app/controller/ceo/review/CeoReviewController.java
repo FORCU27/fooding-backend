@@ -49,7 +49,7 @@ public class CeoReviewController {
             @RequestBody CeoUpdateReviewRequest request,
             @PathVariable Long id
     ){
-        service.updateReview( request );
+        service.updateReview( id, request );
         return ApiResult.ok();
     }
 

@@ -68,8 +68,8 @@ public class CeoReviewService {
     }
 
     @Transactional( readOnly = false )
-    public void updateReview( CeoUpdateReviewRequest request ){
-        Review review = reviewService.findById( request.getId() );
+    public void updateReview( long id, CeoUpdateReviewRequest request ){
+        Review review = reviewService.findById( id );
         review.updateComment( request.getContent() );
     }
 }
