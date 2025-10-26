@@ -10,7 +10,8 @@ public enum VisitPurposeType {
     FRIEND("친목"),
     FAMILY("가족 식사"),
     BUSINESS("비즈니스"),
-    PARTY("파티");
+    PARTY("파티"),
+    DUMMY("CEO전용");
 
     private final String label;
 

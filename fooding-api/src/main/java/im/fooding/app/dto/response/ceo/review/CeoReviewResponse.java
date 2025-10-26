@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 @Builder
@@ -14,16 +16,25 @@ import lombok.NoArgsConstructor;
 public class CeoReviewResponse {
     private Long id;
     private Long storeId;
-    private Long writerId;
     private String content;
     private VisitPurposeType visitPurposeType;
+
+    private Long parentId;
+    private Long writerId;
+
+    private String writerName;
+    private int writerReviewCount;
+    private LocalDateTime createdAt;
+
     private float totalScore;
     private float tasteScore;
     private float moodScore;
     private float serviceScore;
 
+    public void setWriterReviewCount( int count ) { this.writerReviewCount = count; }
+
     public static CeoReviewResponse of( Review review ){
-        return CeoReviewResponse.builder()
+        CeoReviewResponseBuilder builder = CeoReviewResponse.builder()
                 .id( review.getId() )
                 .storeId( review.getStore().getId() )
                 .writerId( review.getWriter().getId() )
@@ -33,6 +44,10 @@ public class CeoReviewResponse {
                 .tasteScore( review.getScore().getTaste() )
                 .moodScore( review.getScore().getMood() )
                 .serviceScore( review.getScore().getService() )
-                .build();
+                .writerName( review.getWriter().getName() )
+                .createdAt( review.getCreatedAt() );
+
+        if( review.getParent() != null ) builder.parentId( review.getParent().getId() );
+        return builder.build();
     }
 }
