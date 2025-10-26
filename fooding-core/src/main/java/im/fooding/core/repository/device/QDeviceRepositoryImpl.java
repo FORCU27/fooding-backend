@@ -24,9 +24,6 @@ public class QDeviceRepositoryImpl implements QDeviceRepository {
 
         BooleanExpression whereClause = device.deleted.isFalse();
 
-        if (storeId != null) {
-            whereClause = whereClause.and(device.store.id.eq(storeId));
-        }
         if (userId != null) {
             whereClause = whereClause.and(device.user.id.eq(userId));
         }

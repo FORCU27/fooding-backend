@@ -50,7 +50,7 @@ public class CeoDeviceService {
         storeDeviceService.updateServiceType( id, serviceType );
 
         // 로그 기록
-        if( serviceType == ServiceType.REWARD_MANAGEMENT || serviceType == ServiceType.REWARD_RECEIPT ) logService.logging( id, DeviceLogType.SERVICE_REWARD )
+        if( serviceType == ServiceType.REWARD_MANAGEMENT || serviceType == ServiceType.REWARD_RECEIPT ) logService.logging( id, DeviceLogType.SERVICE_REWARD );
         else logService.logging( id, DeviceLogType.SERVICE_REWARD );
     }
 
