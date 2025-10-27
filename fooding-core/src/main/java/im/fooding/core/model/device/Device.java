@@ -26,10 +26,6 @@ public class Device extends BaseEntity {
     private String uuid;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Store store;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id", nullable = true, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private User user;
 
@@ -58,14 +54,12 @@ public class Device extends BaseEntity {
     @Builder
     public Device(
             String uuid,
-            Store store,
             String name,
             DevicePlatform type,
             String osVersion,
             String packageName
     ){
         this.uuid = uuid;
-        this.store = store;
         this.name = name;
         this.type = type;
         this.osVersion = osVersion;
@@ -75,15 +69,12 @@ public class Device extends BaseEntity {
         this.lastConnectedAt = LocalDateTime.now();
     }
 
-    public void update(String name) {
-        this.name = name;
-    }
-
     public void updateOsVersion( String osVersion ){
         this.osVersion = osVersion;
     }
-
     public void updateUser( User user ) { this.user = user; }
+    public void updateName( String name ) { this.name = name; }
+    public void updateAppVersion( String appVersion ) { this.osVersion = appVersion; }
 
     public void connectDevice() {
         this.status = true;
