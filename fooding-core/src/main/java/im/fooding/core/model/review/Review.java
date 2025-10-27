@@ -49,6 +49,14 @@ public class Review extends BaseEntity {
     )
     private User writer;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "parent_id",
+            nullable = true,
+            foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+    )
+    private Review parent;
+
     @Embedded
     private ReviewScore score;
 
@@ -66,12 +74,14 @@ public class Review extends BaseEntity {
     private Review(
             Store store,
             User writer,
+            Review parent,
             ReviewScore score,
             String content,
             VisitPurposeType visitPurposeType
     ) {
         this.store = store;
         this.writer = writer;
+        this.parent = parent;
         this.score = score;
         this.content = content;
         this.visitPurposeType = visitPurposeType;
@@ -87,4 +97,7 @@ public class Review extends BaseEntity {
 
     @Transactional
     public void setBlind( boolean isBlind ) { this.isBlind = isBlind; }
+
+    @Transactional
+    public void setParent( Review review ) { this.parent = review; }
 }

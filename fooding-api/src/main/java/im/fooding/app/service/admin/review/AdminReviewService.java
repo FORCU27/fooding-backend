@@ -26,7 +26,7 @@ public class AdminReviewService {
 
     public PageResponse<AdminReviewResponse> list( AdminReviewRequest request ){
         System.out.println( "ID: " + request.getStoreId() );
-        Page<Review> result = reviewService.list( request.getStoreId(), request.getWriterId(), request.getPageable() );
+        Page<Review> result = reviewService.list( request.getStoreId(), request.getWriterId(), null, request.getPageable() );
         return PageResponse.of( result.map(AdminReviewResponse::of).stream().toList(), PageInfo.of( result ) );
     }
 
