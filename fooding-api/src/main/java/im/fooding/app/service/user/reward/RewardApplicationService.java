@@ -24,6 +24,7 @@ import im.fooding.core.model.reward.RewardPoint;
 import im.fooding.core.model.reward.RewardStatus;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.coupon.UserCouponService;
+import im.fooding.core.service.reward.RewardHistoryService;
 import im.fooding.core.service.reward.RewardLogService;
 import im.fooding.core.service.reward.RewardService;
 import im.fooding.core.service.store.StoreService;
@@ -51,6 +52,8 @@ public class RewardApplicationService {
     private final UserCouponService userCouponService;
     private final ApplicationEventPublisher publisher;
     private final EventProducerService eventProducerService;
+
+    private final RewardHistoryService historyService;
 
     @Value("${message.sender}")
     private String SENDER;
@@ -178,5 +181,10 @@ public class RewardApplicationService {
                 RewardEarnEvent.class.getSimpleName(),
                 new RewardEarnEvent(phoneNumber, storeName, point)
         );
+    }
+
+    // 로깅 메서드
+    private void logging() {
+
     }
 }

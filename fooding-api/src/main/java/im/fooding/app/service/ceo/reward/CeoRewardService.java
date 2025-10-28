@@ -4,7 +4,6 @@ import im.fooding.app.dto.response.ceo.reward.CeoRewardHistoryResponse;
 import im.fooding.core.model.coupon.UserCoupon;
 import im.fooding.core.model.reward.RewardChannel;
 import im.fooding.core.model.reward.RewardHistory;
-import im.fooding.core.model.reward.RewardHistoryStatus;
 import im.fooding.core.model.reward.RewardLog;
 import im.fooding.core.service.coupon.UserCouponService;
 import im.fooding.core.service.reward.RewardHistoryService;
@@ -12,7 +11,6 @@ import im.fooding.core.service.reward.RewardLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -55,5 +53,10 @@ public class CeoRewardService {
             }
             return builder.build();
         }).toList();
+    }
+
+    // 로깅 메서드
+    private void logging(){
+
     }
 }
