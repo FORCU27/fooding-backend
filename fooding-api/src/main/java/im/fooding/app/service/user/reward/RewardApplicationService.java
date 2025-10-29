@@ -20,8 +20,11 @@ import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.coupon.UserCoupon;
 import im.fooding.core.model.coupon.UserCouponSortType;
 import im.fooding.core.model.notification.NotificationChannel;
+import im.fooding.core.model.reward.RewardHistory;
+import im.fooding.core.model.reward.RewardHistoryStatus;
 import im.fooding.core.model.reward.RewardPoint;
 import im.fooding.core.model.reward.RewardStatus;
+import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.coupon.UserCouponService;
 import im.fooding.core.service.reward.RewardHistoryService;
@@ -54,6 +57,7 @@ public class RewardApplicationService {
     private final EventProducerService eventProducerService;
 
     private final RewardHistoryService historyService;
+    private final RewardHistoryService rewardHistoryService;
 
     @Value("${message.sender}")
     private String SENDER;
@@ -115,7 +119,7 @@ public class RewardApplicationService {
         List<GetRewardPointResponse> result = pointService.list( null, request.getStoreId(), request.getPhoneNumber(), pageable ).map(GetRewardPointResponse::of).stream().collect(Collectors.toList());
         if( result.size() == 0 ) pointService.create(storeService.findById( request.getStoreId() ), request.getPhoneNumber(), request.getPoint(), null);
         else pointService.addPoint(request.getPhoneNumber(), request.getStoreId(), request.getPoint());
-        logService.create(
+        Long logId = logService.create(
                 storeService.findById(request.getStoreId()),
                 request.getPhoneNumber(),
                 request.getPoint(),
@@ -124,6 +128,9 @@ public class RewardApplicationService {
                 request.getChannel()
         );
         sendNotification(request.getPhoneNumber(), request.getStoreId(), request.getPoint());
+
+        // 히스토리 로깅
+        this.logging( request.getPhoneNumber(), storeService.findById(request.getStoreId()), logId, false, RewardHistoryStatus.REQUEST, "" );
     }
 
     /**
@@ -144,7 +151,7 @@ public class RewardApplicationService {
         if( rewardPoint.getPoint() < request.getPoint() )  throw new ApiException(ErrorCode.REWARD_POINT_NOT_ENOUGH);
         // Point가 있는 경우 소비
         pointService.usePoint( request.getPhoneNumber(), request.getStoreId(), request.getPoint() );
-        logService.create(
+        Long logId = logService.create(
                 storeService.findById(request.getStoreId()),
                 request.getPhoneNumber(),
                 request.getPoint(),
@@ -157,6 +164,9 @@ public class RewardApplicationService {
                 RewardUseEvent.class.getSimpleName(),
                 new RewardUseEvent(rewardPoint.getId(), request.getPoint(), rewardPoint.getPoint())
         );
+
+        // 히스토리 로깅
+        this.logging( request.getPhoneNumber(), storeService.findById(request.getStoreId()), logId, true, RewardHistoryStatus.REQUEST, "" );
     }
 
     @Transactional(readOnly = true)
@@ -184,7 +194,23 @@ public class RewardApplicationService {
     }
 
     // 로깅 메서드
-    private void logging() {
-
+    private void logging(
+            String phoneNumber,
+            Store store,
+            long rewardLogId,
+            boolean isUsing,
+            RewardHistoryStatus historyStatus,
+            String memo
+    ) {
+        RewardHistory history = RewardHistory.builder()
+                .phoneNumber( phoneNumber )
+                .store( store )
+                .isCoupon( false )
+                .targetId( rewardLogId )
+                .isUsing( isUsing )
+                .status( historyStatus )
+                .memo( memo )
+                .build();
+        rewardHistoryService.create(history);
     }
 }

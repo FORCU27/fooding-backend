@@ -62,7 +62,7 @@ public class RewardLogService {
      * @param type
      * @param channel
      */
-    public void create(
+    public Long create(
             Store store,
             String phoneNumber,
             int point,
@@ -78,7 +78,7 @@ public class RewardLogService {
                 .type( type )
                 .channel( channel )
                 .build();
-        repository.save( rewardLog );
+        return repository.save( rewardLog ).getId();
     }
 
     public void save( RewardLog log ){repository.save( log );}

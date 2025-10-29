@@ -1,7 +1,6 @@
 package im.fooding.core.model.reward;
 
 import im.fooding.core.model.store.Store;
-import im.fooding.core.model.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
