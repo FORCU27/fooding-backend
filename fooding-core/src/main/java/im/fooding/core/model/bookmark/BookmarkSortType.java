@@ -7,7 +7,8 @@ public enum BookmarkSortType {
         @Override
         public OrderSpecifier<?>[] getOrder(QBookmark bookmark) {
             return new OrderSpecifier[]{
-                    bookmark.id.desc(),
+                    bookmark.isStarred.desc(),
+                    bookmark.id.desc()
             };
         }
     },
@@ -15,19 +16,11 @@ public enum BookmarkSortType {
         @Override
         public OrderSpecifier<?>[] getOrder(QBookmark bookmark) {
             return new OrderSpecifier[]{
-                    bookmark.id.asc(),
-            };
-        }
-    },
-    STARRED {
-        @Override
-        public OrderSpecifier<?>[] getOrder(QBookmark bookmark) {
-            return new OrderSpecifier[]{
                     bookmark.isStarred.desc(),
+                    bookmark.id.asc()
             };
         }
-    }
-    ;
+    };
 
     public abstract OrderSpecifier<?>[] getOrder(QBookmark bookmark);
 }

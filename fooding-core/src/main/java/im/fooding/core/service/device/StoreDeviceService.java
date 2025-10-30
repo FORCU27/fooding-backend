@@ -29,8 +29,11 @@ public class StoreDeviceService {
     }
 
     public StoreDevice findByDeviceId( long deviceId ){
-        Optional<StoreDevice> storeDevice = repository.findByDeviceId( deviceId );
-        return storeDevice.orElse( null );
+        return repository.findByDeviceId( deviceId ).orElse( null );
+    }
+
+    public StoreDevice findByStoreIdAndDeviceId( long storeId, long deviceId ) {
+        return repository.findByDeviceIdAndStoreId( deviceId, storeId ).orElse( null );
     }
 
     @Transactional( readOnly = false )
