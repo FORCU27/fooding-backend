@@ -6,6 +6,7 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.util.Util;
 import im.fooding.core.model.bookmark.Bookmark;
+import im.fooding.core.model.bookmark.BookmarkSortType;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.information.StoreDailyOperatingTime;
 import im.fooding.core.model.store.information.StoreOperatingHour;
@@ -52,7 +53,7 @@ public class UserBookmarkService {
 
     @Transactional(readOnly = true)
     public PageResponse<UserBookmarkResponse> list(long userId, BasicSearch search) {
-        Page<Bookmark> list = bookmarkService.list(null, userId, search.getSearchString(), search.getPageable());
+        Page<Bookmark> list = bookmarkService.list(null, userId, BookmarkSortType.RECENT, search.getSearchString(), search.getPageable());
         List<UserBookmarkResponse> bookmarks = list.getContent().stream()
                 .map(bookmark -> UserBookmarkResponse.of(bookmark, null))
                 .toList();

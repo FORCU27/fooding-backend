@@ -23,9 +23,17 @@ public class AdminUpdateUserRequest {
     @Schema(description = "성별(MALE, FEMALE, OTHER, NONE)", example = "MALE")
     private Gender gender;
 
-    public AdminUpdateUserRequest(String nickname, String phoneNumber, Gender gender) {
+    @Schema(description = "주소", example = "서울특별시 마포구")
+    private String address;
+
+    @Schema(description = "주소 상세", example = "마포빌딩 2층")
+    private String addressDetail;
+
+    public AdminUpdateUserRequest(String nickname, String phoneNumber, Gender gender, String address, String addressDetail) {
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
+        this.address = address;
+        this.addressDetail = addressDetail;
     }
 }

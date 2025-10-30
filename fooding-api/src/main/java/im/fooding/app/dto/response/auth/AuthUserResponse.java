@@ -55,6 +55,12 @@ public class AuthUserResponse {
     @Schema(description = "서비스 푸쉬 동의 여부", example = "true", requiredMode = RequiredMode.REQUIRED)
     private boolean pushAgreed;
 
+    @Schema(description = "주소", example = "서울특별시 마포구")
+    private String address;
+
+    @Schema(description = "주소 상세", example = "마포빌딩 2층")
+    private String addressDetail;
+
     @Schema(description = "마지막 로그인 시간", example = "2025-03-15T05:17:04.069", requiredMode = RequiredMode.NOT_REQUIRED)
     private LocalDateTime lastLoggedInAt;
 
@@ -68,7 +74,7 @@ public class AuthUserResponse {
     private AuthUserResponse(
             long id, String email, String name, String nickname, String phoneNumber, String referralCode, String profileImage, int loginCount,
             Gender gender, String description, boolean termsAgreed, boolean privacyPolicyAgreed, boolean marketingConsent, boolean pushAgreed,
-            LocalDateTime lastLoggedInAt, LocalDateTime createdAt, LocalDateTime updatedAt
+            String address, String addressDetail, LocalDateTime lastLoggedInAt, LocalDateTime createdAt, LocalDateTime updatedAt
     ) {
         this.id = id;
         this.email = email;
@@ -84,6 +90,8 @@ public class AuthUserResponse {
         this.privacyPolicyAgreed = privacyPolicyAgreed;
         this.marketingConsent = marketingConsent;
         this.pushAgreed = pushAgreed;
+        this.address = address;
+        this.addressDetail = addressDetail;
         this.lastLoggedInAt = lastLoggedInAt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -105,6 +113,8 @@ public class AuthUserResponse {
                 .privacyPolicyAgreed(user.isPrivacyPolicyAgreed())
                 .marketingConsent(user.isMarketingConsent())
                 .pushAgreed(user.isPushAgreed())
+                .address(user.getAddress())
+                .addressDetail(user.getAddressDetail())
                 .lastLoggedInAt(user.getLastLoggedInAt())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())

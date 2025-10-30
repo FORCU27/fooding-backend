@@ -24,6 +24,12 @@ public class UserResponse {
     @Schema(description = "프로필 이미지 URL")
     private String profileImage;
 
+    @Schema(description = "주소")
+    private String address;
+
+    @Schema(description = "주소 상세")
+    private String addressDetail;
+
     @Schema(description = "가입일")
     private LocalDateTime createdAt;
 
@@ -36,6 +42,8 @@ public class UserResponse {
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .profileImage(user.getProfileImage())
+                .address(user.getAddress())
+                .addressDetail(user.getAddressDetail())
                 .createdAt(user.getCreatedAt())
                 .updatedAt(user.getUpdatedAt())
                 .build();

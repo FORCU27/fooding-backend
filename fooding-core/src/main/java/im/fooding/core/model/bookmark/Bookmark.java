@@ -29,13 +29,20 @@ public class Bookmark extends BaseEntity {
 
     private int verifiedCount;
 
+    private Boolean isStarred;
+
     @Builder
     public Bookmark(Store store, User user) {
         this.store = store;
         this.user = user;
+        this.isStarred = false;
     }
 
     public void increaseVerifiedCount() {
         this.verifiedCount++;
+    }
+
+    public void updateStarred(boolean isStarred) {
+        this.isStarred = isStarred;
     }
 }
