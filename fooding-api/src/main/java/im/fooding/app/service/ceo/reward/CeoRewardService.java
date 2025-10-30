@@ -28,7 +28,7 @@ public class CeoRewardService {
             builder.id( history.getId() );
             builder.phoneNumber(history.getPhoneNumber());
             builder.createdAt( history.getCreatedAt() );
-            String operation = history.isUsing() ? "사용 " : "취소 ";
+            String operation = history.isUsing() ? "적용 " : "취소 ";
             switch( history.getStatus() ){
                 case APPLIED -> operation = operation + "승인";
                 case REQUEST -> operation = operation + "요청";

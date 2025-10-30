@@ -27,4 +27,7 @@ public class RewardHistoryService {
         RewardHistory history = repository.findById( historyId ).orElse( null );
         if( history != null ) history.updateMemo( memo );
     }
+
+    // 단일 로그 조회
+    public RewardHistory findById( long historyId ) { return repository.findById( historyId ).orElse( null ); }
 }

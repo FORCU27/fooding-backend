@@ -7,6 +7,7 @@ import im.fooding.app.dto.request.user.reward.GetRewardPointRequest;
 import im.fooding.app.dto.request.user.reward.GetUserRewardLogRequest;
 import im.fooding.app.dto.request.user.reward.UpdateRewardPointRequest;
 import im.fooding.app.dto.response.app.coupon.AppUserCouponResponse;
+import im.fooding.app.dto.response.user.reward.GetRewardHistoryResponse;
 import im.fooding.app.dto.response.user.reward.GetRewardLogResponse;
 import im.fooding.app.dto.response.user.reward.GetRewardPointResponse;
 import im.fooding.core.common.PageInfo;
@@ -130,7 +131,7 @@ public class RewardApplicationService {
         sendNotification(request.getPhoneNumber(), request.getStoreId(), request.getPoint());
 
         // 히스토리 로깅
-        this.logging( request.getPhoneNumber(), storeService.findById(request.getStoreId()), logId, false, RewardHistoryStatus.REQUEST, "" );
+        this.logging( request.getPhoneNumber(), storeService.findById(request.getStoreId()), logId, true, RewardHistoryStatus.REQUEST, "" );
     }
 
     /**
@@ -182,6 +183,15 @@ public class RewardApplicationService {
         UserCoupon userCoupon = userCouponService.findById(couponId);
         userCouponService.request(userCoupon, null);
         publisher.publishEvent(new RequestCouponEvent(userCoupon.getName(), userCoupon.getUser().getPhoneNumber(), SENDER, NotificationChannel.SMS));
+    }
+
+    public List<GetRewardHistoryResponse> getRewardHistory(String phoneNumber, Long storeId ){
+        List<RewardHistory> histories = historyService.list( storeId, phoneNumber, null );
+        return histories.stream().map(GetRewardHistoryResponse::of).collect(Collectors.toList());
+    }
+
+    public GetRewardHistoryResponse getRewardHistoryById( long historyId ){
+        return GetRewardHistoryResponse.of( historyService.findById( historyId ) );
     }
 
     private void sendNotification(String phoneNumber, long storeId, int point) {

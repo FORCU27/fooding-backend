@@ -56,6 +56,7 @@ public class RewardHistory {
         this.targetId = targetId;
         this.isUsing = isUsing;
         this.status = status;
+        this.createdAt = LocalDateTime.now();
         this.memo = memo;
     }
 
