@@ -3,6 +3,7 @@ package im.fooding.app.controller.ceo.device;
 import im.fooding.app.dto.request.ceo.device.GetDeviceLogsRequest;
 import im.fooding.app.dto.request.user.device.ConnectDeviceRequest;
 import im.fooding.app.dto.request.user.device.RetrieveDeviceRequest;
+import im.fooding.app.dto.response.ceo.device.GetDeviceLogDetailResponse;
 import im.fooding.app.dto.response.ceo.device.GetDeviceLogsResponse;
 import im.fooding.app.dto.response.user.device.StoreDeviceResponse;
 import im.fooding.app.service.app.device.AppDeviceService;
@@ -75,5 +76,13 @@ public class CeoDeviceController {
             @AuthenticationPrincipal UserInfo userInfo
     ){
         return ApiResult.ok( ceoDeviceService.retrieveLogs(request, Optional.ofNullable(userInfo).map(UserInfo::getId).orElse(null)) );
+    }
+
+    @GetMapping("/{logId}/logs")
+    @Operation(summary = "해당 로그에 대한 상세 정보 조회")
+    public ApiResult<GetDeviceLogDetailResponse> retrieveLogDetail(
+            @PathVariable Long logId
+    ){
+        return ApiResult.ok( ceoDeviceService.getDeviceLogDetail( logId ) );
     }
 }

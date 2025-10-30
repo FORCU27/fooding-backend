@@ -35,6 +35,9 @@ public class UserReviewResponse {
     @Schema(description = "리뷰 내용", example = "정말 맛있어요!")
     private String content;
 
+    @Schema(description = "가게 ID", example = "1")
+    private Long storeId;
+
     @Schema(description = "리뷰 평점", example = "4.5")
     private ReviewScore score;
 
@@ -69,7 +72,8 @@ public class UserReviewResponse {
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
             int userReviewCount,
-            ObjectId planId
+            ObjectId planId,
+            Long storeId
     ) {
         this.reviewId = reviewId;
         this.nickname = nickname;
@@ -83,6 +87,7 @@ public class UserReviewResponse {
         this.updatedAt = updatedAt;
         this.userReviewCount = userReviewCount;
         this.planId = planId;
+        this.storeId = storeId;
     }
 
     public static UserReviewResponse of(
@@ -103,6 +108,7 @@ public class UserReviewResponse {
                 .purpose(review.getVisitPurposeType())
                 .likeCount(likeCount)
                 .planId( planId )
+                .storeId( review.getStore().getId() )
                 .createdAt(review.getCreatedAt())
                 .updatedAt(review.getUpdatedAt());
         if( review.isBlind() ){
