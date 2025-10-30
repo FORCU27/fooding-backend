@@ -54,14 +54,13 @@ class UserCouponServiceTest extends TestConfig {
     @DisplayName("유저에게 쿠폰을 성공적으로 발급한다.")
     void testCreate() {
         // given
-        final Long id = 1L;
         final String name = "테스트쿠폰";
         final int totalQuantity = 10;
         Coupon savedCoupon = saveCoupon(name, totalQuantity, LocalDate.now(), LocalDate.now().plusMonths(4), LocalDate.now().plusMonths(5));
         User user = saveUser();
 
         // when
-        userCouponService.create(savedCoupon, user, savedCoupon.getStore(), savedCoupon.getBenefitType(), savedCoupon.getDiscountType(), savedCoupon.getDiscountValue(), savedCoupon.getName(), savedCoupon.getConditions(), savedCoupon.getExpiredOn(), null, null);
+        Long id = userCouponService.create(savedCoupon, user, savedCoupon.getStore(), savedCoupon.getBenefitType(), savedCoupon.getDiscountType(), savedCoupon.getDiscountValue(), savedCoupon.getName(), savedCoupon.getConditions(), savedCoupon.getExpiredOn(), null, null).getId();
 
         // then
         assertTrue(userCouponRepository.findById(id).isPresent());
@@ -194,6 +193,7 @@ class UserCouponServiceTest extends TestConfig {
                 .email("test@gmail.com")
                 .nickname("닉네임")
                 .password("1234")
+                .phoneNumber("01012345678")
                 .gender(Gender.NONE)
                 .provider(AuthProvider.FOODING)
                 .build();
