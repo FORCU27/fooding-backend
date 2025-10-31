@@ -7,6 +7,7 @@ import im.fooding.app.dto.request.user.reward.GetRewardPointRequest;
 import im.fooding.app.dto.request.user.reward.GetUserRewardLogRequest;
 import im.fooding.app.dto.request.user.reward.UpdateRewardPointRequest;
 import im.fooding.app.dto.response.app.coupon.AppUserCouponResponse;
+import im.fooding.app.dto.response.user.reward.GetRewardHistoryResponse;
 import im.fooding.app.dto.response.user.reward.GetRewardLogResponse;
 import im.fooding.app.dto.response.user.reward.GetRewardPointResponse;
 import im.fooding.core.common.PageInfo;
@@ -20,10 +21,14 @@ import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.coupon.UserCoupon;
 import im.fooding.core.model.coupon.UserCouponSortType;
 import im.fooding.core.model.notification.NotificationChannel;
+import im.fooding.core.model.reward.RewardHistory;
+import im.fooding.core.model.reward.RewardHistoryStatus;
 import im.fooding.core.model.reward.RewardPoint;
 import im.fooding.core.model.reward.RewardStatus;
+import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import im.fooding.core.service.coupon.UserCouponService;
+import im.fooding.core.service.reward.RewardHistoryService;
 import im.fooding.core.service.reward.RewardLogService;
 import im.fooding.core.service.reward.RewardService;
 import im.fooding.core.service.store.StoreService;
@@ -51,6 +56,9 @@ public class RewardApplicationService {
     private final UserCouponService userCouponService;
     private final ApplicationEventPublisher publisher;
     private final EventProducerService eventProducerService;
+
+    private final RewardHistoryService historyService;
+    private final RewardHistoryService rewardHistoryService;
 
     @Value("${message.sender}")
     private String SENDER;
@@ -112,7 +120,7 @@ public class RewardApplicationService {
         List<GetRewardPointResponse> result = pointService.list( null, request.getStoreId(), request.getPhoneNumber(), pageable ).map(GetRewardPointResponse::of).stream().collect(Collectors.toList());
         if( result.size() == 0 ) pointService.create(storeService.findById( request.getStoreId() ), request.getPhoneNumber(), request.getPoint(), null);
         else pointService.addPoint(request.getPhoneNumber(), request.getStoreId(), request.getPoint());
-        logService.create(
+        Long logId = logService.create(
                 storeService.findById(request.getStoreId()),
                 request.getPhoneNumber(),
                 request.getPoint(),
@@ -121,6 +129,9 @@ public class RewardApplicationService {
                 request.getChannel()
         );
         sendNotification(request.getPhoneNumber(), request.getStoreId(), request.getPoint());
+
+        // 히스토리 로깅
+        this.logging( request.getPhoneNumber(), storeService.findById(request.getStoreId()), logId, true, RewardHistoryStatus.REQUEST, "" );
     }
 
     /**
@@ -141,7 +152,7 @@ public class RewardApplicationService {
         if( rewardPoint.getPoint() < request.getPoint() )  throw new ApiException(ErrorCode.REWARD_POINT_NOT_ENOUGH);
         // Point가 있는 경우 소비
         pointService.usePoint( request.getPhoneNumber(), request.getStoreId(), request.getPoint() );
-        logService.create(
+        Long logId = logService.create(
                 storeService.findById(request.getStoreId()),
                 request.getPhoneNumber(),
                 request.getPoint(),
@@ -154,6 +165,9 @@ public class RewardApplicationService {
                 RewardUseEvent.class.getSimpleName(),
                 new RewardUseEvent(rewardPoint.getId(), request.getPoint(), rewardPoint.getPoint())
         );
+
+        // 히스토리 로깅
+        this.logging( request.getPhoneNumber(), storeService.findById(request.getStoreId()), logId, true, RewardHistoryStatus.REQUEST, "" );
     }
 
     @Transactional(readOnly = true)
@@ -171,6 +185,15 @@ public class RewardApplicationService {
         publisher.publishEvent(new RequestCouponEvent(userCoupon.getName(), userCoupon.getUser().getPhoneNumber(), SENDER, NotificationChannel.SMS));
     }
 
+    public List<GetRewardHistoryResponse> getRewardHistory(String phoneNumber, Long storeId ){
+        List<RewardHistory> histories = historyService.list( storeId, phoneNumber, null );
+        return histories.stream().map(GetRewardHistoryResponse::of).collect(Collectors.toList());
+    }
+
+    public GetRewardHistoryResponse getRewardHistoryById( long historyId ){
+        return GetRewardHistoryResponse.of( historyService.findById( historyId ) );
+    }
+
     private void sendNotification(String phoneNumber, long storeId, int point) {
         String storeName = storeService.findById(storeId).getName();
 
@@ -178,5 +201,26 @@ public class RewardApplicationService {
                 RewardEarnEvent.class.getSimpleName(),
                 new RewardEarnEvent(phoneNumber, storeName, point)
         );
+    }
+
+    // 로깅 메서드
+    private void logging(
+            String phoneNumber,
+            Store store,
+            long rewardLogId,
+            boolean isUsing,
+            RewardHistoryStatus historyStatus,
+            String memo
+    ) {
+        RewardHistory history = RewardHistory.builder()
+                .phoneNumber( phoneNumber )
+                .store( store )
+                .isCoupon( false )
+                .targetId( rewardLogId )
+                .isUsing( isUsing )
+                .status( historyStatus )
+                .memo( memo )
+                .build();
+        rewardHistoryService.create(history);
     }
 }

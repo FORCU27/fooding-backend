@@ -37,4 +37,9 @@ public class DeviceLogService {
     public Page<DeviceLog> getDeviceLogs(long deviceId, Pageable pageable) {
         return repository.findAllByDeviceId(deviceId, pageable);
     }
+
+    // 단일 로그 조회
+    public DeviceLog getDeviceLog(long logId) {
+        return repository.findById(logId).orElse(null);
+    }
 }

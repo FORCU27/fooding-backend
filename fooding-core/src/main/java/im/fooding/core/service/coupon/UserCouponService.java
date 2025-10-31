@@ -3,9 +3,12 @@ package im.fooding.core.service.coupon;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.coupon.*;
+import im.fooding.core.model.reward.RewardHistory;
+import im.fooding.core.model.reward.RewardHistoryStatus;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.coupon.UserCouponRepository;
+import im.fooding.core.service.reward.RewardHistoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,6 +23,7 @@ import java.util.List;
 @Slf4j
 public class UserCouponService {
     private final UserCouponRepository repository;
+    private final RewardHistoryService rewardHistoryService;
 
     public UserCoupon create(Coupon coupon, User user, Store store, BenefitType benefitType, DiscountType discountType,
                              int discountValue, String name, String conditions, LocalDate expiredOn, Integer point, Long pointShopId) {
@@ -40,7 +44,12 @@ public class UserCouponService {
                 .point(point)
                 .pointShopId(pointShopId)
                 .build();
-        return repository.save(userCoupon);
+        UserCoupon savedCoupon = repository.save(userCoupon);
+
+        // 로깅
+        this.logging( user.getPhoneNumber(), store, savedCoupon.getId(), false, RewardHistoryStatus.REQUEST, "" );
+
+        return savedCoupon;
     }
 
     public Page<UserCoupon> list(Long userId, Long storeId, Long couponId, Boolean used, UserCouponStatus status, UserCouponSortType sortType, Pageable pageable) {
@@ -54,10 +63,29 @@ public class UserCouponService {
 
     public void request(UserCoupon userCoupon, String tableNumber) {
         userCoupon.request(tableNumber);
+
+        // 로깅
+        this.logging(
+                userCoupon.getUser().getPhoneNumber(),
+                userCoupon.getStore(),
+                userCoupon.getId(),
+                true,
+                RewardHistoryStatus.REQUEST,
+                ""
+        );
     }
 
     public void approve(UserCoupon userCoupon) {
         userCoupon.approve();
+        // 로깅
+        this.logging(
+                userCoupon.getUser().getPhoneNumber(),
+                userCoupon.getStore(),
+                userCoupon.getId(),
+                true,
+                RewardHistoryStatus.APPLIED,
+                ""
+        );
     }
 
     public void delete(UserCoupon userCoupon, long deletedBy) {
@@ -79,5 +107,26 @@ public class UserCouponService {
         return repository.findByPointShopId(pointShopId).stream()
                 .filter(it -> !it.isDeleted())
                 .toList();
+    }
+
+    // 로깅 메서드
+    private void logging(
+            String phoneNumber,
+            Store store,
+            long userCouponId,
+            boolean isUsing,
+            RewardHistoryStatus historyStatus,
+            String memo
+    ) {
+        RewardHistory history = RewardHistory.builder()
+                .phoneNumber( phoneNumber )
+                .store( store )
+                .isCoupon( true )
+                .targetId( userCouponId )
+                .isUsing( isUsing )
+                .status( historyStatus )
+                .memo( memo )
+                .build();
+        rewardHistoryService.create(history);
     }
 }

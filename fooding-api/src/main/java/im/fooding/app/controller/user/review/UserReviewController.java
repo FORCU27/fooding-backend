@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public class UserReviewController {
     @Operation(summary = "리뷰 전체 조회", description = "별점순 / 최신순으로 리뷰를 조회합니다.")
     public ApiResult<PageResponse<UserReviewResponse>> list(
             @PathVariable Long storeId,
-            @Valid @ModelAttribute UserRetrieveReviewRequest request
+            @Valid @ParameterObject @ModelAttribute UserRetrieveReviewRequest request
     ) {
         return ApiResult.ok(userReviewService.list(storeId, request));
     }
