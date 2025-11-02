@@ -1,6 +1,7 @@
 package im.fooding.app.service.ceo.device;
 
 import im.fooding.app.dto.request.ceo.device.GetDeviceLogsRequest;
+import im.fooding.app.dto.response.ceo.device.GetDeviceLogDetailResponse;
 import im.fooding.app.dto.response.ceo.device.GetDeviceLogsResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
@@ -81,4 +82,15 @@ public class CeoDeviceService {
         return PageResponse.of( result.stream().map(GetDeviceLogsResponse::of).toList(), PageInfo.of( result ) );
     }
 
+    /**
+     * 디바이스 로그 상세 조회
+     *
+     * @param logId
+     */
+    public GetDeviceLogDetailResponse getDeviceLogDetail( long logId ) {
+        DeviceLog log = logService.getDeviceLog( logId );
+        Device device = deviceService.findById( log.getDeviceId() );
+
+        return GetDeviceLogDetailResponse.of( log, device );
+    }
 }

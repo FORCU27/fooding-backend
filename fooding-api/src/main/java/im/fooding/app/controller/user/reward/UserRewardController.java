@@ -3,6 +3,7 @@ package im.fooding.app.controller.user.reward;
 import im.fooding.app.dto.request.user.reward.GetRewardLogRequest;
 import im.fooding.app.dto.request.user.reward.GetRewardPointRequest;
 import im.fooding.app.dto.request.user.reward.GetUserRewardLogRequest;
+import im.fooding.app.dto.response.user.reward.GetRewardHistoryResponse;
 import im.fooding.app.dto.response.user.reward.GetRewardLogResponse;
 import im.fooding.app.dto.response.user.reward.GetRewardPointResponse;
 import im.fooding.app.service.user.reward.RewardApplicationService;
@@ -17,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -71,13 +74,22 @@ public class UserRewardController {
     }
 
     @GetMapping("/logs/personal")
-    @Operation( summary = "사용자 별 리워드 로그 조회" )
+    @Operation( summary = "사용자 별 리워드 포인트 로그 조회" )
     public ApiResult<PageResponse<GetRewardLogResponse>> getUserRewardLog(
             @AuthenticationPrincipal UserInfo userInfo,
             @ModelAttribute GetUserRewardLogRequest request
     ){
         long id = userInfo.getId();
         return ApiResult.ok( service.getUserRewardLog( id, request ) );
+    }
+
+    @GetMapping( "/history" )
+    @Operation( summary = "사용자 별 리워드( 포인트, 쿠폰 ) 관련 기록 조회" )
+    public ApiResult<List<GetRewardHistoryResponse>> getUserRewardHistory(
+            @RequestParam String phoneNumber,
+            @RequestParam Long storeId
+    ){
+        return ApiResult.ok( service.getRewardHistory( phoneNumber, storeId ) );
     }
 
 }
