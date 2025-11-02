@@ -31,4 +31,6 @@ public class UserRetrieveReviewRequest extends BasicSearch {
     private SortDirection sortDirection;
 
     private Long writerId;
+
+    private Long reviewId;
 }
