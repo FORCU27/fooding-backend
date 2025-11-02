@@ -119,10 +119,14 @@ public class UserService {
      * @param gender
      * @param referralCode
      * @param marketingConsent
+     * @param description
      * @param pushAgreed
+     * @param name
+     * @param address
+     * @param addressDetail
      */
-
-    public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description, boolean pushAgreed, String name) {
+    public void update(long id, String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description,
+                       boolean pushAgreed, String name, String address, String addressDetail) {
         User user = findById(id);
         if (StringUtils.hasText(nickname)) {
             nickname = nickname.strip();
@@ -136,7 +140,7 @@ public class UserService {
             }
         }
         user.updateDescription(description);
-        user.update(nickname, phoneNumber, gender, referralCode, marketingConsent, pushAgreed, name);
+        user.update(nickname, phoneNumber, gender, referralCode, marketingConsent, pushAgreed, name, address, addressDetail);
     }
 
     /**
@@ -221,8 +225,8 @@ public class UserService {
      * @param phoneNumber
      * @param name
      */
-    public String findEmailByPhoneNumberAndName( String phoneNumber, String name) {
-        User user = userRepository.findByPhoneNumberAndName( phoneNumber, name ).orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
+    public String findEmailByPhoneNumberAndName(String phoneNumber, String name) {
+        User user = userRepository.findByPhoneNumberAndName(phoneNumber, name).orElseThrow(() -> new ApiException(ErrorCode.USER_NOT_FOUND));
         // Role에 따른 로직이 필요할 경우 구현
 
         return user.getEmail();

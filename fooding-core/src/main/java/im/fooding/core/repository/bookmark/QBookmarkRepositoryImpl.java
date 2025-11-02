@@ -4,6 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.model.bookmark.Bookmark;
+import im.fooding.core.model.bookmark.BookmarkSortType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,7 @@ public class QBookmarkRepositoryImpl implements QBookmarkRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<Bookmark> list(Long storeId, Long userId, String searchString, Pageable pageable) {
+    public Page<Bookmark> list(Long storeId, Long userId, BookmarkSortType sortType, String searchString, Pageable pageable) {
         List<Bookmark> results = query
                 .select(bookmark)
                 .from(bookmark)
@@ -39,7 +40,7 @@ public class QBookmarkRepositoryImpl implements QBookmarkRepository {
                         searchUser(userId),
                         searchString(searchString)
                 )
-                .orderBy(bookmark.id.desc())
+                .orderBy(sortType.getOrder(bookmark))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

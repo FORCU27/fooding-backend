@@ -2,8 +2,6 @@ package im.fooding.app.dto.request.auth;
 
 import im.fooding.core.model.user.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -30,7 +28,7 @@ public class AuthUpdateProfileRequest {
     @Schema(description = "마케팅 수신 동의 여부", example = "true")
     private boolean marketingConsent;
 
-    @Schema(description = "자기소개", example="안녕하세요")
+    @Schema(description = "자기소개", example = "안녕하세요")
     private String description;
 
     @Schema(description = "서비스 푸쉬 동의 여부", example = "true")
@@ -40,8 +38,15 @@ public class AuthUpdateProfileRequest {
     @Schema(description = "이름", example = "홍길동")
     private String name;
 
+    @Schema(description = "주소", example = "서울특별시 마포구")
+    private String address;
+
+    @Schema(description = "주소 상세", example = "마포빌딩 2층")
+    private String addressDetail;
+
     @Builder
-    public AuthUpdateProfileRequest(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent, String description, boolean pushAgreed, String name) {
+    public AuthUpdateProfileRequest(String nickname, String phoneNumber, Gender gender, String referralCode, boolean marketingConsent,
+                                    String description, boolean pushAgreed, String name, String address, String addressDetail) {
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
@@ -50,5 +55,7 @@ public class AuthUpdateProfileRequest {
         this.description = description;
         this.pushAgreed = pushAgreed;
         this.name = name;
+        this.address = address;
+        this.addressDetail = addressDetail;
     }
 }
