@@ -25,7 +25,7 @@ public class QReviewRepositoryImpl implements QReviewRepository {
     public Page<Review> list(
             Long storeId,
             Long writerId,
-            Long reviewId,
+            Long parentId,
             Pageable pageable
     ) {
         OrderSpecifier<?> orderSpecifier = getOrderSpecifier( pageable );
@@ -34,7 +34,8 @@ public class QReviewRepositoryImpl implements QReviewRepository {
         whereClause.and( review.deleted.isFalse() );
         if( storeId != null ) whereClause.and( review.store.id.eq( storeId ) );
         if( writerId != null ) whereClause.and( review.writer.id.eq( writerId ) );
-        if( reviewId != null ) whereClause.and( review.parent.id.eq( reviewId ) );
+        if( parentId != null ) whereClause.and( review.parent.id.eq( parentId ) );
+        else if( parentId == 0 ) whereClause.and( review.parent.id.isNull() );
         JPAQuery<Review> jpaQuery = query
                 .select(review)
                 .from(review)

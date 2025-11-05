@@ -3,25 +3,16 @@ package im.fooding.core.model.review;
 import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.ConstraintMode;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -57,6 +48,9 @@ public class Review extends BaseEntity {
     )
     private Review parent;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "review")
+    private List<Review> replies;
+
     @Embedded
     private ReviewScore score;
 
@@ -74,30 +68,29 @@ public class Review extends BaseEntity {
     private Review(
             Store store,
             User writer,
-            Review parent,
             ReviewScore score,
             String content,
             VisitPurposeType visitPurposeType
     ) {
         this.store = store;
         this.writer = writer;
-        this.parent = parent;
         this.score = score;
         this.content = content;
         this.visitPurposeType = visitPurposeType;
         this.isBlind = false;
+        this.replies = new ArrayList<>();
     }
 
-    @Transactional
     public void update(String content, VisitPurposeType visitPurposeType, ReviewScore score) {
         this.content = content;
         this.visitPurposeType = visitPurposeType;
         this.score = score;
     }
 
-    @Transactional
     public void setBlind( boolean isBlind ) { this.isBlind = isBlind; }
 
-    @Transactional
-    public void setParent( Review review ) { this.parent = review; }
+    public void setParent( Review parent ) {
+        this.parent = parent;
+        parent.replies.add(this);
+    }
 }

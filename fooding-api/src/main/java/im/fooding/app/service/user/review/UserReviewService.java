@@ -57,15 +57,8 @@ public class UserReviewService {
         if( sortInformation != null )pageable = PageRequest.of( request.getPageNum() - 1, request.getPageSize(), sortInformation );
         else pageable = PageRequest.of(request.getPageNum() - 1, request.getPageSize() );
 
-        // 답글의 경우
-        Long reviewId = null;
-        if( request.getReviewId() != null && request.getReviewId() != 0 ) {
-            Review parentReview = reviewService.findById( request.getReviewId() );
-            reviewId = parentReview.getId();
-        }
-
         Long writerId = request.getWriterId() > 0 ? request.getWriterId() : null;
-        Page<Review> reviewPage = reviewService.list(storeId, writerId, reviewId, pageable );
+        Page<Review> reviewPage = reviewService.list(storeId, writerId, null, pageable );
 
         List<Long> reviewIds = getReviewIds(reviewPage.getContent());
 
@@ -121,17 +114,18 @@ public class UserReviewService {
                 .total( totalScore )
                 .build();
         // 리뷰 추가
-        Review.ReviewBuilder review = Review.builder()
+        Review review = Review.builder()
                 .store( store )
                 .writer( user )
                 .score( score )
                 .content( request.getContent() )
-                .visitPurposeType( request.getVisitPurpose() );
-        if( request.getReviewId() != null && request.getReviewId() != 0 ) {
-            Review parent = reviewService.findById( request.getReviewId() );
-            review.parent( parent );
+                .visitPurposeType( request.getVisitPurpose() )
+                .build();
+        if( request.getParentId() != null && request.getParentId() != 0 ) {
+            Review parent = reviewService.findById( request.getParentId() );
+            review.setParent( parent );
         }
-        Review result = reviewService.create( review.build() );
+        Review result = reviewService.create( review );
         // 리뷰 이미지 추가
         reviewImageService.create( result, request.getImageUrls() );
         // 리뷰 수 추가

@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @Builder
@@ -17,6 +20,7 @@ public class CeoReviewResponse {
     private Long writerId;
     private String content;
     private VisitPurposeType visitPurposeType;
+    private List<CeoReviewResponse> replies;
     private float totalScore;
     private float tasteScore;
     private float moodScore;
@@ -29,6 +33,7 @@ public class CeoReviewResponse {
                 .writerId( review.getWriter().getId() )
                 .content( review.getContent() )
                 .visitPurposeType( review.getVisitPurposeType() )
+                .replies( new ArrayList<>() )
                 .totalScore( review.getScore().getTotal() )
                 .tasteScore( review.getScore().getTaste() )
                 .moodScore( review.getScore().getMood() )

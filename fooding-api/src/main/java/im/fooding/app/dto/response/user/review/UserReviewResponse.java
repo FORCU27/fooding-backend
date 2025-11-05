@@ -59,6 +59,9 @@ public class UserReviewResponse {
     @Schema(description = "예약 ID", nullable = true)
     private ObjectId planId;
 
+    @Schema(description = "답글 목록", nullable = true )
+    private List<UserReviewResponse> replies;
+
     @Builder
     private UserReviewResponse(
             Long reviewId,
@@ -88,7 +91,10 @@ public class UserReviewResponse {
         this.userReviewCount = userReviewCount;
         this.planId = planId;
         this.storeId = storeId;
+        this.replies = new ArrayList<>();
     }
+
+    public void setReplies(List<UserReviewResponse> replies) { this.replies = replies; }
 
     public static UserReviewResponse of(
             Review review,
@@ -112,6 +118,33 @@ public class UserReviewResponse {
                 .createdAt(review.getCreatedAt())
                 .updatedAt(review.getUpdatedAt());
         if( review.isBlind() ){
+            result.nickname( "블라인드 된 사용자" );
+            result.content( "블라인드 된 리뷰입니다." );
+            result.profileUrl( "" );
+            result.imageUrls( new ArrayList<>() );
+        }
+        // 답글 채우기
+        List<UserReviewResponse> replies = review.getReplies().stream().map( UserReviewResponse::ofReply ).toList();
+        UserReviewResponse r = result.build();
+        r.setReplies(replies);
+        return r;
+    }
+
+    private static UserReviewResponse ofReply( Review reply ){
+        UserReviewResponse.UserReviewResponseBuilder result = UserReviewResponse.builder()
+                .reviewId(reply.getId())
+                .nickname(reply.getWriter().getNickname())
+                .profileUrl(reply.getWriter().getProfileImage())
+                .imageUrls(null)
+                .content(reply.getContent())
+                .score(null)
+                .purpose(reply.getVisitPurposeType())
+                .likeCount(0L)
+                .planId( null )
+                .storeId( reply.getStore().getId() )
+                .createdAt(reply.getCreatedAt())
+                .updatedAt(reply.getUpdatedAt());
+        if( reply.isBlind() ){
             result.nickname( "블라인드 된 사용자" );
             result.content( "블라인드 된 리뷰입니다." );
             result.profileUrl( "" );

@@ -5,6 +5,7 @@ import im.fooding.app.dto.response.ceo.review.CeoReviewResponse;
 import im.fooding.app.service.ceo.review.CeoReviewService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ public class CeoReviewController {
     private final CeoReviewService service;
 
     @GetMapping()
+    @Operation( description = "CEO들의 리뷰 조회 API")
     public ApiResult<PageResponse<CeoReviewResponse>> list(
             @ModelAttribute CeoReviewRequest request
     ){

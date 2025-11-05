@@ -32,5 +32,5 @@ public class UserRetrieveReviewRequest extends BasicSearch {
 
     private Long writerId;
 
-    private Long reviewId;
+    private Long parentId;
 }
