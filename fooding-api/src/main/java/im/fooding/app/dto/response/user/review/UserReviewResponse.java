@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.bson.types.ObjectId;
 
 @Getter
@@ -59,8 +60,12 @@ public class UserReviewResponse {
     @Schema(description = "예약 ID", nullable = true)
     private ObjectId planId;
 
+    @Setter
     @Schema(description = "답글 목록", nullable = true )
     private List<UserReviewResponse> replies;
+
+    @Schema(description = "상위 댓글", nullable = true )
+    private Long parentId;
 
     @Builder
     private UserReviewResponse(
@@ -76,7 +81,8 @@ public class UserReviewResponse {
             LocalDateTime updatedAt,
             int userReviewCount,
             ObjectId planId,
-            Long storeId
+            Long storeId,
+            Long parentId
     ) {
         this.reviewId = reviewId;
         this.nickname = nickname;
@@ -91,10 +97,9 @@ public class UserReviewResponse {
         this.userReviewCount = userReviewCount;
         this.planId = planId;
         this.storeId = storeId;
+        this.parentId = parentId;
         this.replies = new ArrayList<>();
     }
-
-    public void setReplies(List<UserReviewResponse> replies) { this.replies = replies; }
 
     public static UserReviewResponse of(
             Review review,
@@ -130,7 +135,7 @@ public class UserReviewResponse {
         return r;
     }
 
-    private static UserReviewResponse ofReply( Review reply ){
+    public static UserReviewResponse ofReply( Review reply ){
         UserReviewResponse.UserReviewResponseBuilder result = UserReviewResponse.builder()
                 .reviewId(reply.getId())
                 .nickname(reply.getWriter().getNickname())
@@ -141,6 +146,7 @@ public class UserReviewResponse {
                 .purpose(reply.getVisitPurposeType())
                 .likeCount(0L)
                 .planId( null )
+                .parentId( reply.getParent().getId() )
                 .storeId( reply.getStore().getId() )
                 .createdAt(reply.getCreatedAt())
                 .updatedAt(reply.getUpdatedAt());

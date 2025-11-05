@@ -58,7 +58,7 @@ public class UserReviewService {
         else pageable = PageRequest.of(request.getPageNum() - 1, request.getPageSize() );
 
         Long writerId = request.getWriterId() > 0 ? request.getWriterId() : null;
-        Page<Review> reviewPage = reviewService.list(storeId, writerId, null, pageable );
+        Page<Review> reviewPage = reviewService.list(storeId, writerId, 0L, pageable );
 
         List<Long> reviewIds = getReviewIds(reviewPage.getContent());
 
@@ -70,12 +70,19 @@ public class UserReviewService {
                 : null;
 
         List<UserReviewResponse> content = reviewPage.getContent().stream()
-                .map(review -> UserReviewResponse.of(
-                        review,
-                        imageMap.getOrDefault(review.getId(), List.of()),
-                        likeCountMap.getOrDefault(review.getId(), 0L),
-                        plan != null ? plan.getId() : null
-                ))
+                .map(review -> {
+                    UserReviewResponse userReview = UserReviewResponse.of(
+                            review,
+                            imageMap.getOrDefault(review.getId(), List.of()),
+                            likeCountMap.getOrDefault(review.getId(), 0L),
+                            plan != null ? plan.getId() : null
+                    );
+                    Pageable tpg = PageRequest.of( 0, 50 );
+                    Page<Review> temp = reviewService.list( review.getStore().getId(), null, review.getId(), tpg );
+                    List<UserReviewResponse> replies = temp.stream().map( UserReviewResponse::ofReply).toList();
+                    if( !replies.isEmpty() ) { userReview.setReplies( replies ); }
+                    return userReview;
+                })
                 .toList();
 
         return PageResponse.of(content, PageInfo.of(reviewPage));

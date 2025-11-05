@@ -40,4 +40,5 @@ public class CeoReviewResponse {
                 .serviceScore( review.getScore().getService() )
                 .build();
     }
+    public void addReply( CeoReviewResponse reply ) { this.replies.add( reply ); }
 }
