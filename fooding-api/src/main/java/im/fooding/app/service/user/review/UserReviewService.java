@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserReviewService {
 
     private final ReviewService reviewService;
@@ -57,9 +59,10 @@ public class UserReviewService {
         if( sortInformation != null )pageable = PageRequest.of( request.getPageNum() - 1, request.getPageSize(), sortInformation );
         else pageable = PageRequest.of(request.getPageNum() - 1, request.getPageSize() );
 
-        Long writerId = request.getWriterId() > 0 ? request.getWriterId() : null;
-        Page<Review> reviewPage = reviewService.list(storeId, writerId, 0L, pageable );
+        Long writerId = null;
+        if( request.getWriterId() != null && request.getWriterId() > 0 ) writerId = request.getWriterId();
 
+        Page<Review> reviewPage = reviewService.list(storeId, writerId, Long.MIN_VALUE, pageable );
         List<Long> reviewIds = getReviewIds(reviewPage.getContent());
 
         Map<Long, List<ReviewImage>> imageMap = getReviewImageMap(reviewIds);

@@ -48,7 +48,7 @@ public class Review extends BaseEntity {
     )
     private Review parent;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "review")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parent")
     private List<Review> replies;
 
     @Embedded

@@ -29,7 +29,7 @@ public class CeoReviewService {
 
     public PageResponse<CeoReviewResponse> list(CeoReviewRequest request){
         // 최상위 리뷰만 가져옴
-        Page<Review> result = reviewService.list( request.getStoreId(), null, 0L, request.getPageable() );
+        Page<Review> result = reviewService.list( request.getStoreId(), null, Long.MIN_VALUE, request.getPageable() );
         // Store의 CEO ID 조회
         Store store = storeService.findById( request.getStoreId() );
         List<CeoReviewResponse> reviewList = result.map( review -> {

@@ -21,7 +21,7 @@ public class CeoReviewController {
     private final CeoReviewService service;
 
     @GetMapping()
-    @Operation( description = "CEO들의 리뷰 조회 API")
+    @Operation( summary = "CEO들의 리뷰 조회 API")
     public ApiResult<PageResponse<CeoReviewResponse>> list(
             @ModelAttribute CeoReviewRequest request
     ){
