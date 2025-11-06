@@ -2,6 +2,7 @@ package im.fooding.app.dto.response.ceo.review;
 
 import im.fooding.core.model.review.Review;
 import im.fooding.core.model.review.VisitPurposeType;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,7 @@ public class CeoReviewResponse {
     private Long writerId;
     private String content;
     private VisitPurposeType visitPurposeType;
-    @Schema( description = "답글 목록" )
+    @Schema(description = "답글 목록", type = "array", example = "[Review]")
     private List<CeoReviewResponse> replies;
     private float totalScore;
     private float tasteScore;
