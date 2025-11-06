@@ -21,7 +21,7 @@ public class CeoReviewResponse {
     private Long writerId;
     private String content;
     private VisitPurposeType visitPurposeType;
-    @Schema( description = "답글 목록" )
+    @Schema( description = "답글 목록", type = "array", implementation = CeoReviewResponse.class)
     private List<CeoReviewResponse> replies;
     private float totalScore;
     private float tasteScore;
