@@ -1,0 +1,26 @@
+library identifier: "pipeline-library", changelog:false
+
+agent("jenkins-agent-${UUID.randomUUID().toString()}") {
+    stage("Run") {
+        container("curl"){
+            def deployment = "fooding-api"
+            def namespace = "fooding"
+            def token = env.NODE_ENV == "production" ? '111': '222'
+            def body = env.MONTH ? "{\"month\": \"${env.MONTH}\"}" : "{}"
+            def responseCode = sh(returnStdout: true, script: """
+                curl https://api.fooding.im/jobs/stores \
+                -o /dev/null -s -w "%{http_code}" \
+                -X POST \
+                -H "Content-Type: application/json" \
+                -H "Authorization: token ${token}" \
+                -d '${body}'
+            """)
+
+            if(responseCode != "200"){
+                currentBuild.result = "FAILURE"
+            } else {
+                currentBuild.result = "SUCCESS"
+            }
+        }
+    }
+}
