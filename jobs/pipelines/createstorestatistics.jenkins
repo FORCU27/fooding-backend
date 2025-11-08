@@ -1,0 +1,25 @@
+pipelineJob("CREATE-STORE-STATISTICS") {
+    properties {
+        disableConcurrentBuilds()
+        githubProjectUrl("https://github.com/FORCU27/fooding-backend")
+    }
+
+    triggers {
+        cron ('H 12 1 * *')
+    }
+
+    definition {
+        cpsScm {
+            scm {
+                git {
+                    remote {
+                        url("git@github.com:FORCU27/fooding-backend.git")
+                        credentials('github-machine-user-fooding')
+                    }
+                    branches("*/${System.getenv("DEPLOYMENT_ENVIRONMENT") == "production" ? "main" : "develop"}")
+                }
+            }
+            scriptPath("jobs/workflows/createstorestatistics.jenkins")
+        }
+    }
+}
