@@ -11,12 +11,14 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.model.review.Review;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 
 @RequiredArgsConstructor
+@Slf4j
 public class QReviewRepositoryImpl implements QReviewRepository {
 
     private final JPAQueryFactory query;
@@ -25,7 +27,7 @@ public class QReviewRepositoryImpl implements QReviewRepository {
     public Page<Review> list(
             Long storeId,
             Long writerId,
-            Long reviewId,
+            Long parentId,
             Pageable pageable
     ) {
         OrderSpecifier<?> orderSpecifier = getOrderSpecifier( pageable );
@@ -34,7 +36,10 @@ public class QReviewRepositoryImpl implements QReviewRepository {
         whereClause.and( review.deleted.isFalse() );
         if( storeId != null ) whereClause.and( review.store.id.eq( storeId ) );
         if( writerId != null ) whereClause.and( review.writer.id.eq( writerId ) );
-        if( reviewId != null ) whereClause.and( review.parent.id.eq( reviewId ) );
+        // null: 검색 조건에 parentId가 제외된 경우
+        // MIN_VALUE: 답글이 아닌 경우( Parent인 경우 )
+        if( parentId != null && parentId != Long.MIN_VALUE ) whereClause.and( review.parent.id.eq( parentId ) );
+        else if( parentId == Long.MIN_VALUE ) whereClause.and( review.parent.id.isNull() );
         JPAQuery<Review> jpaQuery = query
                 .select(review)
                 .from(review)

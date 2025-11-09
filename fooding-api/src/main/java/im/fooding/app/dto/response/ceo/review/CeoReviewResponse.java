@@ -2,10 +2,16 @@ package im.fooding.app.dto.response.ceo.review;
 
 import im.fooding.core.model.review.Review;
 import im.fooding.core.model.review.VisitPurposeType;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -15,8 +21,13 @@ public class CeoReviewResponse {
     private Long id;
     private Long storeId;
     private Long writerId;
+    private String writerName;
+    private String writerProfileImageUrl;
+    private LocalDateTime createdAt;
     private String content;
     private VisitPurposeType visitPurposeType;
+    @Schema(description = "답글 목록", type = "array", example = "[Review]")
+    private List<CeoReviewResponse> replies;
     private float totalScore;
     private float tasteScore;
     private float moodScore;
@@ -27,12 +38,17 @@ public class CeoReviewResponse {
                 .id( review.getId() )
                 .storeId( review.getStore().getId() )
                 .writerId( review.getWriter().getId() )
+                .writerName( review.getWriter().getName() )
+                .writerProfileImageUrl( review.getWriter().getProfileImage() )
+                .createdAt( review.getCreatedAt() )
                 .content( review.getContent() )
                 .visitPurposeType( review.getVisitPurposeType() )
+                .replies( new ArrayList<>() )
                 .totalScore( review.getScore().getTotal() )
                 .tasteScore( review.getScore().getTaste() )
                 .moodScore( review.getScore().getMood() )
                 .serviceScore( review.getScore().getService() )
                 .build();
     }
+    public void addReply( CeoReviewResponse reply ) { this.replies.add( reply ); }
 }

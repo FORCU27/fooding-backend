@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserReviewService {
 
     private final ReviewService reviewService;
@@ -57,16 +59,10 @@ public class UserReviewService {
         if( sortInformation != null )pageable = PageRequest.of( request.getPageNum() - 1, request.getPageSize(), sortInformation );
         else pageable = PageRequest.of(request.getPageNum() - 1, request.getPageSize() );
 
-        // 답글의 경우
-        Long reviewId = null;
-        if( request.getReviewId() != null && request.getReviewId() != 0 ) {
-            Review parentReview = reviewService.findById( request.getReviewId() );
-            reviewId = parentReview.getId();
-        }
+        Long writerId = null;
+        if( request.getWriterId() != null && request.getWriterId() > 0 ) writerId = request.getWriterId();
 
-        Long writerId = request.getWriterId() > 0 ? request.getWriterId() : null;
-        Page<Review> reviewPage = reviewService.list(storeId, writerId, reviewId, pageable );
-
+        Page<Review> reviewPage = reviewService.list(storeId, writerId, Long.MIN_VALUE, pageable );
         List<Long> reviewIds = getReviewIds(reviewPage.getContent());
 
         Map<Long, List<ReviewImage>> imageMap = getReviewImageMap(reviewIds);
@@ -77,12 +73,19 @@ public class UserReviewService {
                 : null;
 
         List<UserReviewResponse> content = reviewPage.getContent().stream()
-                .map(review -> UserReviewResponse.of(
-                        review,
-                        imageMap.getOrDefault(review.getId(), List.of()),
-                        likeCountMap.getOrDefault(review.getId(), 0L),
-                        plan != null ? plan.getId() : null
-                ))
+                .map(review -> {
+                    UserReviewResponse userReview = UserReviewResponse.of(
+                            review,
+                            imageMap.getOrDefault(review.getId(), List.of()),
+                            likeCountMap.getOrDefault(review.getId(), 0L),
+                            plan != null ? plan.getId() : null
+                    );
+                    Pageable tpg = PageRequest.of( 0, 50 );
+                    Page<Review> temp = reviewService.list( review.getStore().getId(), null, review.getId(), tpg );
+                    List<UserReviewResponse> replies = temp.stream().map( UserReviewResponse::ofReply).toList();
+                    if( !replies.isEmpty() ) { userReview.setReplies( replies ); }
+                    return userReview;
+                })
                 .toList();
 
         return PageResponse.of(content, PageInfo.of(reviewPage));
@@ -121,17 +124,18 @@ public class UserReviewService {
                 .total( totalScore )
                 .build();
         // 리뷰 추가
-        Review.ReviewBuilder review = Review.builder()
+        Review review = Review.builder()
                 .store( store )
                 .writer( user )
                 .score( score )
                 .content( request.getContent() )
-                .visitPurposeType( request.getVisitPurpose() );
-        if( request.getReviewId() != null && request.getReviewId() != 0 ) {
-            Review parent = reviewService.findById( request.getReviewId() );
-            review.parent( parent );
+                .visitPurposeType( request.getVisitPurpose() )
+                .build();
+        if( request.getParentId() != null && request.getParentId() != 0 ) {
+            Review parent = reviewService.findById( request.getParentId() );
+            review.setParent( parent );
         }
-        Review result = reviewService.create( review.build() );
+        Review result = reviewService.create( review );
         // 리뷰 이미지 추가
         reviewImageService.create( result, request.getImageUrls() );
         // 리뷰 수 추가

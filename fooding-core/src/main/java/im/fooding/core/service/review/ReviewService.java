@@ -7,6 +7,7 @@ import im.fooding.core.model.review.ReviewScore;
 import im.fooding.core.model.review.ReviewSortType;
 import im.fooding.core.model.review.VisitPurposeType;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.user.User;
 import im.fooding.core.repository.review.ReviewRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,10 @@ public class ReviewService {
         return reviewRepository.findById( id ).orElseThrow(
                 () -> new ApiException(ErrorCode.REVIEW_NOT_FOUND)
         );
+    }
+
+    public Review findCeoReply(Store store, User writer, Review parent) {
+        return reviewRepository.findByStoreAndWriterAndParent( store, writer, parent ).orElse( null );
     }
 
     /**
