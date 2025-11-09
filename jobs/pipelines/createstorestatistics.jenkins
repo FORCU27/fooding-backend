@@ -14,7 +14,7 @@ pipelineJob("CREATE-STORE-STATISTICS") {
                 git {
                     remote {
                         url("git@github.com:FORCU27/fooding-backend.git")
-                        credentials('github-machine-user-fooding')
+                        credentials('github-machine-user-fooding-workflow')
                     }
                     branches("*/${System.getenv("DEPLOYMENT_ENVIRONMENT") == "production" ? "main" : "develop"}")
                 }
