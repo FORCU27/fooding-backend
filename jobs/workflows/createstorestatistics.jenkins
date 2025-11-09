@@ -1,6 +1,6 @@
 library identifier: "pipeline-library", changelog:false
 
-agent("jenkins-agent-${UUID.randomUUID().toString()}") {
+slave("jenkins-agent-${UUID.randomUUID().toString()}") {
     stage("Run") {
         container("curl"){
             def deployment = "fooding-api"
