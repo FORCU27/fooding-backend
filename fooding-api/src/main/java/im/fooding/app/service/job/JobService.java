@@ -1,4 +1,4 @@
-package im.fooding.app.service.job.store;
+package im.fooding.app.service.job;
 
 import im.fooding.app.dto.request.job.store.JobStoreCreateStatisticsRequest;
 import im.fooding.core.global.exception.ApiException;
@@ -17,19 +17,19 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
-public class JobStoreService {
+public class JobService {
 
     private final StoreService storeService;
     private final StoreStatisticsService storeStatisticsService;
 
     @Transactional
-    public void createStatistics(JobStoreCreateStatisticsRequest request) {
+    public void createStoreStatistics(JobStoreCreateStatisticsRequest request) {
         List<Store> allStore = storeService.findAll();
 
         allStore.forEach(store ->
                 {
                     try {
-                        createStatistics(store.getId(), request.getDate());
+                        createStoreStatistics(store.getId(), request.getDate());
                     } catch (Exception e) {
                         log.error("통계 생성에 실패했습니다. (storeId={} on date={})", store.getId(), request.getDate());
                         e.printStackTrace();
@@ -39,7 +39,7 @@ public class JobStoreService {
     }
 
     @Transactional
-    public void createStatistics(long storeId, LocalDate date) {
+    public void createStoreStatistics(long storeId, LocalDate date) {
         try {
             storeStatisticsService.update(
                     storeId,
