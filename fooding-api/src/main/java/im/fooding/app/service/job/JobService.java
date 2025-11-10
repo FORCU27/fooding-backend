@@ -32,7 +32,6 @@ public class JobService {
                         createStoreStatistics(store.getId(), request.getDate());
                     } catch (Exception e) {
                         log.error("통계 생성에 실패했습니다. (storeId={} on date={})", store.getId(), request.getDate());
-                        e.printStackTrace();
                     }
                 }
         );
