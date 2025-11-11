@@ -14,7 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 @Slf4j
 public class StoreNotificationService {
+
     private final StoreNotificationRepository storeNotificationRepository;
+
+    public Page<StoreNotification> list(Pageable pageable) {
+        return storeNotificationRepository.list(pageable);
+    }
 
     public Page<StoreNotification> list(Long storeId, Pageable pageable){
       return storeNotificationRepository.findByStoreIdOrderByCreatedAtDesc(storeId, pageable);
