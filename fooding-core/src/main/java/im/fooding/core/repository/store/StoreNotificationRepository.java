@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StoreNotificationRepository extends JpaRepository<StoreNotification, Long> {
+public interface StoreNotificationRepository extends JpaRepository<StoreNotification, Long>, QStoreNotificationRepository {
     Page<StoreNotification> findByStoreIdOrderByCreatedAtDesc(Long storeId, Pageable pageable);
 
     Page<StoreNotification> findByStoreIdAndCategoryOrderByCreatedAtDesc(Long storeId, String category, Pageable pageable);
