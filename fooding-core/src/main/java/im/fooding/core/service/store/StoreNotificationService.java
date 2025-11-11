@@ -1,5 +1,6 @@
 package im.fooding.core.service.store;
 
+import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreNotification;
 import im.fooding.core.repository.store.StoreNotificationRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,18 @@ public class StoreNotificationService {
 
     public Page<StoreNotification> listByCategory(Long storeId, String category, Pageable pageable) {
       return storeNotificationRepository.findByStoreIdAndCategoryOrderByCreatedAtDesc(storeId, category, pageable);
+    }
+
+    @Transactional
+    public Long create(Store store, String title, String content, String category, String linkUrl) {
+        StoreNotification newStoreNotification = StoreNotification.builder()
+                .store(store)
+                .title(title)
+                .content(content)
+                .category(category)
+                .linkUrl(linkUrl)
+                .build();
+
+        return storeNotificationRepository.save(newStoreNotification).getId();
     }
 }
