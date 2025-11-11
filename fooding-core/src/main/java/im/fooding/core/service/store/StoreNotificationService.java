@@ -1,5 +1,7 @@
 package im.fooding.core.service.store;
 
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreNotification;
 import im.fooding.core.repository.store.StoreNotificationRepository;
@@ -41,5 +43,18 @@ public class StoreNotificationService {
                 .build();
 
         return storeNotificationRepository.save(newStoreNotification).getId();
+    }
+
+    @Transactional
+    public void delete(long id, long deletedBy) {
+        StoreNotification storeNotification = get(id);
+
+        storeNotification.delete(deletedBy);
+    }
+
+    private StoreNotification get(long id) {
+        return storeNotificationRepository.findById(id)
+                .filter(it -> !it.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.STORE_NOTIFICATION_NOT_FOUND));
     }
 }

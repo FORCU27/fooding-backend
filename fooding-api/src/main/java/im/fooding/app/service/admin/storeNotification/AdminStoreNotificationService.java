@@ -44,4 +44,9 @@ public class AdminStoreNotificationService {
                 request.getLinkUrl()
         );
     }
+
+    @Transactional
+    public void delete(long id, long deletedBy) {
+        storeNotificationService.delete(id, deletedBy);
+    }
 }
