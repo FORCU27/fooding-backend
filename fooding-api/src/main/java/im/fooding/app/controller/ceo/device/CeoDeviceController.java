@@ -50,12 +50,13 @@ public class CeoDeviceController {
     }
 
     @PostMapping("/{deviceId}/service")
-    @Operation(summary = "디바이스의 서비스 변경")
+    @Operation(summary = "디바이스의 서비스 변경", description = "storeId는 해당 기기를 사용하고 있는 Store의 ID")
     public ApiResult<Void> changeDeviceService(
             @RequestParam ServiceType serviceType,
+            @RequestParam Long storeId,
             @PathVariable Long deviceId
     ){
-        ceoDeviceService.updateDeviceServiceType( deviceId, serviceType);
+        ceoDeviceService.updateDeviceServiceType( deviceId, storeId, serviceType );
         return ApiResult.ok();
     }
 
@@ -72,10 +73,9 @@ public class CeoDeviceController {
     @GetMapping( "/logs" )
     @Operation(summary = "해당 디바이스와 관련된 로그 조회")
     public ApiResult<PageResponse<GetDeviceLogsResponse>> retrieveLogs(
-            @ModelAttribute GetDeviceLogsRequest request,
-            @AuthenticationPrincipal UserInfo userInfo
+            @ModelAttribute GetDeviceLogsRequest request
     ){
-        return ApiResult.ok( ceoDeviceService.retrieveLogs(request, Optional.ofNullable(userInfo).map(UserInfo::getId).orElse(null)) );
+        return ApiResult.ok( ceoDeviceService.retrieveLogs(request) );
     }
 
     @GetMapping("/{logId}/logs")

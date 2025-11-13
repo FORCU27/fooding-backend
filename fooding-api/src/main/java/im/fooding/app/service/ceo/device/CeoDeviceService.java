@@ -5,11 +5,15 @@ import im.fooding.app.dto.response.ceo.device.GetDeviceLogDetailResponse;
 import im.fooding.app.dto.response.ceo.device.GetDeviceLogsResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.device.*;
+import im.fooding.core.model.store.Store;
 import im.fooding.core.service.device.DeviceAppService;
 import im.fooding.core.service.device.DeviceLogService;
 import im.fooding.core.service.device.DeviceService;
 import im.fooding.core.service.device.StoreDeviceService;
+import im.fooding.core.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -28,6 +32,7 @@ public class CeoDeviceService {
     private final StoreDeviceService storeDeviceService;
 
     private final DeviceLogService logService;
+    private final StoreService storeService;
 
     /**
      * 디바이스와 계정의 연결을 해제하는 API
@@ -49,13 +54,19 @@ public class CeoDeviceService {
      * 디바이스의 담당 서비스 변경
      *
      * @param id
+     * @param storeId
      * @param serviceType
      */
     @Transactional( readOnly = false )
-    public void updateDeviceServiceType( long id, ServiceType serviceType ) {
+    public void updateDeviceServiceType( long id, Long storeId, ServiceType serviceType ) {
         Device device = deviceService.findById( id );
         StoreDevice storeDevice = storeDeviceService.findByDeviceId( device.getId() );
-        storeDeviceService.updateServiceType( storeDevice.getId(), serviceType );
+        if( storeDevice == null ){
+            Store store = storeService.findById( storeId );
+            if( store == null ) throw new ApiException(ErrorCode.STORE_NOT_FOUND);
+            storeDevice = storeDeviceService.create(store, device, serviceType);
+        }
+        else storeDeviceService.updateServiceType( storeDevice.getId(), serviceType );
 
         // 로그 기록
         if( serviceType == ServiceType.REWARD_MANAGEMENT || serviceType == ServiceType.REWARD_RECEIPT ) logService.logging( storeDevice.getId(), DeviceLogType.SERVICE_REWARD );
@@ -66,18 +77,11 @@ public class CeoDeviceService {
      * 디바이스 로그 조회
      *
      * @param request
-     * @param userId
      */
-    public PageResponse<GetDeviceLogsResponse> retrieveLogs( GetDeviceLogsRequest request, Long userId ) {
-        // 요청 받은 디바이스 소유자인지 확인
-        Device device = deviceService.findById( request.getDeviceId() );
-        if( userId == null ) throw new IllegalArgumentException( "잘못된 요청입니다." );
-        if( device.getUser().getId() != userId ) throw new IllegalArgumentException( "잘못된 요청입니다." );
-
+    public PageResponse<GetDeviceLogsResponse> retrieveLogs( GetDeviceLogsRequest request ) {
         // 로그 전달
         Pageable pageable = PageRequest.of( request.getPageNum()-1, request.getPageSize() );
         Page<DeviceLog> result = logService.getDeviceLogs( request.getDeviceId(), pageable );
-        log.info( "--------------------- result.get(0): {}", result.getContent().get(0) );
 
         return PageResponse.of( result.stream().map(GetDeviceLogsResponse::of).toList(), PageInfo.of( result ) );
     }
