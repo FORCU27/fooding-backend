@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,9 @@ public class CeoReviewResponse {
     private Long id;
     private Long storeId;
     private Long writerId;
+    private String writerName;
+    private String writerProfileImage;
+    private LocalDateTime createdAt;
     private String content;
     private VisitPurposeType visitPurposeType;
     @Schema(description = "답글 목록", type = "array", example = "[Review]")
@@ -34,6 +38,9 @@ public class CeoReviewResponse {
                 .id( review.getId() )
                 .storeId( review.getStore().getId() )
                 .writerId( review.getWriter().getId() )
+                .writerName( review.getWriter().getName() )
+                .writerProfileImage( review.getWriter().getProfileImage() )
+                .createdAt( review.getCreatedAt() )
                 .content( review.getContent() )
                 .visitPurposeType( review.getVisitPurposeType() )
                 .replies( new ArrayList<>() )
