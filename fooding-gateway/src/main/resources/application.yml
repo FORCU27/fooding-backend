@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: fooding-gateway
+  profiles:
+    active: local
+  main:
+    allow-bean-definition-overriding: true
+

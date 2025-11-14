@@ -1,2 +1,2 @@
 rootProject.name = "fooding-backend"
-include("fooding-core", "fooding-api")
+include("fooding-core", "fooding-api", "fooding-gateway")
