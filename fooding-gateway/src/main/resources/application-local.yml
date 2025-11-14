@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: fooding-api
+          uri: http://localhost:8080
+          predicates:
+            - Path=/v1/**
+          filters:
+            - StripPrefix=1
+
+server:
+  port: 8082

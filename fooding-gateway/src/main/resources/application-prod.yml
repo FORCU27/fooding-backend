@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: fooding-api
+          uri: ${FOODING_API_URI}
+          predicates:
+            - Path=/v1/**
+          filters:
+            - StripPrefix=1
+
+server:
+  port: ${SERVER_PORT:8082}
