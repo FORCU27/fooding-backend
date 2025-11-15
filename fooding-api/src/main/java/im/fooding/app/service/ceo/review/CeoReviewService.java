@@ -6,13 +6,18 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.review.Review;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.user.User;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.review.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +28,20 @@ public class CeoReviewService {
     private final StoreService storeService;
 
     public PageResponse<CeoReviewResponse> list(CeoReviewRequest request){
+        // 최상위 리뷰만 가져옴
+        Page<Review> result = reviewService.list( request.getStoreId(), null, Long.MIN_VALUE, request.getPageable() );
+        // Store의 CEO ID 조회
         Store store = storeService.findById( request.getStoreId() );
-        Page<Review> result = reviewService.list( store, request.getPageable() );
-        return PageResponse.of( result.map(CeoReviewResponse::of).stream().toList(), PageInfo.of( result ) );
+        List<CeoReviewResponse> reviewList = result.map( review -> {
+            // 각 최상위 리뷰에 달린 하위 리뷰를 가져옴
+            CeoReviewResponse temp = CeoReviewResponse.of( review );
+            Review ceoReply = reviewService.findCeoReply( store, store.getOwner(), review );
+            if( ceoReply != null ){
+                CeoReviewResponse reply = CeoReviewResponse.of( ceoReply );
+                temp.addReply( reply );
+            }
+            return temp;
+        }).stream().toList();
+        return PageResponse.of( reviewList, PageInfo.of( result ) );
     }
 }

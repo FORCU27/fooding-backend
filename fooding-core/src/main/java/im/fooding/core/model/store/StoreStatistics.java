@@ -49,4 +49,18 @@ public class StoreStatistics {
         this.visitorChangeRate = visitorChangeRate;
         this.annualTargetSalesRate = annualTargetSalesRate;
     }
+
+    public void update(
+            int totalSales,
+            double totalSalesChangeRate,
+            int totalVisitors,
+            double visitorChangeRate,
+            double annualTargetSalesRate
+    ) {
+        this.totalSales = totalSales;
+        this.totalSalesChangeRate = totalSalesChangeRate;
+        this.totalVisitors = totalVisitors;
+        this.visitorChangeRate = visitorChangeRate;
+        this.annualTargetSalesRate = annualTargetSalesRate;
+    }
 }

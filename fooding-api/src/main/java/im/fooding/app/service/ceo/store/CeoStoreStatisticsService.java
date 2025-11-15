@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CeoStoreStatisticsService {
 
-    private StoreStatisticsService storeStatisticsService;
+    private final StoreStatisticsService storeStatisticsService;
 
     public CeoStoreStatisticsResponse retrieve(long storeId, CeoStoreStatisticsRequest request) {
         StoreStatistics storeStatistics = storeStatisticsService.get(storeId, request.getDate());

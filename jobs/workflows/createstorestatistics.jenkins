@@ -7,8 +7,10 @@ slave("jenkins-agent-${UUID.randomUUID().toString()}") {
             def namespace = "fooding"
             def token = env.NODE_ENV == "production" ? '111': '222'
             def body = env.MONTH ? "{\"month\": \"${env.MONTH}\"}" : "{}"
+            def baseUrl = env.NODE_ENV == "production" ? "https://api.fooding.im" : "https://api-stage.fooding.im"
+            def url = "${baseUrl}/create-statistics"
             def responseCode = sh(returnStdout: true, script: """
-                curl https://api.fooding.im/jobs/stores \
+                curl ${url} \
                 -o /dev/null -s -w "%{http_code}" \
                 -X POST \
                 -H "Content-Type: application/json" \
