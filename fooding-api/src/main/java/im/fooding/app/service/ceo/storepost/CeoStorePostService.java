@@ -33,7 +33,7 @@ public class CeoStorePostService {
 
     public List<CeoStorePostResponse> list(Long storeId, Long ceoId) {
         checkMember(storeId, ceoId);
-        List<StorePost> storePosts = storePostService.list(storeId);
+        List<StorePost> storePosts = storePostService.list(storeId, null);
         return storePosts.stream()
                 .map(CeoStorePostResponse::from)
                 .collect(Collectors.toList());
@@ -56,6 +56,7 @@ public class CeoStorePostService {
                 .tags(request.getTags())
                 .isFixed(request.getIsFixed())
                 .isNotice(request.getIsNotice())
+                .isCommentAvailable(request.getIsCommentAvailable())
                 .build();
         storePostService.create(storePost);
 
@@ -79,7 +80,7 @@ public class CeoStorePostService {
 
         commitAndCreateImage(storePost, request.getImageIds());
 
-        storePostService.update(storePost, request.getTitle(), request.getContent(), request.getTags(), request.getIsFixed(), request.getIsNotice());
+        storePostService.update(storePost, request.getTitle(), request.getContent(), request.getTags(), request.getIsFixed(), request.getIsNotice(), request.getIsCommentAvailable());
     }
 
     @Transactional
@@ -87,6 +88,20 @@ public class CeoStorePostService {
         StorePost storePost = storePostService.findById(storePostId);
         checkMember(storePost.getStore().getId(), deletedBy);
         storePostService.delete(storePost, deletedBy);
+    }
+
+    @Transactional
+    public void active(Long storePostId, Long ceoId) {
+        StorePost storePost = storePostService.findById(storePostId);
+        checkMember(storePost.getStore().getId(), ceoId);
+        storePostService.active(storePost);
+    }
+
+    @Transactional
+    public void inactive(Long storePostId, Long ceoId) {
+        StorePost storePost = storePostService.findById(storePostId);
+        checkMember(storePost.getStore().getId(), ceoId);
+        storePostService.inactive(storePost);
     }
 
     private void commitAndCreateImage(StorePost storePost, List<String> imageIds) {

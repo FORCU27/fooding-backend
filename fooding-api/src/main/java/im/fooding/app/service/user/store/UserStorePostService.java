@@ -1,10 +1,9 @@
 package im.fooding.app.service.user.store;
 
-import im.fooding.app.dto.response.user.store.UserStoreListResponse;
 import im.fooding.app.dto.response.user.store.UserStorePostResponse;
-import im.fooding.app.dto.response.user.store.UserStoreResponse;
 import im.fooding.core.global.UserInfo;
-import im.fooding.core.model.bookmark.Bookmark;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.StorePost;
 import im.fooding.core.model.store.StorePostLike;
 import im.fooding.core.model.user.User;
@@ -32,7 +31,7 @@ public class UserStorePostService {
 
     @Transactional(readOnly = true)
     public List<UserStorePostResponse> list(Long storeId, UserInfo userInfo) {
-        List<UserStorePostResponse> list = storePostService.list(storeId).stream()
+        List<UserStorePostResponse> list = storePostService.list(storeId, true).stream()
                 .map(UserStorePostResponse::from)
                 .collect(Collectors.toList());
 
@@ -45,9 +44,13 @@ public class UserStorePostService {
         return list;
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public UserStorePostResponse retrieve(Long storePostId, UserInfo userInfo) {
         StorePost storePost = storePostService.findById(storePostId);
+        if (!storePost.isActive()) {
+            throw new ApiException(ErrorCode.STORE_POST_NOT_FOUND);
+        }
+        storePostService.increaseViewCount(storePost);
         UserStorePostResponse post = UserStorePostResponse.from(storePost);
         if (userInfo != null) {
             setLiked(post, userInfo.getId());
@@ -80,7 +83,7 @@ public class UserStorePostService {
         list.forEach(response ->
                 likedSetter.accept(response, likedPostIds.contains(idExtractor.apply(response)))
         );
-   }
+    }
 
     private void setLiked(UserStorePostResponse userStorePostResponse, Long userId) {
         List<StorePostLike> userLikes = storePostLikeService.findByUserId(userId);

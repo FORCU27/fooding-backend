@@ -45,34 +45,48 @@ public class StorePost extends BaseEntity {
     @Column(nullable = false)
     private boolean isNotice;
 
+    @ColumnDefault("true")
+    @Column(nullable = false)
+    private boolean isActive;
+
     @Column(nullable = false)
     private int likeCount;
 
     @Column(nullable = false)
     private int commentCount;
 
+    @Column(nullable = false)
+    private int viewCount;
+
+    @ColumnDefault("true")
+    @Column(nullable = false)
+    private boolean isCommentAvailable;
+
     @OneToMany(mappedBy = "storePost")
     @BatchSize(size = 10)
     private List<StorePostImage> images;
 
     @Builder
-    public StorePost(Store store, String title, String content, List<String> tags, boolean isFixed, boolean isNotice) {
-      this.store = store;
-      this.title = title;
-      this.content = content;
-      this.tags = tags;
-      this.isFixed = isFixed;
-      this.isNotice = isNotice;
-      this.likeCount = 0;
-      this.commentCount = 0;
+    public StorePost(Store store, String title, String content, List<String> tags, boolean isFixed, boolean isNotice, boolean isCommentAvailable) {
+        this.store = store;
+        this.title = title;
+        this.content = content;
+        this.tags = tags;
+        this.isActive = true;
+        this.isFixed = isFixed;
+        this.isNotice = isNotice;
+        this.isCommentAvailable = isCommentAvailable;
+        this.likeCount = 0;
+        this.commentCount = 0;
     }
 
-    public void update(String title, String content, List<String> tags, boolean isFixed, boolean isNotice) {
-      this.title = title;
-      this.content = content;
-      this.tags = tags;
-      this.isFixed = isFixed;
-      this.isNotice = isNotice;
+    public void update(String title, String content, List<String> tags, boolean isFixed, boolean isNotice, boolean isCommentAvailable) {
+        this.title = title;
+        this.content = content;
+        this.tags = tags;
+        this.isFixed = isFixed;
+        this.isNotice = isNotice;
+        this.isCommentAvailable = isCommentAvailable;
     }
 
     public void increaseLikeCount() {
@@ -81,5 +95,29 @@ public class StorePost extends BaseEntity {
 
     public void decreaseLikeCount() {
         this.likeCount--;
+    }
+
+    public void increaseCommentCount() {
+        this.commentCount++;
+    }
+
+    public void decreaseCommentCount() {
+        this.commentCount--;
+    }
+
+    public void increaseViewCount() {
+        this.viewCount++;
+    }
+
+    public void decreaseViewCount() {
+        this.viewCount--;
+    }
+
+    public void active() {
+        this.isActive = true;
+    }
+
+    public void inactive() {
+        this.isActive = false;
     }
 }

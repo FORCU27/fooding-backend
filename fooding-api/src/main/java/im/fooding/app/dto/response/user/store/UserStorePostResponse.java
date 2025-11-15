@@ -32,11 +32,17 @@ public class UserStorePostResponse {
     @Schema(description = "상단 고정 여부", requiredMode = RequiredMode.REQUIRED, example = "true")
     private Boolean isNotice;
 
+    @Schema(description = "댓글 가능 여부", requiredMode = RequiredMode.REQUIRED, example = "true")
+    private Boolean isCommentAvailable;
+    
     @Schema(description = "좋아요 수", requiredMode = RequiredMode.REQUIRED, example = "1")
     private int likeCount;
 
     @Schema(description = "댓글 수", requiredMode = RequiredMode.REQUIRED, example = "1")
     private int commentCount;
+
+    @Schema(description = "조회수", requiredMode = RequiredMode.REQUIRED, example = "1")
+    private int viewCount;
 
     @Schema(description = "좋아요 여부", requiredMode = RequiredMode.REQUIRED, example = "false")
     private Boolean isLiked;
@@ -45,7 +51,7 @@ public class UserStorePostResponse {
     private LocalDateTime createdAt;
 
     @Builder
-    public UserStorePostResponse(long id, String title, String content, List<UserStorePostImageResponse> images, List<String> tags, Boolean isFixed, Boolean isNotice, int likeCount, int commentCount, LocalDateTime createdAt) {
+    public UserStorePostResponse(long id, String title, String content, List<UserStorePostImageResponse> images, List<String> tags, Boolean isFixed, Boolean isNotice, Boolean isCommentAvailable, int likeCount, int commentCount, int viewCount, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -53,8 +59,10 @@ public class UserStorePostResponse {
         this.tags = tags;
         this.isFixed = isFixed;
         this.isNotice = isNotice;
+        this.isCommentAvailable = isCommentAvailable;
         this.likeCount = likeCount;
         this.commentCount = commentCount;
+        this.viewCount = viewCount;
         this.createdAt = createdAt;
         this.isLiked = false;
     }
@@ -73,8 +81,10 @@ public class UserStorePostResponse {
                 .tags(storePost.getTags())
                 .isFixed(storePost.isFixed())
                 .isNotice(storePost.isNotice())
+                .isCommentAvailable(storePost.isCommentAvailable())
                 .likeCount(storePost.getLikeCount())
                 .commentCount(storePost.getCommentCount())
+                .viewCount(storePost.getViewCount())
                 .createdAt(storePost.getCreatedAt())
                 .build();
     }

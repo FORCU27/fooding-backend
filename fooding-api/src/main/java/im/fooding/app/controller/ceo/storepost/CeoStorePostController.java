@@ -58,4 +58,18 @@ public class CeoStorePostController {
       ceoStorePostService.delete(storePostId, userInfo.getId());
       return ApiResult.ok();
     }
+
+    @PutMapping("/{storePostId}/active")
+    @Operation(summary = "소식 공개여부 활성화")
+    public ApiResult<Void> active(@PathVariable Long storePostId, @AuthenticationPrincipal UserInfo userInfo) {
+        ceoStorePostService.active(storePostId, userInfo.getId());
+        return ApiResult.ok();
+    }
+
+    @PutMapping("/{storePostId}/inactive")
+    @Operation(summary = "소식 공개여부 비활성화")
+    public ApiResult<Void> inactive(@PathVariable Long storePostId, @AuthenticationPrincipal UserInfo userInfo) {
+        ceoStorePostService.inactive(storePostId, userInfo.getId());
+        return ApiResult.ok();
+    }
 }

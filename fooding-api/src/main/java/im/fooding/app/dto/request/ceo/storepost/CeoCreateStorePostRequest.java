@@ -33,7 +33,11 @@ public class CeoCreateStorePostRequest {
     @NotNull
     @Schema(description = "공지여부", example = "true")
     private Boolean isNotice;
-    
+
+    @NotNull
+    @Schema(description = "댓글가능여부", example = "true")
+    private Boolean isCommentAvailable;
+
     @Schema(description = "소식 이미지 업로드 하고 받은 ID", example = "[\"002f4860-3b13-4033-8b5f-6cf91a9816e7\", \"002f4860-3b13-4033-8b5f-6cf91a9816e7\"]")
     private List<String> imageIds;
 }

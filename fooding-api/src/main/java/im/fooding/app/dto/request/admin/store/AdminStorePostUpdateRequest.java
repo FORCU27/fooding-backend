@@ -33,6 +33,10 @@ public class AdminStorePostUpdateRequest {
     @NotNull
     Boolean isNotice = false;
 
+    @Schema(description = "댓글가능여부")
+    @NotNull
+    Boolean isCommentAvailable;
+
     @Schema(description = "삭제 이미지 ids", example = "[\"002f4860-3b13-4033-8b5f-6cf91a9816e7\"]")
     private List<String> deleteImageIds;
 

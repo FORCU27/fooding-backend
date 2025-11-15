@@ -19,13 +19,13 @@ import java.util.List;
 public class StorePostService {
     private final StorePostRepository storePostRepository;
 
-    public List<StorePost> list(Long storeId) {
+    public List<StorePost> list(Long storeId, Boolean isActive) {
         // Backward-compatible non-paged list (CEO/User use case)
-        return storePostRepository.list(storeId, null, Pageable.unpaged()).getContent();
+        return storePostRepository.list(storeId, isActive, null, Pageable.unpaged()).getContent();
     }
 
-    public Page<StorePost> list(Long storeId, String searchString, Pageable pageable) {
-        return storePostRepository.list(storeId, searchString, pageable);
+    public Page<StorePost> list(Long storeId, Boolean isActive, String searchString, Pageable pageable) {
+        return storePostRepository.list(storeId, isActive, searchString, pageable);
     }
 
     public StorePost findById(Long id) {
@@ -38,8 +38,8 @@ public class StorePostService {
         return storePostRepository.save(storePost);
     }
 
-    public void update(StorePost storePost, String title, String content, List<String> tags, boolean isFixed, boolean isNotice) {
-        storePost.update(title, content, tags, isFixed, isNotice);
+    public void update(StorePost storePost, String title, String content, List<String> tags, boolean isFixed, boolean isNotice, boolean isCommentAvailable) {
+        storePost.update(title, content, tags, isFixed, isNotice, isCommentAvailable);
     }
 
     public void delete(StorePost storePost, Long deletedBy) {
@@ -52,5 +52,29 @@ public class StorePostService {
 
     public void decreaseLikeCount(StorePost storePost) {
         storePost.decreaseLikeCount();
+    }
+
+    public void increaseCommentCount(StorePost storePost) {
+        storePost.increaseCommentCount();
+    }
+
+    public void decreaseCommentCount(StorePost storePost) {
+        storePost.decreaseCommentCount();
+    }
+
+    public void increaseViewCount(StorePost storePost) {
+        storePost.increaseViewCount();
+    }
+
+    public void decreaseViewCount(StorePost storePost) {
+        storePost.decreaseViewCount();
+    }
+
+    public void active(StorePost storePost) {
+        storePost.active();
+    }
+
+    public void inactive(StorePost storePost) {
+        storePost.inactive();
     }
 }

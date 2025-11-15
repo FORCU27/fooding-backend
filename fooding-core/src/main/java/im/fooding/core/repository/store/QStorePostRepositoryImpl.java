@@ -18,20 +18,24 @@ public class QStorePostRepositoryImpl implements QStorePostRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<StorePost> list(Long storeId, String searchString, Pageable pageable) {
+    public Page<StorePost> list(Long storeId, Boolean isActive, String searchString, Pageable pageable) {
         var predicate = storePost.deleted.isFalse();
+
         if (storeId != null) {
             predicate = predicate.and(storePost.store.id.eq(storeId));
         }
         if (searchString != null && !searchString.isBlank()) {
             predicate = predicate.and(storePost.title.containsIgnoreCase(searchString));
         }
+        if (isActive != null) {
+            predicate = predicate.and(storePost.isActive.eq(isActive));
+        }
 
         var base = queryFactory
                 .selectFrom(storePost)
                 .where(predicate)
                 .leftJoin(storePost.images, storePostImage)
-                .orderBy(storePost.isFixed.desc(), storePost.updatedAt.desc());
+                .orderBy(storePost.isFixed.desc(), storePost.isNotice.desc(), storePost.id.desc());
 
         List<StorePost> results;
         if (pageable.isUnpaged()) {

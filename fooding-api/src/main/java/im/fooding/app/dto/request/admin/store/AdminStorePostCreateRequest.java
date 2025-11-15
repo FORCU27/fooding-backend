@@ -33,6 +33,10 @@ public class AdminStorePostCreateRequest {
     @NotNull
     Boolean isNotice;
 
+    @Schema(description = "댓글가능여부")
+    @NotNull
+    Boolean isCommentAvailable;
+
     @Schema(description = "소식 이미지 업로드 하고 받은 ID", example = "[\"002f4860-3b13-4033-8b5f-6cf91a9816e7\", \"002f4860-3b13-4033-8b5f-6cf91a9816e7\"]")
     List<String> imageIds;
 }

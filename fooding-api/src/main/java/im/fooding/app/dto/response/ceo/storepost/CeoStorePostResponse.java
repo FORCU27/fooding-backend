@@ -30,11 +30,20 @@ public class CeoStorePostResponse {
     @Schema(description = "공지여부", example = "true")
     private Boolean isNotice;
 
+    @Schema(description = "댓글가능여부", example = "true")
+    private Boolean isCommentAvailable;
+
+    @Schema(description = "공개여부", example = "true")
+    private Boolean isActive;
+
     @Schema(description = "좋아요 수", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     int likeCount;
 
     @Schema(description = "댓글 수", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     int commentCount;
+
+    @Schema(description = "조회수", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+    int viewCount;
 
     @Schema(description = "소식 이미지")
     private List<CeoStorePostImageResponse> images;
@@ -50,8 +59,11 @@ public class CeoStorePostResponse {
             List<String> tags,
             boolean isFixed,
             boolean isNotice,
+            boolean isCommentAvailable,
+            boolean isActive,
             int likeCount,
             int commentCount,
+            int viewCount,
             List<CeoStorePostImageResponse> images,
             LocalDateTime createdAt
     ) {
@@ -61,8 +73,11 @@ public class CeoStorePostResponse {
         this.tags = tags;
         this.isFixed = isFixed;
         this.isNotice = isNotice;
+        this.isCommentAvailable = isCommentAvailable;
+        this.isActive = isActive;
         this.likeCount = likeCount;
         this.commentCount = commentCount;
+        this.viewCount = viewCount;
         this.images = images;
         this.createdAt = createdAt;
     }
@@ -80,8 +95,11 @@ public class CeoStorePostResponse {
                 storePost.getTags(),
                 storePost.isFixed(),
                 storePost.isNotice(),
+                storePost.isCommentAvailable(),
+                storePost.isActive(),
                 storePost.getLikeCount(),
                 storePost.getCommentCount(),
+                storePost.getViewCount(),
                 images,
                 storePost.getCreatedAt()
         );

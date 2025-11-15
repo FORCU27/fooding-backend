@@ -2,8 +2,6 @@ package im.fooding.app.dto.response.admin.store;
 
 import im.fooding.core.model.store.StorePost;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Value;
@@ -35,11 +33,20 @@ public class AdminStorePostResponse {
     @Schema(description = "공지 여부")
     Boolean isNotice;
 
+    @Schema(description = "댓글가능여부", example = "true")
+    Boolean isCommentAvailable;
+
+    @Schema(description = "공개여부", example = "true")
+    Boolean isActive;
+    
     @Schema(description = "좋아요 수", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     int likeCount;
 
     @Schema(description = "댓글 수", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     int commentCount;
+
+    @Schema(description = "조회수", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
+    int viewCount;
 
     @Schema(description = "소식 이미지")
     List<AdminStorePostImageResponse> images;
@@ -61,8 +68,11 @@ public class AdminStorePostResponse {
                 .images(images)
                 .isFixed(storePost.isFixed())
                 .isNotice(storePost.isNotice())
+                .isCommentAvailable(storePost.isCommentAvailable())
+                .isActive(storePost.isActive())
                 .likeCount(storePost.getLikeCount())
                 .commentCount(storePost.getCommentCount())
+                .viewCount(storePost.getViewCount())
                 .createdAt(storePost.getCreatedAt())
                 .build();
     }

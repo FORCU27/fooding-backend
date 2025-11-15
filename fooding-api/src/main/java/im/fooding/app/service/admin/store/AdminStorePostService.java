@@ -53,7 +53,7 @@ public class AdminStorePostService {
     }
 
     public PageResponse<AdminStorePostResponse> list(AdminStorePostListRequest search) {
-        Page<StorePost> page = storePostService.list(search.getStoreId(), search.getSearchString(), search.getPageable());
+        Page<StorePost> page = storePostService.list(search.getStoreId(), null, search.getSearchString(), search.getPageable());
         return PageResponse.of(page.stream().map(AdminStorePostResponse::from).toList(), PageInfo.of(page));
     }
 
@@ -71,13 +71,25 @@ public class AdminStorePostService {
 
         commitAndCreateImage(storePost, request.getImageIds());
 
-        storePostService.update(storePost, request.getTitle(), request.getContent(), request.getTags(), request.getIsFixed(), request.getIsNotice());
+        storePostService.update(storePost, request.getTitle(), request.getContent(), request.getTags(), request.getIsFixed(), request.getIsNotice(), request.getIsCommentAvailable());
     }
 
     @Transactional
     public void delete(long id, long userId) {
         StorePost storePost = storePostService.findById(id);
         storePostService.delete(storePost, userId);
+    }
+
+    @Transactional
+    public void active(Long id) {
+        StorePost storePost = storePostService.findById(id);
+        storePostService.active(storePost);
+    }
+
+    @Transactional
+    public void inactive(Long id) {
+        StorePost storePost = storePostService.findById(id);
+        storePostService.inactive(storePost);
     }
 
     private void commitAndCreateImage(StorePost storePost, List<String> imageIds) {

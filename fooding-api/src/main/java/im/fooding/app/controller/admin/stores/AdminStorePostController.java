@@ -72,4 +72,18 @@ public class AdminStorePostController {
         adminStorePostService.delete(id, userInfo.getId());
         return ApiResult.ok();
     }
+
+    @PutMapping("/{id}/active")
+    @Operation(summary = "소식 공개여부 활성화")
+    public ApiResult<Void> active(@PathVariable Long id) {
+        adminStorePostService.active(id);
+        return ApiResult.ok();
+    }
+
+    @PutMapping("/{id}/inactive")
+    @Operation(summary = "소식 공개여부 비활성화")
+    public ApiResult<Void> inactive(@PathVariable Long id) {
+        adminStorePostService.inactive(id);
+        return ApiResult.ok();
+    }
 }
