@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class StoreStatisticsService {
 
@@ -21,6 +22,7 @@ public class StoreStatisticsService {
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_STATISTICS_NOT_FOUND));
     }
 
+    @Transactional
     public void create(
             long storeId,
             LocalDate date,
@@ -43,6 +45,7 @@ public class StoreStatisticsService {
         storeStatisticsRepository.save(storeStatistics);
     }
 
+    @Transactional
     public void update(
             long storeId,
             LocalDate date,

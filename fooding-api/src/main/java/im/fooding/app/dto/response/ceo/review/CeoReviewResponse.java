@@ -22,7 +22,7 @@ public class CeoReviewResponse {
     private Long storeId;
     private Long writerId;
     private String writerName;
-    private String writerProfileImageUrl;
+    private String writerProfileImage;
     private LocalDateTime createdAt;
     private String content;
     private VisitPurposeType visitPurposeType;
@@ -39,7 +39,7 @@ public class CeoReviewResponse {
                 .storeId( review.getStore().getId() )
                 .writerId( review.getWriter().getId() )
                 .writerName( review.getWriter().getName() )
-                .writerProfileImageUrl( review.getWriter().getProfileImage() )
+                .writerProfileImage( review.getWriter().getProfileImage() )
                 .createdAt( review.getCreatedAt() )
                 .content( review.getContent() )
                 .visitPurposeType( review.getVisitPurposeType() )

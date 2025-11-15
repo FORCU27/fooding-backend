@@ -19,13 +19,13 @@ import java.util.Optional;
 public class StoreDeviceService {
     private final StoreDeviceRepository repository;
 
-    public void create(Store store, Device device, ServiceType serviceType) {
+    public StoreDevice create(Store store, Device device, ServiceType serviceType) {
         StoreDevice storeDevice = StoreDevice.builder()
                 .store( store )
                 .device( device )
                 .type( serviceType )
                 .build();
-        repository.save( storeDevice );
+        return repository.save( storeDevice );
     }
 
     public StoreDevice findByDeviceId( long deviceId ){
