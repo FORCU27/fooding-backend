@@ -1,11 +1,11 @@
 package im.fooding.app.controller.admin.stores;
 
 import im.fooding.app.dto.request.admin.store.AdminStorePostCreateRequest;
+import im.fooding.app.dto.request.admin.store.AdminStorePostListRequest;
 import im.fooding.app.dto.request.admin.store.AdminStorePostUpdateRequest;
 import im.fooding.app.dto.response.admin.store.AdminStorePostResponse;
 import im.fooding.app.service.admin.store.AdminStorePostService;
 import im.fooding.core.common.ApiResult;
-import im.fooding.app.dto.request.admin.store.AdminStorePostListRequest;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.UserInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,10 +56,10 @@ public class AdminStorePostController {
     @Operation(summary = "가게 소식 수정")
     public ApiResult<Void> update(
             @PathVariable long id,
-
-            @RequestBody AdminStorePostUpdateRequest request
+            @RequestBody AdminStorePostUpdateRequest request,
+            @AuthenticationPrincipal UserInfo userInfo
     ) {
-        adminStorePostService.update(id, request);
+        adminStorePostService.update(id, request, userInfo.getId());
         return ApiResult.ok();
     }
 
@@ -70,6 +70,20 @@ public class AdminStorePostController {
             @PathVariable long id
     ) {
         adminStorePostService.delete(id, userInfo.getId());
+        return ApiResult.ok();
+    }
+
+    @PutMapping("/{id}/active")
+    @Operation(summary = "소식 공개여부 활성화")
+    public ApiResult<Void> active(@PathVariable Long id) {
+        adminStorePostService.active(id);
+        return ApiResult.ok();
+    }
+
+    @PutMapping("/{id}/inactive")
+    @Operation(summary = "소식 공개여부 비활성화")
+    public ApiResult<Void> inactive(@PathVariable Long id) {
+        adminStorePostService.inactive(id);
         return ApiResult.ok();
     }
 }

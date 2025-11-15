@@ -58,6 +58,8 @@ public enum ErrorCode {
     STORE_APPROVED_FAILED(HttpStatus.BAD_REQUEST, "2702", "가게의 필수 정보가 부족하여 승인할 수 없습니다."),
     STORE_STATISTICS_NOT_FOUND(HttpStatus.BAD_REQUEST, "2800", "가게의 통계가 존재하지 않습니다."),
     STORE_NOTIFICATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "2900", "가게 알림이 존재하지 않습니다."),
+    STORE_POST_LIKE_NOT_FOUND(HttpStatus.BAD_REQUEST,"2204", "소식을 좋아요한 내역이 없습니다."),
+    STORE_POST_LIKE_EXIST(HttpStatus.BAD_REQUEST,"2203", "이미 좋아요한 소식입니다."),
 
     // 리뷰
     REVIEW_NOT_FOUND( HttpStatus.BAD_REQUEST, "2202", "등록된 리뷰가 없습니다" ),

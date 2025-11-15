@@ -1,35 +1,96 @@
 package im.fooding.app.service.user.store;
 
 import im.fooding.app.dto.response.user.store.UserStorePostResponse;
+import im.fooding.core.global.UserInfo;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.StorePost;
-import im.fooding.core.model.store.StorePostImage;
-import im.fooding.core.service.store.StorePostImageService;
+import im.fooding.core.model.store.StorePostLike;
+import im.fooding.core.model.user.User;
+import im.fooding.core.service.store.StorePostLikeService;
 import im.fooding.core.service.store.StorePostService;
+import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Slf4j
 public class UserStorePostService {
     private final StorePostService storePostService;
-    private final StorePostImageService storePostImageService;
+    private final StorePostLikeService storePostLikeService;
+    private final UserService userService;
 
-    public List<UserStorePostResponse> list(Long storeId) {
-
-        return storePostService.list(storeId).stream()
+    @Transactional(readOnly = true)
+    public List<UserStorePostResponse> list(Long storeId, UserInfo userInfo) {
+        List<UserStorePostResponse> list = storePostService.list(storeId, true).stream()
                 .map(UserStorePostResponse::from)
                 .collect(Collectors.toList());
+
+        if (list != null && !list.isEmpty()) {
+            //좋아요 여부 세팅
+            if (userInfo != null) {
+                setLiked(list, userInfo.getId(), UserStorePostResponse::getId, UserStorePostResponse::setIsLiked);
+            }
+        }
+        return list;
     }
 
-    public UserStorePostResponse retrieve(Long storePostId) {
-      StorePost storePost = storePostService.findById(storePostId);
-      return UserStorePostResponse.from(storePost);
+    @Transactional
+    public UserStorePostResponse retrieve(Long storePostId, UserInfo userInfo) {
+        StorePost storePost = storePostService.findById(storePostId);
+        if (!storePost.isActive()) {
+            throw new ApiException(ErrorCode.STORE_POST_NOT_FOUND);
+        }
+        storePostService.increaseViewCount(storePost);
+        UserStorePostResponse post = UserStorePostResponse.from(storePost);
+        if (userInfo != null) {
+            setLiked(post, userInfo.getId());
+        }
+        return post;
+    }
+
+    @Transactional
+    public void like(Long storePostId, UserInfo userInfo) {
+        StorePost storePost = storePostService.findById(storePostId);
+        User user = userService.findById(userInfo.getId());
+        storePostLikeService.create(storePost, user);
+        storePostService.increaseLikeCount(storePost);
+    }
+
+    @Transactional
+    public void unlike(Long storePostId, UserInfo userInfo) {
+        StorePost storePost = storePostService.findById(storePostId);
+        User user = userService.findById(userInfo.getId());
+        storePostLikeService.delete(storePost, user);
+        storePostService.decreaseLikeCount(storePost);
+    }
+
+    private <T> void setLiked(List<T> list, Long userId, Function<T, Long> idExtractor, BiConsumer<T, Boolean> likedSetter) {
+        List<StorePostLike> userLikes = storePostLikeService.findByUserId(userId);
+        Set<Long> likedPostIds = userLikes.stream()
+                .map(it -> it.getStorePost().getId())
+                .collect(Collectors.toSet());
+
+        list.forEach(response ->
+                likedSetter.accept(response, likedPostIds.contains(idExtractor.apply(response)))
+        );
+    }
+
+    private void setLiked(UserStorePostResponse userStorePostResponse, Long userId) {
+        List<StorePostLike> userLikes = storePostLikeService.findByUserId(userId);
+        Set<Long> likedPostIds = userLikes.stream()
+                .filter(it -> !it.isDeleted())
+                .map(it -> it.getStorePost().getId())
+                .collect(Collectors.toSet());
+        userStorePostResponse.setIsLiked(likedPostIds.contains(userStorePostResponse.getId()));
     }
 }

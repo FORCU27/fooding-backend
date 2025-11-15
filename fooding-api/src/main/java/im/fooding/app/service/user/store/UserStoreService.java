@@ -200,7 +200,7 @@ public class UserStoreService {
     private void setBookmarked(UserStoreResponse userStoreResponse, Long userId) {
         List<Bookmark> userBookmarks = bookmarkService.findAllByUserId(userId);
         Set<Long> bookmarkedStoreIds = userBookmarks.stream().map(bookmark -> bookmark.getStore().getId()).collect(Collectors.toSet());
-        userStoreResponse.setBookmarked(bookmarkedStoreIds.contains(userId));
+        userStoreResponse.setBookmarked(bookmarkedStoreIds.contains(userStoreResponse.getId()));
     }
 
     private <T> void setBookmarked(List<T> list, Long userId, Function<T, Long> idExtractor, BiConsumer<T, Boolean> bookmarkedSetter) {

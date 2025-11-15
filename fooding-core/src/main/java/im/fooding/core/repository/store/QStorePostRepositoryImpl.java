@@ -1,14 +1,16 @@
 package im.fooding.core.repository.store;
 
-import static im.fooding.core.model.store.QStorePost.storePost;
-
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.model.store.StorePost;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
+import static im.fooding.core.model.store.QStorePost.storePost;
+import static im.fooding.core.model.store.QStorePostImage.storePostImage;
 
 @RequiredArgsConstructor
 public class QStorePostRepositoryImpl implements QStorePostRepository {
@@ -16,19 +18,24 @@ public class QStorePostRepositoryImpl implements QStorePostRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<StorePost> list(Long storeId, String searchString, Pageable pageable) {
+    public Page<StorePost> list(Long storeId, Boolean isActive, String searchString, Pageable pageable) {
         var predicate = storePost.deleted.isFalse();
+
         if (storeId != null) {
             predicate = predicate.and(storePost.store.id.eq(storeId));
         }
         if (searchString != null && !searchString.isBlank()) {
             predicate = predicate.and(storePost.title.containsIgnoreCase(searchString));
         }
+        if (isActive != null) {
+            predicate = predicate.and(storePost.isActive.eq(isActive));
+        }
 
         var base = queryFactory
                 .selectFrom(storePost)
                 .where(predicate)
-                .orderBy(storePost.isFixed.desc(), storePost.updatedAt.desc());
+                .leftJoin(storePost.images, storePostImage)
+                .orderBy(storePost.isFixed.desc(), storePost.isNotice.desc(), storePost.id.desc());
 
         List<StorePost> results;
         if (pageable.isUnpaged()) {
