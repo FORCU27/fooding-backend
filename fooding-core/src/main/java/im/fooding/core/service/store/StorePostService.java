@@ -15,7 +15,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Slf4j
 public class StorePostService {
     private final StorePostRepository storePostRepository;
@@ -30,24 +29,28 @@ public class StorePostService {
     }
 
     public StorePost findById(Long id) {
-      return storePostRepository.findById(id)
-              .filter(it -> !it.isDeleted())
-              .orElseThrow(() -> new ApiException(ErrorCode.STORE_POST_NOT_FOUND));
+        return storePostRepository.findById(id)
+                .filter(it -> !it.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.STORE_POST_NOT_FOUND));
     }
 
-    @Transactional
     public StorePost create(StorePost storePost) {
-      return storePostRepository.save(storePost);
+        return storePostRepository.save(storePost);
     }
 
-    @Transactional
-    public void update(StorePost storePost, String title, String content, List<String> tags, boolean isFixed) {
-      storePost.update(title, content, tags, isFixed);
+    public void update(StorePost storePost, String title, String content, List<String> tags, boolean isFixed, boolean isNotice) {
+        storePost.update(title, content, tags, isFixed, isNotice);
     }
 
-    @Transactional
-      public void delete(Long id, Long deletedBy) {
-        StorePost storePost = findById(id);
+    public void delete(StorePost storePost, Long deletedBy) {
         storePost.delete(deletedBy);
-      }
+    }
+
+    public void increaseLikeCount(StorePost storePost) {
+        storePost.increaseLikeCount();
+    }
+
+    public void decreaseLikeCount(StorePost storePost) {
+        storePost.decreaseLikeCount();
+    }
 }

@@ -10,4 +10,6 @@ public interface StorePostImageRepository extends JpaRepository<StorePostImage, 
     Optional<StorePostImage> findByStorePostId(long storePostId);
 
     List<StorePostImage> findAllByStorePostId(long storePostId);
+
+    Optional<StorePostImage> findByImageId(String imageId);
 }

@@ -2,7 +2,7 @@ package im.fooding.app.controller.ceo.storepost;
 
 import im.fooding.app.dto.request.ceo.storepost.CeoCreateStorePostRequest;
 import im.fooding.app.dto.request.ceo.storepost.CeoUpdateStorePostRequest;
-import im.fooding.app.dto.response.ceo.storepost.StorePostResponse;
+import im.fooding.app.dto.response.ceo.storepost.CeoStorePostResponse;
 import im.fooding.app.service.ceo.storepost.CeoStorePostService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.global.UserInfo;
@@ -26,23 +26,29 @@ public class CeoStorePostController {
 
     @GetMapping
     @Operation(summary = "특정 가게 소식 전체 조회")
-    public ApiResult<List<StorePostResponse>> list(@RequestParam Long storeId) {
-      List<StorePostResponse> storePosts = ceoStorePostService.list(storeId);
-      return ApiResult.ok(storePosts);
+    public ApiResult<List<CeoStorePostResponse>> list(@RequestParam Long storeId, @AuthenticationPrincipal UserInfo userInfo) {
+      return ApiResult.ok(ceoStorePostService.list(storeId, userInfo.getId()));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "특정 가게 소식 상세조회")
+    public ApiResult<CeoStorePostResponse> retrieve(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo) {
+        return ApiResult.ok(ceoStorePostService.retrieve(id, userInfo.getId()));
     }
 
     @PostMapping
     @Operation(summary = "소식 생성")
-    public ApiResult<Long> create(@RequestBody @Valid CeoCreateStorePostRequest request) {
-      Long id = ceoStorePostService.create(request);
+    public ApiResult<Long> create(@RequestBody @Valid CeoCreateStorePostRequest request, @AuthenticationPrincipal UserInfo userInfo) {
+      Long id = ceoStorePostService.create(request, userInfo.getId());
       return ApiResult.ok(id);
     }
 
     @PutMapping("/{storePostId}")
     @Operation(summary = "소식 수정")
     public ApiResult<Void> update(@PathVariable Long storePostId,
-                                  @RequestBody @Valid CeoUpdateStorePostRequest request) {
-      ceoStorePostService.update(storePostId, request);
+                                  @RequestBody @Valid CeoUpdateStorePostRequest request,
+                                  @AuthenticationPrincipal UserInfo userInfo) {
+      ceoStorePostService.update(storePostId, request, userInfo.getId());
       return ApiResult.ok();
     }
 

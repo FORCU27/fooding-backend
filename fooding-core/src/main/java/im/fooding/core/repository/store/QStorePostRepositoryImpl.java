@@ -1,14 +1,16 @@
 package im.fooding.core.repository.store;
 
-import static im.fooding.core.model.store.QStorePost.storePost;
-
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.model.store.StorePost;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
+import static im.fooding.core.model.store.QStorePost.storePost;
+import static im.fooding.core.model.store.QStorePostImage.storePostImage;
 
 @RequiredArgsConstructor
 public class QStorePostRepositoryImpl implements QStorePostRepository {
@@ -28,6 +30,7 @@ public class QStorePostRepositoryImpl implements QStorePostRepository {
         var base = queryFactory
                 .selectFrom(storePost)
                 .where(predicate)
+                .leftJoin(storePost.images, storePostImage)
                 .orderBy(storePost.isFixed.desc(), storePost.updatedAt.desc());
 
         List<StorePost> results;
