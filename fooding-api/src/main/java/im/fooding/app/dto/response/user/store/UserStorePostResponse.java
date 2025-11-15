@@ -3,39 +3,73 @@ package im.fooding.app.dto.response.user.store;
 import im.fooding.core.model.store.StorePost;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import lombok.AccessLevel;
-import lombok.Builder;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import lombok.Value;
 
-@Value
-@Builder(access = AccessLevel.PRIVATE)
+@Getter
+@NoArgsConstructor
 public class UserStorePostResponse {
-    @Schema(description = "유저 소식 ID", requiredMode = RequiredMode.REQUIRED, example = "1")
-    long id;
+    @Schema(description = "소식 ID", requiredMode = RequiredMode.REQUIRED, example = "1")
+    private long id;
 
     @Schema(description = "소식 제목", requiredMode = RequiredMode.REQUIRED, example = "점심시간 예약 관련 공지")
-    String title;
+    private String title;
 
     @Schema(description = "소식 내용", requiredMode = RequiredMode.REQUIRED, example = "점심시간에는 예약 없이 방문 시 대기시간이 길어질 수 있습니다.")
-    String content;
+    private String content;
 
     @Schema(description = "이미지 목록", requiredMode = RequiredMode.REQUIRED)
-    List<UserStorePostImageResponse> images;
+    private List<UserStorePostImageResponse> images;
 
     @Schema(description = "태그 목록", requiredMode = RequiredMode.REQUIRED, example = "[\"대표\", \"소식\"]")
-    List<String> tags;
+    private List<String> tags;
 
     @Schema(description = "상단 고정 여부", requiredMode = RequiredMode.REQUIRED, example = "true")
-    boolean isFixed;
+    private Boolean isFixed;
+
+    @Schema(description = "상단 고정 여부", requiredMode = RequiredMode.REQUIRED, example = "true")
+    private Boolean isNotice;
+
+    @Schema(description = "댓글 가능 여부", requiredMode = RequiredMode.REQUIRED, example = "true")
+    private Boolean isCommentAvailable;
+    
+    @Schema(description = "좋아요 수", requiredMode = RequiredMode.REQUIRED, example = "1")
+    private int likeCount;
+
+    @Schema(description = "댓글 수", requiredMode = RequiredMode.REQUIRED, example = "1")
+    private int commentCount;
+
+    @Schema(description = "조회수", requiredMode = RequiredMode.REQUIRED, example = "1")
+    private int viewCount;
+
+    @Schema(description = "좋아요 여부", requiredMode = RequiredMode.REQUIRED, example = "false")
+    private Boolean isLiked;
 
     @Schema(description = "등록 일자", requiredMode = RequiredMode.REQUIRED, example = "2025-04-25 12:00:00")
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
+
+    @Builder
+    public UserStorePostResponse(long id, String title, String content, List<UserStorePostImageResponse> images, List<String> tags, Boolean isFixed, Boolean isNotice, Boolean isCommentAvailable, int likeCount, int commentCount, int viewCount, LocalDateTime createdAt) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.images = images;
+        this.tags = tags;
+        this.isFixed = isFixed;
+        this.isNotice = isNotice;
+        this.isCommentAvailable = isCommentAvailable;
+        this.likeCount = likeCount;
+        this.commentCount = commentCount;
+        this.viewCount = viewCount;
+        this.createdAt = createdAt;
+        this.isLiked = false;
+    }
 
     public static UserStorePostResponse from(StorePost storePost) {
         List<UserStorePostImageResponse> images = storePost.getImages().stream()
+                .filter(it -> !it.isDeleted())
                 .map(UserStorePostImageResponse::from)
                 .toList();
 
@@ -46,7 +80,16 @@ public class UserStorePostResponse {
                 .images(images)
                 .tags(storePost.getTags())
                 .isFixed(storePost.isFixed())
+                .isNotice(storePost.isNotice())
+                .isCommentAvailable(storePost.isCommentAvailable())
+                .likeCount(storePost.getLikeCount())
+                .commentCount(storePost.getCommentCount())
+                .viewCount(storePost.getViewCount())
                 .createdAt(storePost.getCreatedAt())
                 .build();
+    }
+
+    public void setIsLiked(Boolean isLiked) {
+        this.isLiked = isLiked;
     }
 }

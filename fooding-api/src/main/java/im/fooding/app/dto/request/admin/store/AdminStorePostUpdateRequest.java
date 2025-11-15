@@ -9,7 +9,7 @@ import java.util.List;
 
 @Value
 public class AdminStorePostUpdateRequest {
-    
+
     @Schema(description = "가게 ID")
     @NotNull
     Long storeId;
@@ -28,4 +28,18 @@ public class AdminStorePostUpdateRequest {
     @Schema(description = "상단 고정 여부")
     @NotNull
     Boolean isFixed;
+
+    @Schema(description = "공지 여부")
+    @NotNull
+    Boolean isNotice = false;
+
+    @Schema(description = "댓글가능여부")
+    @NotNull
+    Boolean isCommentAvailable;
+
+    @Schema(description = "삭제 이미지 ids", example = "[\"002f4860-3b13-4033-8b5f-6cf91a9816e7\"]")
+    private List<String> deleteImageIds;
+
+    @Schema(description = "소식 이미지 업로드 하고 받은 ID", example = "[\"002f4860-3b13-4033-8b5f-6cf91a9816e7\", \"002f4860-3b13-4033-8b5f-6cf91a9816e7\"]")
+    private List<String> imageIds;
 }

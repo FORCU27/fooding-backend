@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
@@ -29,6 +30,8 @@ public class Bookmark extends BaseEntity {
 
     private int verifiedCount;
 
+    @Column(nullable = false)
+    @ColumnDefault("false")
     private Boolean isStarred;
 
     @Builder
