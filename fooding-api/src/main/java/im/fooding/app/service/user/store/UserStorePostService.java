@@ -1,6 +1,10 @@
 package im.fooding.app.service.user.store;
 
+import im.fooding.app.dto.request.user.store.UserSearchStorePostRequest;
+import im.fooding.app.dto.response.user.store.UserStoreListResponse;
 import im.fooding.app.dto.response.user.store.UserStorePostResponse;
+import im.fooding.core.common.PageInfo;
+import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.UserInfo;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
@@ -12,6 +16,7 @@ import im.fooding.core.service.store.StorePostService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,10 +35,9 @@ public class UserStorePostService {
     private final UserService userService;
 
     @Transactional(readOnly = true)
-    public List<UserStorePostResponse> list(Long storeId, UserInfo userInfo) {
-        List<UserStorePostResponse> list = storePostService.list(storeId, true).stream()
-                .map(UserStorePostResponse::from)
-                .collect(Collectors.toList());
+    public PageResponse<UserStorePostResponse> list(UserSearchStorePostRequest search, UserInfo userInfo) {
+        Page<StorePost> posts = storePostService.list(search.getStoreId(), true, search.getSortType(), search.getSearchString(), search.getPageable());
+        List<UserStorePostResponse> list = posts.stream().map(UserStorePostResponse::from).toList();
 
         if (list != null && !list.isEmpty()) {
             //좋아요 여부 세팅
@@ -41,7 +45,7 @@ public class UserStorePostService {
                 setLiked(list, userInfo.getId(), UserStorePostResponse::getId, UserStorePostResponse::setIsLiked);
             }
         }
-        return list;
+        return PageResponse.of(list, PageInfo.of(posts));
     }
 
     @Transactional

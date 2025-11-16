@@ -2,6 +2,7 @@ package im.fooding.core.repository.store;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import im.fooding.core.model.store.StorePost;
+import im.fooding.core.model.store.StorePostSortType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,7 +19,7 @@ public class QStorePostRepositoryImpl implements QStorePostRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<StorePost> list(Long storeId, Boolean isActive, String searchString, Pageable pageable) {
+    public Page<StorePost> list(Long storeId, Boolean isActive, StorePostSortType sortType, String searchString, Pageable pageable) {
         var predicate = storePost.deleted.isFalse();
 
         if (storeId != null) {
@@ -35,7 +36,7 @@ public class QStorePostRepositoryImpl implements QStorePostRepository {
                 .selectFrom(storePost)
                 .where(predicate)
                 .leftJoin(storePost.images, storePostImage)
-                .orderBy(storePost.isFixed.desc(), storePost.isNotice.desc(), storePost.id.desc());
+                .orderBy(sortType.getOrder(storePost));
 
         List<StorePost> results;
         if (pageable.isUnpaged()) {

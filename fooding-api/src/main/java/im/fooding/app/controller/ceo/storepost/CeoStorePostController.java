@@ -1,10 +1,12 @@
 package im.fooding.app.controller.ceo.storepost;
 
 import im.fooding.app.dto.request.ceo.storepost.CeoCreateStorePostRequest;
+import im.fooding.app.dto.request.ceo.storepost.CeoSearchStorePostRequest;
 import im.fooding.app.dto.request.ceo.storepost.CeoUpdateStorePostRequest;
 import im.fooding.app.dto.response.ceo.storepost.CeoStorePostResponse;
 import im.fooding.app.service.ceo.storepost.CeoStorePostService;
 import im.fooding.core.common.ApiResult;
+import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.UserInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,8 +28,8 @@ public class CeoStorePostController {
 
     @GetMapping
     @Operation(summary = "특정 가게 소식 전체 조회")
-    public ApiResult<List<CeoStorePostResponse>> list(@RequestParam Long storeId, @AuthenticationPrincipal UserInfo userInfo) {
-      return ApiResult.ok(ceoStorePostService.list(storeId, userInfo.getId()));
+    public ApiResult<PageResponse<CeoStorePostResponse>> list(@Valid CeoSearchStorePostRequest search, @AuthenticationPrincipal UserInfo userInfo) {
+      return ApiResult.ok(ceoStorePostService.list(search, userInfo.getId()));
     }
 
     @GetMapping("/{id}")
