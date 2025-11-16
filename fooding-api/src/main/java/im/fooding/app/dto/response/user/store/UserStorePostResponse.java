@@ -31,7 +31,7 @@ public class UserStorePostResponse {
     @Schema(description = "상단 고정 여부", requiredMode = RequiredMode.REQUIRED, example = "true")
     private Boolean isFixed;
 
-    @Schema(description = "상단 고정 여부", requiredMode = RequiredMode.REQUIRED, example = "true")
+    @Schema(description = "공지 여부", requiredMode = RequiredMode.REQUIRED, example = "true")
     private Boolean isNotice;
 
     @Schema(description = "댓글 가능 여부", requiredMode = RequiredMode.REQUIRED, example = "true")
