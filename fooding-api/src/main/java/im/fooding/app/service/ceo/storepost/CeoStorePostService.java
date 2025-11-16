@@ -1,9 +1,12 @@
 package im.fooding.app.service.ceo.storepost;
 
 import im.fooding.app.dto.request.ceo.storepost.CeoCreateStorePostRequest;
+import im.fooding.app.dto.request.ceo.storepost.CeoSearchStorePostRequest;
 import im.fooding.app.dto.request.ceo.storepost.CeoUpdateStorePostRequest;
 import im.fooding.app.dto.response.ceo.storepost.CeoStorePostResponse;
 import im.fooding.app.service.file.FileUploadService;
+import im.fooding.core.common.PageInfo;
+import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.file.File;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePost;
@@ -13,12 +16,12 @@ import im.fooding.core.service.store.StorePostService;
 import im.fooding.core.service.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,12 +34,10 @@ public class CeoStorePostService {
     private final FileUploadService fileUploadService;
     private final StoreMemberService storeMemberService;
 
-    public List<CeoStorePostResponse> list(Long storeId, Long ceoId) {
-        checkMember(storeId, ceoId);
-        List<StorePost> storePosts = storePostService.list(storeId, null);
-        return storePosts.stream()
-                .map(CeoStorePostResponse::from)
-                .collect(Collectors.toList());
+    public PageResponse<CeoStorePostResponse> list(CeoSearchStorePostRequest search, Long ceoId) {
+        checkMember(search.getStoreId(), ceoId);
+        Page<StorePost> list = storePostService.list(search.getStoreId(), null, search.getSortType(), search.getSearchString(), search.getPageable());
+        return PageResponse.of(list.stream().map(CeoStorePostResponse::from).toList(), PageInfo.of(list));
     }
 
     public CeoStorePostResponse retrieve(Long storeId, Long ceoId) {

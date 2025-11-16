@@ -3,13 +3,13 @@ package im.fooding.core.service.store;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.StorePost;
+import im.fooding.core.model.store.StorePostSortType;
 import im.fooding.core.repository.store.StorePostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,11 +21,11 @@ public class StorePostService {
 
     public List<StorePost> list(Long storeId, Boolean isActive) {
         // Backward-compatible non-paged list (CEO/User use case)
-        return storePostRepository.list(storeId, isActive, null, Pageable.unpaged()).getContent();
+        return storePostRepository.list(storeId, isActive, StorePostSortType.RECENT, null, Pageable.unpaged()).getContent();
     }
 
-    public Page<StorePost> list(Long storeId, Boolean isActive, String searchString, Pageable pageable) {
-        return storePostRepository.list(storeId, isActive, searchString, pageable);
+    public Page<StorePost> list(Long storeId, Boolean isActive, StorePostSortType sortType, String searchString, Pageable pageable) {
+        return storePostRepository.list(storeId, isActive, sortType, searchString, pageable);
     }
 
     public StorePost findById(Long id) {

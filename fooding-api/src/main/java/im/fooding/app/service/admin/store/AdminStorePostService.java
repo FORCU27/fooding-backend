@@ -10,6 +10,7 @@ import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.file.File;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePost;
+import im.fooding.core.model.store.StorePostSortType;
 import im.fooding.core.service.store.StorePostImageService;
 import im.fooding.core.service.store.StorePostService;
 import im.fooding.core.service.store.StoreService;
@@ -53,7 +54,7 @@ public class AdminStorePostService {
     }
 
     public PageResponse<AdminStorePostResponse> list(AdminStorePostListRequest search) {
-        Page<StorePost> page = storePostService.list(search.getStoreId(), null, search.getSearchString(), search.getPageable());
+        Page<StorePost> page = storePostService.list(search.getStoreId(), null, StorePostSortType.RECENT, search.getSearchString(), search.getPageable());
         return PageResponse.of(page.stream().map(AdminStorePostResponse::from).toList(), PageInfo.of(page));
     }
 
