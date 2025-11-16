@@ -22,7 +22,7 @@ public class UserStorePostResponse {
     @Schema(description = "소식 내용", requiredMode = RequiredMode.REQUIRED, example = "점심시간에는 예약 없이 방문 시 대기시간이 길어질 수 있습니다.")
     private String content;
 
-    @Schema(description = "이미지 목록", requiredMode = RequiredMode.REQUIRED)
+    @Schema(description = "이미지 목록", requiredMode = RequiredMode.NOT_REQUIRED)
     private List<UserStorePostImageResponse> images;
 
     @Schema(description = "태그 목록", requiredMode = RequiredMode.NOT_REQUIRED, example = "[\"대표\", \"소식\"]")
