@@ -12,33 +12,33 @@ import java.util.List;
 @Value
 @Builder(access = AccessLevel.PRIVATE)
 public class AdminStorePostResponse {
-    @Schema(description = "ID")
+    @Schema(description = "ID", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     Long id;
 
-    @Schema(description = "가게 ID")
+    @Schema(description = "가게 ID", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     Long storeId;
 
-    @Schema(description = "제목")
+    @Schema(description = "제목", requiredMode = Schema.RequiredMode.REQUIRED, example = "소식")
     String title;
 
-    @Schema(description = "내용")
+    @Schema(description = "내용", requiredMode = Schema.RequiredMode.REQUIRED, example = "내용")
     String content;
 
-    @Schema(description = "태그 리스트")
+    @Schema(description = "태그 리스트", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "[\"소식\", \"공지\"]")
     List<String> tags;
 
-    @Schema(description = "상단 고정 여부")
+    @Schema(description = "상단 고정 여부", requiredMode = Schema.RequiredMode.REQUIRED, example = "true")
     Boolean isFixed;
 
-    @Schema(description = "공지 여부")
+    @Schema(description = "공지 여부", requiredMode = Schema.RequiredMode.REQUIRED, example = "true")
     Boolean isNotice;
 
-    @Schema(description = "댓글가능여부", example = "true")
+    @Schema(description = "댓글가능여부", requiredMode = Schema.RequiredMode.REQUIRED, example = "true")
     Boolean isCommentAvailable;
 
-    @Schema(description = "공개여부", example = "true")
+    @Schema(description = "공개여부", requiredMode = Schema.RequiredMode.REQUIRED, example = "true")
     Boolean isActive;
-    
+
     @Schema(description = "좋아요 수", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     int likeCount;
 
@@ -48,10 +48,10 @@ public class AdminStorePostResponse {
     @Schema(description = "조회수", requiredMode = Schema.RequiredMode.REQUIRED, example = "1")
     int viewCount;
 
-    @Schema(description = "소식 이미지")
+    @Schema(description = "소식 이미지", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     List<AdminStorePostImageResponse> images;
 
-    @Schema(description = "등록 일자", example = "2025-04-25 12:00:00")
+    @Schema(description = "등록 일자", requiredMode = Schema.RequiredMode.REQUIRED, example = "2025-04-25 12:00:00")
     LocalDateTime createdAt;
 
     public static AdminStorePostResponse from(StorePost storePost) {
