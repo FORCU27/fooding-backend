@@ -3,7 +3,9 @@ package im.fooding.app.dto.response.user.store;
 import im.fooding.core.model.store.StorePost;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +25,7 @@ public class UserStorePostResponse {
     @Schema(description = "이미지 목록", requiredMode = RequiredMode.REQUIRED)
     private List<UserStorePostImageResponse> images;
 
-    @Schema(description = "태그 목록", requiredMode = RequiredMode.REQUIRED, example = "[\"대표\", \"소식\"]")
+    @Schema(description = "태그 목록", requiredMode = RequiredMode.NOT_REQUIRED, example = "[\"대표\", \"소식\"]")
     private List<String> tags;
 
     @Schema(description = "상단 고정 여부", requiredMode = RequiredMode.REQUIRED, example = "true")
@@ -34,7 +36,7 @@ public class UserStorePostResponse {
 
     @Schema(description = "댓글 가능 여부", requiredMode = RequiredMode.REQUIRED, example = "true")
     private Boolean isCommentAvailable;
-    
+
     @Schema(description = "좋아요 수", requiredMode = RequiredMode.REQUIRED, example = "1")
     private int likeCount;
 
