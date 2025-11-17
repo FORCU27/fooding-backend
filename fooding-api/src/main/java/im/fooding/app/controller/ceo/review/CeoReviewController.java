@@ -40,13 +40,13 @@ public class CeoReviewController {
         return ApiResult.ok();
     }
 
-    @PatchMapping( "/reply/{reviewId}")
+    @PatchMapping( "/reply/{replyId}")
     @Operation( summary = "CEO들의 답글 수정" )
     public ApiResult<Void> updateReply(
-            @PathVariable Long reviewId,
+            @PathVariable Long replyId,
             @Valid @RequestBody CeoReplyUpdateRequest request
     ){
-        service.updateReply( reviewId, request );
+        service.updateReply( replyId, request );
         return ApiResult.ok();
     }
 
