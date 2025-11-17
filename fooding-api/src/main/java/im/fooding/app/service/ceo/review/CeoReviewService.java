@@ -6,6 +6,8 @@ import im.fooding.app.dto.request.ceo.review.CeoReviewRequest;
 import im.fooding.app.dto.response.ceo.review.CeoReviewResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.review.Review;
 import im.fooding.core.model.review.ReviewScore;
 import im.fooding.core.model.review.VisitPurposeType;
@@ -54,6 +56,12 @@ public class CeoReviewService {
     @Transactional(readOnly = false)
     public void reply( long reviewId, CeoReplyRequest request ){
         Review review = reviewService.findById( reviewId );
+        User user = userService.findById( request.getUserId() );
+
+        // 이미 해당 리뷰에 CEO가 답글을 달았는지 확인하기
+        Review alreadyReply = reviewService.findCeoReply( review.getStore(), user, review );
+        if( alreadyReply != null ) throw new ApiException(ErrorCode.REPLY_ALREADY_EXISTED);
+
         ReviewScore temp = ReviewScore.builder()
                 .taste(0)
                 .mood(0)
@@ -64,11 +72,8 @@ public class CeoReviewService {
                 .store( review.getStore() )
                 .score( temp )
                 .content( request.getContent() )
+                .writer( user )
                 .visitPurposeType( VisitPurposeType.DUMMY );
-        if( request.getUserId() != null ){
-            User user = userService.findById( request.getUserId() );
-            builder.writer( user );
-        }
         Review reply = builder.build();
         reply.setParent( review );
         reviewService.create( reply );
