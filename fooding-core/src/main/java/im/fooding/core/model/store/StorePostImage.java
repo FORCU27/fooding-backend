@@ -37,10 +37,14 @@ public class StorePostImage extends BaseEntity {
     private StorePost storePost;
 
     @Column(nullable = false)
+    private String imageId;
+
+    @Column(nullable = false)
     private String imageUrl;
 
-    public StorePostImage(StorePost storePost, String imageUrl) {
+    public StorePostImage(StorePost storePost, String imageId, String imageUrl) {
         this.storePost = storePost;
+        this.imageId = imageId;
         this.imageUrl = imageUrl;
     }
 
