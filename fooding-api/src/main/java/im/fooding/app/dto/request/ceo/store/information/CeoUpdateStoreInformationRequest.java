@@ -17,8 +17,6 @@ public class CeoUpdateStoreInformationRequest {
     @Schema(description = "홈페이지/SNS 링크", example = "[\"https://...\", \"https://...\"]")
     private List<String> links;
 
-    @NotNull
-    @Size(min = 1)
     @Schema(description = "시설/서비스 정보", example = "[\"단체 이용 가능\", \"포장\"]")
     private List<String> facilities;
 
