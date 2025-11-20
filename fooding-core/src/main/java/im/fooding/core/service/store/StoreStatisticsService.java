@@ -7,9 +7,11 @@ import im.fooding.core.repository.store.StoreStatisticsRepository;
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class StoreStatisticsService {
 
     private final StoreStatisticsRepository storeStatisticsRepository;
@@ -19,6 +21,7 @@ public class StoreStatisticsService {
                 .orElseThrow(() -> new ApiException(ErrorCode.STORE_STATISTICS_NOT_FOUND));
     }
 
+    @Transactional
     public void create(
             long storeId,
             LocalDate date,
@@ -41,6 +44,7 @@ public class StoreStatisticsService {
         storeStatisticsRepository.save(storeStatistics);
     }
 
+    @Transactional
     public void update(
             long storeId,
             LocalDate date,
@@ -59,5 +63,36 @@ public class StoreStatisticsService {
                 visitorChangeRate,
                 annualTargetSalesRate
         );
+    }
+
+    @Transactional
+    public void upsert(
+            long storeId,
+            LocalDate date,
+            int totalSales,
+            double totalSalesChangeRate,
+            int totalVisitors,
+            double visitorChangeRate,
+            double annualTargetSalesRate
+    ) {
+        storeStatisticsRepository.findByStoreIdAndDate(storeId, date)
+                .ifPresentOrElse(
+                        stats -> stats.update(
+                                totalSales,
+                                totalSalesChangeRate,
+                                totalVisitors,
+                                visitorChangeRate,
+                                annualTargetSalesRate
+                        ),
+                        () -> create(
+                                storeId,
+                                date,
+                                totalSales,
+                                totalSalesChangeRate,
+                                totalVisitors,
+                                visitorChangeRate,
+                                annualTargetSalesRate
+                        )
+                );
     }
 }
