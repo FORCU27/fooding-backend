@@ -40,6 +40,7 @@ public enum ErrorCode {
     NICKNAME_GENERATE_FAILED(HttpStatus.BAD_REQUEST, "1008", "닉네임 자동 생성에 실패하셨습니다."),
     LOGIN_PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "1009", "비밀번호가 틀렸습니다."),
     AUTHENTICATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "1010", "존재하지 않는 인증입니다."),
+    AUTHENTICATION_CODE_INCORRECT(HttpStatus.BAD_REQUEST, "1011", "인증번호가 올바르지 않습니다."),
 
     // 가게
     STORE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2000", "등록된 가게 정보가 없습니다."),
@@ -63,6 +64,7 @@ public enum ErrorCode {
 
     // 리뷰
     REVIEW_NOT_FOUND( HttpStatus.BAD_REQUEST, "2202", "등록된 리뷰가 없습니다" ),
+    REPLY_ALREADY_EXISTED( HttpStatus.BAD_REQUEST, "2283", "이미 답글이 존재합니다" ),
 
     // 웨이팅
     WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3000", "등록된 웨이팅 정보가 없습니다."),

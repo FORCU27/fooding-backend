@@ -16,7 +16,7 @@ import java.util.Map;
 @Slf4j
 @RequestMapping( "/api/v1/ceo/auth")
 @RequiredArgsConstructor
-@Tag( name = "CeoAuthControlelr", description = "CEO 인증 및 계정 관련 컨트롤러" )
+@Tag( name = "CeoAuthController", description = "CEO 인증 및 계정 관련 컨트롤러" )
 public class CeoAuthController {
     private final AuthService authService;
 

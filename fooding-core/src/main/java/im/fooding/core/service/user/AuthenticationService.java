@@ -35,6 +35,7 @@ public class AuthenticationService {
     @Transactional
     public boolean checkCodeAvailable( String phoneNumber, int code ){
         // 인증 정보 확인
+        if( repository.list( null, phoneNumber, code, false ).isEmpty() ) throw new ApiException( ErrorCode.AUTHENTICATION_CODE_INCORRECT );
         Authentication authentication = repository.list( null, phoneNumber, code, false ).get(0);
         if( authentication == null ) return false;
         // 만료 시간 확인
@@ -47,6 +48,7 @@ public class AuthenticationService {
 
     public Authentication findAuthenticationByEmailAndCode( String email, int code ){
         List<Authentication> result = repository.list( email, null, code, true );
+        if( result.isEmpty() ) throw new ApiException( ErrorCode.AUTHENTICATION_CODE_INCORRECT );
         return result.get( result.size() - 1 );
     }
 }
