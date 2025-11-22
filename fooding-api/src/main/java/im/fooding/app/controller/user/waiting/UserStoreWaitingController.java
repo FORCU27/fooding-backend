@@ -41,7 +41,7 @@ public class UserStoreWaitingController {
         return ApiResult.ok(userWaitingService.registerStoreWaiting(request, userInfo.getId()));
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/{id}/cancel")
     @Operation(summary = "온라인 웨이팅 취소")
     public ApiResult<Void> cancelStoreWaiting(@PathVariable long id) {
         userWaitingService.cancelStoreWaiting(id);
