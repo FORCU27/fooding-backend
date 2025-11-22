@@ -63,6 +63,7 @@ public enum ErrorCode {
 
     // 리뷰
     REVIEW_NOT_FOUND( HttpStatus.BAD_REQUEST, "2202", "등록된 리뷰가 없습니다" ),
+    REPLY_ALREADY_EXISTED( HttpStatus.BAD_REQUEST, "2283", "이미 답글이 존재합니다" ),
 
     // 웨이팅
     WAITING_NOT_FOUND(HttpStatus.BAD_REQUEST, "3000", "등록된 웨이팅 정보가 없습니다."),
