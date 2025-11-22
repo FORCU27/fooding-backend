@@ -15,53 +15,25 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Slf4j
 public class JobService {
 
     private final StoreService storeService;
     private final StoreStatisticsService storeStatisticsService;
 
-    @Transactional
     public void createStoreStatistics(JobStoreCreateStatisticsRequest request) {
         List<Store> allStore = storeService.findAll();
 
-        allStore.forEach(store ->
-                {
-                    try {
-                        createStoreStatistics(store.getId(), request.getDate());
-                    } catch (Exception e) {
-                        log.error("통계 생성에 실패했습니다. (storeId={} on date={})", store.getId(), request.getDate());
-                    }
-                }
-        );
-    }
-
-    @Transactional
-    public void createStoreStatistics(long storeId, LocalDate date) {
-        try {
-            storeStatisticsService.update(
-                    storeId,
-                    date,
+        for (Store store : allStore) {
+            storeStatisticsService.upsert(
+                    store.getId(),
+                    request.getDate(),
                     getTotalSales(),
                     getTotalSalesChangeRate(),
                     getTotalVisitors(),
                     getVisitorChangeRate(),
                     getAnnualTargetSalesRate()
             );
-        } catch (ApiException e) {
-            if (e.getErrorCode() == ErrorCode.STORE_STATISTICS_NOT_FOUND) {
-                storeStatisticsService.create(
-                        storeId,
-                        date,
-                        getTotalSales(),
-                        getTotalSalesChangeRate(),
-                        getTotalVisitors(),
-                        getVisitorChangeRate(),
-                        getAnnualTargetSalesRate());
-            } else {
-                throw e;
-            }
         }
     }
 

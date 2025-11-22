@@ -60,6 +60,10 @@ public enum ErrorCode {
     STORE_NOTIFICATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "2900", "가게 알림이 존재하지 않습니다."),
     STORE_POST_LIKE_NOT_FOUND(HttpStatus.BAD_REQUEST,"2204", "소식을 좋아요한 내역이 없습니다."),
     STORE_POST_LIKE_EXIST(HttpStatus.BAD_REQUEST,"2203", "이미 좋아요한 소식입니다."),
+    STORE_POST_COMMENT_NOT_FOUND(HttpStatus.BAD_REQUEST,"2205", "소식 댓글이 존재하지 않습니다."),
+    STORE_POST_COMMENT_MAX_COMMENT_DEPTH_EXCEEDED(HttpStatus.BAD_REQUEST,"2206", "댓글/대댓글 최대 허용 범위를 초과했습니다."),
+    STORE_POST_COMMENT_LIKE_NOT_FOUND(HttpStatus.BAD_REQUEST,"2207", "소식 댓글을 좋아요한 내역이 없습니다."),
+    STORE_POST_COMMENT_LIKE_EXIST(HttpStatus.BAD_REQUEST,"2208", "이미 좋아요한 소식 댓글입니다."),
 
     // 리뷰
     REVIEW_NOT_FOUND( HttpStatus.BAD_REQUEST, "2202", "등록된 리뷰가 없습니다" ),
