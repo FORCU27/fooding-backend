@@ -1,6 +1,8 @@
 package im.fooding.core.model.plan;
 
 import com.querydsl.core.annotations.QueryEntity;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.BaseDocument;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -71,5 +73,13 @@ public class Plan extends BaseDocument {
         this.infantChairCount = infantChairCount;
         this.infantCount = infantCount;
         this.adultCount = adultCount;
+    }
+
+    public void cancel() {
+        if (visitStatus != VisitStatus.SCHEDULED) {
+            throw new ApiException(ErrorCode.PLAN_ILLEGAL_STATE_CANCEL);
+        }
+
+        this.visitStatus = VisitStatus.NOT_VISITED;
     }
 }

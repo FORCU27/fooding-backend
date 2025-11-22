@@ -50,12 +50,26 @@ public class PlanService {
         return planRepository.save(plan).getId();
     }
 
+    @Transactional
+    public void cancelByStoreWaiting(long id) {
+        Plan plan = getByOriginId(id);
+
+        plan.cancel();
+        planRepository.save(plan);
+    }
+
     public Page<Plan> list(PlanFilter filter, Pageable pageable) {
         return planRepository.list(filter, pageable);
     }
 
     public Plan getPlan(ObjectId id) {
         return planRepository.findById(id)
+                .filter(plan -> !plan.isDeleted())
+                .orElseThrow(() -> new ApiException(ErrorCode.PLAN_NOT_FOUND));
+    }
+
+    private Plan getByOriginId(long id) {
+        return planRepository.findByOriginId(id)
                 .filter(plan -> !plan.isDeleted())
                 .orElseThrow(() -> new ApiException(ErrorCode.PLAN_NOT_FOUND));
     }
