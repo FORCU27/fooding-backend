@@ -55,6 +55,7 @@ public class PlanService {
         Plan plan = getByOriginId(id);
 
         plan.cancel();
+        planRepository.save(plan);
     }
 
     public Page<Plan> list(PlanFilter filter, Pageable pageable) {

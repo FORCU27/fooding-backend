@@ -82,7 +82,7 @@ public class UserStoreWaitingService {
 
     @Transactional
     public void cancelStoreWaiting(long id) {
-        StoreWaiting storeWaiting = storeWaitingService.get(id);
+        StoreWaiting storeWaiting = storeWaitingService.cancel(id);
 
         waitingLogService.logCancel(storeWaiting);
 
