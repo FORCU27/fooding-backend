@@ -9,7 +9,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum WaitingLogType {
     WAITING_REGISTRATION("WAITING_REGISTRATION"),
-    ENTRY("ENTRY")
+    ENTRY("ENTRY"),
+    CANCEL("CANCEL"),
     ;
 
     private final String value;
