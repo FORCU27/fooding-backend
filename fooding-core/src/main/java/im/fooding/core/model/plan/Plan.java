@@ -72,4 +72,8 @@ public class Plan extends BaseDocument {
         this.infantCount = infantCount;
         this.adultCount = adultCount;
     }
+
+    public void cancel() {
+        this.visitStatus = VisitStatus.NOT_VISITED;
+    }
 }
