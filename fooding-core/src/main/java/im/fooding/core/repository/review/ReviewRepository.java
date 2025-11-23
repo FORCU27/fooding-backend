@@ -14,4 +14,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, QReviewRe
 
     Page<Review> findAllByStore(Store store, Pageable pageable);
     Optional<Review> findByStoreAndWriterAndParent( Store store, User user, Review parent );
+    List<Review> findAllByWriter( User writer );
 }
