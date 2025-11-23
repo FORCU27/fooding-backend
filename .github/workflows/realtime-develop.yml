@@ -42,7 +42,7 @@ jobs:
           context: .
           file: fooding-realtime/Dockerfile
           push: true
-          tags: hyperrealitycorp/fooding-realtime-stage
+          tags: hyperrealitycorp/fooding-realtime-api-stage
           platforms: linux/amd64, linux/arm64/v8
           build-args: |
             SPRING_PROFILES_ACTIVE=${{ secrets.STAGE_SPRING_PROFILES_ACTIVE }}
@@ -55,7 +55,7 @@ jobs:
           port: ${{ secrets.STAGE_REMOTE_SSH_PORT }}
           script: |
             source ~/.bashrc
-            bash ./deployment/fooding/realtime-stage.sh
+            bash ./deployment/fooding/realtime-api-stage.sh
       - uses: act10ns/slack@v1
         with:
           status: ${{ job.status }}
