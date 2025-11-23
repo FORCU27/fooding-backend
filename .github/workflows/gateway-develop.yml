@@ -42,7 +42,7 @@ jobs:
           context: .
           file: fooding-gateway/Dockerfile
           push: true
-          tags: hyperrealitycorp/fooding-gateway-api-production
+          tags: hyperrealitycorp/fooding-gateway-api-stage
           platforms: linux/amd64, linux/arm64/v8
           build-args: |
             FOODING_API_URI=${{ secrets.STAGE_FOODING_API_URI }}
