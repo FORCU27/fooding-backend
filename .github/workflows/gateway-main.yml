@@ -42,7 +42,7 @@ jobs:
           context: .
           file: fooding-gateway/Dockerfile
           push: true
-          tags: hyperrealitycorp/fooding-gateway-production
+          tags: hyperrealitycorp/fooding-gateway-api-production
           platforms: linux/amd64, linux/arm64/v8
           build-args: |
             FOODING_API_URI=${{ secrets.FOODING_API_URI }}
@@ -56,7 +56,7 @@ jobs:
           port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
             source ~/.bashrc
-            bash ./deployment/fooding/gateway-production.sh
+            bash ./deployment/fooding/gateway-api-production.sh
       - uses: act10ns/slack@v1
         with:
           status: ${{ job.status }}
