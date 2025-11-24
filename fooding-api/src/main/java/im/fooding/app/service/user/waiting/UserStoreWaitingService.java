@@ -4,6 +4,7 @@ import im.fooding.app.dto.request.user.waiting.UserStoreWaitingRegisterRequest;
 import im.fooding.app.dto.response.user.waiting.UserStoreWaitingCreateResponse;
 import im.fooding.app.dto.response.user.waiting.UserStoreWaitingResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
+import im.fooding.core.event.waiting.StoreWaitingCanceledEvent;
 import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
 import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.store.StoreService;
@@ -28,6 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserStoreWaitingService {
+
+    public static final String STORE_WAITING_CANCEL_REASON = "고객 요청";
 
     private final StoreWaitingService storeWaitingService;
     private final StoreServiceService storeServiceService;
@@ -75,5 +78,19 @@ public class UserStoreWaitingService {
         );
 
         return new UserStoreWaitingCreateResponse(storeWaiting.getId(), planId.toString());
+    }
+
+    @Transactional
+    public void cancelStoreWaiting(long id) {
+        StoreWaiting storeWaiting = storeWaitingService.cancel(id);
+
+        waitingLogService.logCancel(storeWaiting);
+
+        planService.cancelByStoreWaiting(id);
+
+        eventProducerService.publishEvent(
+                StoreWaitingCanceledEvent.class.getSimpleName(),
+                new StoreWaitingCanceledEvent(storeWaiting.getId(), STORE_WAITING_CANCEL_REASON)
+        );
     }
 }

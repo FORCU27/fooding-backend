@@ -59,6 +59,11 @@ public class WaitingLogService {
         return waitingLogRepository.save(new WaitingLog(storeWaiting, WaitingLogType.WAITING_REGISTRATION));
     }
 
+    @Transactional
+    public WaitingLog logCancel(StoreWaiting storeWaiting) {
+        return waitingLogRepository.save(new WaitingLog(storeWaiting, WaitingLogType.CANCEL));
+    }
+
     public Page<WaitingLog> list(long storeWaitingId, Pageable pageable) {
         return waitingLogRepository.findAllByStoreWaitingIdAndDeletedFalse(storeWaitingId, pageable);
     }
