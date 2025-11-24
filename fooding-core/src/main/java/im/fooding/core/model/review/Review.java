@@ -82,9 +82,9 @@ public class Review extends BaseEntity {
     }
 
     public void update(String content, VisitPurposeType visitPurposeType, ReviewScore score) {
-        this.content = content;
-        this.visitPurposeType = visitPurposeType;
-        this.score = score;
+        if( content != null ) this.content = content;
+        if( visitPurposeType != null ) this.visitPurposeType = visitPurposeType;
+        if( score != null ) this.score = score;
     }
 
     public void setBlind( boolean isBlind ) { this.isBlind = isBlind; }
