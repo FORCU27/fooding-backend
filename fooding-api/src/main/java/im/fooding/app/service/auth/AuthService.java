@@ -380,13 +380,16 @@ public class AuthService {
         try {
             byte[] decodedBytes = Base64.getDecoder().decode(encodedLine);
             String decoded = new String(decodedBytes, StandardCharsets.UTF_8);
-            System.out.println(decoded);
             String[] valueArray = decoded.split("_");
+            if (valueArray.length != 4 || !valueArray[0].equals("password") || !valueArray[1].equals("reset") || !valueArray[2].equals("url"))
+                throw new ApiException(ErrorCode.AUTHENTICATION_NOT_FOUND);
+
+            for (String t : valueArray) log.info("------va: {}", t);
             String phoneNumber = valueArray[3];
             int code = Integer.parseInt(valueArray[4]);
             User user = userService.findByPhoneNumber(phoneNumber);
             Authentication authentication = authenticationService.findAuthenticationByEmailAndCode(user.getEmail(), code);
-            if (authentication == null) return;
+            if (authentication == null) throw new ApiException(ErrorCode.AUTHENTICATION_NOT_FOUND);
             // 기간 만료 확인
             // code를 발급 받고 1시간이 지났다면 기간 만료
             if (LocalDateTime.now().isAfter(authentication.getExpiredAt().plusMinutes(40))) return;
@@ -396,8 +399,10 @@ public class AuthService {
 
             // 비밀번호 변경
             user.updatePassword(encodedPassword);
+        } catch ( IllegalArgumentException e ) {
+            throw new ApiException(ErrorCode.AUTHENTICATION_CODE_INCORRECT);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error( e.getMessage() );
         }
     }
 
@@ -471,7 +476,9 @@ public class AuthService {
         String userInformation = "password_reset_url_" + phoneNumber + "_" + code;
         try {
             byte[] bytes = userInformation.getBytes(StandardCharsets.UTF_8);
-            return Base64.getEncoder().encodeToString(bytes);
+            String encodedLine = Base64.getEncoder().encodeToString(bytes);
+            log.info( "-------------encodedLine: {}", encodedLine );
+            return encodedLine;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
