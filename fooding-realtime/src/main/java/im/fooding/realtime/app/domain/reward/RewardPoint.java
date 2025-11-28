@@ -2,7 +2,7 @@ package im.fooding.realtime.app.domain.reward;
 
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
-import im.fooding.core.model.BaseEntity;
+import im.fooding.realtime.app.domain.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table( name="reward_point" )
+@Table( "reward_point" )
 @Getter
 @Setter
 @NoArgsConstructor

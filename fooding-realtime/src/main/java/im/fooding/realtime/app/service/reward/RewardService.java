@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-@Service
+@Service("rewardRealtimeService")
 @RequiredArgsConstructor
 @Slf4j
 public class RewardService {

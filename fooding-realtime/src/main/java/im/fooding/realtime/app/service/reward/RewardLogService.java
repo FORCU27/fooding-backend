@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-@Service
+@Service("rewardLogRealtimeService")
 @Slf4j
 @RequiredArgsConstructor
 public class RewardLogService {

@@ -8,6 +8,13 @@ spring:
             - Path=/v1/**
           filters:
             - StripPrefix=1
+        - id: fooding-realtime
+          uri: http://localhost:8080
+          predicates:
+            - Path=/v2/**
+            - Path=/v3/**
+          filters:
+            - StripPrefix=1
 
 server:
   port: ${SERVER_PORT:8082}

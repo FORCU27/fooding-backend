@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v3/pos/reward")
+@RequestMapping("/v3/pos/reward")
 @Tag( name = "PosRewardController.v3", description = "POS Reward 관련 컨트롤러(SSE)" )
 public class PosRewardV3Controller {
     private final PosRewardEventService service;

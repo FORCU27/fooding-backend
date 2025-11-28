@@ -1,9 +1,9 @@
 package im.fooding.realtime.app.domain.reward;
 
-import im.fooding.core.model.BaseEntity;
 import im.fooding.core.model.reward.RewardChannel;
 import im.fooding.core.model.reward.RewardStatus;
 import im.fooding.core.model.reward.RewardType;
+import im.fooding.realtime.app.domain.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table( name = "reward_log" )
+@Table( "reward_log" )
 public class RewardLog extends BaseEntity {
     @Id
     @Column( "id" )
