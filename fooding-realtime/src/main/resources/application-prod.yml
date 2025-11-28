@@ -1,0 +1,22 @@
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+  r2dbc:
+    url: ${DB_URL:r2dbc:mariadb://localhost:3308/fooding?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul}
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:1234}
+logging:
+  level:
+    org.springframework.r2dbc: DEBUG
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui/index.html
+    operations-sorter: method
+    tags-sorter: alpha
+    enabled: true
+
+

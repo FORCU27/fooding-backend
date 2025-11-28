@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: fooding-realtime
+  profiles:
+    active: local
+  main:
+    allow-bean-definition-overriding: true

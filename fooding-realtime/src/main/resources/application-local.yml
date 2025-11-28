@@ -1,0 +1,41 @@
+spring:
+  main:
+    web-application-type: reactive
+    banner-mode: off
+  r2dbc:
+    url: r2dbc:mariadb://localhost:3308/fooding?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
+logging:
+  level:
+    org.springframework.r2dbc: DEBUG
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui/index.html
+    operations-sorter: method
+    tags-sorter: alpha
+    enabled: true
+
+jwt:
+  secret-key: KECHLtOh6ohqn1ucwQF0g9Ih1wbOjfJQ7EKMmfwZ1BmGtahQeeUOUA1JyZykdonF
+  access:
+    expiration: 604800000
+    header: Authorization
+
+  refresh:
+    expiration: 1209600000
+    header: Authorization-refresh
+
+webhook:
+  slack:
+    url: ${WEBHOOK_SLACK_URL:}
+
+email:
+  smtp:
+    host: ${SMTP_HOST:}
+    port: ${SMTP_PORT:}
+  username: ${SMTP_USERNAME:}
+  password: ${SMTP_PASSWORD:}
