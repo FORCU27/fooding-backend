@@ -2,6 +2,7 @@ package im.fooding.app.service.user.store;
 
 import im.fooding.app.dto.request.user.store.UserImmediateEntryStoreRequest;
 import im.fooding.app.dto.request.user.store.UserSearchStoreRequest;
+import im.fooding.app.dto.response.user.store.UserPopularStoresResponse;
 import im.fooding.app.dto.response.user.store.UserStoreListResponse;
 import im.fooding.app.dto.response.user.store.UserStoreResponse;
 import im.fooding.core.common.BasicSearch;
@@ -15,6 +16,7 @@ import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.global.util.Util;
 import im.fooding.core.model.bookmark.Bookmark;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.store.StoreStatus;
 import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.model.store.information.StoreDailyOperatingTime;
@@ -30,7 +32,10 @@ import im.fooding.core.service.store.document.StoreDocumentService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.query.SortDirection;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -236,6 +241,32 @@ public class UserStoreService {
             }
             finishedSetter.accept(store, finished);
         }
+    }
+
+    @Cacheable(
+            value = "PopularStoreList",
+            key = "'topByReview'",
+            cacheManager = "contentCacheManager"
+    )
+    @Transactional(readOnly = true)
+    public UserPopularStoresResponse retrievePopular(UserInfo userInfo) {
+        Set<StoreStatus> userVisibleStatuses = EnumSet.of(
+                StoreStatus.APPROVED
+        );
+
+        Page<Store> stores = storeService.list(Pageable.ofSize(10), StoreSortType.REVIEW, SortDirection.DESCENDING, null, null, null, null, false, userVisibleStatuses, null);
+        List<UserStoreListResponse> list = stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList();
+
+        if (list != null && !list.isEmpty()) {
+            // 영업상태 세팅
+            setOperatingStatus(list, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
+
+            // 북마크 여부 세팅
+            if (userInfo != null) {
+                setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
+            }
+        }
+        return new UserPopularStoresResponse(list);
     }
 }
 
