@@ -41,6 +41,7 @@ public enum ErrorCode {
     LOGIN_PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "1009", "비밀번호가 틀렸습니다."),
     AUTHENTICATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "1010", "존재하지 않는 인증입니다."),
     AUTHENTICATION_CODE_INCORRECT(HttpStatus.BAD_REQUEST, "1011", "인증번호가 올바르지 않습니다."),
+    AUTHENTICATION_INVALID_ERROR(HttpStatus.BAD_REQUEST, "1012", "중복된 인증이 존재합니다. 관리자에게 문의해주세요."),
 
     // 가게
     STORE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2000", "등록된 가게 정보가 없습니다."),
