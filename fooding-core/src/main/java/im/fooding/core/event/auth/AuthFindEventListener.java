@@ -14,6 +14,8 @@ public class AuthFindEventListener {
     private final SlackClient slackClient;
     private final GoogleSMTP googleSMTP;
 
+    private final String PASSWORD_RESET_WEB_BASE_URL = "www.fooding.im/";
+
     // 휴대폰 6자리 코드 인증
     @EventListener
     public void handlePhoneAuthenticateEvent( AuthPhoneAuthenticateEvent event ){
@@ -31,11 +33,13 @@ public class AuthFindEventListener {
     @EventListener
     public void handleSendUrlByPhoneEvent( AuthGetResetUrlByPhoneEvent event ){
         String slackMessage = String.format(
-                "[비밀번호 재설정 안내]\n \"%s\"님, 비밀번호 재설정을 위한 주소입니다.. \n %s \n\n---\n\n발송 정보\n - 채널: %s\n - 번호: %s",
+                        "[WEB 발신]\n " +
+                        "[푸딩 사장님 비밀번호 변경 안내] \n " +
+                        "안녕하세요. %s님 계정 비밀번호 변경을 위한 URL을 전달드립니다. \n " +
+                        "아래 URL을 통해 비밀번호 변경을 진행해주세요. \n\n" +
+                        "%s",
                 event.name(),
-                event.resetUrl(),
-                event.channel(),
-                event.phoneNumber()
+                PASSWORD_RESET_WEB_BASE_URL + event.resetUrl()
         );
         slackClient.sendNotificationMessage(slackMessage);
     }
@@ -43,6 +47,6 @@ public class AuthFindEventListener {
     // 이메일로 비밀번호 재설정 링크 전달
     @EventListener
     public void handleSendUrlByEmailEvent( AuthGetResetUrlByEmailEvent event ){
-        googleSMTP.sendEmail( event.email(), event.resetUrl() );
+        googleSMTP.sendEmail( event.email(), event.resetUrl(), event.name(), event.expiredAt() );
     }
 }
