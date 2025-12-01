@@ -20,11 +20,10 @@ public class AuthFindEventListener {
     @EventListener
     public void handlePhoneAuthenticateEvent( AuthPhoneAuthenticateEvent event ){
         String slackMessage = String.format(
-                "[본인 인증 안내]\n \"%s\"님, 본인인증 코드입니다. \n[ %s ]\n\n---\n\n발송 정보\n - 채널: %s\n - 번호: %s",
-                event.name(),
-                event.code(),
-                event.channel(),
-                event.phoneNumber()
+                        "[WEB 발신]\n " +
+                        "[푸딩],\n\n" +
+                        "인증번호 %s를 입력하세요",
+                event.code()
         );
         slackClient.sendNotificationMessage(slackMessage);
     }
