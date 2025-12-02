@@ -11,8 +11,7 @@ spring:
         - id: fooding-realtime
           uri: http://localhost:8080
           predicates:
-            - Path=/v2/**
-            - Path=/v3/**
+            - Path=/v2/**, /v3/**
           filters:
             - StripPrefix=1
 
