@@ -2,6 +2,7 @@ package im.fooding.app.controller.user.store;
 
 import im.fooding.app.dto.request.user.store.UserImmediateEntryStoreRequest;
 import im.fooding.app.dto.request.user.store.UserSearchStoreRequest;
+import im.fooding.app.dto.response.user.store.UserPopularStoresResponse;
 import im.fooding.app.dto.response.user.store.UserStoreListResponse;
 import im.fooding.app.dto.response.user.store.UserStoreResponse;
 import im.fooding.app.service.user.store.UserStoreService;
@@ -57,5 +58,13 @@ public class UserStoreController {
     @Operation(summary = "최근 본 식당 조회")
     public ApiResult<PageResponse<UserStoreListResponse>> retrieveRecentStores(@AuthenticationPrincipal UserInfo userInfo) {
         return ApiResult.ok(service.retrieveRecentStores(userInfo));
+    }
+
+    @GetMapping("/popular")
+    @Operation(summary = "인기 식당 목록 조회")
+    public ApiResult<UserPopularStoresResponse> retrievePopularStores(
+            @AuthenticationPrincipal UserInfo userInfo
+    ) {
+        return ApiResult.ok(service.retrievePopular(userInfo));
     }
 }
