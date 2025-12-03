@@ -27,7 +27,7 @@ public class GoogleSMTPTemplate {
         }
     }
 
-    private String htmlContent( String url, String name, String expiredAt ){
+    private String htmlContent( String name, String url, String expiredAt ){
         return """
             <html>
             <body style='font-family: Arial, sans-serif; margin: 0; padding: 20px;'>
