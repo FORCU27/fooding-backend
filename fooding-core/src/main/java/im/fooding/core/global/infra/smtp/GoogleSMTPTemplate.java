@@ -4,10 +4,16 @@ import jakarta.mail.Message;
 import jakarta.mail.Session;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class GoogleSMTPTemplate {
+
+    @Value("${email.password-uri}")
+    private String RESET_URI;
 
     public Message createMessage(Session session, String sender, String receiver, String title, String url, String name, String expiredAt ){
         try{
@@ -28,6 +34,7 @@ public class GoogleSMTPTemplate {
     }
 
     private String htmlContent( String name, String url, String expiredAt ){
+        String uri;
         return """
             <html>
             <body style='font-family: Arial, sans-serif; margin: 0; padding: 20px;'>
@@ -39,7 +46,7 @@ public class GoogleSMTPTemplate {
                         아래 버튼을 클릭하셔서 새로운 비밀번호로 변경해주세요.
                     </p>
                     <div style='background-color: #f8f9fa; padding: 20px; border-radius: 5px; text-align: center; margin: 20px 0;'>
-                        <a href='https://fooding.im/%s' style='color: #007bff; font-size: 20px; margin: 0; letter-spacing: 5px;'>
+                        <a href='%s/%s' style='color: #007bff; font-size: 20px; margin: 0; letter-spacing: 5px;'>
                             비밀번호 변경하러 가기
                         </a>
                     </div>
@@ -61,6 +68,6 @@ public class GoogleSMTPTemplate {
                 </div>
             </body>
             </html>
-            """.formatted(name, url, expiredAt);
+            """.formatted(name, RESET_URI ,url, expiredAt);
     }
 }
