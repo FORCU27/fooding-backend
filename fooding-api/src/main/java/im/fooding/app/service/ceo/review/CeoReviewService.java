@@ -43,6 +43,7 @@ public class CeoReviewService {
         List<CeoReviewResponse> reviewList = result.map( review -> {
             // 각 최상위 리뷰에 달린 하위 리뷰를 가져옴
             CeoReviewResponse temp = CeoReviewResponse.of( review );
+            temp.setReviewCount(reviewService.getReviewCount( review.getWriter() ) );
             Review ceoReply = reviewService.findCeoReply( store, store.getOwner(), review );
             if( ceoReply != null ){
                 CeoReviewResponse reply = CeoReviewResponse.of( ceoReply );
@@ -73,7 +74,7 @@ public class CeoReviewService {
                 .score( temp )
                 .content( request.getContent() )
                 .writer( user )
-                .visitPurposeType( VisitPurposeType.DUMMY );
+                .visitPurposeType( VisitPurposeType.BUSINESS );
         Review reply = builder.build();
         reply.setParent( review );
         reviewService.create( reply );

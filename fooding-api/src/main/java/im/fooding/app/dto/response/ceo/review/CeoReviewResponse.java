@@ -25,6 +25,7 @@ public class CeoReviewResponse {
     private String writerProfileImage;
     private LocalDateTime createdAt;
     private String content;
+    private int reviewCount;
     private VisitPurposeType visitPurposeType;
     @Schema(description = "답글 목록", type = "array", example = "[Review]")
     private List<CeoReviewResponse> replies;
@@ -50,5 +51,6 @@ public class CeoReviewResponse {
                 .serviceScore( review.getScore().getService() )
                 .build();
     }
+    public void setReviewCount( int reviewCount ) { this.reviewCount = reviewCount; }
     public void addReply( CeoReviewResponse reply ) { this.replies.add( reply ); }
 }
