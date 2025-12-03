@@ -138,6 +138,9 @@ public enum ErrorCode {
     POINT_SHOP_ISSUE_QUANTITY_INVALID(HttpStatus.BAD_REQUEST, "11001", "해당 상품은 최대 교환 수량을 초과했습니다."),
     POINT_SHOP_ISSUE_DATE_INVALID(HttpStatus.BAD_REQUEST, "11002", "해당 상품은 교환 가능한 기간이 아닙니다."),
 
+    // 플레이스
+    PLACE_SETTING_NOT_FOUND(HttpStatus.BAD_REQUEST, "14000", "등록된 플레이스 설정이 없습니다."),
+
     // 예약/웨이팅
     PLAN_NOT_FOUND(HttpStatus.BAD_REQUEST, "12000", "등록된 예약/웨이팅이 없습니다."),
     PLAN_ILLEGAL_STATE_CANCEL(HttpStatus.BAD_REQUEST, "3005", "취소 가능한 예약/웨이팅 상태가 아닙니다."),
