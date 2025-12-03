@@ -53,7 +53,7 @@ public class CeoAuthController {
 
     // 이메일을 통한 재설정 링크 전달
     @Operation(summary = "이메일을 통한 비밀번호 재설정 주소 전달", description = "사용자의 이메일로 비밀번호 재설정 링크를 전달한다.")
-    @GetMapping( "/find/password/email" )
+    @PostMapping( "/find/password/email" )
     public ApiResult<Void> getLinkByEmail(
             @RequestParam String name,
             @RequestParam String phoneNumber,
@@ -64,7 +64,7 @@ public class CeoAuthController {
     }
 
     // SMS를 통한 재설정 링크 전달
-    @GetMapping( "/find/password/sms" )
+    @PostMapping( "/find/password/sms" )
     @Operation(summary = "SMS를 통한 비밀번호 재설정 주소 전달", description = "사용자의 SMS로 비밀번호 재설정 링크를 전달한다.")
     public ApiResult<Void> getLinkBySms(
             @RequestParam String name,
