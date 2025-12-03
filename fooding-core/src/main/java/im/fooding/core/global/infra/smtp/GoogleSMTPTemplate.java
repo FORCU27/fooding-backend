@@ -46,7 +46,7 @@ public class GoogleSMTPTemplate {
                         아래 버튼을 클릭하셔서 새로운 비밀번호로 변경해주세요.
                     </p>
                     <div style='background-color: #f8f9fa; padding: 20px; border-radius: 5px; text-align: center; margin: 20px 0;'>
-                        <a href='%s/%s' style='color: #007bff; font-size: 20px; margin: 0; letter-spacing: 5px;'>
+                        <a href='%s?encodedLine=%s' style='color: #007bff; font-size: 20px; margin: 0; letter-spacing: 5px;'>
                             비밀번호 변경하러 가기
                         </a>
                     </div>
