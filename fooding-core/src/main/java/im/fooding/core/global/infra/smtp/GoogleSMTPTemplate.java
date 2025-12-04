@@ -55,9 +55,9 @@ public class GoogleSMTPTemplate {
                         </div>
                 
                         <div style='background-color: #FFFFFF; border-radius: 8px; padding: 20px; margin-bottom: 10px; text-align: center;'>
-                            <a href='%s?encodedLine=%s' style='background-color: white; border: 2px solid #ddd; border-radius: 8px; padding: 20px 40px; font-size: 18px; color: #333; cursor: pointer; width: 100%%; max-width: 500px; font-weight: bold; transition: all 0.3s;'>
-                                비밀번호 변경하러 가기
-                            </a>
+                            <button disable style='background-color: white; border: 2px solid #ddd; border-radius: 8px; padding: 20px 40px; font-size: 18px; color: #333; cursor: pointer; width: 100%%; max-width: 500px; font-weight: bold; transition: all 0.3s;'>
+                                <a href='%s?encodedLine=%s' style='color: black;'> 비밀번호 변경하러 가기 </a>
+                            </button>
                             <p style='margin: 5px 0 0 0; color: #999; font-weight: normal; font-size: 12px;'>
                                 유효시간: %s까지
                             </p>
