@@ -68,22 +68,28 @@ public class PosWaitingController {
     @PostMapping("/{storeWaitingId}/cancel")
     @Operation(summary = "웨이팅 취소")
     ApiResult<Void> cancel(
+            @Parameter(description = "가게 Id", example = "1")
+            @PathVariable long storeId,
+
             @Parameter(description = "웨이팅 id", example = "1")
             @PathVariable long storeWaitingId,
 
             @RequestBody @Validated PosWaitingCancelRequest request
     ) {
-        posWaitingService.cancel(storeWaitingId, request.reason());
+        posWaitingService.cancel(storeId, storeWaitingId, request.reason());
         return ApiResult.ok();
     }
 
     @PostMapping("/{storeWaitingId}/call")
     @Operation(summary = "웨이팅 호출")
     ApiResult<Void> call(
+            @Parameter(description = "가게 Id", example = "1")
+            @PathVariable long storeId,
+
             @Parameter(description = "가게 웨이팅 id", example = "1")
             @PathVariable long storeWaitingId
     ) {
-        posWaitingService.call(storeWaitingId);
+        posWaitingService.call(storeId, storeWaitingId);
         return ApiResult.ok();
     }
 
@@ -112,10 +118,13 @@ public class PosWaitingController {
     @PostMapping("/{storeWaitingId}/seat")
     @Operation(summary = "웨이팅 착석")
     ApiResult<Void> seat(
+            @Parameter(description = "가게 Id", example = "1")
+            @PathVariable long storeId,
+
             @Parameter(description = "가게 웨이팅 id", example = "1")
             @PathVariable long storeWaitingId
     ) {
-        posWaitingService.seat(storeWaitingId);
+        posWaitingService.seat(storeId, storeWaitingId);
         return ApiResult.ok();
     }
 
@@ -134,12 +143,15 @@ public class PosWaitingController {
     @PatchMapping("/{storeWaitingId}/contact-info")
     @Operation(summary = "웨이팅 사용자 정보 수정")
     ApiResult<Void> updateContactInfo(
+            @Parameter(description = "가게 Id", example = "1")
+            @PathVariable long storeId,
+
             @Parameter(description = "가게 웨이팅 id", example = "1")
             @PathVariable long storeWaitingId,
 
             @RequestBody PosUpdateWaitingContactInfoRequest request
     ) {
-        posWaitingService.updateContactInfo(storeWaitingId, request);
+        posWaitingService.updateContactInfo(storeId, storeWaitingId, request);
         return ApiResult.ok();
     }
 
