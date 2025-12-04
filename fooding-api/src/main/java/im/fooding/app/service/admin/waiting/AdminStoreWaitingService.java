@@ -4,11 +4,13 @@ package im.fooding.app.service.admin.waiting;
 import im.fooding.app.dto.request.admin.waiting.AdminStoreWaitingCreateRequest;
 import im.fooding.app.dto.request.admin.waiting.AdminStoreWaitingUpdateRequest;
 import im.fooding.app.dto.response.admin.waiting.AdminStoreWaitingResponse;
+import im.fooding.app.publisher.waiting.StoreWaitingSseEventPublisher;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.dto.request.waiting.StoreWaitingCreateRequest;
 import im.fooding.core.dto.request.waiting.StoreWaitingUpdateRequest;
+import im.fooding.core.event.waiting.StoreWaitingEvent;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.model.store.Store;
@@ -36,6 +38,7 @@ public class AdminStoreWaitingService {
     private final StoreService storeService;
     private final WaitingSettingService waitingSettingService;
     private final UserService userService;
+    private final StoreWaitingSseEventPublisher storeWaitingSseEventPublisher;
 
     @Transactional
     public void create(AdminStoreWaitingCreateRequest request) {
@@ -65,7 +68,15 @@ public class AdminStoreWaitingService {
                 .memo(request.memo())
                 .build();
 
-        storeWaitingService.create(storeWaitingCreateRequest);
+        long storeWaitingId = storeWaitingService.create(storeWaitingCreateRequest);
+
+        storeWaitingSseEventPublisher.publish(
+                new StoreWaitingEvent(
+                        request.storeId(),
+                        storeWaitingId,
+                        StoreWaitingEvent.Type.UPDATED
+                )
+        );
     }
 
     public AdminStoreWaitingResponse get(long id) {
@@ -111,7 +122,17 @@ public class AdminStoreWaitingService {
 
     @Transactional
     public void delete(long id, long deletedBy) {
+        StoreWaiting storeWaiting = storeWaitingService.get(id);
+
         storeWaitingService.delete(id, deletedBy);
+
+        storeWaitingSseEventPublisher.publish(
+                new StoreWaitingEvent(
+                        storeWaiting.getStoreId(),
+                        storeWaiting.getId(),
+                        StoreWaitingEvent.Type.UPDATED
+                )
+        );
     }
 
     private void validateWaitingOpen(Store store) {

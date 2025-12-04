@@ -30,9 +30,9 @@ public class StoreWaitingService {
     private final WaitingNumberGeneratorService waitingNumberGeneratorService;
 
     @Transactional
-    public void create(StoreWaitingCreateRequest request) {
+    public long create(StoreWaitingCreateRequest request) {
         StoreWaiting storeWaiting = request.toStoreWaiting(generateCallNumber(request.store().getId()));
-        storeWaitingRepository.save(storeWaiting);
+        return storeWaitingRepository.save(storeWaiting).getId();
     }
 
     public StoreWaiting get(long id) {
