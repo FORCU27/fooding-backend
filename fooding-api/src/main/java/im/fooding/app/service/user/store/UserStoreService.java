@@ -15,6 +15,7 @@ import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.global.util.Util;
 import im.fooding.core.model.bookmark.Bookmark;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.store.StoreStatus;
 import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.model.store.information.StoreDailyOperatingTime;
@@ -30,6 +31,8 @@ import im.fooding.core.service.store.document.StoreDocumentService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +59,7 @@ public class UserStoreService {
     private final RecentStoreService recentStoreService;
     private final UserRepository userRepository;
     private final EventProducerService eventProducerService;
+    private final CacheManager contentCacheManager;
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreListResponse> list(UserSearchStoreRequest request, UserInfo userInfo) {
@@ -75,6 +79,16 @@ public class UserStoreService {
                 setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
             }
         }
+
+        // 새로 입점 가게에 대한 정보를 캐시에 저장
+        if( request.getSortType() == StoreSortType.RECENT && request.getPageNum() == 1 ){
+            Cache cache = contentCacheManager.getCache("UserNewStore");
+            if( cache == null ) throw new ApiException( ErrorCode.REDIS_MANAGER_GET_ERROR );
+            for( UserStoreListResponse store : list ) cache.put( store.getId(), store );
+        }
+
+
+
         return PageResponse.of(list, PageInfo.of(stores));
     }
 
