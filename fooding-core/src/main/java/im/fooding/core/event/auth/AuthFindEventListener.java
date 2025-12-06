@@ -4,6 +4,7 @@ import im.fooding.core.global.infra.slack.SlackClient;
 import im.fooding.core.global.infra.smtp.GoogleSMTP;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,8 @@ public class AuthFindEventListener {
     private final SlackClient slackClient;
     private final GoogleSMTP googleSMTP;
 
-    private final String PASSWORD_RESET_WEB_BASE_URL = "www.fooding.im/";
+    @Value("${email.password-uri}")
+    private String PASSWORD_RESET_WEB_BASE_URL;
 
     // 휴대폰 6자리 코드 인증
     @EventListener
@@ -38,7 +40,7 @@ public class AuthFindEventListener {
                         "아래 URL을 통해 비밀번호 변경을 진행해주세요. \n\n" +
                         "%s",
                 event.name(),
-                PASSWORD_RESET_WEB_BASE_URL + event.resetUrl()
+                PASSWORD_RESET_WEB_BASE_URL + "?encodedLine=" + event.resetUrl()
         );
         slackClient.sendNotificationMessage(slackMessage);
     }
