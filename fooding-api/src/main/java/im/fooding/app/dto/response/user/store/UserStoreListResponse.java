@@ -1,5 +1,6 @@
 package im.fooding.app.dto.response.user.store;
 
+import im.fooding.app.dto.response.common.PopularStoreCache;
 import im.fooding.core.dto.response.StoreImageResponse;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreCategory;
@@ -82,6 +83,22 @@ public class UserStoreListResponse {
                 .averageRating(store.getAverageRating())
                 .estimatedWaitingTimeMinutes(estimatedWaitingTime)
                 .images(store.getImages())
+                .build();
+    }
+
+    public static UserStoreListResponse of(PopularStoreCache store, Integer estimatedWaitingTime) {
+        return UserStoreListResponse.builder()
+                .id(store.id())
+                .category(store.category())
+                .regionId(store.regionId())
+                .name(store.name())
+                .address(store.address())
+                .visitCount(store.visitCount())
+                .reviewCount(store.reviewCount())
+                .bookmarkCount(store.bookmarkCount())
+                .averageRating(store.averageRating())
+                .estimatedWaitingTimeMinutes(estimatedWaitingTime)
+                .images(store.images())
                 .build();
     }
 

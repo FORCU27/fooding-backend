@@ -8,9 +8,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/jobs")
+@RestController
+@RequestMapping("/jobs")
 @RequiredArgsConstructor
 @Tag(name = "JobController", description = "Job Controller")
 public class JobController {
@@ -23,6 +25,13 @@ public class JobController {
             @RequestBody JobStoreCreateStatisticsRequest request
     ) {
         jobService.createStoreStatistics(request);
+        return ApiResult.ok();
+    }
+
+    @PostMapping("/popular-stores-cache/refresh")
+    @Operation(summary = "인기 가게 캐시 갱신")
+    public ApiResult<Void> refreshPopularStoresCache() {
+        jobService.refreshPopularStoresCache();
         return ApiResult.ok();
     }
 }
