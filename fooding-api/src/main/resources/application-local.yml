@@ -100,6 +100,7 @@ email:
     port: ${SMTP_PORT:}
   username: ${SMTP_USERNAME:}
   password: ${SMTP_PASSWORD:}
+  password-uri: https://ceo.fooding.im/change-password
 
 message:
   sender: 02-1234-5678

@@ -24,7 +24,7 @@ public class GoogleSMTP {
 
     private final GoogleSMTPTemplate  smtpTemplate;
 
-    public boolean sendEmail( String targetEmail, String url){
+    public boolean sendEmail( String targetEmail, String url, String name, String expiredAt ){
         try{
             Properties props = new Properties();
             props.put( "mail.smtp.host", SMTP_HOST );
@@ -40,7 +40,7 @@ public class GoogleSMTP {
                 }
             };
             Session session = Session.getInstance( props, auth );
-            Message message = smtpTemplate.createMessage( session, USERNAME, targetEmail, "[Fooding] 비밀번호 재설정", url );
+            Message message = smtpTemplate.createMessage( session, USERNAME, targetEmail, "[Fooding] 비밀번호 재설정", url, name, expiredAt );
             Transport.send( message );
             return true;
         }

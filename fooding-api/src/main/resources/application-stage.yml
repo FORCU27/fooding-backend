@@ -145,7 +145,8 @@ kafka:
 
 email:
   smtp:
-    host: ${SMTP_HOST:localhost}
-    port: ${SMTP_PORT:4042}
-  username: ${SMTP_USERNAME:root}
-  password: ${SMTP_PASSWORD:1234}
+    host: ${SMTP_HOST:smtp.gamil.com}
+    port: ${SMTP_PORT:587}
+  username: ${SMTP_USERNAME:seongje00416@gmail.com}
+  password: ${SMTP_PASSWORD:kzptuibhpdhlgpnb}
+  password-uri: https://ceo-stage.fooding.im/change-password

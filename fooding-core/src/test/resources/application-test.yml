@@ -2,6 +2,8 @@ spring:
   config:
     activate:
       on-profile: test
+  cache:
+    type: none
   h2:
     console:
       enabled: true
@@ -9,18 +11,18 @@ spring:
     uris: http://dummy-local:9200
     id: __id__
     key: __key__
+  datasource:
+    format_sql: true
+    show_sql: true
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=MySQL;
+    username: SA
+    password:
   jpa:
     database: h2
     generate-ddl: off
     hibernate:
       ddl-auto: create-drop
-    datasource:
-      format_sql: true
-      show_sql: true
-      driver-class-name: org.h2.Driver
-      url: jdbc:h2:mem:testdb;MODE=MySQL;
-      username: SA
-      password:
     show-sql: true
     properties:
       hibernate:
@@ -59,3 +61,4 @@ email:
     port: __SMTP_PORT__
   username: __SMTP_USERNAME__
   password: __SMTP_PASSWORD__
+  password-uri: __PASSWORD_URI__

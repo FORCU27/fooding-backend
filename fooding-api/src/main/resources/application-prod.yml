@@ -144,6 +144,7 @@ email:
     port: ${SMTP_PORT:4042}
   username: ${SMTP_USERNAME:root}
   password: ${SMTP_PASSWORD:1234}
+  password-uri: https://ceo-stage.fooding.im/change-password
 
 kafka:
   internal:

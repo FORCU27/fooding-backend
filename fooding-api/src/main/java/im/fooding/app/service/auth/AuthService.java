@@ -424,7 +424,6 @@ public class AuthService {
      * @param phoneNumber return String
      */
     private void sendPhoneAuthentication(String name, int code, String phoneNumber) {
-        System.out.println(code);
         publisher.publishEvent(new AuthPhoneAuthenticateEvent(name, code, phoneNumber, SENDER, NotificationChannel.SMS));
     }
 
@@ -451,7 +450,7 @@ public class AuthService {
     public String getEmail(String phoneNumber, int code) {
         User user = userService.findByPhoneNumber(phoneNumber);
         Authentication auth = authenticationService.findAuthenticationByEmailAndCode(user.getEmail(), code);
-        if (auth == null) return null;
+        if (auth == null) throw new ApiException( ErrorCode.AUTHENTICATION_NOT_FOUND );
         return user.getEmail();
     }
 
@@ -459,7 +458,18 @@ public class AuthService {
         String url = this.createResetUrl(phoneNumber, code);
         User user = userService.findByPhoneNumber(phoneNumber);
         if (!user.getName().equals(name)) throw new ApiException(ErrorCode.AUTHENTICATION_NOT_FOUND, "잘못된 요청입니다");
-        if (isEmail) this.sendEmail(name, user.getEmail(), url);
+        if (isEmail) {
+            LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(30);
+            String expiredAtStr = "%d.%02d.%02d %s %d:%02d".formatted(
+                    expiredAt.getYear(),
+                    expiredAt.getMonthValue(),
+                    expiredAt.getDayOfMonth(),
+                    expiredAt.getHour() < 12 ? "오전" : "오후",
+                    expiredAt.getHour() % 12 == 0 ? 12 : expiredAt.getHour() % 12,
+                    expiredAt.getMinute()
+            );
+            this.sendEmail(name, user.getEmail(), url, expiredAtStr);
+        }
         else this.sendSms(name, user.getPhoneNumber(), url);
     }
 
@@ -491,10 +501,9 @@ public class AuthService {
      * @param email
      * @param url
      */
-    private void sendEmail(String name, String email, String url) {
+    private void sendEmail(String name, String email, String url, String expiredAt) {
         // Google SMTP 활용
-        System.out.println(url);
-        publisher.publishEvent(new AuthGetResetUrlByEmailEvent(name, email, url, SENDER, NotificationChannel.MAIL));
+        publisher.publishEvent(new AuthGetResetUrlByEmailEvent(name, email, url, SENDER, NotificationChannel.MAIL, expiredAt));
     }
 
     /**
@@ -505,7 +514,6 @@ public class AuthService {
      */
     private void sendSms(String name, String phoneNumber, String url) {
         // 모든 서비스가 유료. Slack으로 대체
-        System.out.println(url);
         publisher.publishEvent(new AuthGetResetUrlByPhoneEvent(name, phoneNumber, url, SENDER, NotificationChannel.SMS));
     }
 
