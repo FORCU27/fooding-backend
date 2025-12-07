@@ -3,6 +3,7 @@ package im.fooding.app.service.user.review;
 import im.fooding.app.dto.request.user.review.CreateReviewRequest;
 import im.fooding.app.dto.request.user.review.UpdateReviewRequest;
 import im.fooding.app.dto.request.user.review.UserRetrieveReviewRequest;
+import im.fooding.app.dto.response.user.review.UserReviewDetailResponse;
 import im.fooding.app.dto.response.user.review.UserReviewResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
@@ -164,5 +165,21 @@ public class UserReviewService {
         // 리뷰 이미지 수정
         Review review = reviewService.findById( id );
         reviewImageService.update( review, request.getImageUrls() );
+    }
+
+    @Transactional
+    public UserReviewDetailResponse getReviewDetail( long reviewId ){
+        Review review = reviewService.findById( reviewId );
+        UserReviewDetailResponse result = UserReviewDetailResponse.of( review );
+        // 리뷰 이미지 설정
+        List<ReviewImage> reviewImages = reviewImageService.list( List.of( reviewId ) );
+        result.setImageUrls( reviewImages.stream().map( ReviewImage::getImageUrl ).toList() );
+        
+        // 리뷰의 좋아요 수 설정
+        result.setWriterReviewCount( reviewLikeService.findAllByReviewId( review.getId() ).size() );
+        
+        // 작성자의 리뷰수 설정
+        result.setWriterReviewCount( reviewService.findAllReviewByWriter( review.getWriter() ).size() );
+        return result;
     }
 }

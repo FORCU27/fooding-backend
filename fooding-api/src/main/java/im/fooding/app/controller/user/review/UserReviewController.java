@@ -4,6 +4,7 @@ import im.fooding.app.dto.request.user.report.CreateReportRequest;
 import im.fooding.app.dto.request.user.review.CreateReviewRequest;
 import im.fooding.app.dto.request.user.review.UpdateReviewRequest;
 import im.fooding.app.dto.request.user.review.UserRetrieveReviewRequest;
+import im.fooding.app.dto.response.user.review.UserReviewDetailResponse;
 import im.fooding.app.dto.response.user.review.UserReviewResponse;
 import im.fooding.app.service.user.report.UserReportService;
 import im.fooding.app.service.user.review.UserReviewService;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/stores")
+@RequestMapping("/user/reviews")
 @Tag(name = "UserReviewController", description = "유저 리뷰 컨트롤러")
 @Slf4j
 public class UserReviewController {
@@ -29,7 +30,7 @@ public class UserReviewController {
     private final UserReviewService userReviewService;
     private final UserReportService userReportService;
 
-    @GetMapping("/{storeId}/reviews")
+    @GetMapping("/store/{storeId}")
     @Operation(summary = "리뷰 전체 조회", description = "별점순 / 최신순으로 리뷰를 조회합니다.")
     public ApiResult<PageResponse<UserReviewResponse>> list(
             @PathVariable Long storeId,
@@ -38,7 +39,7 @@ public class UserReviewController {
         return ApiResult.ok(userReviewService.list(storeId, request));
     }
 
-    @PostMapping( "/reviews" )
+    @PostMapping( "" )
     @Operation( summary = "리뷰 작성", description = "매장에 대한 리뷰를 작성합니다." )
     public ApiResult<Void> create(
             @Valid @RequestBody CreateReviewRequest request
@@ -68,13 +69,21 @@ public class UserReviewController {
     }
 
     @DeleteMapping( "/{reviewId}" )
-    @Operation(summary = "리뷰 삭제", description = "특정 리뷰를 삭제합니다..")
+    @Operation(summary = "리뷰 삭제", description = "특정 리뷰를 삭제합니다.")
     public ApiResult<Void> deleteReview(
             @PathVariable long reviewId,
             @AuthenticationPrincipal UserInfo userInfo
     ){
         userReviewService.delete( reviewId, userInfo.getId() );
         return ApiResult.ok();
+    }
+
+    @GetMapping("/{reviewId}/details")
+    @Operation(summary = "특정 리뷰에 대한 상세 조회", description = "특정 리뷰 상세 페이지에 필요한 정보를 조회합니다")
+    public ApiResult<UserReviewDetailResponse> getReviewDetail(
+            @PathVariable Long reviewId
+    ){
+        return ApiResult.ok( userReviewService.getReviewDetail( reviewId ) );
     }
 
 }
