@@ -2,6 +2,7 @@ package im.fooding.app.controller.user.review;
 
 import im.fooding.app.dto.request.user.report.CreateReportRequest;
 import im.fooding.app.dto.request.user.review.CreateReviewRequest;
+import im.fooding.app.dto.request.user.review.CreateUserReviewCommentRequest;
 import im.fooding.app.dto.request.user.review.UpdateReviewRequest;
 import im.fooding.app.dto.request.user.review.UserRetrieveReviewRequest;
 import im.fooding.app.dto.response.user.review.UserReviewDetailResponse;
@@ -98,5 +99,17 @@ public class UserReviewController {
         userReviewService.setReviewLike( reviewId, userInfo.getId() );
         return ApiResult.ok();
     }
+
+    @PostMapping("/{reviewId}/comment")
+    @Operation(summary = "현재 리뷰에 댓글을 다는 API", description = "답글도 같은 API를 사용합니다. request에 parentId로 null을 주시면 최상위 댓글로 기록되며 댓글의 ID를 입력해주시면 해당 댓글의 하위 댓글로 등록됩니다" )
+    public ApiResult<Void> addComment(
+            @Valid @ModelAttribute CreateUserReviewCommentRequest request,
+            @PathVariable Long reviewId,
+            @AuthenticationPrincipal UserInfo userInfo
+    ){
+        userReviewService.createComment( reviewId, userInfo.getId(), request );
+        return ApiResult.ok();
+    }
+
 
 }
