@@ -1,6 +1,7 @@
 package im.fooding.app.service.user.review;
 
 import im.fooding.app.dto.request.user.review.CreateReviewRequest;
+import im.fooding.app.dto.request.user.review.CreateUserReviewCommentRequest;
 import im.fooding.app.dto.request.user.review.UpdateReviewRequest;
 import im.fooding.app.dto.request.user.review.UserRetrieveReviewRequest;
 import im.fooding.app.dto.response.user.review.UserReviewDetailResponse;
@@ -192,5 +193,27 @@ public class UserReviewService {
         }
         // 이미 좋아요가 되어 있으면 좋아요 취소
         else reviewLike.delete( userId );
+    }
+
+    public void createComment(long reviewId, long writerId, CreateUserReviewCommentRequest request){
+        // 최상위 리뷰. 댓글 X
+        Review review = reviewService.findById( reviewId );
+        // 작성자
+        User writer = userService.findById( writerId );
+        // 댓글
+        Review comment = Review.builder()
+                .store( review.getStore() )
+                .writer( writer )
+                .score( ReviewScore.builder().service(0).mood(0).taste(0).total(0).build())
+                .content(request.getComment())
+                .visitPurposeType( VisitPurposeType.BUSINESS )
+                .build();
+        // 이 댓글이 최상위 댓글인 경우
+        if( request.getParentId() == null ) comment.setParent( review );
+        // 이 댓글이 댓글의 답글인 경우
+        else {
+            Review commentReview = reviewService.findById( request.getParentId() );
+            comment.setParent( commentReview );
+        }
     }
 }
