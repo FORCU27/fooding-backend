@@ -11,6 +11,8 @@ import im.fooding.app.service.user.review.UserReviewService;
 import im.fooding.core.common.ApiResult;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.global.UserInfo;
+import im.fooding.core.global.exception.ApiException;
+import im.fooding.core.global.exception.ErrorCode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -84,6 +86,17 @@ public class UserReviewController {
             @PathVariable Long reviewId
     ){
         return ApiResult.ok( userReviewService.getReviewDetail( reviewId ) );
+    }
+
+    @PostMapping("/{reviewId}/like" )
+    @Operation(summary = "현재 리뷰에 좋아요 달기/해제", description = "현재 접속한 사용자가 좋아요를 등록/해제. 같은 API로 이미 좋아요 되어 있으면 해제, 좋아요가 되어 있지 않으면 등록")
+    public ApiResult<Void> setReviewLike(
+            @PathVariable Long reviewId,
+            @AuthenticationPrincipal UserInfo userInfo
+    ){
+        if( userInfo == null ) throw new ApiException(ErrorCode.AUTHENTICATION_INVALID_ERROR);
+        userReviewService.setReviewLike( reviewId, userInfo.getId() );
+        return ApiResult.ok();
     }
 
 }
