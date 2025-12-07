@@ -1,5 +1,6 @@
 package im.fooding.core.service.review;
 
+import im.fooding.core.model.review.ReviewLike;
 import im.fooding.core.repository.review.ReviewLikeRepository;
 import java.util.List;
 import java.util.Map;
@@ -24,4 +25,6 @@ public class ReviewLikeService {
     public Map<Long, Long> list(List<Long> reviewIds) {
        return reviewLikeRepository.list(reviewIds);
     }
+
+    public List<ReviewLike> findAllByReviewId( long reviewId ){ return reviewLikeRepository.findAllByReviewId( reviewId ); }
 }
