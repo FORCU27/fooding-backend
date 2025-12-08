@@ -65,7 +65,6 @@ public class UserReviewService {
         List<Long> reviewIds = getReviewIds(reviewPage.getContent());
 
         Map<Long, List<ReviewImage>> imageMap = getReviewImageMap(reviewIds);
-        Map<Long, Long> likeCountMap = getReviewLikeMap(reviewIds);
 
         Plan plan = (writerId != null && storeId != null)
                 ? planService.findByUserIdAndStoreId(writerId, storeId)
@@ -76,7 +75,7 @@ public class UserReviewService {
                     UserReviewResponse userReview = UserReviewResponse.of(
                             review,
                             imageMap.getOrDefault(review.getId(), List.of()),
-                            likeCountMap.getOrDefault(review.getId(), 0L),
+                            reviewLikeService.findAllByUserId( review.getWriter().getId() ).size(),
                             plan != null ? plan.getId() : null
                     );
                     Pageable tpg = PageRequest.of( 0, 50 );
@@ -195,6 +194,7 @@ public class UserReviewService {
         else reviewLike.delete( userId );
     }
 
+    @Transactional
     public void createComment(long reviewId, long writerId, CreateUserReviewCommentRequest request){
         // 최상위 리뷰. 댓글 X
         Review review = reviewService.findById( reviewId );
@@ -208,12 +208,10 @@ public class UserReviewService {
                 .content(request.getComment())
                 .visitPurposeType( VisitPurposeType.BUSINESS )
                 .build();
-        // 이 댓글이 최상위 댓글인 경우
-        if( request.getParentId() == null ) comment.setParent( review );
-        // 이 댓글이 댓글의 답글인 경우
-        else {
-            Review commentReview = reviewService.findById( request.getParentId() );
-            comment.setParent( commentReview );
+        // 이 댓글이 최상위 댓글이 아닌 경우
+        if( request.getParentId() != null && request.getParentId() != 0 ) {
+            Review commentReview = reviewService.findById(request.getParentId());
+            comment.setParent(commentReview);
         }
     }
 }
