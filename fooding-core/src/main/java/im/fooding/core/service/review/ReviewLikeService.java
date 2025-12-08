@@ -28,9 +28,11 @@ public class ReviewLikeService {
        return reviewLikeRepository.list(reviewIds);
     }
 
+    public List<ReviewLike> findAllByUserId( long userId) { return reviewLikeRepository.findAllByUserIdAndDeletedFalse(userId); }
+
     public List<ReviewLike> findAllByReviewId( long reviewId ){ return reviewLikeRepository.findAllByReviewId( reviewId ); }
 
-    public ReviewLike findByReviewIdAndUserId( long reviewId, long userId ){ return reviewLikeRepository.findByReviewIdAndUserId( reviewId, userId ).orElse( null ); }
+    public ReviewLike findByReviewIdAndUserId( long reviewId, long userId ){ return reviewLikeRepository.findByReviewIdAndUserIdAndDeletedFalse( reviewId, userId ).orElse( null ); }
 
     public void create(Review review, User user){
         ReviewLike reviewLike = ReviewLike.builder()

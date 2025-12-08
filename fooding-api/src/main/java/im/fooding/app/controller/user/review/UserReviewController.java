@@ -101,9 +101,9 @@ public class UserReviewController {
     }
 
     @PostMapping("/{reviewId}/comment")
-    @Operation(summary = "현재 리뷰에 댓글을 다는 API", description = "답글도 같은 API를 사용합니다. request에 parentId로 null을 주시면 최상위 댓글로 기록되며 댓글의 ID를 입력해주시면 해당 댓글의 하위 댓글로 등록됩니다" )
+    @Operation(summary = "현재 리뷰에 댓글을 다는 API", description = "parentId는 0으로 해주시면 됩니다." )
     public ApiResult<Void> addComment(
-            @Valid @ModelAttribute CreateUserReviewCommentRequest request,
+            @Valid @RequestBody CreateUserReviewCommentRequest request,
             @PathVariable Long reviewId,
             @AuthenticationPrincipal UserInfo userInfo
     ){

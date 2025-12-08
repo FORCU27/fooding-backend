@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface ReviewLikeRepository extends JpaRepository<ReviewLike, Long>, QReviewLikeRepository {
     List<ReviewLike> findAllByReviewId( long reviewId );
     Optional<ReviewLike> findByReviewIdAndUserIdAndDeletedFalse( long reviewId, long userId );
+    List<ReviewLike> findAllByUserIdAndDeletedFalse(long userId );
 }
