@@ -5,6 +5,7 @@ import im.fooding.app.dto.request.user.store.UserSearchStoreRequest;
 import im.fooding.app.dto.response.user.store.UserPopularStoresResponse;
 import im.fooding.app.dto.response.user.store.UserStoreListResponse;
 import im.fooding.app.dto.response.user.store.UserStoreResponse;
+import im.fooding.app.service.common.store.StoreViewCacheService;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
@@ -30,6 +31,8 @@ import im.fooding.core.service.store.StoreOperatingHourService;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.store.document.StoreDocumentService;
 import im.fooding.core.service.waiting.WaitingSettingService;
+import jakarta.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.query.SortDirection;
@@ -61,6 +64,7 @@ public class UserStoreService {
     private final RecentStoreService recentStoreService;
     private final UserRepository userRepository;
     private final EventProducerService eventProducerService;
+    private final StoreViewCacheService storeViewCacheService;
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreListResponse> list(UserSearchStoreRequest request, UserInfo userInfo) {
@@ -123,7 +127,14 @@ public class UserStoreService {
 
         Store store = storeService.retrieve(id, userVisibleStatuses);
         storeService.increaseVisitCount(store);
-        UserStoreResponse userStoreResponse = UserStoreResponse.of(store, null);
+
+        String viewerKey = (userInfo != null)
+                ? "user:" + userInfo.getId().toString()
+                : "anon:" + LocalDateTime.now();
+
+        storeViewCacheService.addView(id, viewerKey);
+
+        UserStoreResponse userStoreResponse = UserStoreResponse.of(store, null, storeViewCacheService.getViewCount(id));
 
         // 영업상태 세팅
         setOperatingStatus(userStoreResponse);
@@ -269,4 +280,3 @@ public class UserStoreService {
         return new UserPopularStoresResponse(list);
     }
 }
-
