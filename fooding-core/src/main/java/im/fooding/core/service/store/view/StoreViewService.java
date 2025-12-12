@@ -1,20 +1,11 @@
 package im.fooding.core.service.store.view;
 
-import im.fooding.core.repository.store.view.StoreViewRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-public class StoreViewService {
+public interface StoreViewService {
 
-    private final StoreViewRepository storeViewRepository;
+    long addViewAndGetCount(long storeId, long viewerId);
 
-    public long addViewAndGetCount(long storeId, long viewerId) {
-        return storeViewRepository.addViewAndGetCount(storeId, viewerId);
-    }
-
-    public long addUnknownViewAndGetCount(long storeId) {
-        return storeViewRepository.addUnknownViewAndGetCount(storeId);
-    }
+    long addUnknownViewAndGetCount(long storeId);
 }
