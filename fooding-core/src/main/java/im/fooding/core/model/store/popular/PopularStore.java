@@ -1,4 +1,4 @@
-package im.fooding.app.dto.response.common;
+package im.fooding.core.model.store.popular;
 
 import im.fooding.core.dto.response.StoreImageResponse;
 import im.fooding.core.model.store.Store;
@@ -7,7 +7,8 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record PopularStoreCache(
+public record PopularStore(
+
         Long id,
         StoreCategory category,
         String regionId,
@@ -20,8 +21,8 @@ public record PopularStoreCache(
         List<StoreImageResponse> images
 ) {
 
-    public static PopularStoreCache from(Store store) {
-        return PopularStoreCache.builder()
+    public static PopularStore from(Store store) {
+        return PopularStore.builder()
                 .id(store.getId())
                 .category(store.getCategory())
                 .regionId(store.getRegionId())
@@ -33,6 +34,5 @@ public record PopularStoreCache(
                 .averageRating(store.getAverageRating())
                 .images(store.getImages())
                 .build();
-
     }
 }

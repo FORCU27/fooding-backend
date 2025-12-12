@@ -1,10 +1,10 @@
 package im.fooding.app.service.job;
 
 import im.fooding.app.dto.request.job.store.JobStoreCreateStatisticsRequest;
-import im.fooding.app.service.common.store.PopularStoreCacheService;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.store.StoreStatisticsService;
+import im.fooding.core.service.store.popular.PopularStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class JobService {
 
     private final StoreService storeService;
     private final StoreStatisticsService storeStatisticsService;
-    private final PopularStoreCacheService popularStoreCacheService;
+    private final PopularStoreService popularStoreService;
 
     public void createStoreStatistics(JobStoreCreateStatisticsRequest request) {
         List<Store> allStore = storeService.findAll();
@@ -37,7 +37,7 @@ public class JobService {
     }
 
     public void refreshPopularStoresCache() {
-        popularStoreCacheService.refreshPopularStores();
+        popularStoreService.refreshPopularStores();
     }
 
     private static int getTotalSales() {

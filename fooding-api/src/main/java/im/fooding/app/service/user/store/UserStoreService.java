@@ -2,11 +2,9 @@ package im.fooding.app.service.user.store;
 
 import im.fooding.app.dto.request.user.store.UserImmediateEntryStoreRequest;
 import im.fooding.app.dto.request.user.store.UserSearchStoreRequest;
-import im.fooding.app.dto.response.common.PopularStoreCache;
 import im.fooding.app.dto.response.user.store.UserPopularStoresResponse;
 import im.fooding.app.dto.response.user.store.UserStoreListResponse;
 import im.fooding.app.dto.response.user.store.UserStoreResponse;
-import im.fooding.app.service.common.store.PopularStoreCacheService;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
@@ -22,6 +20,7 @@ import im.fooding.core.model.store.StoreStatus;
 import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.model.store.information.StoreDailyOperatingTime;
 import im.fooding.core.model.store.information.StoreOperatingHour;
+import im.fooding.core.model.store.popular.PopularStore;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingStatus;
 import im.fooding.core.repository.user.UserRepository;
@@ -30,6 +29,7 @@ import im.fooding.core.service.store.RecentStoreService;
 import im.fooding.core.service.store.StoreOperatingHourService;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.store.document.StoreDocumentService;
+import im.fooding.core.service.store.popular.PopularStoreService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserStoreService {
     private final StoreService storeService;
-    private final PopularStoreCacheService popularStoreCacheService;
+    private final PopularStoreService popularStoreService;
     private final StoreOperatingHourService storeOperatingHourService;
     private final WaitingSettingService waitingSettingService;
     private final BookmarkService bookmarkService;
@@ -228,7 +228,7 @@ public class UserStoreService {
 
     @Transactional(readOnly = true)
     public UserPopularStoresResponse retrievePopular(UserInfo userInfo) {
-        List<PopularStoreCache> popularStores = popularStoreCacheService.getPopularStores();
+        List<PopularStore> popularStores = popularStoreService.getPopularStores();
         List<UserStoreListResponse> popularStoreList = popularStores.stream()
                 .map(popularStore -> UserStoreListResponse.of(popularStore, null)).toList();
 
@@ -248,4 +248,3 @@ public class UserStoreService {
         }
     }
 }
-
