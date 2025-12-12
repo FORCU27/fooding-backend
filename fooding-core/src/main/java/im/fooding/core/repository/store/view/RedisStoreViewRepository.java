@@ -17,13 +17,13 @@ public class RedisStoreViewRepository implements StoreViewRepository {
 
     @Override
     public long addViewAndGetCount(long storeId, long viewerId) {
-        addView(storeId, "user:" + String.valueOf(viewerId));
+        addView(storeId, "user:" + viewerId);
         return getViewCount(storeId);
     }
 
     @Override
     public long addUnknownViewAndGetCount(long storeId) {
-        addView(storeId, "unknown:" + String.valueOf(LocalDateTime.now()));
+        addView(storeId, "unknown:" + LocalDateTime.now());
         return getViewCount(storeId);
     }
 
