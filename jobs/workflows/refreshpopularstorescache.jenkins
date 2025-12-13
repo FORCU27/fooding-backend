@@ -3,19 +3,14 @@ library identifier: "pipeline-library", changelog:false
 slave("jenkins-agent-${UUID.randomUUID().toString()}") {
     stage("Run") {
         container("curl"){
-            def deployment = "fooding-api"
-            def namespace = "fooding"
             def token = env.NODE_ENV == "production" ? '111': '222'
-            def body = env.MONTH ? "{\"month\": \"${env.MONTH}\"}" : "{}"
             def baseUrl = env.NODE_ENV == "production" ? "https://api.fooding.im" : "https://api-stage.fooding.im"
-            def url = "${baseUrl}/jobs/create-statistics"
+            def url = "${baseUrl}/jobs/popular-stores-cache/refresh"
             def responseCode = sh(returnStdout: true, script: """
                 curl ${url} \
                 -o /dev/null -s -w "%{http_code}" \
                 -X POST \
-                -H "Content-Type: application/json" \
-                -H "Authorization: token ${token}" \
-                -d '${body}'
+                -H "Authorization: token ${token}"
             """)
 
             if(responseCode != "200"){
