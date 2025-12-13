@@ -4,6 +4,7 @@ import im.fooding.app.dto.request.pos.waiting.PosUpdateWaitingContactInfoRequest
 import im.fooding.app.dto.request.pos.waiting.PosWaitingListRequest;
 import im.fooding.app.dto.response.pos.waiting.PosStoreWaitingResponse;
 import im.fooding.app.dto.response.pos.waiting.PosWaitingLogResponse;
+import im.fooding.app.publisher.waiting.StoreWaitingSseEventPublisher;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
@@ -11,6 +12,7 @@ import im.fooding.core.dto.request.waiting.StoreWaitingFilter;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
 import im.fooding.core.event.waiting.StoreWaitingCallEvent;
 import im.fooding.core.event.waiting.StoreWaitingCanceledEvent;
+import im.fooding.core.event.waiting.StoreWaitingEvent;
 import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
 import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.store.Store;
@@ -54,6 +56,7 @@ public class PosWaitingService {
     private final EventProducerService eventProducerService;
     private final StoreService storeService;
     private final WaitingNumberGeneratorService waitingNumberGeneratorService;
+    private final StoreWaitingSseEventPublisher storeWaitingSseEventPublisher;
 
     public PosStoreWaitingResponse details(long id) {
         return PosStoreWaitingResponse.from(storeWaitingService.get(id));
@@ -76,27 +79,49 @@ public class PosWaitingService {
     }
 
     @Transactional
-    public void seat(long storeWaitingId) {
+    public void seat(long storeId, long storeWaitingId) {
         storeWaitingService.seat(storeWaitingId);
+
+        storeWaitingSseEventPublisher.publish(
+                new StoreWaitingEvent(
+                        storeId,
+                        storeWaitingId,
+                        StoreWaitingEvent.Type.UPDATED
+                )
+        );
     }
 
     @Transactional
-    public void cancel(long storeWaitingId, String reason) {
+    public void cancel(long storeId, long storeWaitingId, String reason) {
         storeWaitingService.cancel(storeWaitingId);
 
         eventProducerService.publishEvent(
                 StoreWaitingCanceledEvent.class.getSimpleName(),
                 new StoreWaitingCanceledEvent(storeWaitingId, reason)
         );
+        storeWaitingSseEventPublisher.publish(
+                new StoreWaitingEvent(
+                        storeId,
+                        storeWaitingId,
+                        StoreWaitingEvent.Type.UPDATED
+                )
+        );
     }
 
     @Transactional
-    public void call(long storeWaitingId) {
+    public void call(long storeId, long storeWaitingId) {
         storeWaitingService.call(storeWaitingId);
 
         eventProducerService.publishEvent(
                 StoreWaitingCallEvent.class.getSimpleName(),
                 new StoreWaitingCallEvent(storeWaitingId)
+        );
+        storeWaitingSseEventPublisher.publish(
+                new StoreWaitingEvent(
+                        storeId,
+                        storeWaitingId,
+                        StoreWaitingEvent.Type.UPDATED
+                )
         );
     }
 
@@ -105,7 +130,7 @@ public class PosWaitingService {
     }
 
     @Transactional
-    public void updateContactInfo(long storeWaitingId, PosUpdateWaitingContactInfoRequest request) {
+    public void updateContactInfo(long storeId, long storeWaitingId, PosUpdateWaitingContactInfoRequest request) {
         StoreWaiting storeWaiting = storeWaitingService.get(storeWaitingId);
 
         WaitingUser user = storeWaiting.getWaitingUser();
@@ -126,6 +151,14 @@ public class PosWaitingService {
                 .build();
         user = waitingUserService.register(waitingUserRegisterRequest);
         storeWaiting.injectUser(user);
+
+        storeWaitingSseEventPublisher.publish(
+                new StoreWaitingEvent(
+                        storeId,
+                        storeWaitingId,
+                        StoreWaitingEvent.Type.UPDATED
+                )
+        );
     }
 
     @Transactional
@@ -157,6 +190,13 @@ public class PosWaitingService {
         eventProducerService.publishEvent(
                 StoreWaitingRegisteredEvent.class.getSimpleName(),
                 new StoreWaitingRegisteredEvent(storeWaiting.getId())
+        );
+        storeWaitingSseEventPublisher.publish(
+                new StoreWaitingEvent(
+                        storeId,
+                        storeWaiting.getId(),
+                        StoreWaitingEvent.Type.CREATED
+                )
         );
     }
 

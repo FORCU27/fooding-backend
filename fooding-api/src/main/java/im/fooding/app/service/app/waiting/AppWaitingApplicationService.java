@@ -3,10 +3,12 @@ package im.fooding.app.service.app.waiting;
 import im.fooding.app.dto.request.app.waiting.AppWaitingListRequest;
 import im.fooding.app.dto.request.app.waiting.AppWaitingRegisterRequest;
 import im.fooding.app.dto.response.app.waiting.*;
+import im.fooding.app.publisher.waiting.StoreWaitingSseEventPublisher;
 import im.fooding.app.service.user.notification.UserNotificationApplicationService;
 import im.fooding.core.common.BasicSearch;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.dto.request.waiting.WaitingUserRegisterRequest;
+import im.fooding.core.event.waiting.StoreWaitingEvent;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.waiting.StoreWaiting;
 import im.fooding.core.model.waiting.StoreWaitingChannel;
@@ -44,6 +46,7 @@ public class AppWaitingApplicationService {
     private final UserNotificationApplicationService userNotificationApplicationService;
     private final WaitingSettingService waitingSettingService;
     private final StoreService storeService;
+    private final StoreWaitingSseEventPublisher storeWaitingSseEventPublisher;
 
     public AppStoreWaitingResponse details(long id) {
         return AppStoreWaitingResponse.from(storeWaitingService.get(id));
@@ -85,6 +88,14 @@ public class AppWaitingApplicationService {
         long waitingTurn = storeWaitingService.getWaitingCount(store);
         long expectedTimeMinute = waitingSetting.getEstimatedWaitingTimeMinutes() * waitingTurn;
         long recentEntryTimeMinute = 5; // todo: 최근 입장 시간 구현 필요
+
+        storeWaitingSseEventPublisher.publish(
+                new StoreWaitingEvent(
+                        storeId,
+                        storeWaiting.getId(),
+                        StoreWaitingEvent.Type.CREATED
+                )
+        );
 
         return new AppWaitingRegisterResponse(
                 callNumber,
