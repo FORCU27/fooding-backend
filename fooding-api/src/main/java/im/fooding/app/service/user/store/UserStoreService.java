@@ -16,11 +16,11 @@ import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.global.util.Util;
 import im.fooding.core.model.bookmark.Bookmark;
 import im.fooding.core.model.store.Store;
-import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.store.StoreStatus;
 import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.model.store.information.StoreDailyOperatingTime;
 import im.fooding.core.model.store.information.StoreOperatingHour;
+import im.fooding.core.model.store.popular.PopularStore;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingStatus;
 import im.fooding.core.repository.user.UserRepository;
@@ -29,14 +29,12 @@ import im.fooding.core.service.store.RecentStoreService;
 import im.fooding.core.service.store.StoreOperatingHourService;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.store.document.StoreDocumentService;
+import im.fooding.core.service.store.popular.PopularStoreService;
 import im.fooding.core.service.store.view.StoreViewService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.query.SortDirection;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -55,6 +53,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserStoreService {
     private final StoreService storeService;
+    private final PopularStoreService popularStoreService;
     private final StoreOperatingHourService storeOperatingHourService;
     private final WaitingSettingService waitingSettingService;
     private final BookmarkService bookmarkService;
@@ -73,15 +72,7 @@ public class UserStoreService {
         Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), request.getLatitude(), request.getLongitude(), request.getRegionIds(), request.getCategory(), false, userVisibleStatuses, null);
         List<UserStoreListResponse> list = stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList();
 
-        if (list != null && !list.isEmpty()) {
-            // 영업상태 세팅
-            setOperatingStatus(list, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
-
-            // 북마크 여부 세팅
-            if (userInfo != null) {
-                setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
-            }
-        }
+        setOperatingStatusAndBookmarked(userInfo, list);
         return PageResponse.of(list, PageInfo.of(stores));
     }
 
@@ -96,15 +87,7 @@ public class UserStoreService {
                     .map(store -> UserStoreListResponse.of(store, null))
                     .toList();
 
-            if (list != null && !list.isEmpty()) {
-                // 영업상태 세팅
-                setOperatingStatus(list, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
-
-                // 북마크 여부 세팅
-                if (userInfo != null) {
-                    setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
-                }
-            }
+            setOperatingStatusAndBookmarked(userInfo, list);
 
             if (StringUtils.hasText(request.getSearchString())) {
                 eventProducerService.publishEvent("SearchKeywordSavedEvent", new SearchKeywordSavedEvent(request.getSearchString()));
@@ -250,29 +233,25 @@ public class UserStoreService {
         }
     }
 
-    @Cacheable(
-            value = "PopularStoreList",
-            key = "'topByReview'",
-            cacheManager = "contentCacheManager"
-    )
     @Transactional(readOnly = true)
     public UserPopularStoresResponse retrievePopular(UserInfo userInfo) {
-        Set<StoreStatus> userVisibleStatuses = EnumSet.of(
-                StoreStatus.APPROVED
-        );
+        List<PopularStore> popularStores = popularStoreService.getPopularStores();
+        List<UserStoreListResponse> popularStoreList = popularStores.stream()
+                .map(popularStore -> UserStoreListResponse.of(popularStore, null)).toList();
 
-        Page<Store> stores = storeService.list(Pageable.ofSize(10), StoreSortType.REVIEW, SortDirection.DESCENDING, null, null, null, null, false, userVisibleStatuses, null);
-        List<UserStoreListResponse> list = stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList();
+        setOperatingStatusAndBookmarked(userInfo, popularStoreList);
+        return new UserPopularStoresResponse(popularStoreList);
+    }
 
-        if (list != null && !list.isEmpty()) {
+    private void setOperatingStatusAndBookmarked(UserInfo userInfo, List<UserStoreListResponse> popularStoreList) {
+        if (popularStoreList != null && !popularStoreList.isEmpty()) {
             // 영업상태 세팅
-            setOperatingStatus(list, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
+            setOperatingStatus(popularStoreList, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
 
             // 북마크 여부 세팅
             if (userInfo != null) {
-                setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
+                setBookmarked(popularStoreList, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
             }
         }
-        return new UserPopularStoresResponse(list);
     }
 }
