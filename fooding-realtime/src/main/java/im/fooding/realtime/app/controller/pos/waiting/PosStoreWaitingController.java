@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/pos/stores/{storeId}/waitings")
+@RequestMapping("/v2/pos/stores/{storeId}/waitings")
 public class PosStoreWaitingController {
 
     private final PosStoreWaitingService posStoreWaitingService;
