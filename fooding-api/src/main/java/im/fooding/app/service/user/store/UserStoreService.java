@@ -68,7 +68,7 @@ public class UserStoreService {
                 StoreStatus.APPROVED
         );
 
-        Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), request.getLatitude(), request.getLongitude(), request.getRegionIds(), request.getCategory(), false, userVisibleStatuses, null);
+        Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), request.getLatitude(), request.getLongitude(), request.getRegionIds(), request.getCategory(), false, userVisibleStatuses, null, null);
         List<UserStoreListResponse> list = stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList();
 
         if (list != null && !list.isEmpty()) {
@@ -254,7 +254,7 @@ public class UserStoreService {
                 StoreStatus.APPROVED
         );
 
-        Page<Store> stores = storeService.list(Pageable.ofSize(10), StoreSortType.REVIEW, SortDirection.DESCENDING, null, null, null, null, false, userVisibleStatuses, null);
+        Page<Store> stores = storeService.list(Pageable.ofSize(10), StoreSortType.REVIEW, SortDirection.DESCENDING, null, null, null, null, false, userVisibleStatuses, null, null);
         List<UserStoreListResponse> list = stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList();
 
         if (list != null && !list.isEmpty()) {
@@ -267,6 +267,36 @@ public class UserStoreService {
             }
         }
         return new UserPopularStoresResponse(list);
+    }
+
+    @Cacheable(
+            value = "AlsoViewedStoreList",
+            key = "'alsoViewedStore_' + #id",
+            cacheManager = "contentCacheManager"
+    )
+    @Transactional(readOnly = true)
+    public PageResponse<UserStoreListResponse> retrieveAlsoViewed(Long id, UserInfo userInfo) {
+        //일단 스토어가 없으니 인기순으로 표출
+        //TODO: 추후 스토어 id로 해당 스토어와 category같은 것 같은 조건문 추가할것
+
+        Set<StoreStatus> userVisibleStatuses = EnumSet.of(
+                StoreStatus.APPROVED
+        );
+
+        Page<Store> stores = storeService.list(Pageable.ofSize(10), StoreSortType.RECOMMENDED, SortDirection.DESCENDING, null, null, null, null, false, userVisibleStatuses, null, id);
+        List<UserStoreListResponse> list = stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList();
+
+        if (list != null && !list.isEmpty()) {
+            // 영업상태 세팅
+            setOperatingStatus(list, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
+
+            // 북마크 여부 세팅
+            if (userInfo != null) {
+                setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
+            }
+        }
+
+        return PageResponse.of(list, PageInfo.of(stores));
     }
 }
 
