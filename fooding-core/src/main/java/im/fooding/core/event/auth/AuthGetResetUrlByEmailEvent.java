@@ -7,6 +7,7 @@ public record AuthGetResetUrlByEmailEvent(
         String email,
         String resetUrl,
         String senderEmail,
-        NotificationChannel channel
+        NotificationChannel channel,
+        String expiredAt
 ) {
 }
