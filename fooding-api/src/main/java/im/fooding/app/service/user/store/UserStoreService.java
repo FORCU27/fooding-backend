@@ -16,6 +16,7 @@ import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.global.util.Util;
 import im.fooding.core.model.bookmark.Bookmark;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.store.StoreStatus;
 import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.model.store.information.StoreDailyOperatingTime;
@@ -33,7 +34,9 @@ import im.fooding.core.service.store.popular.PopularStoreService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -248,11 +251,6 @@ public class UserStoreService {
         }
     }
 
-    @Cacheable(
-            value = "AlsoViewedStoreList",
-            key = "'alsoViewedStore_' + #id",
-            cacheManager = "contentCacheManager"
-    )
     @Transactional(readOnly = true)
     public PageResponse<UserStoreListResponse> retrieveAlsoViewed(Long id, UserInfo userInfo) {
         //일단 스토어가 없으니 인기순으로 표출
