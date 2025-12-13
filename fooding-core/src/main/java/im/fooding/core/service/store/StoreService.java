@@ -49,9 +49,10 @@ public class StoreService {
      * @param includeDeleted
      * @param statuses       조회할 상태들, null이면 모든 상태 조회
      * @param searchString
+     * @param excludeStoreId 제외할 스토어 id
      */
-    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, Double latitude, Double longitude, List<String> regionIds, StoreCategory category, boolean includeDeleted, Set<StoreStatus> statuses, String searchString) {
-        return storeRepository.list(pageable, sortType, sortDirection, latitude, longitude, regionIds, category, includeDeleted, statuses, searchString);
+    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, Double latitude, Double longitude, List<String> regionIds, StoreCategory category, boolean includeDeleted, Set<StoreStatus> statuses, String searchString, Long excludeStoreId) {
+        return storeRepository.list(pageable, sortType, sortDirection, latitude, longitude, regionIds, category, includeDeleted, statuses, searchString, excludeStoreId);
     }
 
     public List<Store> list(List<Long> ids) {
