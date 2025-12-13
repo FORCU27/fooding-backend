@@ -3,6 +3,7 @@ package im.fooding.app.dto.response.user.store;
 import im.fooding.core.dto.response.StoreImageResponse;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreCategory;
+import im.fooding.core.model.store.popular.PopularStore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
 import lombok.Builder;
@@ -82,6 +83,22 @@ public class UserStoreListResponse {
                 .averageRating(store.getAverageRating())
                 .estimatedWaitingTimeMinutes(estimatedWaitingTime)
                 .images(store.getImages())
+                .build();
+    }
+
+    public static UserStoreListResponse of(PopularStore store, Integer estimatedWaitingTime) {
+        return UserStoreListResponse.builder()
+                .id(store.id())
+                .category(store.category())
+                .regionId(store.regionId())
+                .name(store.name())
+                .address(store.address())
+                .visitCount(store.visitCount())
+                .reviewCount(store.reviewCount())
+                .bookmarkCount(store.bookmarkCount())
+                .averageRating(store.averageRating())
+                .estimatedWaitingTimeMinutes(estimatedWaitingTime)
+                .images(store.images())
                 .build();
     }
 
