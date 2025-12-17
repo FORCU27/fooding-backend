@@ -1,0 +1,5934 @@
+{
+  "info": {
+    "name": "fooding-api",
+    "_postman_id": "c472d77a-1d35-43e9-b8b3-3eee9d6a77ab",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "ping/PingController",
+      "item": [
+        {
+          "name": "GET /ping",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ping",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ping"
+              ]
+            },
+            "description": "Handler: pong"
+          }
+        }
+      ]
+    },
+    {
+      "name": "app/storeservice/AppStoreServiceController",
+      "item": [
+        {
+          "name": "해당 가게에 대한 가입 스토어 서비스 목록 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/app/store-service/{storeId}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "app",
+                "store-service",
+                "{storeId}"
+              ]
+            },
+            "description": "해당 가게에 대한 가입 스토어 서비스 목록 조회"
+          }
+        }
+      ]
+    },
+    {
+      "name": "app/waiting/AppWaitingController",
+      "item": [
+        {
+          "name": "웨이팅 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/app/waitings/stores/{storeId}/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "app",
+                "waitings",
+                "stores",
+                "{storeId}",
+                "requests"
+              ]
+            },
+            "description": "웨이팅 상세 조회"
+          }
+        },
+        {
+          "name": "웨이팅 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/app/waitings/requests/{requestId}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "app",
+                "waitings",
+                "requests",
+                "{requestId}"
+              ]
+            },
+            "description": "웨이팅 상세 조회"
+          }
+        },
+        {
+          "name": "웨이팅 로그 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/app/waitings/requests/{requestId}/logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "app",
+                "waitings",
+                "requests",
+                "{requestId}",
+                "logs"
+              ]
+            },
+            "description": "웨이팅 로그 조회"
+          }
+        }
+      ]
+    },
+    {
+      "name": "app/reward/AppRewardController",
+      "item": [
+        {
+          "name": "리워드 내역 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/app/rewards/point",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "app",
+                "rewards",
+                "point"
+              ]
+            },
+            "description": "특정 가게에 누적된 리워드 포인트 확인"
+          }
+        },
+        {
+          "name": "리워드 로그 내역 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/app/rewards/log",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "app",
+                "rewards",
+                "log"
+              ]
+            },
+            "description": "리워드 로그 내역 조회"
+          }
+        },
+        {
+          "name": "포인트 사용",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/app/rewards/use",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "app",
+                "rewards",
+                "use"
+              ]
+            },
+            "description": "포인트 사용"
+          }
+        },
+        {
+          "name": "포인트 적립",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/app/rewards/get",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "app",
+                "rewards",
+                "get"
+              ]
+            },
+            "description": "포인트 적립"
+          }
+        },
+        {
+          "name": "쿠폰 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/app/rewards/coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "app",
+                "rewards",
+                "coupons"
+              ]
+            },
+            "description": "쿠폰 조회"
+          }
+        },
+        {
+          "name": "쿠폰 사용 요청",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/app/rewards/coupons/{id}/request",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "app",
+                "rewards",
+                "coupons",
+                "{id}",
+                "request"
+              ]
+            },
+            "description": "쿠폰 사용 요청"
+          }
+        }
+      ]
+    },
+    {
+      "name": "app/device/AppDeviceController",
+      "item": [
+        {
+          "name": "비로그인 유저 디바이스 연결",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/app/devices",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "app",
+                "devices"
+              ]
+            },
+            "description": "비로그인 유저 디바이스 연결"
+          }
+        }
+      ]
+    },
+    {
+      "name": "app/store/AppStoreController",
+      "item": [
+        {
+          "name": "가게 리스트 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/app/stores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "app",
+                "stores"
+              ]
+            },
+            "description": "가게 리스트 조회"
+          }
+        },
+        {
+          "name": "가게 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/app/stores/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "app",
+                "stores",
+                "{id}"
+              ]
+            },
+            "description": "가게 조회"
+          }
+        }
+      ]
+    },
+    {
+      "name": "test/TestController",
+      "item": [
+        {
+          "name": "GET /test",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/test",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "test"
+              ]
+            },
+            "description": "Handler: getAll"
+          }
+        },
+        {
+          "name": "POST /test",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/test",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "test"
+              ]
+            },
+            "description": "Handler: create"
+          }
+        }
+      ]
+    },
+    {
+      "name": "file/FileUploadController",
+      "item": [
+        {
+          "name": "파일 업로드",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/file-upload",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "file-upload"
+              ]
+            },
+            "description": "파일을  업로드합니다"
+          }
+        }
+      ]
+    },
+    {
+      "name": "auth/AuthController",
+      "item": [
+        {
+          "name": "로그인한 정보",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            },
+            "description": "로그인한 유저의 정보를 응답한다."
+          }
+        },
+        {
+          "name": "로그인한 유저 정보 수정",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            },
+            "description": "로그인된 상태에서 정보 수정"
+          }
+        },
+        {
+          "name": "로그인한 유저 프로필 이미지 수정",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me/profile-image",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me",
+                "profile-image"
+              ]
+            },
+            "description": "로그인된 상태에서 프로필 이미지 수정"
+          }
+        },
+        {
+          "name": "닉네임 중복체크",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/nickname/check",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "nickname",
+                "check"
+              ]
+            },
+            "description": "닉네임 중복체크 - nickname 필요"
+          }
+        },
+        {
+          "name": "회원가입",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "회원가입 한다."
+          }
+        },
+        {
+          "name": "일반 로그인",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "이메일, 패스워드로 일반 로그인 처리 후 토큰 응답"
+          }
+        },
+        {
+          "name": "토큰 갱신",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            },
+            "description": "accessToken, refreshToken 갱신"
+          }
+        },
+        {
+          "name": "소셜 로그인",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/social-login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "social-login"
+              ]
+            },
+            "description": "소셜 로그인 처리 후 토큰 응답"
+          }
+        },
+        {
+          "name": "테스트시 토큰 받기 위한 웹훅 url",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/google/token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "google",
+                "token"
+              ]
+            },
+            "description": "테스트시 토큰 받기 위한 웹훅 url"
+          }
+        },
+        {
+          "name": "테스트시 토큰 받기 위한 웹훅 url",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/kakao/token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "kakao",
+                "token"
+              ]
+            },
+            "description": "테스트시 토큰 받기 위한 웹훅 url"
+          }
+        },
+        {
+          "name": "테스트시 토큰 받기 위한 웹훅 url",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/naver/token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "naver",
+                "token"
+              ]
+            },
+            "description": "테스트시 토큰 받기 위한 웹훅 url"
+          }
+        },
+        {
+          "name": "테스트시 토큰 받기 위한 웹훅 url",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/apple/token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "apple",
+                "token"
+              ]
+            },
+            "description": "테스트시 토큰 받기 위한 웹훅 url"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/post/AdminPostController",
+      "item": [
+        {
+          "name": "게시글 목록 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/posts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "posts"
+              ]
+            },
+            "description": "게시글 목록 조회"
+          }
+        },
+        {
+          "name": "게시글 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/posts/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "posts",
+                "{id}"
+              ]
+            },
+            "description": "게시글 상세 조회"
+          }
+        },
+        {
+          "name": "게시글 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/posts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "posts"
+              ]
+            },
+            "description": "게시글 생성"
+          }
+        },
+        {
+          "name": "게시글 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/posts/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "posts",
+                "{id}"
+              ]
+            },
+            "description": "게시글 수정"
+          }
+        },
+        {
+          "name": "게시글 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/posts/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "posts",
+                "{id}"
+              ]
+            },
+            "description": "게시글 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/file/AdminFileUploadController",
+      "item": [
+        {
+          "name": "파일 업로드",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/file-upload",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "file-upload"
+              ]
+            },
+            "description": "관리자 파일 업로드"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/notification/AdminNotificationController",
+      "item": [
+        {
+          "name": "알림 전체 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notifications"
+              ]
+            },
+            "description": "알림 전체 조회"
+          }
+        },
+        {
+          "name": "알림 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notifications/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notifications",
+                "{id}"
+              ]
+            },
+            "description": "알림 상세 조회"
+          }
+        },
+        {
+          "name": "알림 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notifications"
+              ]
+            },
+            "description": "알림 생성"
+          }
+        },
+        {
+          "name": "알림 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notifications/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notifications",
+                "{id}"
+              ]
+            },
+            "description": "알림 수정"
+          }
+        },
+        {
+          "name": "알림 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notifications/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notifications",
+                "{id}"
+              ]
+            },
+            "description": "알림 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/notification/AdminNotificationTemplateController",
+      "item": [
+        {
+          "name": "알림 양식 전체 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notification-template",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notification-template"
+              ]
+            },
+            "description": "알림 양식 전체 조회"
+          }
+        },
+        {
+          "name": "알림 양식 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notification-template/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notification-template",
+                "{id}"
+              ]
+            },
+            "description": "알림 양식 상세 조회"
+          }
+        },
+        {
+          "name": "알림 양식 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notification-template",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notification-template"
+              ]
+            },
+            "description": "알림 양식 생성"
+          }
+        },
+        {
+          "name": "알림 양식 수정",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notification-template/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notification-template",
+                "{id}"
+              ]
+            },
+            "description": "알림 양식 수정"
+          }
+        },
+        {
+          "name": "알림 양식 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notification-template/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notification-template",
+                "{id}"
+              ]
+            },
+            "description": "알림 양식 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/rewards/AdminRewardLogController",
+      "item": [
+        {
+          "name": "리워드 로그 전체 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/rewards/logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "rewards",
+                "logs"
+              ]
+            },
+            "description": "리워드 로그 전체 조회"
+          }
+        },
+        {
+          "name": "리워드 로그 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/rewards/logs/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "rewards",
+                "logs",
+                "{id}"
+              ]
+            },
+            "description": "리워드 로그 상세 조회"
+          }
+        },
+        {
+          "name": "리워드 로그 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/rewards/logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "rewards",
+                "logs"
+              ]
+            },
+            "description": "리워드 로그 생성"
+          }
+        },
+        {
+          "name": "리워드 로그 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/rewards/logs/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "rewards",
+                "logs",
+                "{id}"
+              ]
+            },
+            "description": "리워드 로그 수정"
+          }
+        },
+        {
+          "name": "리워드 로그 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/rewards/logs/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "rewards",
+                "logs",
+                "{id}"
+              ]
+            },
+            "description": "리워드 로그 삭제"
+          }
+        },
+        {
+          "name": "리워드 로그 상태 변경",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/rewards/logs/{id}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "rewards",
+                "logs",
+                "{id}",
+                "status"
+              ]
+            },
+            "description": "리워드 로그 상태 변경"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/rewards/AdminRewardPointController",
+      "item": [
+        {
+          "name": "리워드 포인트 전체 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/rewards/points",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "rewards",
+                "points"
+              ]
+            },
+            "description": "리워드 포인트 전체 조회"
+          }
+        },
+        {
+          "name": "리워드 포인트 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/rewards/points/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "rewards",
+                "points",
+                "{id}"
+              ]
+            },
+            "description": "리워드 포인트 상세 조회"
+          }
+        },
+        {
+          "name": "리워드 포인트 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/rewards/points",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "rewards",
+                "points"
+              ]
+            },
+            "description": "리워드 포인트 생성"
+          }
+        },
+        {
+          "name": "리워드 포인트 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/rewards/points/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "rewards",
+                "points",
+                "{id}"
+              ]
+            },
+            "description": "리워드 포인트 수정"
+          }
+        },
+        {
+          "name": "리워드 포인트 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/rewards/points/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "rewards",
+                "points",
+                "{id}"
+              ]
+            },
+            "description": "리워드 포인트 삭제"
+          }
+        },
+        {
+          "name": "포인트 추가",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/rewards/points/{id}/add-point",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "rewards",
+                "points",
+                "{id}",
+                "add-point"
+              ]
+            },
+            "description": "포인트 추가"
+          }
+        },
+        {
+          "name": "포인트 사용",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/rewards/points/{id}/use-point",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "rewards",
+                "points",
+                "{id}",
+                "use-point"
+              ]
+            },
+            "description": "포인트 사용"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/stores/AdminStoreBookmarkController",
+      "item": [
+        {
+          "name": "단골 전체 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/{storeId}/bookmarks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "{storeId}",
+                "bookmarks"
+              ]
+            },
+            "description": "단골 전체 조회"
+          }
+        },
+        {
+          "name": "단골 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/{storeId}/bookmarks/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "{storeId}",
+                "bookmarks",
+                "{id}"
+              ]
+            },
+            "description": "단골 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/stores/AdminStoreController",
+      "item": [
+        {
+          "name": "가게 전체 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores"
+              ]
+            },
+            "description": "가게 전체 조회"
+          }
+        },
+        {
+          "name": "가게 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "{id}"
+              ]
+            },
+            "description": "가게 상세 조회"
+          }
+        },
+        {
+          "name": "가게 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores"
+              ]
+            },
+            "description": "가게 생성"
+          }
+        },
+        {
+          "name": "가게 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "{id}"
+              ]
+            },
+            "description": "가게 수정"
+          }
+        },
+        {
+          "name": "가게 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "{id}"
+              ]
+            },
+            "description": "가게 삭제"
+          }
+        },
+        {
+          "name": "매장 승인",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/{id}/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "{id}",
+                "approve"
+              ]
+            },
+            "description": "매장 승인"
+          }
+        },
+        {
+          "name": "매장 거부",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/{id}/reject",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "{id}",
+                "reject"
+              ]
+            },
+            "description": "매장 거부"
+          }
+        },
+        {
+          "name": "매장 일시정지",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/{id}/suspend",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "{id}",
+                "suspend"
+              ]
+            },
+            "description": "매장 일시정지"
+          }
+        },
+        {
+          "name": "매장 폐업",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/{id}/close",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "{id}",
+                "close"
+              ]
+            },
+            "description": "매장 폐업"
+          }
+        },
+        {
+          "name": "매장 심사중으로 변경",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/{id}/pending",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "{id}",
+                "pending"
+              ]
+            },
+            "description": "매장 심사중으로 변경"
+          }
+        },
+        {
+          "name": "엘라스틱서치 동기화",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/sync",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "sync"
+              ]
+            },
+            "description": "엘라스틱서치 동기화"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/stores/AdminStoreImageController",
+      "item": [
+        {
+          "name": "가게 이미지 목록 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/{storeId}/images",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "{storeId}",
+                "images"
+              ]
+            },
+            "description": "가게 이미지 목록 조회"
+          }
+        },
+        {
+          "name": "가게 이미지 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/images/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "images",
+                "{id}"
+              ]
+            },
+            "description": "가게 이미지 상세 조회"
+          }
+        },
+        {
+          "name": "가게 이미지 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/images",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "images"
+              ]
+            },
+            "description": "가게 이미지 생성"
+          }
+        },
+        {
+          "name": "가게 이미지 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/images/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "images",
+                "{id}"
+              ]
+            },
+            "description": "가게 이미지 수정"
+          }
+        },
+        {
+          "name": "가게 이미지 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/images/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "images",
+                "{id}"
+              ]
+            },
+            "description": "가게 이미지 삭제"
+          }
+        },
+        {
+          "name": "가게 이미지 대표이미지 설정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores/images/{id}/main",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores",
+                "images",
+                "{id}",
+                "main"
+              ]
+            },
+            "description": "가게 이미지 대표이미지 설정"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/stores/AdminStorePostController",
+      "item": [
+        {
+          "name": "가게 소식 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/store-posts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "store-posts"
+              ]
+            },
+            "description": "가게 소식 생성"
+          }
+        },
+        {
+          "name": "가게 소식 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/store-posts/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "store-posts",
+                "{id}"
+              ]
+            },
+            "description": "가게 소식 조회"
+          }
+        },
+        {
+          "name": "가게 소식 조회(page)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/store-posts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "store-posts"
+              ]
+            },
+            "description": "가게 소식 조회(page)"
+          }
+        },
+        {
+          "name": "가게 소식 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/store-posts/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "store-posts",
+                "{id}"
+              ]
+            },
+            "description": "가게 소식 수정"
+          }
+        },
+        {
+          "name": "가게 소식 제거",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/store-posts/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "store-posts",
+                "{id}"
+              ]
+            },
+            "description": "가게 소식 제거"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/pointshop/AdminStorePointShopController",
+      "item": [
+        {
+          "name": "포인트샵 상품 리스트 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/point-shop",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "point-shop"
+              ]
+            },
+            "description": "포인트샵 상품 리스트 조회"
+          }
+        },
+        {
+          "name": "포인트샵 상품 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/point-shop/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "point-shop",
+                "{id}"
+              ]
+            },
+            "description": "포인트샵 상품 상세 조회"
+          }
+        },
+        {
+          "name": "포인트샵 상품 등록",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/point-shop",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "point-shop"
+              ]
+            },
+            "description": "포인트샵 상품 등록"
+          }
+        },
+        {
+          "name": "포인트샵 상품 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/point-shop/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "point-shop",
+                "{id}"
+              ]
+            },
+            "description": "포인트샵 상품 수정"
+          }
+        },
+        {
+          "name": "포인트샵 상품 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/point-shop/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "point-shop",
+                "{id}"
+              ]
+            },
+            "description": "포인트샵 상품 삭제"
+          }
+        },
+        {
+          "name": "포인트샵 상품 판매 상태로 변경",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/point-shop/{id}/active",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "point-shop",
+                "{id}",
+                "active"
+              ]
+            },
+            "description": "포인트샵 상품 판매 상태로 변경"
+          }
+        },
+        {
+          "name": "포인트샵 상품 판매중지 상태로 변경",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/point-shop/{id}/inactive",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "point-shop",
+                "{id}",
+                "inactive"
+              ]
+            },
+            "description": "포인트샵 상품 판매중지 상태로 변경"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/coupons/AdminCouponController",
+      "item": [
+        {
+          "name": "쿠폰 등록",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "coupons"
+              ]
+            },
+            "description": "쿠폰 등록"
+          }
+        },
+        {
+          "name": "쿠폰 리스트 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "coupons"
+              ]
+            },
+            "description": "쿠폰 리스트 조회"
+          }
+        },
+        {
+          "name": "쿠폰 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/coupons/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "coupons",
+                "{id}"
+              ]
+            },
+            "description": "쿠폰 조회"
+          }
+        },
+        {
+          "name": "쿠폰 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/coupons/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "coupons",
+                "{id}"
+              ]
+            },
+            "description": "쿠폰 수정"
+          }
+        },
+        {
+          "name": "쿠폰 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/coupons/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "coupons",
+                "{id}"
+              ]
+            },
+            "description": "쿠폰 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/coupons/AdminUserCouponController",
+      "item": [
+        {
+          "name": "쿠폰 발급",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/user-coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "user-coupons"
+              ]
+            },
+            "description": "쿠폰 발급"
+          }
+        },
+        {
+          "name": "쿠폰 선물하기",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/user-coupons/gift",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "user-coupons",
+                "gift"
+              ]
+            },
+            "description": "쿠폰 선물하기"
+          }
+        },
+        {
+          "name": "발급된 쿠폰 리스트 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/user-coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "user-coupons"
+              ]
+            },
+            "description": "발급된 쿠폰 리스트 조회"
+          }
+        },
+        {
+          "name": "발급된 쿠폰 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/user-coupons/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "user-coupons",
+                "{id}"
+              ]
+            },
+            "description": "발급된 쿠폰 조회"
+          }
+        },
+        {
+          "name": "발급된 쿠폰 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/user-coupons/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "user-coupons",
+                "{id}"
+              ]
+            },
+            "description": "발급된 쿠폰 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/region/AdminRegionController",
+      "item": [
+        {
+          "name": "지역 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/regions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "regions"
+              ]
+            },
+            "description": "지역 생성"
+          }
+        },
+        {
+          "name": "지역 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/regions/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "regions",
+                "{id}"
+              ]
+            },
+            "description": "지역 조회"
+          }
+        },
+        {
+          "name": "지역 조회(page)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/regions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "regions"
+              ]
+            },
+            "description": "지역 조회(page)"
+          }
+        },
+        {
+          "name": "지역 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/regions/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "regions",
+                "{id}"
+              ]
+            },
+            "description": "지역 수정"
+          }
+        },
+        {
+          "name": "지역 제거",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/regions/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "regions",
+                "{id}"
+              ]
+            },
+            "description": "지역 제거"
+          }
+        },
+        {
+          "name": "지역 생성 (batch)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/regions/batch",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "regions",
+                "batch"
+              ]
+            },
+            "description": "지역 생성 (batch)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/lead/AdminLeadController",
+      "item": [
+        {
+          "name": "리드 전체 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/leads",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "leads"
+              ]
+            },
+            "description": "리드 전체 조회"
+          }
+        },
+        {
+          "name": "리드를 Store로 업로드",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/leads/{id}/upload",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "leads",
+                "{id}",
+                "upload"
+              ]
+            },
+            "description": "리드를 Store로 업로드"
+          }
+        },
+        {
+          "name": "리드 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/leads/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "leads",
+                "{id}"
+              ]
+            },
+            "description": "리드 상세 조회"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/waiting/AdminStoreWaitingController",
+      "item": [
+        {
+          "name": "가게 웨이팅 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "requests"
+              ]
+            },
+            "description": "가게 웨이팅 생성"
+          }
+        },
+        {
+          "name": "가게 웨이팅 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/requests/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "requests",
+                "{id}"
+              ]
+            },
+            "description": "가게 웨이팅 조회"
+          }
+        },
+        {
+          "name": "가게 웨이팅 조회(page)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "requests"
+              ]
+            },
+            "description": "가게 웨이팅 조회(page)"
+          }
+        },
+        {
+          "name": "가게 웨이팅 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/requests/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "requests",
+                "{id}"
+              ]
+            },
+            "description": "가게 웨이팅 수정"
+          }
+        },
+        {
+          "name": "가게 웨이팅 제거",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/requests/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "requests",
+                "{id}"
+              ]
+            },
+            "description": "가게 웨이팅 제거"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/waiting/AdminWaitingLogController",
+      "item": [
+        {
+          "name": "웨이팅 로그 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "logs"
+              ]
+            },
+            "description": "웨이팅 로그 생성"
+          }
+        },
+        {
+          "name": "웨이팅 로그 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/logs/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "logs",
+                "{id}"
+              ]
+            },
+            "description": "웨이팅 로그 조회"
+          }
+        },
+        {
+          "name": "웨이팅 로그 조회(page)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "logs"
+              ]
+            },
+            "description": "웨이팅 로그 조회(page)"
+          }
+        },
+        {
+          "name": "웨이팅 로그 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/logs/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "logs",
+                "{id}"
+              ]
+            },
+            "description": "웨이팅 로그 수정"
+          }
+        },
+        {
+          "name": "웨이팅 로그 제거",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/logs/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "logs",
+                "{id}"
+              ]
+            },
+            "description": "웨이팅 로그 제거"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/waiting/AdminWaitingSettingController",
+      "item": [
+        {
+          "name": "웨이팅 설정 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "settings"
+              ]
+            },
+            "description": "웨이팅 설정 생성"
+          }
+        },
+        {
+          "name": "웨이팅 설정 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/settings/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "settings",
+                "{id}"
+              ]
+            },
+            "description": "웨이팅 설정 조회"
+          }
+        },
+        {
+          "name": "웨이팅 설정 조회(page)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "settings"
+              ]
+            },
+            "description": "웨이팅 설정 조회(page)"
+          }
+        },
+        {
+          "name": "웨이팅 설정 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/settings/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "settings",
+                "{id}"
+              ]
+            },
+            "description": "웨이팅 설정 수정"
+          }
+        },
+        {
+          "name": "웨이팅 설정 제거",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/settings/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "settings",
+                "{id}"
+              ]
+            },
+            "description": "웨이팅 설정 제거"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/waiting/AdminWaitingUserController",
+      "item": [
+        {
+          "name": "웨이팅 유저 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "users"
+              ]
+            },
+            "description": "웨이팅 유저 생성"
+          }
+        },
+        {
+          "name": "웨이팅 유저 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/users/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "users",
+                "{id}"
+              ]
+            },
+            "description": "웨이팅 유저 조회"
+          }
+        },
+        {
+          "name": "웨이팅 유저 조회(page)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "users"
+              ]
+            },
+            "description": "웨이팅 유저 조회(page)"
+          }
+        },
+        {
+          "name": "웨이팅 유저 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/users/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "users",
+                "{id}"
+              ]
+            },
+            "description": "웨이팅 유저 수정"
+          }
+        },
+        {
+          "name": "웨이팅 유저 제거",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/waitings/users/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "waitings",
+                "users",
+                "{id}"
+              ]
+            },
+            "description": "웨이팅 유저 제거"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/review/AdminReviewController",
+      "item": [
+        {
+          "name": "리뷰 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/review",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "review"
+              ]
+            },
+            "description": "리뷰 조회"
+          }
+        },
+        {
+          "name": "특정 리뷰 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/review/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "review",
+                "{id}"
+              ]
+            },
+            "description": "특정 리뷰 상세 조회"
+          }
+        },
+        {
+          "name": "리뷰 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/review",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "review"
+              ]
+            },
+            "description": "리뷰 생성"
+          }
+        },
+        {
+          "name": "리뷰 수정",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/review/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "review",
+                "{id}"
+              ]
+            },
+            "description": "리뷰 수정"
+          }
+        },
+        {
+          "name": "리뷰 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/review/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "review",
+                "{id}"
+              ]
+            },
+            "description": "리뷰 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/users/AdminUserController",
+      "item": [
+        {
+          "name": "유저 리스트",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
+            },
+            "description": "유저 리스트"
+          }
+        },
+        {
+          "name": "유저 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{id}"
+              ]
+            },
+            "description": "유저 조회"
+          }
+        },
+        {
+          "name": "유저 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
+            },
+            "description": "유저 생성"
+          }
+        },
+        {
+          "name": "유저 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{id}"
+              ]
+            },
+            "description": "유저 수정"
+          }
+        },
+        {
+          "name": "유저 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{id}"
+              ]
+            },
+            "description": "유저 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/menu/AdminMenuBoardController",
+      "item": [
+        {
+          "name": "메뉴판 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menu-boards",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menu-boards"
+              ]
+            },
+            "description": "메뉴판 생성"
+          }
+        },
+        {
+          "name": "메뉴판 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menu-boards/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menu-boards",
+                "{id}"
+              ]
+            },
+            "description": "메뉴판 조회"
+          }
+        },
+        {
+          "name": "메뉴판 조회(page)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menu-boards",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menu-boards"
+              ]
+            },
+            "description": "메뉴판 조회(page)"
+          }
+        },
+        {
+          "name": "메뉴판 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menu-boards/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menu-boards",
+                "{id}"
+              ]
+            },
+            "description": "메뉴판 수정"
+          }
+        },
+        {
+          "name": "메뉴판 제거",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menu-boards/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menu-boards",
+                "{id}"
+              ]
+            },
+            "description": "메뉴판 제거"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/menu/AdminMenuCategoryController",
+      "item": [
+        {
+          "name": "메뉴 카테고리 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menu-categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menu-categories"
+              ]
+            },
+            "description": "메뉴 카테고리 생성"
+          }
+        },
+        {
+          "name": "메뉴 카테고리 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menu-categories/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menu-categories",
+                "{id}"
+              ]
+            },
+            "description": "메뉴 카테고리 조회"
+          }
+        },
+        {
+          "name": "메뉴 카테고리 조회(page)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menu-categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menu-categories"
+              ]
+            },
+            "description": "메뉴 카테고리 조회(page)"
+          }
+        },
+        {
+          "name": "메뉴 카테고리 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menu-categories/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menu-categories",
+                "{id}"
+              ]
+            },
+            "description": "메뉴 카테고리 수정"
+          }
+        },
+        {
+          "name": "메뉴 카테고리 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menu-categories/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menu-categories",
+                "{id}"
+              ]
+            },
+            "description": "메뉴 카테고리 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/menu/AdminMenuController",
+      "item": [
+        {
+          "name": "메뉴 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menus",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menus"
+              ]
+            },
+            "description": "메뉴 생성"
+          }
+        },
+        {
+          "name": "메뉴 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menus/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menus",
+                "{id}"
+              ]
+            },
+            "description": "메뉴 조회"
+          }
+        },
+        {
+          "name": "메뉴 조회(page)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menus",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menus"
+              ]
+            },
+            "description": "메뉴 조회(page)"
+          }
+        },
+        {
+          "name": "메뉴 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menus/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menus",
+                "{id}"
+              ]
+            },
+            "description": "메뉴 수정"
+          }
+        },
+        {
+          "name": "메뉴 제거",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/menus/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "menus",
+                "{id}"
+              ]
+            },
+            "description": "메뉴 제거"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/report/AdminReportController",
+      "item": [
+        {
+          "name": "신고 생성 API",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/report",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "report"
+              ]
+            },
+            "description": "신고 생성 API"
+          }
+        },
+        {
+          "name": "신고 삭제 API",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/report/{reportId}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "report",
+                "{reportId}"
+              ]
+            },
+            "description": "신고 삭제 API"
+          }
+        },
+        {
+          "name": "신고 수정 API",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/report/{reportId}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "report",
+                "{reportId}"
+              ]
+            },
+            "description": "신고 수정 API"
+          }
+        },
+        {
+          "name": "신고 반려 API",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/report/{id}/reject",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "report",
+                "{id}",
+                "reject"
+              ]
+            },
+            "description": "신고 반려 API"
+          }
+        },
+        {
+          "name": "신고 승인 API",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/report/{id}/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "report",
+                "{id}",
+                "approve"
+              ]
+            },
+            "description": "신고 승인 API"
+          }
+        },
+        {
+          "name": "신고 처리 완료 API",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/report/{id}/success",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "report",
+                "{id}",
+                "success"
+              ]
+            },
+            "description": "신고 처리 완료 API"
+          }
+        },
+        {
+          "name": "신고 목록 조회 API",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/report",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "report"
+              ]
+            },
+            "description": "신고 목록 조회 API"
+          }
+        },
+        {
+          "name": "신고 상세 조회 API",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/report/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "report",
+                "{id}"
+              ]
+            },
+            "description": "신고 상세 조회 API"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/device/AdminDeviceController",
+      "item": [
+        {
+          "name": "해당 매장의 모든 디바이스 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/devices",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "devices"
+              ]
+            },
+            "description": "해당 매장의 모든 디바이스 조회"
+          }
+        },
+        {
+          "name": "모든 디바이스 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/devices/all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "devices",
+                "all"
+              ]
+            },
+            "description": "모든 디바이스 조회"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/service/AdminStoreServiceController",
+      "item": [
+        {
+          "name": "스토어 서비스 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/service",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "service"
+              ]
+            },
+            "description": "스토어 서비스 생성"
+          }
+        },
+        {
+          "name": "모든 서비스 가입 내역 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/service",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "service"
+              ]
+            },
+            "description": "모든 서비스 가입 내역 조회"
+          }
+        },
+        {
+          "name": "특정 스토어 서비스 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/service/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "service",
+                "{id}"
+              ]
+            },
+            "description": "특정 스토어 서비스 상세 조회"
+          }
+        },
+        {
+          "name": "스토어 서비스 활성화",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/service/active/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "service",
+                "active",
+                "{id}"
+              ]
+            },
+            "description": "스토어 서비스 활성화"
+          }
+        },
+        {
+          "name": "스토어 서비스 비활성화",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/service/inactive/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "service",
+                "inactive",
+                "{id}"
+              ]
+            },
+            "description": "스토어 서비스 비활성화"
+          }
+        },
+        {
+          "name": "스토어 서비스 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/service/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "service",
+                "{id}"
+              ]
+            },
+            "description": "스토어 서비스 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/userNotifications/AdminUserNotificationController",
+      "item": [
+        {
+          "name": "유저 알림 전체 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/user-notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "user-notifications"
+              ]
+            },
+            "description": "유저 알림 전체 조회"
+          }
+        },
+        {
+          "name": "유저 알림 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/user-notifications/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "user-notifications",
+                "{id}"
+              ]
+            },
+            "description": "유저 알림 상세 조회"
+          }
+        },
+        {
+          "name": "유저 알림 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/user-notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "user-notifications"
+              ]
+            },
+            "description": "유저 알림 생성"
+          }
+        },
+        {
+          "name": "유저 알림 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/user-notifications/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "user-notifications",
+                "{id}"
+              ]
+            },
+            "description": "유저 알림 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "admin/banner/AdminBannerController",
+      "item": [
+        {
+          "name": "배너 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/banners",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "banners"
+              ]
+            },
+            "description": "배너 생성"
+          }
+        },
+        {
+          "name": "배너 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/banners/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "banners",
+                "{id}"
+              ]
+            },
+            "description": "배너 조회"
+          }
+        },
+        {
+          "name": "배너 조회(page)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/banners",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "banners"
+              ]
+            },
+            "description": "배너 조회(page)"
+          }
+        },
+        {
+          "name": "배너 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/banners/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "banners",
+                "{id}"
+              ]
+            },
+            "description": "배너 수정"
+          }
+        },
+        {
+          "name": "배너 제거",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/banners/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "banners",
+                "{id}"
+              ]
+            },
+            "description": "배너 제거"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/recommend/UserRecommendKeywordController",
+      "item": [
+        {
+          "name": "검색어 추천 목록 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/recommend-keywords",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "recommend-keywords"
+              ]
+            },
+            "description": "검색어 추천 목록 조회"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/notification/UserNotificationController",
+      "item": [
+        {
+          "name": "유저 알림 전체 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "notifications"
+              ]
+            },
+            "description": "유저 알림 전체 조회"
+          }
+        },
+        {
+          "name": "유저 알림 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/notifications/{notificationId}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "notifications",
+                "{notificationId}"
+              ]
+            },
+            "description": "유저 알림 상세 조회"
+          }
+        },
+        {
+          "name": "유저 알림 읽음 상태 변경",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/notifications/read",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "notifications",
+                "read"
+              ]
+            },
+            "description": "유저 알림 읽음 상태 변경"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/coupons/UserCouponController",
+      "item": [
+        {
+          "name": "보유한 쿠폰 목록 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "coupons"
+              ]
+            },
+            "description": "보유한 쿠폰 목록 조회"
+          }
+        },
+        {
+          "name": "보유한 쿠폰 사용",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/coupons/{id}/request",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "coupons",
+                "{id}",
+                "request"
+              ]
+            },
+            "description": "보유한 쿠폰 사용"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/coupons/UserStoreCouponController",
+      "item": [
+        {
+          "name": "가게의 쿠폰 목록 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/store-coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "store-coupons"
+              ]
+            },
+            "description": "가게의 쿠폰 목록 조회"
+          }
+        },
+        {
+          "name": "가게의 쿠폰 발급 받기",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/store-coupons/{id}/issue",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "store-coupons",
+                "{id}",
+                "issue"
+              ]
+            },
+            "description": "가게의 쿠폰 발급 받기"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/region/UserRegionController",
+      "item": [
+        {
+          "name": "지역 조회(page)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/regions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "regions"
+              ]
+            },
+            "description": "지역 조회(page)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/bookmarks/UserBookmarkController",
+      "item": [
+        {
+          "name": "단골 가게 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/bookmarks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "bookmarks"
+              ]
+            },
+            "description": "단골 가게 조회"
+          }
+        },
+        {
+          "name": "단골 가게 추가",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/bookmarks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "bookmarks"
+              ]
+            },
+            "description": "단골 가게 추가"
+          }
+        },
+        {
+          "name": "단골 가게 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/bookmarks/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "bookmarks",
+                "{id}"
+              ]
+            },
+            "description": "단골 가게 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/waiting/UserStoreWaitingController",
+      "item": [
+        {
+          "name": "스토어 웨이팅 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/store-waitings/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "store-waitings",
+                "{id}"
+              ]
+            },
+            "description": "스토어 웨이팅 조회"
+          }
+        },
+        {
+          "name": "온라인 웨이팅 접수",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/store-waitings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "store-waitings"
+              ]
+            },
+            "description": "온라인 웨이팅 접수"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/review/UserReviewController",
+      "item": [
+        {
+          "name": "리뷰 전체 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/{storeId}/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "{storeId}",
+                "reviews"
+              ]
+            },
+            "description": "별점순 / 최신순으로 리뷰를 조회합니다."
+          }
+        },
+        {
+          "name": "리뷰 작성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "reviews"
+              ]
+            },
+            "description": "매장에 대한 리뷰를 작성합니다."
+          }
+        },
+        {
+          "name": "리뷰 신고",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/{reviewId}/report",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "{reviewId}",
+                "report"
+              ]
+            },
+            "description": "특정 리뷰를 신고합니다."
+          }
+        },
+        {
+          "name": "리뷰 수정",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/{reviewId}/update",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "{reviewId}",
+                "update"
+              ]
+            },
+            "description": "특정 리뷰를 수정합니다."
+          }
+        },
+        {
+          "name": "리뷰 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/{reviewId}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "{reviewId}"
+              ]
+            },
+            "description": "특정 리뷰를 삭제합니다.."
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/menu/UserMenuController",
+      "item": [
+        {
+          "name": "GET /user/stores/{storeId}/menus",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/{storeId}/menus",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "{storeId}",
+                "menus"
+              ]
+            },
+            "description": "Handler: list"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/my/UserMyController",
+      "item": [
+        {
+          "name": "내 리뷰 목록 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/my/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "my",
+                "reviews"
+              ]
+            },
+            "description": "로그인한 사용자의 리뷰를 조회합니다."
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/reward/UserRewardController",
+      "item": [
+        {
+          "name": "스토어 별 보유 포인트 적립 내역 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/reward/logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "reward",
+                "logs"
+              ]
+            },
+            "description": "스토어 별 보유 포인트 적립 내역 조회"
+          }
+        },
+        {
+          "name": "스토어 별 누적 보유 포인트 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/reward/store",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "reward",
+                "store"
+              ]
+            },
+            "description": "스토어 별 누적 보유 포인트 조회"
+          }
+        },
+        {
+          "name": "스토어 별 포인트 사용 횟수 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/reward/store/{storeId}/used",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "reward",
+                "store",
+                "{storeId}",
+                "used"
+              ]
+            },
+            "description": "스토어 별 포인트 사용 횟수 조회"
+          }
+        },
+        {
+          "name": "스토어 별 포인트 적립 횟수 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/reward/store/{storeId}/earned",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "reward",
+                "store",
+                "{storeId}",
+                "earned"
+              ]
+            },
+            "description": "스토어 별 포인트 적립 횟수 조회"
+          }
+        },
+        {
+          "name": "스토어 별 포인트 적립 취소 횟수 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/reward/store/{storeId}/canceled",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "reward",
+                "store",
+                "{storeId}",
+                "canceled"
+              ]
+            },
+            "description": "스토어 별 포인트 적립 취소 횟수 조회"
+          }
+        },
+        {
+          "name": "사용자 별 리워드 로그 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/reward/logs/personal",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "reward",
+                "logs",
+                "personal"
+              ]
+            },
+            "description": "사용자 별 리워드 로그 조회"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/report/UserReportController",
+      "item": [
+        {
+          "name": "User가 신고하는 API",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/report",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "report"
+              ]
+            },
+            "description": "User가 신고하는 API"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/banner/UserBannerController",
+      "item": [
+        {
+          "name": "배너 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/banners/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "banners",
+                "{id}"
+              ]
+            },
+            "description": "배너 조회"
+          }
+        },
+        {
+          "name": "배너 조회(page)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/banners",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "banners"
+              ]
+            },
+            "description": "배너 조회(page)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/store/UserStoreController",
+      "item": [
+        {
+          "name": "가게 목록 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores"
+              ]
+            },
+            "description": "가게 목록 조회"
+          }
+        },
+        {
+          "name": "가게 목록 검색",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/elastic-search",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "elastic-search"
+              ]
+            },
+            "description": "가게 목록 검색"
+          }
+        },
+        {
+          "name": "가게 단건조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "{id}"
+              ]
+            },
+            "description": "가게 단건조회"
+          }
+        },
+        {
+          "name": "바로 입장 가능한 식당 목록 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/immediate-entry",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "immediate-entry"
+              ]
+            },
+            "description": "바로 입장 가능한 식당 목록 조회"
+          }
+        },
+        {
+          "name": "최근 본 식당 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/recent",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "recent"
+              ]
+            },
+            "description": "최근 본 식당 조회"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/store/UserStoreImageController",
+      "item": [
+        {
+          "name": "사진 리스트 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/{storeId}/images",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "{storeId}",
+                "images"
+              ]
+            },
+            "description": "사진 리스트 조회"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/store/UserStoreInformationController",
+      "item": [
+        {
+          "name": "부가정보 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/{storeId}/information",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "{storeId}",
+                "information"
+              ]
+            },
+            "description": "부가정보 조회"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/store/UserStoreOperatingHourController",
+      "item": [
+        {
+          "name": "영업시간/휴무일 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/{storeId}/operating-hour",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "{storeId}",
+                "operating-hour"
+              ]
+            },
+            "description": "영업시간/휴무일 조회"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/store/UserStorePostController",
+      "item": [
+        {
+          "name": "유저 가게 소식 전체 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/store-posts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "store-posts"
+              ]
+            },
+            "description": "유저 가게 소식 전체 조회"
+          }
+        },
+        {
+          "name": "유저 가게 소식 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/store-posts/{storePostId}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "store-posts",
+                "{storePostId}"
+              ]
+            },
+            "description": "유저 가게 소식 상세 조회"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user/store/UserStoreRewardController",
+      "item": [
+        {
+          "name": "스토어 리워드 상품 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/{storeId}/rewards",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "{storeId}",
+                "rewards"
+              ]
+            },
+            "description": "스토어 리워드 상품 조회"
+          }
+        },
+        {
+          "name": "스토어 리워드 상품 구매",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/user/stores/{storeId}/rewards/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "user",
+                "stores",
+                "{storeId}",
+                "rewards",
+                "{id}"
+              ]
+            },
+            "description": "스토어 리워드 상품 구매"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/storepost/CeoStorePostController",
+      "item": [
+        {
+          "name": "특정 가게 소식 전체 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/store-posts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "store-posts"
+              ]
+            },
+            "description": "특정 가게 소식 전체 조회"
+          }
+        },
+        {
+          "name": "소식 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/store-posts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "store-posts"
+              ]
+            },
+            "description": "소식 생성"
+          }
+        },
+        {
+          "name": "소식 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/store-posts/{storePostId}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "store-posts",
+                "{storePostId}"
+              ]
+            },
+            "description": "소식 수정"
+          }
+        },
+        {
+          "name": "소식 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/store-posts/{storePostId}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "store-posts",
+                "{storePostId}"
+              ]
+            },
+            "description": "소식 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/stores/CeoStoreBookmarkController",
+      "item": [
+        {
+          "name": "단골 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/bookmarks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "bookmarks"
+              ]
+            },
+            "description": "단골 조회"
+          }
+        },
+        {
+          "name": "단골 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/bookmarks/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "bookmarks",
+                "{id}"
+              ]
+            },
+            "description": "단골 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/stores/CeoStoreController",
+      "item": [
+        {
+          "name": "가게 전체 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores"
+              ]
+            },
+            "description": "가게 전체 조회"
+          }
+        },
+        {
+          "name": "가게 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{id}"
+              ]
+            },
+            "description": "가게 상세 조회"
+          }
+        },
+        {
+          "name": "가게 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores"
+              ]
+            },
+            "description": "가게 생성"
+          }
+        },
+        {
+          "name": "가게 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{id}"
+              ]
+            },
+            "description": "가게 수정"
+          }
+        },
+        {
+          "name": "가게 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{id}"
+              ]
+            },
+            "description": "가게 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/stores/CeoStoreImageController",
+      "item": [
+        {
+          "name": "사진 리스트 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/images",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "images"
+              ]
+            },
+            "description": "사진 리스트 조회"
+          }
+        },
+        {
+          "name": "사진 등록",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/images",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "images"
+              ]
+            },
+            "description": "사진 등록"
+          }
+        },
+        {
+          "name": "사진 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/images/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "images",
+                "{id}"
+              ]
+            },
+            "description": "사진 수정"
+          }
+        },
+        {
+          "name": "사진 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/images/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "images",
+                "{id}"
+              ]
+            },
+            "description": "사진 삭제"
+          }
+        },
+        {
+          "name": "대표사진 설정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/images/{id}/main",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "images",
+                "{id}",
+                "main"
+              ]
+            },
+            "description": "대표사진 설정"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/stores/CeoStoreInformationController",
+      "item": [
+        {
+          "name": "부가정보 등록",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/information",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "information"
+              ]
+            },
+            "description": "부가정보 등록"
+          }
+        },
+        {
+          "name": "부가정보 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/information/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "information",
+                "{id}"
+              ]
+            },
+            "description": "부가정보 수정"
+          }
+        },
+        {
+          "name": "부가정보 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/information",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "information"
+              ]
+            },
+            "description": "부가정보 조회"
+          }
+        },
+        {
+          "name": "부가정보 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/information/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "information",
+                "{id}"
+              ]
+            },
+            "description": "부가정보 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/stores/CeoStoreOperatingHourController",
+      "item": [
+        {
+          "name": "영업시간/휴무일 등록",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/operating-hour",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "operating-hour"
+              ]
+            },
+            "description": "영업시간/휴무일 등록"
+          }
+        },
+        {
+          "name": "영업시간/휴무일 등록 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/operating-hour/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "operating-hour",
+                "{id}"
+              ]
+            },
+            "description": "영업시간/휴무일 등록 수정"
+          }
+        },
+        {
+          "name": "영업시간/휴무일 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/operating-hour",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "operating-hour"
+              ]
+            },
+            "description": "영업시간/휴무일 조회"
+          }
+        },
+        {
+          "name": "영업시간/휴무일 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/operating-hour/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "operating-hour",
+                "{id}"
+              ]
+            },
+            "description": "영업시간/휴무일 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/stores/CeoStorePointShopController",
+      "item": [
+        {
+          "name": "포인트샵 상품 리스트 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/point-shop",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "point-shop"
+              ]
+            },
+            "description": "포인트샵 상품 리스트 조회"
+          }
+        },
+        {
+          "name": "포인트샵 상품 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/point-shop/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "point-shop",
+                "{id}"
+              ]
+            },
+            "description": "포인트샵 상품 상세 조회"
+          }
+        },
+        {
+          "name": "포인트샵 상품 등록",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/point-shop",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "point-shop"
+              ]
+            },
+            "description": "포인트샵 상품 등록"
+          }
+        },
+        {
+          "name": "포인트샵 상품 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/point-shop/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "point-shop",
+                "{id}"
+              ]
+            },
+            "description": "포인트샵 상품 수정"
+          }
+        },
+        {
+          "name": "포인트샵 상품 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/point-shop/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "point-shop",
+                "{id}"
+              ]
+            },
+            "description": "포인트샵 상품 삭제"
+          }
+        },
+        {
+          "name": "포인트샵 상품 판매 상태로 변경",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/point-shop/{id}/active",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "point-shop",
+                "{id}",
+                "active"
+              ]
+            },
+            "description": "포인트샵 상품 판매 상태로 변경"
+          }
+        },
+        {
+          "name": "포인트샵 상품 판매중지 상태로 변경",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/point-shop/{id}/inactive",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "point-shop",
+                "{id}",
+                "inactive"
+              ]
+            },
+            "description": "포인트샵 상품 판매중지 상태로 변경"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/coupons/CeoCouponController",
+      "item": [
+        {
+          "name": "쿠폰 등록",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "coupons"
+              ]
+            },
+            "description": "쿠폰 등록"
+          }
+        },
+        {
+          "name": "쿠폰 리스트 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "coupons"
+              ]
+            },
+            "description": "쿠폰 리스트 조회"
+          }
+        },
+        {
+          "name": "쿠폰 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/coupons/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "coupons",
+                "{id}"
+              ]
+            },
+            "description": "쿠폰 조회"
+          }
+        },
+        {
+          "name": "쿠폰 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/coupons/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "coupons",
+                "{id}"
+              ]
+            },
+            "description": "쿠폰 수정"
+          }
+        },
+        {
+          "name": "쿠폰 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/coupons/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "coupons",
+                "{id}"
+              ]
+            },
+            "description": "쿠폰 삭제"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/coupons/CeoUserCouponController",
+      "item": [
+        {
+          "name": "쿠폰 발급",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/user-coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "user-coupons"
+              ]
+            },
+            "description": "쿠폰 발급"
+          }
+        },
+        {
+          "name": "쿠폰 선물하기",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/user-coupons/gift",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "user-coupons",
+                "gift"
+              ]
+            },
+            "description": "쿠폰 선물하기"
+          }
+        },
+        {
+          "name": "발급된 쿠폰 리스트 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/user-coupons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "user-coupons"
+              ]
+            },
+            "description": "발급된 쿠폰 리스트 조회"
+          }
+        },
+        {
+          "name": "발급된 쿠폰 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/user-coupons/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "user-coupons",
+                "{id}"
+              ]
+            },
+            "description": "발급된 쿠폰 조회"
+          }
+        },
+        {
+          "name": "발급된 쿠폰 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/user-coupons/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "user-coupons",
+                "{id}"
+              ]
+            },
+            "description": "발급된 쿠폰 삭제"
+          }
+        },
+        {
+          "name": "사용 요청된 쿠폰 승인",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/user-coupons/{id}/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "user-coupons",
+                "{id}",
+                "approve"
+              ]
+            },
+            "description": "사용 요청된 쿠폰 승인"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/region/CeoRegionController",
+      "item": [
+        {
+          "name": "지역 조회(page)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/regions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "regions"
+              ]
+            },
+            "description": "지역 조회(page)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/review/CeoReviewController",
+      "item": [
+        {
+          "name": "GET /ceo/review",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/review",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "review"
+              ]
+            },
+            "description": "Handler: list"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/menu/CeoMenuBoardController",
+      "item": [
+        {
+          "name": "메뉴판 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/menu-boards",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "menu-boards"
+              ]
+            },
+            "description": "메뉴판 생성"
+          }
+        },
+        {
+          "name": "메뉴판 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/menu-boards/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "menu-boards",
+                "{id}"
+              ]
+            },
+            "description": "메뉴판 조회"
+          }
+        },
+        {
+          "name": "메뉴판 조회(list)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/menu-boards",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "menu-boards"
+              ]
+            },
+            "description": "메뉴판 조회(list)"
+          }
+        },
+        {
+          "name": "메뉴판 제거",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/menu-boards/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "menu-boards",
+                "{id}"
+              ]
+            },
+            "description": "메뉴판 제거"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/menu/CeoMenuCategoryController",
+      "item": [
+        {
+          "name": "메뉴 카테고리 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/menu-categorys",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "menu-categorys"
+              ]
+            },
+            "description": "메뉴에 대한 카테고리 생성"
+          }
+        },
+        {
+          "name": "메뉴 카테고리 수정",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/menu-categorys/{categoryId}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "menu-categorys",
+                "{categoryId}"
+              ]
+            },
+            "description": "메뉴에 대한 카테고리 수정"
+          }
+        },
+        {
+          "name": "메뉴 카테고리 삭제",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/menu-categorys/{categoryId}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "menu-categorys",
+                "{categoryId}"
+              ]
+            },
+            "description": "메뉴에 대한 카테고리 삭제"
+          }
+        },
+        {
+          "name": "메뉴 카테고리 목록 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/{storeId}/menu-categorys",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "{storeId}",
+                "menu-categorys"
+              ]
+            },
+            "description": "메뉴에 대한 카테고리 목록 조회"
+          }
+        },
+        {
+          "name": "메뉴 카테고리 정렬",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/stores/menu-categorys/sort",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "stores",
+                "menu-categorys",
+                "sort"
+              ]
+            },
+            "description": "요청한 메뉴 카테고리 ID 순서대로 재정렬"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/menu/CeoMenuController",
+      "item": [
+        {
+          "name": "메뉴 생성",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/menus",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "menus"
+              ]
+            },
+            "description": "메뉴 생성"
+          }
+        },
+        {
+          "name": "메뉴 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/menus/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "menus",
+                "{id}"
+              ]
+            },
+            "description": "메뉴 조회"
+          }
+        },
+        {
+          "name": "메뉴 조회(page)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/menus",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "menus"
+              ]
+            },
+            "description": "메뉴 조회(page)"
+          }
+        },
+        {
+          "name": "메뉴 수정",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/menus/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "menus",
+                "{id}"
+              ]
+            },
+            "description": "메뉴 수정"
+          }
+        },
+        {
+          "name": "메뉴 제거",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/menus/{id}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "menus",
+                "{id}"
+              ]
+            },
+            "description": "메뉴 제거"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/storenotification/CeoStoreNotificationController",
+      "item": [
+        {
+          "name": "점주 가게 알림 전체 조회(전체/카테고리별)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/store-notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "store-notifications"
+              ]
+            },
+            "description": "점주 가게 알림 전체 조회(전체/카테고리별)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ceo/device/CeoDeviceController",
+      "item": [
+        {
+          "name": "가게 소속 디바이스 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/devices",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "devices"
+              ]
+            },
+            "description": "가게 소속 디바이스 조회"
+          }
+        },
+        {
+          "name": "로그인 유저 디바이스 연결",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ceo/devices",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ceo",
+                "devices"
+              ]
+            },
+            "description": "로그인 유저 디바이스 연결"
+          }
+        }
+      ]
+    },
+    {
+      "name": "pos/waiting/PosWaitingController",
+      "item": [
+        {
+          "name": "웨이팅 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pos/stores/{storeId}/waitings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pos",
+                "stores",
+                "{storeId}",
+                "waitings"
+              ]
+            },
+            "description": "웨이팅 상세 조회"
+          }
+        },
+        {
+          "name": "웨이팅 상세 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pos/stores/{storeId}/waitings/{storeWaitingId}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pos",
+                "stores",
+                "{storeId}",
+                "waitings",
+                "{storeWaitingId}"
+              ]
+            },
+            "description": "웨이팅 상세 조회"
+          }
+        },
+        {
+          "name": "웨이팅 로그 리스트 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pos/stores/{storeId}/waitings/{storeWaitingId}/logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pos",
+                "stores",
+                "{storeId}",
+                "waitings",
+                "{storeWaitingId}",
+                "logs"
+              ]
+            },
+            "description": "웨이팅 로그 리스트 조회"
+          }
+        }
+      ]
+    },
+    {
+      "name": "pos/reward/PosRewardController",
+      "item": [
+        {
+          "name": "특정 스토어의 리워드 적립 조회",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pos/reward",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pos",
+                "reward"
+              ]
+            },
+            "description": "특정 스토어의 리워드 적립 조회"
+          }
+        },
+        {
+          "name": "특정 리워드 로그에 대한 적립 취소",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pos/reward/{id}/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pos",
+                "reward",
+                "{id}",
+                "cancel"
+              ]
+            },
+            "description": "특정 리워드 로그에 대한 적립 취소"
+          }
+        },
+        {
+          "name": "특정 리워드 로그에 대한 적립 허용",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pos/reward/{id}/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pos",
+                "reward",
+                "{id}",
+                "approve"
+              ]
+            },
+            "description": "특정 리워드 로그에 대한 적립 허용"
+          }
+        },
+        {
+          "name": "특정 리워드 로그에 메모 변경",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pos/reward/{id}/memo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pos",
+                "reward",
+                "{id}",
+                "memo"
+              ]
+            },
+            "description": "특정 리워드 로그에 메모 변경"
+          }
+        }
+      ]
+    },
+    {
+      "name": "crawling/naverplace/CrawlingNaverPlaceController",
+      "item": [
+        {
+          "name": "naver-plcae crawling 데이터 저장",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/crawling/naver-places",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "crawling",
+                "naver-places"
+              ]
+            },
+            "description": "naver-plcae crawling 데이터 저장"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
