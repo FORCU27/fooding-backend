@@ -30,6 +30,7 @@ import im.fooding.core.service.store.StoreOperatingHourService;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.store.document.StoreDocumentService;
 import im.fooding.core.service.store.popular.PopularStoreService;
+import im.fooding.core.service.store.view.StoreViewService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +61,7 @@ public class UserStoreService {
     private final RecentStoreService recentStoreService;
     private final UserRepository userRepository;
     private final EventProducerService eventProducerService;
+    private final StoreViewService storeViewService;
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreListResponse> list(UserSearchStoreRequest request, UserInfo userInfo) {
@@ -106,7 +108,12 @@ public class UserStoreService {
 
         Store store = storeService.retrieve(id, userVisibleStatuses);
         storeService.increaseVisitCount(store);
-        UserStoreResponse userStoreResponse = UserStoreResponse.of(store, null);
+
+        long viewingCount = (userInfo != null)
+                ? storeViewService.addViewAndGetCount(store.getId(), userInfo.getId())
+                : storeViewService.addUnknownViewAndGetCount(store.getId());
+
+        UserStoreResponse userStoreResponse = UserStoreResponse.of(store, null, viewingCount);
 
         // 영업상태 세팅
         setOperatingStatus(userStoreResponse);
