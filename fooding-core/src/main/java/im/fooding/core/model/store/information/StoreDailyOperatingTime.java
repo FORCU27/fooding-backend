@@ -32,43 +32,32 @@ public class StoreDailyOperatingTime extends BaseEntity {
 
     private LocalTime closeTime;
 
-    private LocalTime breakStartTime;
-
-    private LocalTime breakEndTime;
-
     @Builder
-    public StoreDailyOperatingTime(StoreOperatingHour storeOperatingHour, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime, LocalTime breakStartTime, LocalTime breakEndTime) {
+    public StoreDailyOperatingTime(StoreOperatingHour storeOperatingHour, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime) {
         this.storeOperatingHour = storeOperatingHour;
         this.dayOfWeek = dayOfWeek;
         this.openTime = openTime;
         this.closeTime = closeTime;
-        this.breakStartTime = breakStartTime;
-        this.breakEndTime = breakEndTime;
     }
 
-    public void update(DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime, LocalTime breakStartTime, LocalTime breakEndTime) {
+    public void update(DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime) {
         this.dayOfWeek = dayOfWeek;
         this.openTime = openTime;
         this.closeTime = closeTime;
-        this.breakStartTime = breakStartTime;
-        this.breakEndTime = breakEndTime;
     }
 
-    public boolean isOperatingNow() {
-        LocalTime now = LocalTime.now();
-
+    public boolean isOperatingNow(LocalTime now) {
         // 오픈 마감 시간 없으면 휴무
-        if (openTime == null && closeTime == null) {
+        if (openTime == null || closeTime == null) {
             return false;
         }
 
-        // 영업시간 여부
-        boolean isOpen = !now.isBefore(openTime) && now.isBefore(closeTime);
-
-        // 브레이크타임 여부
-        boolean inBreak = breakStartTime != null && breakEndTime != null &&
-                !now.isBefore(breakStartTime) && now.isBefore(breakEndTime);
-
-        return isOpen && !inBreak;
+        if (closeTime.isAfter(openTime)) {
+            // 일반 케이스
+            return !now.isBefore(openTime) && now.isBefore(closeTime);
+        } else {
+            // 자정 넘어가는 영업
+            return !now.isBefore(openTime) || now.isBefore(closeTime);
+        }
     }
 }

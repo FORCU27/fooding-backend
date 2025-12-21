@@ -19,6 +19,7 @@ import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.store.StoreStatus;
 import im.fooding.core.model.store.document.StoreDocument;
+import im.fooding.core.model.store.information.StoreDailyBreakTime;
 import im.fooding.core.model.store.information.StoreDailyOperatingTime;
 import im.fooding.core.model.store.information.StoreOperatingHour;
 import im.fooding.core.model.store.popular.PopularStore;
@@ -43,6 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -185,13 +187,34 @@ public class UserStoreService {
 
     private void setOperatingStatus(UserStoreResponse userStoreResponse) {
         StoreOperatingHour operatingHour = storeOperatingHourService
-                .findByIdsInOperatingTime(List.of(userStoreResponse.getId()), Util.getDayOfWeek())
+                .findByIdsInOperatingTime(List.of(userStoreResponse.getId()))
                 .stream()
                 .findFirst()
                 .orElse(null);
-        if (operatingHour != null && !operatingHour.getDailyOperatingTimes().isEmpty()) {
-            StoreDailyOperatingTime time = operatingHour.getDailyOperatingTimes().get(0);
-            userStoreResponse.setFinished(!time.isOperatingNow());
+
+        //영업시간
+        StoreDailyOperatingTime todayOperating = operatingHour.getDailyOperatingTimes().stream()
+                .filter(it -> it.getDayOfWeek() == Util.getDayOfWeek())
+                .findFirst()
+                .orElse(null);
+
+        //휴게시간
+        StoreDailyBreakTime todayBreak = operatingHour.getDailyBreakTimes().stream()
+                .filter(it -> it.getDayOfWeek() == Util.getDayOfWeek())
+                .findFirst()
+                .orElse(null);
+
+        LocalTime now = LocalTime.now();
+        boolean isFinished;
+
+        if (operatingHour != null && todayOperating != null) {
+            isFinished = !todayOperating.isOperatingNow(now);
+            if (!isFinished) {
+                if (todayBreak != null) {
+                    isFinished = todayBreak.isBreakNow(now);
+                }
+            }
+            userStoreResponse.setFinished(isFinished);
         }
     }
 
@@ -218,19 +241,39 @@ public class UserStoreService {
                 .toList();
 
         Map<Long, StoreOperatingHour> operatingHourMap = storeOperatingHourService
-                .findByIdsInOperatingTime(storeIds, Util.getDayOfWeek())
+                .findByIdsInOperatingTime(storeIds)
                 .stream()
                 .collect(Collectors.toMap(
                         it -> it.getStore().getId(),
                         Function.identity()
                 ));
 
+        LocalTime now = LocalTime.now();
+
         for (T store : list) {
             StoreOperatingHour operatingHour = operatingHourMap.get(idExtractor.apply(store));
+
+            //영업시간
+            StoreDailyOperatingTime todayOperating = operatingHour.getDailyOperatingTimes().stream()
+                    .filter(it -> it.getDayOfWeek() == Util.getDayOfWeek())
+                    .findFirst()
+                    .orElse(null);
+
+            //휴게시간
+            StoreDailyBreakTime todayBreak = operatingHour.getDailyBreakTimes().stream()
+                    .filter(it -> it.getDayOfWeek() == Util.getDayOfWeek())
+                    .findFirst()
+                    .orElse(null);
+
             boolean finished = true;
-            if (operatingHour != null && !operatingHour.getDailyOperatingTimes().isEmpty()) {
-                StoreDailyOperatingTime time = operatingHour.getDailyOperatingTimes().get(0);
-                finished = !time.isOperatingNow();
+
+            if (operatingHour != null && todayOperating != null) {
+                finished = !todayOperating.isOperatingNow(now);
+                if (!finished) {
+                    if (todayBreak != null) {
+                        finished = todayBreak.isBreakNow(now);
+                    }
+                }
             }
             finishedSetter.accept(store, finished);
         }

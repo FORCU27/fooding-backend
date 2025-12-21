@@ -41,6 +41,7 @@ public class CeoStoreService {
     private final StoreInformationService storeInformationService;
     private final StoreOperatingHourService storeOperatingHourService;
     private final StoreDailyOperatingTimeService storeDailyOperatingTimeService;
+    private final StoreDailyBreakTimeService storeDailyBreakTimeService;
 
     @Transactional(readOnly = true)
     public List<CeoStoreResponse> list(long userId, CeoSearchStoreRequest search) {
@@ -108,5 +109,6 @@ public class CeoStoreService {
         storeInformationService.initialize(store);
         StoreOperatingHour storeOperatingHour = storeOperatingHourService.initialize(store);
         storeDailyOperatingTimeService.initialize(storeOperatingHour);
+        storeDailyBreakTimeService.initialize(storeOperatingHour);
     }
 }
