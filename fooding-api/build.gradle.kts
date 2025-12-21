@@ -7,6 +7,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.redisson:redisson-spring-boot-starter:3.27.2") // Redisson 추가
 
     // actuator & prometheus
     implementation("org.springframework.boot:spring-boot-starter-actuator")
