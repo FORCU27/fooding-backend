@@ -247,6 +247,7 @@ class UserCouponServiceTest extends TestConfig {
                 .store(coupon.getStore())
                 .benefitType(coupon.getBenefitType())
                 .discountType(coupon.getDiscountType())
+                .discountValue(coupon.getDiscountValue())
                 .name(coupon.getName())
                 .conditions(coupon.getConditions())
                 .expiredOn(coupon.getExpiredOn())

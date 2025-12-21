@@ -25,20 +25,12 @@ public class UserStoreDailyOperatingTimeResponse {
     @Schema(description = "마감시간", example = "22:00", requiredMode = RequiredMode.NOT_REQUIRED)
     private LocalTime closeTime;
 
-    @Schema(description = "브레이크타임 시작", example = "13:00", requiredMode = RequiredMode.NOT_REQUIRED)
-    private LocalTime breakStartTime;
-
-    @Schema(description = "브레이크타임 끝", example = "15:00", requiredMode = RequiredMode.NOT_REQUIRED)
-    private LocalTime breakEndTime;
-
     @Builder
-    private UserStoreDailyOperatingTimeResponse(long id, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime, LocalTime breakStartTime, LocalTime breakEndTime) {
+    private UserStoreDailyOperatingTimeResponse(long id, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime) {
         this.id = id;
         this.dayOfWeek = dayOfWeek;
         this.openTime = openTime;
         this.closeTime = closeTime;
-        this.breakStartTime = breakStartTime;
-        this.breakEndTime = breakEndTime;
     }
 
     public static UserStoreDailyOperatingTimeResponse of(StoreDailyOperatingTime storeDailyOperatingTime) {
@@ -47,8 +39,6 @@ public class UserStoreDailyOperatingTimeResponse {
                 .dayOfWeek(storeDailyOperatingTime.getDayOfWeek())
                 .openTime(storeDailyOperatingTime.getOpenTime())
                 .closeTime(storeDailyOperatingTime.getCloseTime())
-                .breakStartTime(storeDailyOperatingTime.getBreakStartTime())
-                .breakEndTime(storeDailyOperatingTime.getBreakEndTime())
                 .build();
     }
 }
