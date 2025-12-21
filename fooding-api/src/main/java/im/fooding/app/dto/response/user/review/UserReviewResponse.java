@@ -46,7 +46,7 @@ public class UserReviewResponse {
     private VisitPurposeType purpose;
 
     @Schema(description = "리뷰 좋아요 수", example = "10")
-    private Long likeCount;
+    private Integer likeCount;
 
     @Schema(description = "작성자의 총 작성 리뷰 수", example = "100")
     private int userReviewCount;
@@ -76,7 +76,7 @@ public class UserReviewResponse {
             String content,
             ReviewScore score,
             VisitPurposeType purpose,
-            Long likeCount,
+            Integer likeCount,
             LocalDateTime createdAt,
             LocalDateTime updatedAt,
             int userReviewCount,
@@ -104,7 +104,7 @@ public class UserReviewResponse {
     public static UserReviewResponse of(
             Review review,
             List<ReviewImage> images,
-            Long likeCount,
+            Integer likeCount,
             ObjectId planId
     ) {
         UserReviewResponse.UserReviewResponseBuilder result = UserReviewResponse.builder()
@@ -144,7 +144,7 @@ public class UserReviewResponse {
                 .content(reply.getContent())
                 .score(null)
                 .purpose(reply.getVisitPurposeType())
-                .likeCount(0L)
+                .likeCount(0)
                 .planId( null )
                 .parentId( reply.getParent().getId() )
                 .storeId( reply.getStore().getId() )

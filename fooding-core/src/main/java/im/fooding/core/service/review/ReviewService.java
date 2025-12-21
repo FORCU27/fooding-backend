@@ -106,4 +106,6 @@ public class ReviewService {
         review.update( content, visitPurposeType, score );
     }
 
+    public List<Review> findAllReviewByWriter( User writer ) { return reviewRepository.findAllByWriter( writer ); }
+
 }
