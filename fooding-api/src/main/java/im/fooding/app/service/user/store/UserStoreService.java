@@ -16,6 +16,7 @@ import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.global.util.Util;
 import im.fooding.core.model.bookmark.Bookmark;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.StoreSortType;
 import im.fooding.core.model.store.StoreStatus;
 import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.model.store.information.StoreDailyOperatingTime;
@@ -34,7 +35,9 @@ import im.fooding.core.service.store.view.StoreViewService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -69,7 +72,7 @@ public class UserStoreService {
                 StoreStatus.APPROVED
         );
 
-        Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), request.getLatitude(), request.getLongitude(), request.getRegionIds(), request.getCategory(), false, userVisibleStatuses, null);
+        Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), request.getLatitude(), request.getLongitude(), request.getRegionIds(), request.getCategory(), false, userVisibleStatuses, null, null);
         List<UserStoreListResponse> list = stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList();
 
         setOperatingStatusAndBookmarked(userInfo, list);
@@ -253,5 +256,30 @@ public class UserStoreService {
                 setBookmarked(popularStoreList, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
             }
         }
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<UserStoreListResponse> retrieveAlsoViewed(Long id, UserInfo userInfo) {
+        //일단 스토어가 없으니 인기순으로 표출
+        //TODO: 추후 스토어 id로 해당 스토어와 category같은 것 같은 조건문 추가할것
+
+        Set<StoreStatus> userVisibleStatuses = EnumSet.of(
+                StoreStatus.APPROVED
+        );
+
+        Page<Store> stores = storeService.list(Pageable.ofSize(10), StoreSortType.RECOMMENDED, SortDirection.DESCENDING, null, null, null, null, false, userVisibleStatuses, null, id);
+        List<UserStoreListResponse> list = stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList();
+
+        if (list != null && !list.isEmpty()) {
+            // 영업상태 세팅
+            setOperatingStatus(list, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
+
+            // 북마크 여부 세팅
+            if (userInfo != null) {
+                setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
+            }
+        }
+
+        return PageResponse.of(list, PageInfo.of(stores));
     }
 }

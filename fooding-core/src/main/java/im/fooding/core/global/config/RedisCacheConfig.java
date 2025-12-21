@@ -43,6 +43,7 @@ public class RedisCacheConfig {
 
         Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
         cacheConfigurations.put("PopularStoreList", config.entryTtl(Duration.ofMinutes(20)));
+        cacheConfigurations.put("AlsoViewedStoreList", config.entryTtl(Duration.ofMinutes(20)));
 
         return RedisCacheManager.builder(factory)
                 .cacheDefaults(config)

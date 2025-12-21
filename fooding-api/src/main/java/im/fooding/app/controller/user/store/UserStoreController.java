@@ -67,4 +67,11 @@ public class UserStoreController {
     ) {
         return ApiResult.ok(service.retrievePopular(userInfo));
     }
+
+    @GetMapping("/{id}/also-viewed")
+    @Operation(summary = "다른사람이 함께 본 식당 목록 조회")
+    public ApiResult<PageResponse<UserStoreListResponse>> retrieveAlsoViewedStores(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo
+    ) {
+        return ApiResult.ok(service.retrieveAlsoViewed(id, userInfo));
+    }
 }

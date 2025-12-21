@@ -52,7 +52,7 @@ public class PopularStoreService {
                 StoreStatus.APPROVED
         );
 
-        Page<Store> stores = storeRepository.list(Pageable.ofSize(10), StoreSortType.REVIEW, SortDirection.DESCENDING, null, null, null, null, false, userVisibleStatuses, null);
+        Page<Store> stores = storeRepository.list(Pageable.ofSize(10), StoreSortType.REVIEW, SortDirection.DESCENDING, null, null, null, null, false, userVisibleStatuses, null, null);
 
         return stores.map(PopularStore::from).toList();
     }
