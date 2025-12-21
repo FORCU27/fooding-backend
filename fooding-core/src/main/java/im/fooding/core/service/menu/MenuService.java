@@ -95,4 +95,13 @@ public class MenuService {
                 .average()
                 .orElse(0);
     }
+
+    @Transactional
+    public void sort(List<Long> menuIds) {
+        int sortOrder = 1;
+        for (Long id : menuIds) {
+            Menu menu = get(id);
+            menu.updateSortOrder(sortOrder++);
+        }
+    }
 }

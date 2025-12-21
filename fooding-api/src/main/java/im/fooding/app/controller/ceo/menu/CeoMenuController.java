@@ -2,6 +2,7 @@ package im.fooding.app.controller.ceo.menu;
 
 import im.fooding.app.dto.request.ceo.menu.CeoMenuCreateRequest;
 import im.fooding.app.dto.request.ceo.menu.CeoMenuListRequest;
+import im.fooding.app.dto.request.ceo.menu.CeoMenuSortRequest;
 import im.fooding.app.dto.request.ceo.menu.CeoMenuUpdateRequest;
 import im.fooding.app.dto.response.ceo.menu.CeoMenuResponse;
 import im.fooding.app.service.ceo.menu.CeoMenuService;
@@ -77,6 +78,15 @@ public class CeoMenuController {
             @PathVariable long id
     ) {
         ceoMenuService.delete(id, userInfo.getId());
+        return ApiResult.ok();
+    }
+
+    @PostMapping("/sort")
+    @Operation(summary = "메뉴 정렬", description = "요청한 메뉴 ID 순서대로 재정렬")
+    public ApiResult<Void> sort(
+            @Valid @RequestBody CeoMenuSortRequest request
+    ) {
+        ceoMenuService.sort(request);
         return ApiResult.ok();
     }
 }
