@@ -38,6 +38,7 @@ public class MenuCategoryService {
                 .store(store)
                 .name(categoryName)
                 .sortOrder(sortOrder)
+                .description("")
                 .build();
         return menuCategoryRepository.save(menuCategory).getId();
     }
