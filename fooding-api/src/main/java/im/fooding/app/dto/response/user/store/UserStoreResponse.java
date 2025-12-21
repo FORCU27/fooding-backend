@@ -75,10 +75,13 @@ public class UserStoreResponse {
     @Schema(description = "인근 지하철역", requiredMode = RequiredMode.NOT_REQUIRED)
     private List<SubwayStationDto> stations;
 
+    @Schema(description = "현재 보고 있는 사람 수", example = "10", requiredMode = RequiredMode.REQUIRED)
+    private long viewingCount;
+
     @Builder
     private UserStoreResponse(Long id, String name, String address, String addressDetail, StoreCategory category, String regionId, String description,
                               String contactNumber, String direction, int visitCount, int reviewCount, int bookmarkCount, double averageRating,
-                              Integer estimatedWaitingTimeMinutes, Double latitude, Double longitude, List<StoreImageResponse> images, List<SubwayStationDto> stations) {
+                              Integer estimatedWaitingTimeMinutes, Double latitude, Double longitude, List<StoreImageResponse> images, List<SubwayStationDto> stations, long viewingCount) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -97,9 +100,10 @@ public class UserStoreResponse {
         this.longitude = longitude;
         this.images = images;
         this.stations = stations;
+        this.viewingCount = viewingCount;
     }
 
-    public static UserStoreResponse of(Store store, Integer estimatedWaitingTime) {
+    public static UserStoreResponse of(Store store, Integer estimatedWaitingTime, long viewingCount) {
         List<SubwayStationDto> stations = store.getSubwayStations() != null ?
                 store.getSubwayStations().stream().map(it -> SubwayStationDto.of(it)).toList() : null;
 
@@ -122,6 +126,7 @@ public class UserStoreResponse {
                 .longitude(store.getLongitude())
                 .images(store.getImages())
                 .stations(stations)
+                .viewingCount(viewingCount)
                 .build();
     }
 
