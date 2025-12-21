@@ -4,7 +4,7 @@ import im.fooding.core.model.coupon.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,7 +46,7 @@ public class CeoUpdateCouponRequest {
     @Schema(description = "총 발급수량", example = "50")
     private Integer totalQuantity;
 
-    @Positive
+    @PositiveOrZero
     @Schema(description = "할인값(금액, 퍼센트)", example = "2000")
     private int discountValue;
 

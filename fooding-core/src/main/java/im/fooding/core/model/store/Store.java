@@ -266,4 +266,8 @@ public class Store extends BaseEntity {
                 .map(StoreImageResponse::of)
                 .toList();
     }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
 }

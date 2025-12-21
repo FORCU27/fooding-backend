@@ -39,8 +39,15 @@ public class CeoCreateStoreOperatingHourRequest {
     @Size(min = 7, message = "월요일부터 일요일까지 입력해주세요.")
     private List<CeoCreateStoreDailyOperatingTimeRequest> dailyOperatingTimes;
 
+    @Schema(description = "휴게시간")
+    @Valid
+    @Size(min = 7, message = "월요일부터 일요일까지 입력해주세요.")
+    private List<CeoCreateStoreDailyBreakTimeRequest> dailyBreakTimes;
+
     @Builder
-    public CeoCreateStoreOperatingHourRequest(Boolean hasHoliday, StoreRegularHolidayType regularHolidayType, DayOfWeek regularHoliday, List<String> closedNationalHolidays, List<String> customHolidays, String operatingNotes, List<CeoCreateStoreDailyOperatingTimeRequest> dailyOperatingTimes) {
+    public CeoCreateStoreOperatingHourRequest(Boolean hasHoliday, StoreRegularHolidayType regularHolidayType, DayOfWeek regularHoliday,
+                                              List<String> closedNationalHolidays, List<String> customHolidays, String operatingNotes,
+                                              List<CeoCreateStoreDailyOperatingTimeRequest> dailyOperatingTimes, List<CeoCreateStoreDailyBreakTimeRequest> dailyBreakTimes) {
         this.hasHoliday = hasHoliday;
         this.regularHolidayType = regularHolidayType;
         this.regularHoliday = regularHoliday;
@@ -48,5 +55,6 @@ public class CeoCreateStoreOperatingHourRequest {
         this.customHolidays = customHolidays;
         this.operatingNotes = operatingNotes;
         this.dailyOperatingTimes = dailyOperatingTimes;
+        this.dailyBreakTimes = dailyBreakTimes;
     }
 }

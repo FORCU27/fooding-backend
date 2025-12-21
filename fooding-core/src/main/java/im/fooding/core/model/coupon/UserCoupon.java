@@ -68,6 +68,12 @@ public class UserCoupon extends BaseEntity {
     @Builder
     public UserCoupon(Coupon coupon, User user, Store store, BenefitType benefitType, DiscountType discountType, int discountValue,
                       String name, String conditions, LocalDate expiredOn, String tableNumber, Integer point, Long pointShopId) {
+        // 할인 타입일 경우 할인 금액 0보다 커야함.
+        if (BenefitType.DISCOUNT == benefitType) {
+            if (discountValue <= 0) {
+                throw new ApiException(ErrorCode.COUPON_DISCOUNT_VALUE_INVALID);
+            }
+        }
         this.coupon = coupon;
         this.user = user;
         this.store = store;

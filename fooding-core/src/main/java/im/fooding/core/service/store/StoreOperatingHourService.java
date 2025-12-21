@@ -61,8 +61,8 @@ public class StoreOperatingHourService {
         return repository.findByStoreIdAndDeletedIsFalse(storeId).orElse(null);
     }
 
-    public List<StoreOperatingHour> findByIdsInOperatingTime(List<Long> storeIds, DayOfWeek week) {
-        return repository.findByIdsInOperatingTime(storeIds, week);
+    public List<StoreOperatingHour> findByIdsInOperatingTime(List<Long> storeIds) {
+        return repository.findByIdsInOperatingTime(storeIds);
     }
 
     private void checkDuplicate(long storeId) {
