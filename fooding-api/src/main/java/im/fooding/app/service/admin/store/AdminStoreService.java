@@ -8,6 +8,7 @@ import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.event.store.StoreCreatedEvent;
 import im.fooding.core.global.kafka.EventProducerService;
+import im.fooding.core.global.util.redis.LRUCacheHelper;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StorePosition;
@@ -24,8 +25,11 @@ import im.fooding.core.service.user.UserAuthorityService;
 import im.fooding.core.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -113,7 +117,12 @@ public class AdminStoreService {
     }
 
     @Transactional
-    @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager")
+    @Caching(
+            evict = {
+                    @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager"),
+                    @CacheEvict(value = "UserNewStore", allEntries = true, cacheManager = "contentCacheManager")
+            }
+    )
     public void approve(Long id) {
         Store store = storeService.findById(id);
         store.approve();

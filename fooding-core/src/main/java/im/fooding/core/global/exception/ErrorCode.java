@@ -148,6 +148,9 @@ public enum ErrorCode {
     // 배너
     BANNER_NOT_FOUND(HttpStatus.BAD_REQUEST, "13000", "등록된 배너가 없습니다."),
     BANNER_INACTIVE(HttpStatus.BAD_REQUEST, "13001", "비활성화된 배너입니다."),
+
+    // REDIS
+    REDIS_MANAGER_GET_ERROR( HttpStatus.BAD_REQUEST, "14000", "REDIS 문제가 발생했습니다" ),
     ;
 
     private final HttpStatus status;

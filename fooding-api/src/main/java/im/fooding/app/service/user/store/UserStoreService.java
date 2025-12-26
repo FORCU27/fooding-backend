@@ -14,6 +14,7 @@ import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
 import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.global.util.Util;
+import im.fooding.core.global.util.redis.LRUCacheHelper;
 import im.fooding.core.model.bookmark.Bookmark;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.StoreSortType;
@@ -35,6 +36,11 @@ import im.fooding.core.service.store.view.StoreViewService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -166,6 +172,20 @@ public class UserStoreService {
         }
 
         return PageResponse.empty();
+    }
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "UserNewStore", key = "'page_0'", cacheManager = "contentCacheManager")
+    public PageResponse<UserStoreListResponse> retrieveNewOpenStores(){
+        Pageable pageable = PageRequest.of( 0, 10 );
+        Page<Store> stores = storeService.list(
+                pageable, StoreSortType.RECENT, null, null, null,
+                null, null, false, Set.of( StoreStatus.APPROVED ), null
+        );
+        List<UserStoreListResponse> list = stores.getContent().stream().map(
+                store -> UserStoreListResponse.of( store, null )
+        ).toList();
+        return PageResponse.of(list, PageInfo.of(stores));
     }
 
     private UserStoreListResponse mapStoreToResponse(Store store) {
