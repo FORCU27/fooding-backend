@@ -58,4 +58,10 @@ public class UserStoreController {
     public ApiResult<PageResponse<UserStoreListResponse>> retrieveRecentStores(@AuthenticationPrincipal UserInfo userInfo) {
         return ApiResult.ok(service.retrieveRecentStores(userInfo));
     }
+
+    @GetMapping("/new")
+    @Operation(summary = "최근 오픈한 식당 조회")
+    public ApiResult<PageResponse<UserStoreListResponse>> retrieveNewStores(){
+        return ApiResult.ok( service.retrieveNewOpenStores() );
+    }
 }

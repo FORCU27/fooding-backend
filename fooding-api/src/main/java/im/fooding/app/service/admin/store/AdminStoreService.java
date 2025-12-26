@@ -53,8 +53,6 @@ public class AdminStoreService {
     private final StoreOperatingHourService storeOperatingHourService;
     private final StoreDailyOperatingTimeService storeDailyOperatingTimeService;
     private final StoreDocumentService storeDocumentService;
-    private final CacheManager contentCacheManager;
-    private final LRUCacheHelper lruCacheHelper;
 
     @Transactional(readOnly = true)
     public PageResponse<AdminStoreResponse> list(AdminSearchStoreRequest request) {
@@ -118,13 +116,15 @@ public class AdminStoreService {
     }
 
     @Transactional
-    @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager")
+    @Caching(
+            evict = {
+                    @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager"),
+                    @CacheEvict(value = "UserNewStore", allEntries = true, cacheManager = "contentCacheManager")
+            }
+    )
     public void approve(Long id) {
         Store store = storeService.findById(id);
         store.approve();
-
-        // 신규 입점 가게 목록 캐시에 추가
-        lruCacheHelper.putWithLimit( "UserNewStore", id, store );
     }
 
     @Transactional
