@@ -3,7 +3,7 @@ FROM eclipse-temurin:17-jdk
 ENV APP_HOME=/usr/app/
 WORKDIR $APP_HOME
 
-COPY ./fooding-api/build/libs/*.jar application.jar
+COPY fooding-api/build/libs/*.jar application.jar
 
 ARG WEBHOOK_SLACK_URL
 ARG API_AUTHORIZATION_TOKEN

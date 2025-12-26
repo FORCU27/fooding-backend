@@ -3,8 +3,10 @@ package im.fooding.app.service.user.waiting;
 import im.fooding.app.dto.request.user.waiting.UserStoreWaitingRegisterRequest;
 import im.fooding.app.dto.response.user.waiting.UserStoreWaitingCreateResponse;
 import im.fooding.app.dto.response.user.waiting.UserStoreWaitingResponse;
+import im.fooding.app.publisher.waiting.StoreWaitingSseEventPublisher;
 import im.fooding.core.dto.request.waiting.StoreWaitingRegisterRequest;
 import im.fooding.core.event.waiting.StoreWaitingCanceledEvent;
+import im.fooding.core.event.waiting.StoreWaitingEvent;
 import im.fooding.core.event.waiting.StoreWaitingRegisteredEvent;
 import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.store.StoreService;
@@ -39,6 +41,7 @@ public class UserStoreWaitingService {
     private final PlanService planService;
     private final WaitingSettingService waitingSettingService;
     private final EventProducerService eventProducerService;
+    private final StoreWaitingSseEventPublisher storeWaitingSseEventPublisher;
 
     public UserStoreWaitingResponse getStoreWaiting(long id) {
         return UserStoreWaitingResponse.from(storeWaitingService.get(id));
@@ -76,6 +79,13 @@ public class UserStoreWaitingService {
                 StoreWaitingRegisterRequest.class.getSimpleName(),
                 new StoreWaitingRegisteredEvent(storeWaiting.getId())
         );
+        storeWaitingSseEventPublisher.publish(
+                new StoreWaitingEvent(
+                        request.getStoreId(),
+                        storeWaiting.getId(),
+                        StoreWaitingEvent.Type.CREATED
+                )
+        );
 
         return new UserStoreWaitingCreateResponse(storeWaiting.getId(), planId.toString());
     }
@@ -91,6 +101,13 @@ public class UserStoreWaitingService {
         eventProducerService.publishEvent(
                 StoreWaitingCanceledEvent.class.getSimpleName(),
                 new StoreWaitingCanceledEvent(storeWaiting.getId(), STORE_WAITING_CANCEL_REASON)
+        );
+        storeWaitingSseEventPublisher.publish(
+                new StoreWaitingEvent(
+                        storeWaiting.getStoreId(),
+                        storeWaiting.getId(),
+                        StoreWaitingEvent.Type.UPDATED
+                )
         );
     }
 }

@@ -41,6 +41,7 @@ public enum ErrorCode {
     LOGIN_PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "1009", "비밀번호가 틀렸습니다."),
     AUTHENTICATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "1010", "존재하지 않는 인증입니다."),
     AUTHENTICATION_CODE_INCORRECT(HttpStatus.BAD_REQUEST, "1011", "인증번호가 올바르지 않습니다."),
+    AUTHENTICATION_INVALID_ERROR(HttpStatus.BAD_REQUEST, "1012", "중복된 인증이 존재합니다. 관리자에게 문의해주세요."),
 
     // 가게
     STORE_NOT_FOUND(HttpStatus.BAD_REQUEST, "2000", "등록된 가게 정보가 없습니다."),
@@ -136,6 +137,9 @@ public enum ErrorCode {
     POINT_SHOP_NOT_FOUND(HttpStatus.BAD_REQUEST, "11000", "등록된 포인트샵 상품이 아닙니다."),
     POINT_SHOP_ISSUE_QUANTITY_INVALID(HttpStatus.BAD_REQUEST, "11001", "해당 상품은 최대 교환 수량을 초과했습니다."),
     POINT_SHOP_ISSUE_DATE_INVALID(HttpStatus.BAD_REQUEST, "11002", "해당 상품은 교환 가능한 기간이 아닙니다."),
+
+    // 플레이스
+    PLACE_SETTING_NOT_FOUND(HttpStatus.BAD_REQUEST, "14000", "등록된 플레이스 설정이 없습니다."),
 
     // 예약/웨이팅
     PLAN_NOT_FOUND(HttpStatus.BAD_REQUEST, "12000", "등록된 예약/웨이팅이 없습니다."),

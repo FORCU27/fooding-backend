@@ -78,10 +78,10 @@ public class ReviewService {
 
     /**
      * * 작성자의 리뷰 수
-     * @param id
+     * @param user
      */
-    public int getReviewCount( Long id ){
-        return 0;
+    public int getReviewCount( User user ){
+        return reviewRepository.findAllByWriter( user ).size();
     }
 
     /**
@@ -105,5 +105,7 @@ public class ReviewService {
         );
         review.update( content, visitPurposeType, score );
     }
+
+    public List<Review> findAllReviewByWriter( User writer ) { return reviewRepository.findAllByWriter( writer ); }
 
 }

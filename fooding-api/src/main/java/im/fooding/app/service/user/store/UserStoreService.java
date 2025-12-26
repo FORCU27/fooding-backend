@@ -2,6 +2,7 @@ package im.fooding.app.service.user.store;
 
 import im.fooding.app.dto.request.user.store.UserImmediateEntryStoreRequest;
 import im.fooding.app.dto.request.user.store.UserSearchStoreRequest;
+import im.fooding.app.dto.response.user.store.UserPopularStoresResponse;
 import im.fooding.app.dto.response.user.store.UserStoreListResponse;
 import im.fooding.app.dto.response.user.store.UserStoreResponse;
 import im.fooding.core.common.BasicSearch;
@@ -21,6 +22,7 @@ import im.fooding.core.model.store.StoreStatus;
 import im.fooding.core.model.store.document.StoreDocument;
 import im.fooding.core.model.store.information.StoreDailyOperatingTime;
 import im.fooding.core.model.store.information.StoreOperatingHour;
+import im.fooding.core.model.store.popular.PopularStore;
 import im.fooding.core.model.waiting.WaitingSetting;
 import im.fooding.core.model.waiting.WaitingStatus;
 import im.fooding.core.repository.user.UserRepository;
@@ -29,6 +31,8 @@ import im.fooding.core.service.store.RecentStoreService;
 import im.fooding.core.service.store.StoreOperatingHourService;
 import im.fooding.core.service.store.StoreService;
 import im.fooding.core.service.store.document.StoreDocumentService;
+import im.fooding.core.service.store.popular.PopularStoreService;
+import im.fooding.core.service.store.view.StoreViewService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +41,8 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.hibernate.query.SortDirection;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +62,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserStoreService {
     private final StoreService storeService;
+    private final PopularStoreService popularStoreService;
     private final StoreOperatingHourService storeOperatingHourService;
     private final WaitingSettingService waitingSettingService;
     private final BookmarkService bookmarkService;
@@ -63,6 +70,7 @@ public class UserStoreService {
     private final RecentStoreService recentStoreService;
     private final UserRepository userRepository;
     private final EventProducerService eventProducerService;
+    private final StoreViewService storeViewService;
 
     @Transactional(readOnly = true)
     public PageResponse<UserStoreListResponse> list(UserSearchStoreRequest request, UserInfo userInfo) {
@@ -70,19 +78,10 @@ public class UserStoreService {
                 StoreStatus.APPROVED
         );
 
-        Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), request.getLatitude(), request.getLongitude(), request.getRegionIds(), request.getCategory(), false, userVisibleStatuses, null);
+        Page<Store> stores = storeService.list(request.getPageable(), request.getSortType(), request.getSortDirection(), request.getLatitude(), request.getLongitude(), request.getRegionIds(), request.getCategory(), false, userVisibleStatuses, null, null);
         List<UserStoreListResponse> list = stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList();
 
-        if (list != null && !list.isEmpty()) {
-            // 영업상태 세팅
-            setOperatingStatus(list, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
-
-            // 북마크 여부 세팅
-            if (userInfo != null) {
-                setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
-            }
-        }
-
+        setOperatingStatusAndBookmarked(userInfo, list);
         return PageResponse.of(list, PageInfo.of(stores));
     }
 
@@ -97,15 +96,7 @@ public class UserStoreService {
                     .map(store -> UserStoreListResponse.of(store, null))
                     .toList();
 
-            if (list != null && !list.isEmpty()) {
-                // 영업상태 세팅
-                setOperatingStatus(list, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
-
-                // 북마크 여부 세팅
-                if (userInfo != null) {
-                    setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
-                }
-            }
+            setOperatingStatusAndBookmarked(userInfo, list);
 
             if (StringUtils.hasText(request.getSearchString())) {
                 eventProducerService.publishEvent("SearchKeywordSavedEvent", new SearchKeywordSavedEvent(request.getSearchString()));
@@ -126,7 +117,12 @@ public class UserStoreService {
 
         Store store = storeService.retrieve(id, userVisibleStatuses);
         storeService.increaseVisitCount(store);
-        UserStoreResponse userStoreResponse = UserStoreResponse.of(store, null);
+
+        long viewingCount = (userInfo != null)
+                ? storeViewService.addViewAndGetCount(store.getId(), userInfo.getId())
+                : storeViewService.addUnknownViewAndGetCount(store.getId());
+
+        UserStoreResponse userStoreResponse = UserStoreResponse.of(store, null, viewingCount);
 
         // 영업상태 세팅
         setOperatingStatus(userStoreResponse);
@@ -259,5 +255,51 @@ public class UserStoreService {
             finishedSetter.accept(store, finished);
         }
     }
-}
 
+    @Transactional(readOnly = true)
+    public UserPopularStoresResponse retrievePopular(UserInfo userInfo) {
+        List<PopularStore> popularStores = popularStoreService.getPopularStores();
+        List<UserStoreListResponse> popularStoreList = popularStores.stream()
+                .map(popularStore -> UserStoreListResponse.of(popularStore, null)).toList();
+
+        setOperatingStatusAndBookmarked(userInfo, popularStoreList);
+        return new UserPopularStoresResponse(popularStoreList);
+    }
+
+    private void setOperatingStatusAndBookmarked(UserInfo userInfo, List<UserStoreListResponse> popularStoreList) {
+        if (popularStoreList != null && !popularStoreList.isEmpty()) {
+            // 영업상태 세팅
+            setOperatingStatus(popularStoreList, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
+
+            // 북마크 여부 세팅
+            if (userInfo != null) {
+                setBookmarked(popularStoreList, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
+            }
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<UserStoreListResponse> retrieveAlsoViewed(Long id, UserInfo userInfo) {
+        //일단 스토어가 없으니 인기순으로 표출
+        //TODO: 추후 스토어 id로 해당 스토어와 category같은 것 같은 조건문 추가할것
+
+        Set<StoreStatus> userVisibleStatuses = EnumSet.of(
+                StoreStatus.APPROVED
+        );
+
+        Page<Store> stores = storeService.list(Pageable.ofSize(10), StoreSortType.RECOMMENDED, SortDirection.DESCENDING, null, null, null, null, false, userVisibleStatuses, null, id);
+        List<UserStoreListResponse> list = stores.getContent().stream().map(store -> UserStoreListResponse.of(store, null)).toList();
+
+        if (list != null && !list.isEmpty()) {
+            // 영업상태 세팅
+            setOperatingStatus(list, UserStoreListResponse::getId, UserStoreListResponse::setFinished);
+
+            // 북마크 여부 세팅
+            if (userInfo != null) {
+                setBookmarked(list, userInfo.getId(), UserStoreListResponse::getId, UserStoreListResponse::setBookmarked);
+            }
+        }
+
+        return PageResponse.of(list, PageInfo.of(stores));
+    }
+}

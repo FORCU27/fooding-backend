@@ -66,7 +66,8 @@ public class AdminStoreService {
                 request.getCategory(),
                 Boolean.TRUE.equals(request.getIncludeDeleted()),
                 request.getStatuses(),
-                request.getSearchString()
+                request.getSearchString(),
+                null
         );
         PageInfo pageInfo = PageInfo.of(result);
         return PageResponse.of(

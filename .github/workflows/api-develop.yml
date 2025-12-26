@@ -1,10 +1,14 @@
-name: STAGE
+name: API STAGE
 
 on:
   push:
     branches: [develop]
-    paths-ignore:
-      - 'jenkins/**'
+    paths:
+      - 'fooding-api/**'
+      - 'fooding-core/**'
+      - 'build.gradle.kts'
+      - 'settings.gradle.kts'
+      - '.github/workflows/api-develop.yml'
   workflow_dispatch:
 
 jobs:
@@ -32,11 +36,12 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
-        run: ./gradlew :fooding-api:bootBuildImage
-      - name: DBuild
+        run: ./gradlew :fooding-api:bootJar
+      - name: DBuild API
         uses: docker/build-push-action@v3
         with:
           context: .
+          file: fooding-api/Dockerfile
           push: true
           tags: hyperrealitycorp/fooding-api-stage
           platforms: linux/amd64, linux/arm64/v8

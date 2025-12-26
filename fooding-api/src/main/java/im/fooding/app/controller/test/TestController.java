@@ -1,12 +1,13 @@
 package im.fooding.app.controller.test;
 
-import im.fooding.app.service.test.TestService;
+import im.fooding.app.service.auth.AuthService;
 import im.fooding.core.model.test.TestDocument;
 import im.fooding.core.repository.test.TestRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 // todo: PR 확인 후 삭제
@@ -15,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TestController {
     private final TestRepository testRepository;
-    private final TestService testService;
+    private final AuthService authService;
 
     @GetMapping
     public List<TestDocument> getAll() {
@@ -27,11 +28,17 @@ public class TestController {
         testRepository.save(test);
     }
 
-    @PostMapping("/store/create/{count}")
-    @Operation( summary = "테스트용 더미 가게 생성 API ( Stage에서 사용 금지 )" )
-    public void createDummyStoreToTest(
-            @PathVariable int count
-    ){
-
-    }
+//    @PostMapping("/email" )
+//    public void testEmail( @RequestParam String email, @RequestParam String name ){
+//        LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(30);
+//        String expiredAtStr = "%d.%02d.%02d %s %d:%02d".formatted(
+//                expiredAt.getYear(),
+//                expiredAt.getMonthValue(),
+//                expiredAt.getDayOfMonth(),
+//                expiredAt.getHour() < 12 ? "오전" : "오후",
+//                expiredAt.getHour() % 12 == 0 ? 12 : expiredAt.getHour() % 12,
+//                expiredAt.getMinute()
+//        );
+//        authService.sendEmail( name, email, "test-url-encoded", expiredAtStr );
+//    }
 }

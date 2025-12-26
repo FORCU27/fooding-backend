@@ -1,0 +1,23 @@
+library identifier: "pipeline-library", changelog:false
+
+slave("jenkins-agent-${UUID.randomUUID().toString()}") {
+    stage("Run") {
+        container("curl"){
+            def token = env.NODE_ENV == "production" ? '111': '222'
+            def baseUrl = env.NODE_ENV == "production" ? "https://api.fooding.im" : "https://api-stage.fooding.im"
+            def url = "${baseUrl}/jobs/popular-stores-cache/refresh"
+            def responseCode = sh(returnStdout: true, script: """
+                curl ${url} \
+                -o /dev/null -s -w "%{http_code}" \
+                -X POST \
+                -H "Authorization: token ${token}"
+            """)
+
+            if(responseCode != "200"){
+                currentBuild.result = "FAILURE"
+            } else {
+                currentBuild.result = "SUCCESS"
+            }
+        }
+    }
+}
