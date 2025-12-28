@@ -3,6 +3,7 @@ package im.fooding.app.service.ceo.menu;
 
 import im.fooding.app.dto.request.ceo.menu.CeoMenuCreateRequest;
 import im.fooding.app.dto.request.ceo.menu.CeoMenuListRequest;
+import im.fooding.app.dto.request.ceo.menu.CeoMenuSortRequest;
 import im.fooding.app.dto.request.ceo.menu.CeoMenuUpdateRequest;
 import im.fooding.app.dto.response.ceo.menu.CeoMenuResponse;
 import im.fooding.app.service.file.FileUploadService;
@@ -20,6 +21,7 @@ import im.fooding.core.service.menu.MenuCategoryService;
 import im.fooding.core.service.menu.MenuImageService;
 import im.fooding.core.service.menu.MenuService;
 import im.fooding.core.service.store.StoreService;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -127,5 +129,9 @@ public class CeoMenuService {
     private void updateStorageAveragePrice(Store store) {
         int averagePrice = menuService.getAveragePrice(store.getId());
         eventProducerService.publishEvent("StoreAveragePriceUpdatedEvent", new StoreAveragePriceUpdatedEvent(store.getId(), averagePrice));
+    }
+
+    public void sort(CeoMenuSortRequest request) {
+        menuService.sort(request.getMenuIds());
     }
 }
