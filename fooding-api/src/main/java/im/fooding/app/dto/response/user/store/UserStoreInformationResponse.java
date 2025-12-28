@@ -1,6 +1,8 @@
 package im.fooding.app.dto.response.user.store;
 
 import im.fooding.core.global.util.Util;
+import im.fooding.core.model.store.StoreFacility;
+import im.fooding.core.model.store.StorePaymentMethod;
 import im.fooding.core.model.store.information.StoreInformation;
 import im.fooding.core.model.store.information.StoreParkingChargeType;
 import im.fooding.core.model.store.information.StoreParkingType;
@@ -21,11 +23,11 @@ public class UserStoreInformationResponse {
     @Schema(description = "홈페이지/SNS 링크", example = "[\"https://...\", \"https://...\"]", requiredMode = RequiredMode.NOT_REQUIRED)
     private List<String> links;
 
-    @Schema(description = "시설/서비스 정보", example = "[\"단체 이용 가능\", \"포장\"]", requiredMode = RequiredMode.REQUIRED)
-    private List<String> facilities;
+    @Schema(description = "시설/서비스 정보", example = "[\"GROUP_USE\", \"TAKEOUT\"]", requiredMode = RequiredMode.REQUIRED)
+    private List<StoreFacility> facilities;
 
-    @Schema(description = "결제수단", example = "[\"지역화페(카드형)\", \"간편결제\"]", requiredMode = RequiredMode.NOT_REQUIRED)
-    private List<String> paymentMethods;
+    @Schema(description = "결제수단", example = "[\"LOCAL_CURRENCY_CARD\", \"LOCAL_CURRENCY_CASH\"]", requiredMode = RequiredMode.NOT_REQUIRED)
+    private List<StorePaymentMethod> paymentMethods;
 
     @Schema(description = "주차가능여부", example = "true", requiredMode = RequiredMode.REQUIRED)
     private Boolean parkingAvailable;
@@ -52,7 +54,7 @@ public class UserStoreInformationResponse {
     private Integer parkingMaxDailyFee;
 
     @Builder
-    private UserStoreInformationResponse(long id, List<String> links, List<String> facilities, List<String> paymentMethods, Boolean parkingAvailable, StoreParkingType parkingType, StoreParkingChargeType parkingChargeType, Integer parkingBasicTimeMinutes, Integer parkingBasicFee, Integer parkingExtraMinutes, Integer parkingExtraFee, Integer parkingMaxDailyFee) {
+    private UserStoreInformationResponse(long id, List<String> links, List<StoreFacility> facilities, List<StorePaymentMethod> paymentMethods, Boolean parkingAvailable, StoreParkingType parkingType, StoreParkingChargeType parkingChargeType, Integer parkingBasicTimeMinutes, Integer parkingBasicFee, Integer parkingExtraMinutes, Integer parkingExtraFee, Integer parkingMaxDailyFee) {
         this.id = id;
         this.links = links;
         this.facilities = facilities;
@@ -71,8 +73,12 @@ public class UserStoreInformationResponse {
         return UserStoreInformationResponse.builder()
                 .id(storeInformation.getId())
                 .links(Util.generateStringToList(storeInformation.getLinks()))
-                .facilities(Util.generateStringToList(storeInformation.getFacilities()))
-                .paymentMethods(Util.generateStringToList(storeInformation.getPaymentMethods()))
+                .facilities(Util.generateStringToList(storeInformation.getFacilities()).stream()
+                        .map(StoreFacility::valueOf)
+                        .toList())
+                .paymentMethods(Util.generateStringToList(storeInformation.getPaymentMethods()).stream()
+                        .map(StorePaymentMethod::valueOf)
+                        .toList())
                 .parkingAvailable(storeInformation.isParkingAvailable())
                 .parkingType(storeInformation.getParkingType())
                 .parkingChargeType(storeInformation.getParkingChargeType())
