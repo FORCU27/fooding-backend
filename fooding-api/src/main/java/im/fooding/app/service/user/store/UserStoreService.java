@@ -171,7 +171,7 @@ public class UserStoreService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "UserNewStore", key = "'page_0'", cacheManager = "contentCacheManager")
+    @Cacheable(value = "UserNewStore", key = "'page_0'", cacheManager = "contentCacheManager", sync = true)
     public PageResponse<UserStoreListResponse> retrieveNewOpenStores(){
         Pageable pageable = PageRequest.of( 0, 10 );
         Page<Store> stores = storeService.list(
