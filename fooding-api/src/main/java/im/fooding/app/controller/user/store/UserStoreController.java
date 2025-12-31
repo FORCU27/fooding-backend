@@ -60,6 +60,12 @@ public class UserStoreController {
         return ApiResult.ok(service.retrieveRecentStores(userInfo));
     }
 
+    @GetMapping("/new")
+    @Operation(summary = "최근 오픈한 식당 조회")
+    public ApiResult<PageResponse<UserStoreListResponse>> retrieveNewStores(){
+        return ApiResult.ok( service.retrieveNewOpenStores() );
+    }
+  
     @GetMapping("/popular")
     @Operation(summary = "인기 식당 목록 조회")
     public ApiResult<UserPopularStoresResponse> retrievePopularStores(

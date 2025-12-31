@@ -35,8 +35,10 @@ import im.fooding.core.service.store.view.StoreViewService;
 import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.query.SortDirection;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -166,6 +168,20 @@ public class UserStoreService {
         }
 
         return PageResponse.empty();
+    }
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "UserNewStore", key = "'page_0'", cacheManager = "contentCacheManager")
+    public PageResponse<UserStoreListResponse> retrieveNewOpenStores(){
+        Pageable pageable = PageRequest.of( 0, 10 );
+        Page<Store> stores = storeService.list(
+                pageable, StoreSortType.RECENT, null, null, null,
+                null, null, false, Set.of( StoreStatus.APPROVED ), null, null
+        );
+        List<UserStoreListResponse> list = stores.getContent().stream().map(
+                store -> UserStoreListResponse.of( store, null )
+        ).toList();
+        return PageResponse.of(list, PageInfo.of(stores));
     }
 
     private UserStoreListResponse mapStoreToResponse(Store store) {

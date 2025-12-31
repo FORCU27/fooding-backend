@@ -26,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -113,7 +114,12 @@ public class AdminStoreService {
     }
 
     @Transactional
-    @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager")
+    @Caching(
+            evict = {
+                    @CacheEvict(key = "#id", value = "AdminStore", cacheManager = "contentCacheManager"),
+                    @CacheEvict(value = "UserNewStore", allEntries = true, cacheManager = "contentCacheManager")
+            }
+    )
     public void approve(Long id) {
         Store store = storeService.findById(id);
         store.approve();
