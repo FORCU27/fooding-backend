@@ -37,6 +37,8 @@ import im.fooding.core.service.waiting.WaitingSettingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.query.SortDirection;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -302,6 +304,12 @@ public class UserStoreService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(
+            value = "AlsoViewedStoreList",
+            key = "'alsoViewedStoreList_' + #id",
+            cacheManager = "contentCacheManager",
+            sync = true // Cache Stampede 방지 -> 단일 스레드로 직렬화 해서 여러 요청이 동시에 들어와도 DB 한번만 조회
+    )
     public PageResponse<UserStoreListResponse> retrieveAlsoViewed(Long id, UserInfo userInfo) {
         //일단 스토어가 없으니 인기순으로 표출
         //TODO: 추후 스토어 id로 해당 스토어와 category같은 것 같은 조건문 추가할것
