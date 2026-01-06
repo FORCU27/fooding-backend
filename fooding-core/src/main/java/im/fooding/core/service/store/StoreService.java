@@ -51,7 +51,19 @@ public class StoreService {
      * @param searchString
      * @param excludeStoreId 제외할 스토어 id
      */
-    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, Double latitude, Double longitude, List<String> regionIds, StoreCategory category, boolean includeDeleted, Set<StoreStatus> statuses, String searchString, Long excludeStoreId) {
+    public Page<Store> list(
+            Pageable pageable,
+            StoreSortType sortType,
+            SortDirection sortDirection,
+            Double latitude,
+            Double longitude,
+            List<String> regionIds,
+            StoreCategory category,
+            boolean includeDeleted,
+            Set<StoreStatus> statuses,
+            String searchString,
+            Long excludeStoreId
+    ) {
         return storeRepository.list(pageable, sortType, sortDirection, latitude, longitude, regionIds, category, includeDeleted, statuses, searchString, excludeStoreId);
     }
 
