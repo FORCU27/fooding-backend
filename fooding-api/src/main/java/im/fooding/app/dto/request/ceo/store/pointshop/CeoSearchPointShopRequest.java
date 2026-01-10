@@ -12,7 +12,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CeoSearchPointShopRequest extends BasicSearch {
-    @NotNull
     @Schema(description = "판매여부", example = "true")
     private Boolean isActive;
 
