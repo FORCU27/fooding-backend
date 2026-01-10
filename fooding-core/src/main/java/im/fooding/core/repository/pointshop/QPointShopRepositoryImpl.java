@@ -30,7 +30,7 @@ public class QPointShopRepositoryImpl implements QPointShopRepository {
                 .leftJoin(pointShop.image, file).fetchJoin()
                 .where(
                         pointShop.deleted.isFalse(),
-                        pointShop.isActive.eq(isActive),
+                        isActive(isActive),
                         storeDeletedIfStoreExists(),
                         searchStore(storeId),
                         search(searchString),
