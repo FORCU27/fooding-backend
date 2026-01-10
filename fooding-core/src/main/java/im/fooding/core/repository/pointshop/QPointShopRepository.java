@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface QPointShopRepository {
-    Page<PointShop> list(Long storeId, boolean isActive, LocalDate now, PointShopSortType sortType, String searchString, Pageable pageable);
+    Page<PointShop> list(Long storeId, Boolean isActive, LocalDate now, PointShopSortType sortType, String searchString, Pageable pageable);
 
-    List<PointShop> list(Long storeId, boolean isActive, LocalDate now, PointShopSortType sortType);
+    List<PointShop> list(Long storeId, Boolean isActive, LocalDate now, PointShopSortType sortType);
 }

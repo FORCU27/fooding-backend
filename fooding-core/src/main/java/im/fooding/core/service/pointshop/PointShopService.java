@@ -50,11 +50,11 @@ public class PointShopService {
                 .orElseThrow(() -> new ApiException(ErrorCode.POINT_SHOP_NOT_FOUND));
     }
 
-    public Page<PointShop> list(Long storeId, boolean isActive, LocalDate now, PointShopSortType sortType, String searchString, Pageable pageable) {
+    public Page<PointShop> list(Long storeId, Boolean isActive, LocalDate now, PointShopSortType sortType, String searchString, Pageable pageable) {
         return repository.list(storeId, isActive, now, sortType, searchString, pageable);
     }
 
-    public List<PointShop> list(Long storeId, boolean isActive, LocalDate now, PointShopSortType sortType) {
+    public List<PointShop> list(Long storeId, Boolean isActive, LocalDate now, PointShopSortType sortType) {
         return repository.list(storeId, isActive, now, sortType);
     }
 
