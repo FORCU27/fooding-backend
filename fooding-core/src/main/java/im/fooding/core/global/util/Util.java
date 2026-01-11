@@ -33,12 +33,23 @@ public class Util {
                 .filter(s -> !s.isEmpty())
                 .collect(Collectors.toList());
     }
-
-    public static String generateListToString(List<String> strings) {
-        if (strings == null || strings.isEmpty()) {
+    /**
+     * 리스트를 쉼표로 연결한 문자열로 변환
+     * - Enum이면 name() 사용
+     * - 일반 객체면 toString() 사용
+     */
+    public static <T> String generateListToString(List<T> list) {
+        if (list == null || list.isEmpty()) {
             return "";
         }
-        return strings.stream()
+        return list.stream()
+                .map(item -> {
+                    if (item instanceof Enum<?>) {
+                        return ((Enum<?>) item).name();
+                    } else {
+                        return item.toString();
+                    }
+                })
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
                 .collect(Collectors.joining(","));

@@ -30,7 +30,6 @@ public class CeoStoreOperatingHourResponse {
     @Schema(description = "공휴일 중 휴무일", example = "[\"새해\",\"설날연휴\",\"추석연휴\",\"크리스마스\"]", requiredMode = RequiredMode.NOT_REQUIRED)
     private List<String> closedNationalHolidays;
 
-
     @Schema(description = "기타 휴무일", example = "[\"2025-08-21\", \"2025-12-24\"]", requiredMode = RequiredMode.NOT_REQUIRED)
     private List<String> customHolidays;
 
