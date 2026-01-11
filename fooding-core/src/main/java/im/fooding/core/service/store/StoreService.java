@@ -1,9 +1,9 @@
 package im.fooding.core.service.store;
 
 import im.fooding.core.dto.request.store.StoreFilter;
+import im.fooding.core.event.store.StoreAveragePriceUpdatedEvent;
 import im.fooding.core.event.store.StoreCreatedEvent;
 import im.fooding.core.event.store.StoreDeletedEvent;
-import im.fooding.core.event.store.StoreAveragePriceUpdatedEvent;
 import im.fooding.core.event.store.StoreUpdatedEvent;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
@@ -25,7 +25,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -187,6 +186,12 @@ public class StoreService {
         return storeRepository.findAll().stream()
                 .filter(it -> !it.isDeleted())
                 .toList();
+    }
+
+    public Store updateName(Long id, String name) {
+        Store store = findById(id);
+        store.updateName(name);
+        return store;
     }
 
     @KafkaEventHandler(StoreCreatedEvent.class)

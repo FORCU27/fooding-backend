@@ -2,9 +2,12 @@ package im.fooding.app.service.ceo.store;
 
 import im.fooding.app.dto.request.ceo.store.CeoCreateStoreRequest;
 import im.fooding.app.dto.request.ceo.store.CeoSearchStoreRequest;
+import im.fooding.app.dto.request.ceo.store.CeoUpdateStoreNameRequest;
 import im.fooding.app.dto.request.ceo.store.CeoUpdateStoreRequest;
 import im.fooding.app.dto.response.ceo.store.CeoStoreResponse;
 import im.fooding.core.event.store.StoreCreatedEvent;
+import im.fooding.core.event.store.StoreDeletedEvent;
+import im.fooding.core.event.store.StoreUpdatedEvent;
 import im.fooding.core.global.kafka.EventProducerService;
 import im.fooding.core.model.region.Region;
 import im.fooding.core.model.store.Store;
@@ -38,6 +41,7 @@ public class CeoStoreService {
     private final StoreInformationService storeInformationService;
     private final StoreOperatingHourService storeOperatingHourService;
     private final StoreDailyOperatingTimeService storeDailyOperatingTimeService;
+    private final StoreDailyBreakTimeService storeDailyBreakTimeService;
 
     @Transactional(readOnly = true)
     public List<CeoStoreResponse> list(long userId, CeoSearchStoreRequest search) {
@@ -75,14 +79,21 @@ public class CeoStoreService {
         Store store = storeService.update(id, request.getName(), getRegion(request.getRegionId()), request.getAddress(), request.getAddressDetail(), request.getCategory(), request.getDescription(),
                 request.getContactNumber(), request.getDirection(), false, false, request.getLatitude(), request.getLongitude(), nearStations);
 
-        eventProducerService.publishEvent("StoreUpdatedEvent", new StoreCreatedEvent(store));
+        eventProducerService.publishEvent("StoreUpdatedEvent", new StoreUpdatedEvent(store));
     }
 
     @Transactional
     public void delete(Long id, long deletedBy) {
         storeMemberService.checkMember(id, deletedBy);
         storeService.delete(id, deletedBy);
-        eventProducerService.publishEvent("StoreDeletedEvent", new StoreCreatedEvent(id));
+        eventProducerService.publishEvent("StoreDeletedEvent", new StoreDeletedEvent(id));
+    }
+
+    @Transactional
+    public void updateName(Long id, CeoUpdateStoreNameRequest request, long userId) {
+        storeMemberService.checkMember(id, userId);
+        Store store = storeService.updateName(id, request.getName());
+        eventProducerService.publishEvent("StoreUpdatedEvent", new StoreUpdatedEvent(store));
     }
 
     private Region getRegion(String regionId) {
@@ -98,5 +109,6 @@ public class CeoStoreService {
         storeInformationService.initialize(store);
         StoreOperatingHour storeOperatingHour = storeOperatingHourService.initialize(store);
         storeDailyOperatingTimeService.initialize(storeOperatingHour);
+        storeDailyBreakTimeService.initialize(storeOperatingHour);
     }
 }
