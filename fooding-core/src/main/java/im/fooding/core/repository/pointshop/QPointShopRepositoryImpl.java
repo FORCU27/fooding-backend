@@ -22,7 +22,7 @@ public class QPointShopRepositoryImpl implements QPointShopRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<PointShop> list(Long storeId, boolean isActive, LocalDate now, PointShopSortType sortType, String searchString, Pageable pageable) {
+    public Page<PointShop> list(Long storeId, Boolean isActive, LocalDate now, PointShopSortType sortType, String searchString, Pageable pageable) {
         List<PointShop> results = query
                 .select(pointShop)
                 .from(pointShop)
@@ -30,7 +30,7 @@ public class QPointShopRepositoryImpl implements QPointShopRepository {
                 .leftJoin(pointShop.image, file).fetchJoin()
                 .where(
                         pointShop.deleted.isFalse(),
-                        pointShop.isActive.eq(isActive),
+                        isActive(isActive),
                         storeDeletedIfStoreExists(),
                         searchStore(storeId),
                         search(searchString),
@@ -46,7 +46,7 @@ public class QPointShopRepositoryImpl implements QPointShopRepository {
                 .from(pointShop)
                 .where(
                         pointShop.deleted.isFalse(),
-                        pointShop.isActive.eq(isActive),
+                        isActive(isActive),
                         storeDeletedIfStoreExists(),
                         searchStore(storeId),
                         search(searchString),
@@ -57,7 +57,7 @@ public class QPointShopRepositoryImpl implements QPointShopRepository {
     }
 
     @Override
-    public List<PointShop> list(Long storeId, boolean isActive, LocalDate now, PointShopSortType sortType) {
+    public List<PointShop> list(Long storeId, Boolean isActive, LocalDate now, PointShopSortType sortType) {
         return query
                 .select(pointShop)
                 .from(pointShop)
@@ -65,7 +65,7 @@ public class QPointShopRepositoryImpl implements QPointShopRepository {
                 .leftJoin(pointShop.image, file).fetchJoin()
                 .where(
                         pointShop.deleted.isFalse(),
-                        pointShop.isActive.eq(isActive),
+                        isActive(isActive),
                         storeDeletedIfStoreExists(),
                         searchStore(storeId),
                         isIssuableAt(now)
@@ -89,5 +89,9 @@ public class QPointShopRepositoryImpl implements QPointShopRepository {
     private BooleanExpression isIssuableAt(LocalDate now) {
         return now != null ? pointShop.issueStartOn.isNull().or(pointShop.issueStartOn.loe(now))
                 .and(pointShop.issueEndOn.isNull().or(pointShop.issueEndOn.goe(now))) : null;
+    }
+
+    private BooleanExpression isActive(Boolean isActive) {
+        return isActive != null ? pointShop.isActive.eq(isActive) : null;
     }
 }
