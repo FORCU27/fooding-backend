@@ -43,7 +43,7 @@ jobs:
           file: fooding-realtime/Dockerfile
           push: true
           tags: hyperrealitycorp/fooding-realtime-api-production
-          platforms: linux/amd64, linux/arm64/v8
+          platforms: linux/amd64
           build-args: |
             SPRING_PROFILES_ACTIVE=${{ secrets.SPRING_PROFILES_ACTIVE }}
       - name: Deployment

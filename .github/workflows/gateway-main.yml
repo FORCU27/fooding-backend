@@ -43,7 +43,7 @@ jobs:
           file: fooding-gateway/Dockerfile
           push: true
           tags: hyperrealitycorp/fooding-gateway-api-production
-          platforms: linux/amd64, linux/arm64/v8
+          platforms: linux/amd64
           build-args: |
             FOODING_API_URI=${{ secrets.FOODING_API_URI }}
             SPRING_PROFILES_ACTIVE=${{ secrets.SPRING_PROFILES_ACTIVE }}
