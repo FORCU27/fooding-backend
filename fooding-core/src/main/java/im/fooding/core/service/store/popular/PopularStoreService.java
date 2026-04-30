@@ -15,6 +15,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class PopularStoreService {
             key = CACHE_KEY,
             cacheManager = CACHE_MANAGER
     )
+    @Transactional(readOnly = true)
     public List<PopularStore> getPopularStores() {
         return fetchPopularStoresFromDB();
     }
@@ -40,6 +42,7 @@ public class PopularStoreService {
             key = CACHE_KEY,
             cacheManager = CACHE_MANAGER
     )
+    @Transactional(readOnly = true)
     public List<PopularStore> refreshPopularStores() {
         return fetchPopularStoresFromDB();
     }
@@ -49,7 +52,7 @@ public class PopularStoreService {
                 StoreStatus.APPROVED
         );
 
-        Page<Store> stores = storeRepository.list(Pageable.ofSize(10), StoreSortType.REVIEW, SortDirection.DESCENDING, null, null, null, null, false, userVisibleStatuses, null);
+        Page<Store> stores = storeRepository.list(Pageable.ofSize(10), StoreSortType.REVIEW, SortDirection.DESCENDING, null, null, null, null, false, userVisibleStatuses, null, null);
 
         return stores.map(PopularStore::from).toList();
     }

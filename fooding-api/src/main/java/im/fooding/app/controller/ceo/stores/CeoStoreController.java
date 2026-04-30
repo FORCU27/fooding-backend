@@ -2,6 +2,7 @@ package im.fooding.app.controller.ceo.stores;
 
 import im.fooding.app.dto.request.ceo.store.CeoCreateStoreRequest;
 import im.fooding.app.dto.request.ceo.store.CeoSearchStoreRequest;
+import im.fooding.app.dto.request.ceo.store.CeoUpdateStoreNameRequest;
 import im.fooding.app.dto.request.ceo.store.CeoUpdateStoreRequest;
 import im.fooding.app.dto.response.ceo.store.CeoStoreResponse;
 import im.fooding.app.service.ceo.store.CeoStoreService;
@@ -58,6 +59,15 @@ public class CeoStoreController {
     @Operation(summary = "가게 삭제")
     public ApiResult<Void> delete(@PathVariable Long id, @AuthenticationPrincipal UserInfo userInfo) {
         service.delete(id, userInfo.getId());
+        return ApiResult.ok();
+    }
+
+    @PutMapping("/{id}/name")
+    @Operation(summary = "가게 이름 수정")
+    public ApiResult<Void> updateName(@PathVariable Long id,
+                                      @RequestBody @Valid CeoUpdateStoreNameRequest request,
+                                      @AuthenticationPrincipal UserInfo userInfo) {
+        service.updateName(id, request, userInfo.getId());
         return ApiResult.ok();
     }
 }

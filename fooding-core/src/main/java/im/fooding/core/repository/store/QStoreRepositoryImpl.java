@@ -38,7 +38,7 @@ public class QStoreRepositoryImpl implements QStoreRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, Double latitude, Double longitude, List<String> regionIds, StoreCategory category, boolean includeDeleted, Set<StoreStatus> statuses, String searchString) {
+    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, Double latitude, Double longitude, List<String> regionIds, StoreCategory category, boolean includeDeleted, Set<StoreStatus> statuses, String searchString, Long excludeStoreId) {
         OrderSpecifier<?> orderSpecifier = getOrderSpecifier(sortType, sortDirection, latitude, longitude);
 
         List<Store> content = query
@@ -51,7 +51,8 @@ public class QStoreRepositoryImpl implements QStoreRepository {
                         statusesCondition(statuses),
                         nameContains(searchString),
                         searchRegionIds(regionIds),
-                        searchCategory(category)
+                        searchCategory(category),
+                        excludeStoreId(excludeStoreId)
                 )
                 .orderBy(orderSpecifier)
                 .offset(pageable.getOffset())
@@ -66,7 +67,8 @@ public class QStoreRepositoryImpl implements QStoreRepository {
                         statusesCondition(statuses),
                         nameContains(searchString),
                         searchRegionIds(regionIds),
-                        searchCategory(category)
+                        searchCategory(category),
+                        excludeStoreId(excludeStoreId)
                 );
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
@@ -137,7 +139,7 @@ public class QStoreRepositoryImpl implements QStoreRepository {
             case RECOMMENDED -> new OrderSpecifier<>(order, store.visitCount);
             case AVERAGE_RATING -> new OrderSpecifier<>(order, store.averageRating);
             case REVIEW -> new OrderSpecifier<>(order, store.reviewCount);
-            case PRICE -> new OrderSpecifier<>(order, store.averageRating);
+            case PRICE -> new OrderSpecifier<>(order, store.averagePrice);
             case DISTANCE -> orderDistance(order, latitude, longitude);
         };
     }
@@ -185,5 +187,9 @@ public class QStoreRepositoryImpl implements QStoreRepository {
                 longitude
         );
         return new OrderSpecifier<>(order, distanceExpr);
+    }
+
+    private BooleanExpression excludeStoreId(Long excludeStoreId) {
+        return excludeStoreId != null ? store.id.ne(excludeStoreId) : null;
     }
 }

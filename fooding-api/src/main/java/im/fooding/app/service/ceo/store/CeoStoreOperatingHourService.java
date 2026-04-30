@@ -6,10 +6,7 @@ import im.fooding.app.dto.response.ceo.store.CeoStoreOperatingHourResponse;
 import im.fooding.core.global.util.Util;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.store.information.StoreOperatingHour;
-import im.fooding.core.service.store.StoreDailyOperatingTimeService;
-import im.fooding.core.service.store.StoreMemberService;
-import im.fooding.core.service.store.StoreOperatingHourService;
-import im.fooding.core.service.store.StoreService;
+import im.fooding.core.service.store.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,15 +20,22 @@ public class CeoStoreOperatingHourService {
     private final StoreMemberService storeMemberService;
     private final StoreOperatingHourService storeOperatingHourService;
     private final StoreDailyOperatingTimeService storeDailyOperatingTimeService;
+    private final StoreDailyBreakTimeService storeDailyBreakTimeService;
 
     @Transactional
     public Long create(long storeId, CeoCreateStoreOperatingHourRequest request, long userId) {
         Store store = storeService.findById(storeId);
         checkMember(storeId, userId);
         StoreOperatingHour storeOperatingHour = storeOperatingHourService.create(store, request.getHasHoliday(), request.getRegularHolidayType(), request.getRegularHoliday(), Util.generateListToString(request.getClosedNationalHolidays()), Util.generateListToString(request.getCustomHolidays()), request.getOperatingNotes());
+
         request.getDailyOperatingTimes().forEach(it -> {
-            storeDailyOperatingTimeService.create(storeOperatingHour, it.getDayOfWeek(), it.getOpenTime(), it.getCloseTime(), it.getBreakStartTime(), it.getBreakEndTime());
+            storeDailyOperatingTimeService.create(storeOperatingHour, it.getDayOfWeek(), it.getOpenTime(), it.getCloseTime());
         });
+
+        request.getDailyBreakTimes().forEach(it -> {
+            storeDailyBreakTimeService.create(storeOperatingHour, it.getDayOfWeek(), it.getBreakStartTime(), it.getBreakEndTime());
+        });
+
         return storeOperatingHour.getId();
     }
 
@@ -39,8 +43,13 @@ public class CeoStoreOperatingHourService {
     public void update(long storeId, long id, CeoUpdateStoreOperatingHourRequest request, long userId) {
         checkMember(storeId, userId);
         storeOperatingHourService.update(id, request.getHasHoliday(), request.getRegularHolidayType(), request.getRegularHoliday(), Util.generateListToString(request.getClosedNationalHolidays()), Util.generateListToString(request.getCustomHolidays()), request.getOperatingNotes());
+
         request.getDailyOperatingTimes().forEach(it -> {
-            storeDailyOperatingTimeService.update(it.getId(), it.getDayOfWeek(), it.getOpenTime(), it.getCloseTime(), it.getBreakStartTime(), it.getBreakEndTime());
+            storeDailyOperatingTimeService.update(it.getId(), it.getDayOfWeek(), it.getOpenTime(), it.getCloseTime());
+        });
+
+        request.getDailyBreakTimes().forEach(it -> {
+            storeDailyBreakTimeService.update(it.getId(), it.getDayOfWeek(), it.getBreakStartTime(), it.getBreakEndTime());
         });
     }
 

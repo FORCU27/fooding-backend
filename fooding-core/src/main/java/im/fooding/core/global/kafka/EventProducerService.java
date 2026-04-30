@@ -50,6 +50,17 @@ public class EventProducerService {
         }
     }
 
+    public void publishEvent(String topic, String key, Object eventData) {
+        try {
+            String message = objectMapper.writeValueAsString(eventData);
+            kafkaTemplate.send(topic, key, message);
+            log.info("토픽으로 메시지를 발행했습니다: {}, key: {}", topic, key);
+        } catch (JsonProcessingException e) {
+            log.error("토픽 메시지 직렬화 중 오류가 발생했습니다: {}", topic, e);
+            throw new RuntimeException("메시지 발행에 실패했습니다: " + topic, e);
+        }
+    }
+
     // CDC 구조와 동일한 메시지 포맷 생성
     private String createCDCStyleMessage(String eventType, Object eventData) throws Exception {
         String dataJson = objectMapper.writeValueAsString(eventData);

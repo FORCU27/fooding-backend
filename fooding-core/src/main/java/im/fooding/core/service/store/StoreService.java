@@ -1,9 +1,9 @@
 package im.fooding.core.service.store;
 
 import im.fooding.core.dto.request.store.StoreFilter;
+import im.fooding.core.event.store.StoreAveragePriceUpdatedEvent;
 import im.fooding.core.event.store.StoreCreatedEvent;
 import im.fooding.core.event.store.StoreDeletedEvent;
-import im.fooding.core.event.store.StoreAveragePriceUpdatedEvent;
 import im.fooding.core.event.store.StoreUpdatedEvent;
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
@@ -25,7 +25,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -49,9 +48,10 @@ public class StoreService {
      * @param includeDeleted
      * @param statuses       조회할 상태들, null이면 모든 상태 조회
      * @param searchString
+     * @param excludeStoreId 제외할 스토어 id
      */
-    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, Double latitude, Double longitude, List<String> regionIds, StoreCategory category, boolean includeDeleted, Set<StoreStatus> statuses, String searchString) {
-        return storeRepository.list(pageable, sortType, sortDirection, latitude, longitude, regionIds, category, includeDeleted, statuses, searchString);
+    public Page<Store> list(Pageable pageable, StoreSortType sortType, SortDirection sortDirection, Double latitude, Double longitude, List<String> regionIds, StoreCategory category, boolean includeDeleted, Set<StoreStatus> statuses, String searchString, Long excludeStoreId) {
+        return storeRepository.list(pageable, sortType, sortDirection, latitude, longitude, regionIds, category, includeDeleted, statuses, searchString, excludeStoreId);
     }
 
     public List<Store> list(List<Long> ids) {
@@ -186,6 +186,12 @@ public class StoreService {
         return storeRepository.findAll().stream()
                 .filter(it -> !it.isDeleted())
                 .toList();
+    }
+
+    public Store updateName(Long id, String name) {
+        Store store = findById(id);
+        store.updateName(name);
+        return store;
     }
 
     @KafkaEventHandler(StoreCreatedEvent.class)

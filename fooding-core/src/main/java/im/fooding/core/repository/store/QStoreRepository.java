@@ -25,7 +25,8 @@ public interface QStoreRepository {
             StoreCategory category,
             boolean includeDeleted,
             Set<StoreStatus> statuses,
-            String searchString
+            String searchString,
+            Long excludeStoreId
     );
 
     List<Store> listByUserId(long userId, StoreFilter filter);

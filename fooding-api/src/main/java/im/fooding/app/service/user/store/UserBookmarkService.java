@@ -8,6 +8,7 @@ import im.fooding.core.global.util.Util;
 import im.fooding.core.model.bookmark.Bookmark;
 import im.fooding.core.model.bookmark.BookmarkSortType;
 import im.fooding.core.model.store.Store;
+import im.fooding.core.model.store.information.StoreDailyBreakTime;
 import im.fooding.core.model.store.information.StoreDailyOperatingTime;
 import im.fooding.core.model.store.information.StoreOperatingHour;
 import im.fooding.core.model.user.User;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -71,18 +73,35 @@ public class UserBookmarkService {
                 .toList();
 
         Map<Long, StoreOperatingHour> operatingHourMap = storeOperatingHourService
-                .findByIdsInOperatingTime(storeIds, Util.getDayOfWeek())
+                .findByIdsInOperatingTime(storeIds)
                 .stream()
                 .collect(Collectors.toMap(
                         it -> it.getStore().getId(),
                         Function.identity()
                 ));
 
+        LocalTime now = LocalTime.now();
         for (UserBookmarkResponse store : list) {
             StoreOperatingHour operatingHour = operatingHourMap.get(store.getId());
-            if (operatingHour != null && operatingHour.getDailyOperatingTimes().isEmpty()) {
-                StoreDailyOperatingTime time = operatingHour.getDailyOperatingTimes().get(0);
-                store.setFinished(!time.isOperatingNow());
+
+            StoreDailyOperatingTime todayOperating = operatingHour.getDailyOperatingTimes().stream()
+                    .filter(it -> it.getDayOfWeek() == Util.getDayOfWeek())
+                    .findFirst()
+                    .orElse(null);
+
+            StoreDailyBreakTime todayBreak = operatingHour.getDailyBreakTimes().stream()
+                    .filter(it -> it.getDayOfWeek() == Util.getDayOfWeek())
+                    .findFirst()
+                    .orElse(null);
+
+            if (operatingHour != null && todayOperating != null) {
+                boolean isFinished = !todayOperating.isOperatingNow(now);
+                if (!isFinished) {
+                    if (todayBreak != null) {
+                        isFinished = todayBreak.isBreakNow(now);
+                    }
+                }
+                store.setFinished(isFinished);
             }
         }
     }

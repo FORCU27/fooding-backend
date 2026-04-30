@@ -1,16 +1,15 @@
 package im.fooding.app.service.user.review;
 
 import im.fooding.app.dto.request.user.review.CreateReviewRequest;
+import im.fooding.app.dto.request.user.review.CreateUserReviewCommentRequest;
 import im.fooding.app.dto.request.user.review.UpdateReviewRequest;
 import im.fooding.app.dto.request.user.review.UserRetrieveReviewRequest;
+import im.fooding.app.dto.response.user.review.UserReviewDetailResponse;
 import im.fooding.app.dto.response.user.review.UserReviewResponse;
 import im.fooding.core.common.PageInfo;
 import im.fooding.core.common.PageResponse;
 import im.fooding.core.model.plan.Plan;
-import im.fooding.core.model.review.Review;
-import im.fooding.core.model.review.ReviewImage;
-import im.fooding.core.model.review.ReviewScore;
-import im.fooding.core.model.review.ReviewSortType;
+import im.fooding.core.model.review.*;
 import im.fooding.core.model.store.Store;
 import im.fooding.core.model.user.User;
 import im.fooding.core.repository.review.ReviewRepository;
@@ -66,7 +65,6 @@ public class UserReviewService {
         List<Long> reviewIds = getReviewIds(reviewPage.getContent());
 
         Map<Long, List<ReviewImage>> imageMap = getReviewImageMap(reviewIds);
-        Map<Long, Long> likeCountMap = getReviewLikeMap(reviewIds);
 
         Plan plan = (writerId != null && storeId != null)
                 ? planService.findByUserIdAndStoreId(writerId, storeId)
@@ -77,7 +75,7 @@ public class UserReviewService {
                     UserReviewResponse userReview = UserReviewResponse.of(
                             review,
                             imageMap.getOrDefault(review.getId(), List.of()),
-                            likeCountMap.getOrDefault(review.getId(), 0L),
+                            reviewLikeService.findAllByUserId( review.getWriter().getId() ).size(),
                             plan != null ? plan.getId() : null
                     );
                     Pageable tpg = PageRequest.of( 0, 50 );
@@ -164,5 +162,56 @@ public class UserReviewService {
         // 리뷰 이미지 수정
         Review review = reviewService.findById( id );
         reviewImageService.update( review, request.getImageUrls() );
+    }
+
+    @Transactional
+    public UserReviewDetailResponse getReviewDetail( long reviewId ){
+        Review review = reviewService.findById( reviewId );
+        UserReviewDetailResponse result = UserReviewDetailResponse.of( review );
+        // 리뷰 이미지 설정
+        List<ReviewImage> reviewImages = reviewImageService.list( List.of( reviewId ) );
+        result.setImageUrls( reviewImages.stream().map( ReviewImage::getImageUrl ).toList() );
+        
+        // 리뷰의 좋아요 수 설정
+        result.setWriterReviewCount( reviewLikeService.findAllByReviewId( review.getId() ).size() );
+        
+        // 작성자의 리뷰수 설정
+        result.setWriterReviewCount( reviewService.findAllReviewByWriter( review.getWriter() ).size() );
+        return result;
+    }
+
+    @Transactional
+    public void setReviewLike( long reviewId, long userId ){
+        // 이미 좋아요가 있는지 확인
+        ReviewLike reviewLike = reviewLikeService.findByReviewIdAndUserId( reviewId, userId );
+        // 좋아요가 되어 있지 않으면 좋아요 등록
+        if( reviewLike == null ) {
+            Review review = reviewService.findById( reviewId );
+            User user = userService.findById( userId );
+            reviewLikeService.create( review, user );
+        }
+        // 이미 좋아요가 되어 있으면 좋아요 취소
+        else reviewLike.delete( userId );
+    }
+
+    @Transactional
+    public void createComment(long reviewId, long writerId, CreateUserReviewCommentRequest request){
+        // 최상위 리뷰. 댓글 X
+        Review review = reviewService.findById( reviewId );
+        // 작성자
+        User writer = userService.findById( writerId );
+        // 댓글
+        Review comment = Review.builder()
+                .store( review.getStore() )
+                .writer( writer )
+                .score( ReviewScore.builder().service(0).mood(0).taste(0).total(0).build())
+                .content(request.getComment())
+                .visitPurposeType( VisitPurposeType.BUSINESS )
+                .build();
+        // 이 댓글이 최상위 댓글이 아닌 경우
+        if( request.getParentId() != null && request.getParentId() != 0 ) {
+            Review commentReview = reviewService.findById(request.getParentId());
+            comment.setParent(commentReview);
+        }
     }
 }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import java.time.DayOfWeek;
 import java.util.List;
 
+import static im.fooding.core.model.store.information.QStoreDailyBreakTime.storeDailyBreakTime;
 import static im.fooding.core.model.store.information.QStoreDailyOperatingTime.storeDailyOperatingTime;
 import static im.fooding.core.model.store.information.QStoreOperatingHour.storeOperatingHour;
 
@@ -16,18 +17,23 @@ public class QStoreOperatingHourRepositoryImpl implements QStoreOperatingHourRep
     private final JPAQueryFactory query;
 
     @Override
-    public List<StoreOperatingHour> findByIdsInOperatingTime(List<Long> storeIds, DayOfWeek week) {
+    public List<StoreOperatingHour> findByIdsInOperatingTime(List<Long> storeIds) {
         return query.selectFrom(storeOperatingHour)
-                .innerJoin(storeOperatingHour.dailyOperatingTimes, storeDailyOperatingTime).fetchJoin()
+                .innerJoin(storeOperatingHour.dailyOperatingTimes, storeDailyOperatingTime)
+                .innerJoin(storeOperatingHour.dailyBreakTimes, storeDailyBreakTime)
                 .where(
-                        storeDailyOperatingTime.dayOfWeek.eq(week),
                         storeOperatingHour.store.id.in(storeIds),
                         isDailyOperatingTimesDeleted(),
+                        isDailyBreakTimesDeleted(),
                         storeOperatingHour.deleted.isFalse()
                 ).fetch();
     }
 
     private BooleanExpression isDailyOperatingTimesDeleted() {
         return storeDailyOperatingTime.id.isNull().or(storeDailyOperatingTime.deleted.isFalse());
+    }
+
+    private BooleanExpression isDailyBreakTimesDeleted() {
+        return storeDailyBreakTime.id.isNull().or(storeDailyBreakTime.deleted.isFalse());
     }
 }

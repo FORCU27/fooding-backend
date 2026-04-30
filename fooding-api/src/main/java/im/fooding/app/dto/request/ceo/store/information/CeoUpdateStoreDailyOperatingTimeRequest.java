@@ -26,19 +26,11 @@ public class CeoUpdateStoreDailyOperatingTimeRequest {
     @Schema(description = "마감시간", example = "22:00")
     private LocalTime closeTime;
 
-    @Schema(description = "브레이크타임 시작", example = "13:00")
-    private LocalTime breakStartTime;
-
-    @Schema(description = "브레이크타임 끝", example = "15:00")
-    private LocalTime breakEndTime;
-
     @Builder
-    public CeoUpdateStoreDailyOperatingTimeRequest(Long id, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime, LocalTime breakStartTime, LocalTime breakEndTime) {
+    public CeoUpdateStoreDailyOperatingTimeRequest(Long id, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime) {
         this.id = id;
         this.dayOfWeek = dayOfWeek;
         this.openTime = openTime;
         this.closeTime = closeTime;
-        this.breakStartTime = breakStartTime;
-        this.breakEndTime = breakEndTime;
     }
 }

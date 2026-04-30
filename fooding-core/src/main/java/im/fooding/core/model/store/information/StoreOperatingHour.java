@@ -7,7 +7,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Filter;
 
 import java.time.DayOfWeek;
 import java.util.List;
@@ -40,7 +42,12 @@ public class StoreOperatingHour extends BaseEntity {
     private String operatingNotes;
 
     @OneToMany(mappedBy = "storeOperatingHour")
+    @BatchSize(size = 7)
     private List<StoreDailyOperatingTime> dailyOperatingTimes;
+
+    @OneToMany(mappedBy = "storeOperatingHour")
+    @BatchSize(size = 7)
+    private List<StoreDailyBreakTime> dailyBreakTimes;
 
     @Builder
     public StoreOperatingHour(Store store, boolean hasHoliday, StoreRegularHolidayType regularHolidayType, DayOfWeek regularHoliday, String closedNationalHolidays, String customHolidays, String operatingNotes) {

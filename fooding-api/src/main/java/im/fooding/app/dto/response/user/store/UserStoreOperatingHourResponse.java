@@ -39,8 +39,13 @@ public class UserStoreOperatingHourResponse {
     @Schema(description = "운영시간", requiredMode = RequiredMode.REQUIRED)
     private List<UserStoreDailyOperatingTimeResponse> dailyOperatingTimes;
 
+    @Schema(description = "휴게시간", requiredMode = RequiredMode.REQUIRED)
+    private List<UserStoreDailyBreakTimeResponse> dailyBreakTimes;
+
     @Builder
-    private UserStoreOperatingHourResponse(long id, Boolean hasHoliday, StoreRegularHolidayType regularHolidayType, DayOfWeek regularHoliday, List<String> closedNationalHolidays, List<String> customHolidays, String operatingNotes, List<UserStoreDailyOperatingTimeResponse> dailyOperatingTimes) {
+    private UserStoreOperatingHourResponse(long id, Boolean hasHoliday, StoreRegularHolidayType regularHolidayType, DayOfWeek regularHoliday,
+                                           List<String> closedNationalHolidays, List<String> customHolidays, String operatingNotes,
+                                           List<UserStoreDailyOperatingTimeResponse> dailyOperatingTimes, List<UserStoreDailyBreakTimeResponse> dailyBreakTimes) {
         this.id = id;
         this.hasHoliday = hasHoliday;
         this.regularHolidayType = regularHolidayType;
@@ -49,6 +54,7 @@ public class UserStoreOperatingHourResponse {
         this.customHolidays = customHolidays;
         this.operatingNotes = operatingNotes;
         this.dailyOperatingTimes = dailyOperatingTimes;
+        this.dailyBreakTimes = dailyBreakTimes;
     }
 
     public static UserStoreOperatingHourResponse of(StoreOperatingHour storeOperatingHour) {
@@ -61,6 +67,7 @@ public class UserStoreOperatingHourResponse {
                 .customHolidays(Util.generateStringToList(storeOperatingHour.getCustomHolidays()))
                 .operatingNotes(storeOperatingHour.getOperatingNotes())
                 .dailyOperatingTimes(storeOperatingHour.getDailyOperatingTimes().stream().map(UserStoreDailyOperatingTimeResponse::of).toList())
+                .dailyBreakTimes(storeOperatingHour.getDailyBreakTimes().stream().map(UserStoreDailyBreakTimeResponse::of).toList())
                 .build();
     }
 }

@@ -21,14 +21,12 @@ import java.util.List;
 public class StoreDailyOperatingTimeService {
     private final StoreDailyOperatingTimeRepository repository;
 
-    public void create(StoreOperatingHour storeOperatingHour, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime, LocalTime breakStartTime, LocalTime breakEndTime) {
+    public void create(StoreOperatingHour storeOperatingHour, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime) {
         StoreDailyOperatingTime storeDailyOperatingTime = StoreDailyOperatingTime.builder()
                 .storeOperatingHour(storeOperatingHour)
                 .dayOfWeek(dayOfWeek)
                 .openTime(openTime)
                 .closeTime(closeTime)
-                .breakStartTime(breakStartTime)
-                .breakEndTime(breakEndTime)
                 .build();
         repository.save(storeDailyOperatingTime);
     }
@@ -43,17 +41,15 @@ public class StoreDailyOperatingTimeService {
                             .dayOfWeek(week)
                             .openTime(LocalTime.of(9, 00))
                             .closeTime(LocalTime.of(22, 00))
-                            .breakStartTime(LocalTime.of(14, 30))
-                            .breakEndTime(LocalTime.of(16, 30))
                             .build()
             );
         });
         repository.saveAll(entities);
     }
 
-    public void update(long id, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime, LocalTime breakStartTime, LocalTime breakEndTime) {
+    public void update(long id, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime) {
         StoreDailyOperatingTime storeDailyOperatingTime = findById(id);
-        storeDailyOperatingTime.update(dayOfWeek, openTime, closeTime, breakStartTime, breakEndTime);
+        storeDailyOperatingTime.update(dayOfWeek, openTime, closeTime);
     }
 
     public StoreDailyOperatingTime findById(long id) {

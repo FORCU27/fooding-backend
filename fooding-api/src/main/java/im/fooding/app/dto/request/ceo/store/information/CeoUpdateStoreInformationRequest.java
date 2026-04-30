@@ -1,5 +1,7 @@
 package im.fooding.app.dto.request.ceo.store.information;
 
+import im.fooding.core.model.store.StoreFacility;
+import im.fooding.core.model.store.StorePaymentMethod;
 import im.fooding.core.model.store.information.StoreParkingChargeType;
 import im.fooding.core.model.store.information.StoreParkingType;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,11 +19,13 @@ public class CeoUpdateStoreInformationRequest {
     @Schema(description = "홈페이지/SNS 링크", example = "[\"https://...\", \"https://...\"]")
     private List<String> links;
 
-    @Schema(description = "시설/서비스 정보", example = "[\"단체 이용 가능\", \"포장\"]")
-    private List<String> facilities;
+    @NotNull
+    @Size(min = 1)
+    @Schema(description = "시설/서비스 정보", example = "[\"GROUP_USE\", \"TAKEOUT\"]")
+    private List<StoreFacility> facilities;
 
-    @Schema(description = "결제수단", example = "[\"지역화페(카드형)\", \"간편결제\"]")
-    private List<String> paymentMethods;
+    @Schema(description = "결제수단", example = "[\"LOCAL_CURRENCY_CARD\", \"LOCAL_CURRENCY_CASH\"]")
+    private List<StorePaymentMethod> paymentMethods;
 
     @NotNull
     @Schema(description = "주차가능여부", example = "true")
@@ -50,7 +54,7 @@ public class CeoUpdateStoreInformationRequest {
 
     @Builder
     public CeoUpdateStoreInformationRequest(
-            List<String> links, List<String> facilities, List<String> paymentMethods, boolean parkingAvailable, StoreParkingType parkingType,
+            List<String> links, List<StoreFacility> facilities, List<StorePaymentMethod> paymentMethods, boolean parkingAvailable, StoreParkingType parkingType,
             StoreParkingChargeType parkingChargeType, Integer parkingBasicTimeMinutes, Integer parkingBasicFee, Integer parkingExtraMinutes,
             Integer parkingExtraFee, Integer parkingMaxDailyFee
     ) {

@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,7 +39,15 @@ public class CeoUpdateStoreOperatingHourRequest {
     @Size(min = 7, message = "월요일부터 일요일까지 입력해주세요.")
     private List<CeoUpdateStoreDailyOperatingTimeRequest> dailyOperatingTimes;
 
-    public CeoUpdateStoreOperatingHourRequest(Boolean hasHoliday, StoreRegularHolidayType regularHolidayType, DayOfWeek regularHoliday, List<String> closedNationalHolidays, List<String> customHolidays, String operatingNotes, List<CeoUpdateStoreDailyOperatingTimeRequest> dailyOperatingTimes) {
+    @Schema(description = "영업시간")
+    @Valid
+    @Size(min = 7, message = "월요일부터 일요일까지 입력해주세요.")
+    private List<CeoUpdateStoreDailyBreakTimeRequest> dailyBreakTimes;
+
+    @Builder
+    public CeoUpdateStoreOperatingHourRequest(Boolean hasHoliday, StoreRegularHolidayType regularHolidayType, DayOfWeek regularHoliday,
+                                              List<String> closedNationalHolidays, List<String> customHolidays, String operatingNotes,
+                                              List<CeoUpdateStoreDailyOperatingTimeRequest> dailyOperatingTimes, List<CeoUpdateStoreDailyBreakTimeRequest> dailyBreakTimes) {
         this.hasHoliday = hasHoliday;
         this.regularHolidayType = regularHolidayType;
         this.regularHoliday = regularHoliday;
@@ -46,5 +55,6 @@ public class CeoUpdateStoreOperatingHourRequest {
         this.customHolidays = customHolidays;
         this.operatingNotes = operatingNotes;
         this.dailyOperatingTimes = dailyOperatingTimes;
+        this.dailyBreakTimes = dailyBreakTimes;
     }
 }
