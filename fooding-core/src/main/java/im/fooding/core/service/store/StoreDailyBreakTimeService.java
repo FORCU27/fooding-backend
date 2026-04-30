@@ -2,8 +2,10 @@ package im.fooding.core.service.store;
 
 import im.fooding.core.global.exception.ApiException;
 import im.fooding.core.global.exception.ErrorCode;
+import im.fooding.core.model.store.information.StoreDailyBreakTime;
 import im.fooding.core.model.store.information.StoreDailyOperatingTime;
 import im.fooding.core.model.store.information.StoreOperatingHour;
+import im.fooding.core.repository.store.information.StoreDailyBreakTimeRepository;
 import im.fooding.core.repository.store.information.StoreDailyOperatingTimeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,41 +20,41 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class StoreDailyOperatingTimeService {
-    private final StoreDailyOperatingTimeRepository repository;
+public class StoreDailyBreakTimeService {
+    private final StoreDailyBreakTimeRepository repository;
 
-    public void create(StoreOperatingHour storeOperatingHour, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime) {
-        StoreDailyOperatingTime storeDailyOperatingTime = StoreDailyOperatingTime.builder()
+    public void create(StoreOperatingHour storeOperatingHour, DayOfWeek dayOfWeek, LocalTime breakStartTime, LocalTime breakEndTime) {
+        StoreDailyBreakTime storeDailyBreakTime = StoreDailyBreakTime.builder()
                 .storeOperatingHour(storeOperatingHour)
                 .dayOfWeek(dayOfWeek)
-                .openTime(openTime)
-                .closeTime(closeTime)
+                .breakStartTime(breakStartTime)
+                .breakEndTime(breakEndTime)
                 .build();
-        repository.save(storeDailyOperatingTime);
+        repository.save(storeDailyBreakTime);
     }
 
     public void initialize(StoreOperatingHour storeOperatingHour) {
         List<DayOfWeek> weeks = Arrays.asList(DayOfWeek.values());
-        List<StoreDailyOperatingTime> entities = new ArrayList<>();
+        List<StoreDailyBreakTime> entities = new ArrayList<>();
         weeks.forEach(week -> {
             entities.add(
-                    StoreDailyOperatingTime.builder()
+                    StoreDailyBreakTime.builder()
                             .storeOperatingHour(storeOperatingHour)
                             .dayOfWeek(week)
-                            .openTime(LocalTime.of(9, 00))
-                            .closeTime(LocalTime.of(22, 00))
+                            .breakStartTime(null)
+                            .breakEndTime(null)
                             .build()
             );
         });
         repository.saveAll(entities);
     }
 
-    public void update(long id, DayOfWeek dayOfWeek, LocalTime openTime, LocalTime closeTime) {
-        StoreDailyOperatingTime storeDailyOperatingTime = findById(id);
-        storeDailyOperatingTime.update(dayOfWeek, openTime, closeTime);
+    public void update(long id, DayOfWeek dayOfWeek, LocalTime breakStartTime, LocalTime breakEndTime) {
+        StoreDailyBreakTime storeDailyBreakTime = findById(id);
+        storeDailyBreakTime.update(dayOfWeek, breakStartTime, breakEndTime);
     }
 
-    public StoreDailyOperatingTime findById(long id) {
+    public StoreDailyBreakTime findById(long id) {
         return repository.findById(id).filter(it -> !it.isDeleted()).orElseThrow(() -> new ApiException(ErrorCode.STORE_OPERATING_HOUR_NOT_FOUND));
     }
 

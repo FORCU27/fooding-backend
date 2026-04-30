@@ -6,5 +6,5 @@ import java.time.DayOfWeek;
 import java.util.List;
 
 public interface QStoreOperatingHourRepository {
-    List<StoreOperatingHour> findByIdsInOperatingTime(List<Long> ids, DayOfWeek week);
+    List<StoreOperatingHour> findByIdsInOperatingTime(List<Long> ids);
 }

@@ -3,10 +3,7 @@ package im.fooding.app.dto.request.ceo.coupon;
 import im.fooding.core.model.coupon.BenefitType;
 import im.fooding.core.model.coupon.DiscountType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -41,7 +38,7 @@ public class CeoGiftCouponRequest {
     @Schema(description = "사용 조건", example = "메뉴 2개 이상 시킬시 사용 가능합니다.")
     private String conditions;
 
-    @Positive
+    @PositiveOrZero
     @Schema(description = "할인값(금액, 퍼센트)", example = "2000")
     private int discountValue;
 

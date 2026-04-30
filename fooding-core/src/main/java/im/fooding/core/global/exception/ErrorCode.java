@@ -120,6 +120,7 @@ public enum ErrorCode {
     COUPON_NOT_FOUND(HttpStatus.BAD_REQUEST, "8000", "등록된 쿠폰이 없습니다."),
     COUPON_ISSUE_QUANTITY_INVALID(HttpStatus.BAD_REQUEST, "8001", "쿠폰 발급 가능한 수량을 초과했습니다."),
     COUPON_ISSUE_DATE_INVALID(HttpStatus.BAD_REQUEST, "8002", "쿠폰 발급 가능한 기간이 아닙니다."),
+    COUPON_DISCOUNT_VALUE_INVALID(HttpStatus.BAD_REQUEST, "8008", "쿠폰 혜택이 할인일 경우 할인 금액은 0원보다 커야합니다."),
     USER_COUPON_NOT_FOUND(HttpStatus.BAD_REQUEST, "8003", "발급 받은 쿠폰이 없습니다."),
     USER_COUPON_EXPIRED(HttpStatus.BAD_REQUEST, "8004", "쿠폰 사용 가능한 일자가 아닙니다."),
     USER_COUPON_ALREADY_USE(HttpStatus.BAD_REQUEST, "8005", "이미 사용된 쿠폰입니다."),

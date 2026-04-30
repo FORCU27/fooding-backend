@@ -39,8 +39,13 @@ public class CeoStoreOperatingHourResponse {
     @Schema(description = "운영시간", requiredMode = RequiredMode.REQUIRED)
     private List<CeoStoreDailyOperatingTimeResponse> dailyOperatingTimes;
 
+    @Schema(description = "휴게시간", requiredMode = RequiredMode.REQUIRED)
+    private List<CeoStoreDailyBreakTimeResponse> dailyBreakTimes;
+
     @Builder
-    private CeoStoreOperatingHourResponse(long id, Boolean hasHoliday, StoreRegularHolidayType regularHolidayType, DayOfWeek regularHoliday, List<String> closedNationalHolidays, List<String> customHolidays, String operatingNotes, List<CeoStoreDailyOperatingTimeResponse> dailyOperatingTimes) {
+    private CeoStoreOperatingHourResponse(long id, Boolean hasHoliday, StoreRegularHolidayType regularHolidayType, DayOfWeek regularHoliday,
+                                          List<String> closedNationalHolidays, List<String> customHolidays, String operatingNotes,
+                                          List<CeoStoreDailyOperatingTimeResponse> dailyOperatingTimes, List<CeoStoreDailyBreakTimeResponse> dailyBreakTimes) {
         this.id = id;
         this.hasHoliday = hasHoliday;
         this.regularHolidayType = regularHolidayType;
@@ -49,6 +54,7 @@ public class CeoStoreOperatingHourResponse {
         this.customHolidays = customHolidays;
         this.operatingNotes = operatingNotes;
         this.dailyOperatingTimes = dailyOperatingTimes;
+        this.dailyBreakTimes = dailyBreakTimes;
     }
 
     public static CeoStoreOperatingHourResponse of(StoreOperatingHour storeOperatingHour) {
@@ -61,6 +67,7 @@ public class CeoStoreOperatingHourResponse {
                 .customHolidays(Util.generateStringToList(storeOperatingHour.getCustomHolidays()))
                 .operatingNotes(storeOperatingHour.getOperatingNotes())
                 .dailyOperatingTimes(storeOperatingHour.getDailyOperatingTimes().stream().map(CeoStoreDailyOperatingTimeResponse::of).toList())
+                .dailyBreakTimes(storeOperatingHour.getDailyBreakTimes().stream().map(CeoStoreDailyBreakTimeResponse::of).toList())
                 .build();
     }
 }
